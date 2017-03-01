@@ -22,11 +22,11 @@ using System.Text;
 using System.Web.Http;
 
 
-namespace CertiWebAppAnag.Api
+namespace GestionePEC.Api
 {
-    public class MailController : ApiController
+    public class PECController : ApiController
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(MailController));
+        private static readonly ILog log = LogManager.GetLogger(typeof(PECController));
        
         [Serializable]
         internal class JSONTreeNode
@@ -164,7 +164,7 @@ namespace CertiWebAppAnag.Api
 
 
         [Authorize]
-        [Route("api/MailController/GetTreeStructure")]
+        [Route("api/PECController/GetTreeStructure")]
         public HttpResponseMessage GetTreeStructure(string idM)
         {
             JSONTreeNodeModel model = new JSONTreeNodeModel();
@@ -240,7 +240,7 @@ namespace CertiWebAppAnag.Api
 
 
         [Authorize]
-        [Route("api/MailController/GetMails")]
+        [Route("api/PECController/GetMails")]
         public HttpResponseMessage GetMails(int start, int limit, string folder, string parFolder, string mailAction, string mailIds, string filter, int page)
         {
             IEnumerable<Carrier> listCarrier = new List<Carrier>();

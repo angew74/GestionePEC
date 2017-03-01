@@ -60,9 +60,10 @@ namespace GestionePEC.Master
                 {
                     hfUser.Value = _user.Identity.Name;
                     hfDipUser.Value = _user.MyIdentity.dipartimento;
-                    (LoginView1.FindControl("lblCurrentUser") as Label).Text = hfUser.Value.ToString().ToUpper();
-                    MailSiteMap.SiteMapProvider = "SiteMapMail";
-                    MailSiteMap.DataBind();
+                    if (LoginView1.FindControl("lblCurrentUser") != null)
+                    { (LoginView1.FindControl("lblCurrentUser") as Label).Text = hfUser.Value.ToString().ToUpper(); }
+                  //  MailSiteMap.SiteMapProvider = "SiteMapMail";
+                  //  MailSiteMap.DataBind();
                 }
             }
             else

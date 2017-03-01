@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,6 +51,9 @@
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="FaxPec.Model">
+      <HintPath>..\..\..\APP\FAXPec\CertiWebAppAnag\Bin\FaxPec.Model.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\..\APP\FAXPec\CertiWebAppAnag\Bin\HtmlAgilityPack.dll</HintPath>
@@ -82,8 +86,15 @@
       <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.12.1.2400\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Design" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Tuples, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4fd8e9d53546134f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SendMail\SendMailProject\SendMail.Data.OracleDb\Lib\System.Tuples.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -122,6 +133,8 @@
     <Content Include="App_Themes\Delta\cert.css" />
     <Content Include="App_Themes\Delta\editTable.css" />
     <Content Include="App_Themes\Delta\ext-theme-crisp-all.css" />
+    <Content Include="App_Themes\Delta\ext-theme-crisp-all_01.css" />
+    <Content Include="App_Themes\Delta\ext-theme-crisp-all_02.css" />
     <Content Include="App_Themes\Delta\extender.css" />
     <Content Include="App_Themes\Delta\grid.css" />
     <Content Include="App_Themes\Delta\header.css" />
@@ -263,6 +276,7 @@
     <Content Include="App_Themes\Delta\images\buttons\bAdobe.jpg" />
     <Content Include="App_Themes\Delta\images\buttons\bclear.png" />
     <Content Include="App_Themes\Delta\images\buttons\bif.png" />
+    <Content Include="App_Themes\Delta\images\buttons\binoculars.png" />
     <Content Include="App_Themes\Delta\images\buttons\btn9823_0.gif" />
     <Content Include="App_Themes\Delta\images\buttons\btn9823_1.gif" />
     <Content Include="App_Themes\Delta\images\buttons\calendar.gif" />
@@ -314,6 +328,7 @@
     <Content Include="App_Themes\Delta\images\buttons\minimize.gif" />
     <Content Include="App_Themes\Delta\images\buttons\modifyR.png" />
     <Content Include="App_Themes\Delta\images\buttons\no-action.png" />
+    <Content Include="App_Themes\Delta\images\buttons\no-search.png" />
     <Content Include="App_Themes\Delta\images\buttons\Off.png" />
     <Content Include="App_Themes\Delta\images\buttons\personal.png" />
     <Content Include="App_Themes\Delta\images\buttons\print.png" />
@@ -582,29 +597,6 @@
     <Content Include="App_Themes\Delta\images\default\toolbar\tb-btn-sprite.gif" />
     <Content Include="App_Themes\Delta\images\default\toolbar\tb-xl-btn-sprite.gif" />
     <Content Include="App_Themes\Delta\images\default\toolbar\tb-xl-sep.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\arrows.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\drop-add.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\drop-between.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\drop-no.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\drop-over.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\drop-under.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\drop-yes.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow-end-minus-nl.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow-end-minus.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow-end-plus-nl.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow-end-plus.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow-end.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow-line.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow-minus-nl.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow-minus.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow-plus-nl.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow-plus.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\elbow.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\folder-open.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\folder.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\leaf.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\loading.gif" />
-    <Content Include="App_Themes\Delta\images\default\tree\s.gif" />
     <Content Include="App_Themes\Delta\images\default\window\icon-error.gif" />
     <Content Include="App_Themes\Delta\images\default\window\icon-info.gif" />
     <Content Include="App_Themes\Delta\images\default\window\icon-question.gif" />
@@ -1016,10 +1008,12 @@
     <Content Include="App_Themes\Delta\Rating.css" />
     <Content Include="App_Themes\Delta\tab.css" />
     <Content Include="App_Themes\Delta\delta.css" />
+    <Content Include="Asmx\FoldersService.svc" />
     <Content Include="Controls\InBox.ascx" />
     <Content Include="Controls\MailBoxLogin.ascx" />
     <Content Include="Controls\MailBoxNavigator.ascx" />
     <Content Include="Controls\MailComposer.ascx" />
+    <Content Include="Controls\MailModal.ascx" />
     <Content Include="Controls\MailTreeViewer.ascx" />
     <Content Include="Controls\MailViewer.ascx" />
     <Content Include="Controls\NewMail.ascx" />
@@ -1053,11 +1047,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="api\LoginServiceController.cs" />
-    <Compile Include="api\MailController.cs" />
+    <Compile Include="api\PECController.cs" />
     <Compile Include="api\SessionStateRouteHandler.cs" />
     <Compile Include="App_Start\SessionableControllerHandler.cs" />
     <Compile Include="App_Start\SessionStateRouteHandler.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Ashx\GeneralSearcher.ashx.cs">
+      <DependentUpon>GeneralSearcher.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Ashx\GestoreRatingMail.ashx.cs">
+      <DependentUpon>GestoreRatingMail.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Asmx\FoldersService.svc.cs">
+      <DependentUpon>FoldersService.svc</DependentUpon>
+    </Compile>
     <Compile Include="Controls\InBox.ascx.cs">
       <DependentUpon>InBox.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1085,6 +1088,13 @@
     </Compile>
     <Compile Include="Controls\MailComposer.ascx.designer.cs">
       <DependentUpon>MailComposer.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MailModal.ascx.cs">
+      <DependentUpon>MailModal.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MailModal.ascx.designer.cs">
+      <DependentUpon>MailModal.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\MailTreeViewer.ascx.cs">
       <DependentUpon>MailTreeViewer.ascx</DependentUpon>
@@ -1266,6 +1276,8 @@
     <Content Include="App_Themes\Delta\images\default\window\top-bottom.psd" />
     <Content Include="App_Data\Web.sitemap" />
     <Content Include="log4net.config" />
+    <Content Include="Ashx\GestoreRatingMail.ashx" />
+    <Content Include="Ashx\GeneralSearcher.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1275,6 +1287,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Themes\Delta\extjs\" />
+    <Folder Include="App_Themes\Delta\images\default\tree\" />
     <Folder Include="App_Themes\Delta\images\layout\" />
     <Folder Include="App_Themes\Delta\images\logo\" />
     <Folder Include="Controllers\" />

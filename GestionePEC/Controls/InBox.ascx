@@ -81,7 +81,7 @@ Ext.onReady(function () {
       //  lazyRender: true,
         readOnly: true,
         mode: 'local',
-        width: 200,
+        width: 350,
         mode: 'local',       
         tabIndex: 4,
         store: new Ext.data.ArrayStore({
@@ -479,7 +479,7 @@ Ext.onReady(function () {
         }
 
         var FindText = Ext.create('Ext.form.field.Text', {
-            width: 150,
+            width: 350,
             emptyText: 'cerca...',
             validateOnBlur: false,
             disabled: true,

@@ -24,7 +24,7 @@
                    'id': 'config',
                    'href':'MailAdmin.aspx',
                    'leaf': true,
-                   'icon': '<%= this.ResolveClientUrl("~/App_Themes/unisys/images/default/tree/folder.gif") %>'
+                   'icon': '<%= this.ResolveClientUrl("~/App_Themes/Delta/images/tree/folder.png") %>'
                }]
            }
        });

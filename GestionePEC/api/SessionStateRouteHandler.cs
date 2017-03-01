@@ -6,7 +6,7 @@ using System.Web.Http.WebHost;
 using System.Web.Routing;
 using System.Web.SessionState;
 
-namespace CertiWebAppAnag.Api
+namespace GestionePEC.Api
 {
     public class SessionStateRouteHandler : IRouteHandler
     {

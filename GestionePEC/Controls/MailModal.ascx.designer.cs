@@ -7,81 +7,63 @@
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace GestionePEC.pages.MailClient {
+namespace GestionePEC.Controls {
     
     
-    public partial class MailBoxInBox {
+    public partial class MailModal {
         
         /// <summary>
-        /// Controllo pnlNav.
+        /// Controllo PopUpExt.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlNav;
+        protected global::AjaxControlToolkit.ModalPopupExtender PopUpExt;
         
         /// <summary>
-        /// Controllo Navigator.
+        /// Controllo divPopUp.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::GestionePEC.Controls.MailBoxNavigator Navigator;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPopUp;
         
         /// <summary>
-        /// Controllo pnlLogin.
+        /// Controllo upnlMailPopUp.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlLogin;
+        protected global::System.Web.UI.UpdatePanel upnlMailPopUp;
         
         /// <summary>
-        /// Controllo Login.
+        /// Controllo SendMailMessage.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::GestionePEC.Controls.MailBoxLogin Login;
+        protected global::GestionePEC.Controls.NewMail SendMailMessage;
         
         /// <summary>
-        /// Controllo Inbox1.
+        /// Controllo btnPopUpCancel.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::GestionePEC.Controls.InBox Inbox1;
+        protected global::System.Web.UI.WebControls.Button btnPopUpCancel;
         
         /// <summary>
-        /// Controllo pnlMail.
+        /// Controllo btnPopUpTarget.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlMail;
-        
-        /// <summary>
-        /// Controllo MailViewer1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::GestionePEC.Controls.MailViewer MailViewer1;
-        
-        /// <summary>
-        /// Controllo ucSendMail.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::GestionePEC.Controls.MailModal ucSendMail;
+        protected global::System.Web.UI.WebControls.Button btnPopUpTarget;
     }
 }

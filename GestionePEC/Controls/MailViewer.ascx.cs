@@ -16,6 +16,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -182,7 +183,7 @@ namespace GestionePEC.Controls
                 this.Visible = (mmsg != null);
                 if (mmsg == null)
                 {
-                    ((BasePage)this.Page).info.AddMessage("Messaggio non più disponibile (" + uid + ").\r\n\r\nFare 'refresh' prima di continuare. ", Com.Unisys.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                    ((BasePage)this.Page).info.AddMessage("Messaggio non più disponibile (" + uid + ").\r\n\r\nFare 'refresh' prima di continuare. ", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                 }
                 this.Visible = true;
             }
@@ -215,7 +216,7 @@ namespace GestionePEC.Controls
                 this.Visible = (tuple != null && tuple.Element1 != null);
                 if (tuple == null || tuple.Element1 == null)
                 {
-                    ((BasePage)this.Page).info.AddMessage("Messaggio non piu' disponibile (" + id + ").\r\n\r\nFare 'refresh' prima di continuare. ", Com.Unisys.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                    ((BasePage)this.Page).info.AddMessage("Messaggio non piu' disponibile (" + id + ").\r\n\r\nFare 'refresh' prima di continuare. ", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                     return;
                 }
 
@@ -326,7 +327,6 @@ namespace GestionePEC.Controls
                     { ibShowMailTree.Visible = true; }
                     else { ibShowMailTree.Visible = false; }
                 }
-                else
                 {
                     ibShowMailTree.Visible = false;
                     int id = msg.Id;
@@ -365,6 +365,7 @@ namespace GestionePEC.Controls
                     {
                         if (ex.GetType() != typeof(ManagedException))
                         {
+               
                             ManagedException mEx = new ManagedException(ex.Message, "ERR_G046", string.Empty, string.Empty, ex);
                             ErrorLogInfo er = new ErrorLogInfo(mEx);
                             _log.Error(er);
@@ -545,7 +546,7 @@ namespace GestionePEC.Controls
                 if (((WebMailClientManager.getAccount() != null) && (WebMailClientManager.getAccount().EmailAddress != hfAccount.Value)) ||
                  (currMsg.Id.ToString() != hfIdMail.Value))
                 {
-                    (this.Page as BasePage).info.AddMessage("Risultano aperte altre finestre. Ripetere la selezione", Com.Unisys.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                    (this.Page as BasePage).info.AddMessage("Risultano aperte altre finestre. Ripetere la selezione", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                     this.Visible = false;
                     return;
                 }
@@ -618,7 +619,7 @@ namespace GestionePEC.Controls
             p1.Add(c2);
             p1.Add(c5);
             p1.Add(c2);
-            byte[] i = CacheManager<Com.Delta.Web.Cache.Types.TpuBinaryResource>.get(CacheKeys.IMMAGINE_ROMA_CAPITALE, Cache.VincoloType.FILESYSTEM).File;
+            byte[] i = CacheManager<Com.Delta.Web.Cache.Types.TpuBinaryResource>.get(CacheKeys.IMMAGINE_ROMA_CAPITALE, VincoloType.FILESYSTEM).File;
             MemoryStream s = new MemoryStream();
             s.Write(i, 0, i.Length);
             s.Position = 0;
@@ -780,7 +781,7 @@ namespace GestionePEC.Controls
                     ErrorLogInfo er = new ErrorLogInfo(mEx);
                     _log.Error(er);
                 }
-                (this.Page as BasePage).info.AddMessage("Impossibile produrre il file pdf", Com.Unisys.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                (this.Page as BasePage).info.AddMessage("Impossibile produrre il file pdf", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
             }
             if (pdfCreato)
                 Response.End();
@@ -895,7 +896,7 @@ namespace GestionePEC.Controls
                     ErrorLogInfo er = new ErrorLogInfo(mEx);
                     _log.Error(er);
                 }
-                (this.Page as BasePage).info.AddMessage("Impossibile produrre la stampa", Com.Unisys.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                (this.Page as BasePage).info.AddMessage("Impossibile produrre la stampa", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                 return;
             }
             p.DownloadPRU();
@@ -1012,7 +1013,7 @@ namespace GestionePEC.Controls
                     //error.logCode = "ERR977";
                     //error.loggingAppCode = "CRAB";
                     //_log.Error(error);
-                    (this.Page as BasePage).info.AddMessage("Impossibile elaborare la email riprovare in un secondo momento", Com.Unisys.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                    (this.Page as BasePage).info.AddMessage("Impossibile elaborare la email riprovare in un secondo momento", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                     return;
                 }
             }

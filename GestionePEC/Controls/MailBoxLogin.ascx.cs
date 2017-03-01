@@ -109,7 +109,7 @@ namespace GestionePEC.Controls
 
         protected void ddlManagedAccounts_DataBinding(object sender, EventArgs e)
         {
-            string username = MySecurityProvider.CurrentPrincipalName;
+            string username = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
 
             IList<MailUser> l = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetManagedAccountByUser(username);
             if (l == null) l = new List<MailUser>();

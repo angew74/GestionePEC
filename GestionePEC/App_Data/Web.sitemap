@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
-  <siteMapNode>
-  <siteMapNode url="" title="Gestione Posta">
-    <siteMapNode url="" title="Inbox">      
-    </siteMapNode>
-    <siteMapNode url="" title="Ricerca Mail"></siteMapNode>
-    <siteMapNode url="" title="Ricerca Storia Mail"></siteMapNode>
+  <siteMapNode title="Gestione PEC" roles="*">
+  <siteMapNode url="" title="Gestione Posta" roles="*">
+   <siteMapNode url="~/pages/MailClient/MailBoxInBox.aspx" title="Inbox" roles="*" />   
+    <siteMapNode url="" title="Ricerca Mail" roles="*"></siteMapNode>
+    <siteMapNode url="" title="Ricerca Storia Mail" roles="*"></siteMapNode>
   </siteMapNode>
-  <siteMapNode url="" title="Amministra Caselle">
-    <siteMapNode url="" title="Server Settings">
+  <siteMapNode url="" title="Amministra Caselle" roles="*">
+    <siteMapNode url="" title="Server Settings" roles="*">
     </siteMapNode>
-    <siteMapNode url="" title="Amministrazione"></siteMapNode>
-    <siteMapNode url="" title="Statistiche"></siteMapNode>
+    <siteMapNode url="" title="Amministrazione" roles="*"></siteMapNode>
+    <siteMapNode url="" title="Statistiche" roles="*"></siteMapNode>
   </siteMapNode>
-    <siteMapNode url="" title="Rubrica">
-      <siteMapNode url="" title="Cerca Contatto">
+    <siteMapNode url="" title="Rubrica" roles="*">
+      <siteMapNode url="" title="Cerca Contatto" roles="*">
       </siteMapNode>
-      <siteMapNode url="" title="Mappa"></siteMapNode>
-      <siteMapNode url="" title="Accedi Mappatura"></siteMapNode>
+      <siteMapNode url="" title="Mappa" roles="*"></siteMapNode>
+      <siteMapNode url="" title="Accedi Mappatura" roles="*"></siteMapNode>
     </siteMapNode>
   </siteMapNode>
 </siteMap>

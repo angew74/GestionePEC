@@ -29,8 +29,7 @@ namespace GestionePEC
             //inizializza il singleton dei service
             SendMail.Locator.ServiceLocator.GetServiceFactory();
             //inizializza il routing
-            RegisterRoutes(RouteTable.Routes);
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            RegisterRoutes(RouteTable.Routes);           
             CacheManager<List<ActiveUp.Net.Common.DeltaExt.Action>>.set(CacheKeys.FOLDERS_ACTIONS, ServiceLocator.GetServiceFactory().MailLocalService.GetFolderDestinationForAction());
             // per test crabmail
             //HelperTestCrabMail.SetInCache();

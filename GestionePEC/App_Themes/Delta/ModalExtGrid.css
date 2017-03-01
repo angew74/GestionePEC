@@ -39,7 +39,7 @@
 
 .toolbarFind
 {
-	background-image: url(images/default/button/binoculars.png) !important;
+	background-image: url(images/buttons/binoculars.png) !important;
 	background-position: center center;
 	background-repeat: no-repeat;
      background-color : #dfe8f5;
@@ -48,7 +48,7 @@
 
 .toolbarFindDisabled
 {
-	background-image: url(images/default/button/no-search.png) !important;
+	background-image: url(images/buttons/no-search.png) !important;
 	background-position: center center;
 	background-repeat: no-repeat;
     background-color : #dfe8f5;
