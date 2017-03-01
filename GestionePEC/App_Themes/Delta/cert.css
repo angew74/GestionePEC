@@ -1,0 +1,360 @@
+body
+{
+}
+.testo
+{
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.testoSmall
+{
+	font-weight: normal;
+	font-size: 9px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.titoloModuli
+{
+	font-weight: bold;
+	font-size: 12px;
+	color: #000000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: left;
+	margin: 0px;
+	padding: 0px 0px 0px 3px;
+	border: 0px;
+}
+.frmBTN
+{
+	font-weight: bold;
+	font-size: 11px;
+	color: #ffffff;
+	line-height: 12px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color: #6c6cb4;
+}
+.datiCellModuli
+{
+	padding-left: 2px;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: left;
+}
+
+.datiCellModuliFirstColumn
+{
+	
+	width:65px;
+	padding-left: 2px;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: left;
+}
+
+.datiCellModuliImage
+{
+	border-left: 1px solid #E3E3E3;
+	border-top: 1px solid #E3E3E3;
+	border-bottom: 1px solid #E3E3E3;
+	color: #333333;
+	margin:0px;
+}
+.messageArea
+{
+	width: 100%;
+	text-align:left;
+	margin-left: 3px;
+	color: Red; 
+   
+}
+
+.captchaImage
+{
+	height:50px;
+}
+
+.datiCellModuliSecondColumn
+{
+	
+	padding-left: 2px;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: left;
+}
+
+.cell4Underline
+{
+	border-bottom-color: black;
+	border-bottom-style: solid;
+	border-bottom-width: 1pt;
+	text-align: center;
+	vertical-align: bottom;
+	font-weight: normal;
+	font-size: 11px;
+	color: black;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.cellBottom
+{
+	text-align: center;
+	vertical-align: bottom;
+	font-weight:normal; 
+	font-size: 9px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.hiddenText label
+{
+	display:none;
+}
+.datiCellModuliThirdColumn
+{
+	border: 1px solid #E3E3E3;
+	padding-left: 2px;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+}
+
+/*  blocco tema
+-----------------------*/
+.isThema
+{
+	margin-bottom: .6em;
+	text-align: left;
+	font-size : small;    	
+}
+
+/* stili certi da sistemare 
+panel
+---------------------------*/
+.pnlCertiWrite
+{
+	border-width:1px;
+	border-style:solid;
+	background-color:#F7F7F5;
+	border-top-color:Gray;
+	border-bottom-color:#E3E3E3;
+	border-left-color:#E3E3E3;
+	border-right-color:#E3E3E3;
+}
+.pnlCertiRead
+{
+	border-top-width:1px;
+	border-top-style:solid;
+	border-top-color:Gray;
+	background-color:#FFFFFF; 
+}
+.pnlCertiError
+{
+	font-weight: bold;
+	font-size: 12px; 
+	color:Red;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: left;
+	margin: 0px;
+	padding: 0px 0px 0px 3px;
+	border: 0px;
+}
+
+/* tabelle */
+
+.datiTableHeadCerti
+{
+    BORDER: 1px solid #E3E3E3;
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    MARGIN: 0px;
+    WIDTH: 100%;
+    PADDING-TOP: 0px;
+    BACKGROUND-COLOR: #F7F7F5;
+}
+.datiTableCerti
+{
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    MARGIN: 0px;
+    WIDTH: 100%;
+    PADDING-TOP: 0px;
+    BACKGROUND-COLOR: #f0f0f0;
+}
+
+.datiCellCerti
+{
+	border-top: 4px solid #FFFFFF;
+	padding-left: 2px;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: left;
+}
+
+.datiCellCertiFirstColumn
+{
+	border: 1px solid #E3E3E3;
+	padding-left: 2px;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+	width:40px;
+}
+
+.datiCellCertiCenterColumn
+{
+	border: 1px solid #E3E3E3;
+	padding-left: 2px;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+}
+
+.datiCellCertiCheckColumn
+{
+	border: 1px solid #E3E3E3;
+	padding-left: 2px;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	line-height: 15px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+	width:60px;
+}
+
+/* div 
+-------------------------------------*/
+
+.divCertiSpace
+{
+	height:15px; 
+}
+.div1Of2Buttons
+{
+	float:left;
+	width:45%;
+	text-align:right;
+}
+.divSp2Buttons
+{
+	float:left;
+	width:10%;
+}
+.div2Of2Buttons
+{
+	float:left;
+	width:45%;
+	text-align:left;
+}
+
+.divCertiWarning
+{
+	padding-left: 2px;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	line-height: 30px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+	background-color: #F7F7F5;
+	border-width:1px;
+	border-style:solid;
+	border-color:#E3E3E3;
+	background-color:#F7F7F5;
+}
+
+/* testo
+--------------------------------*/
+.txtCerti
+{
+	font-size: 12px;
+	color: #000000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: left;
+	margin: 0px;
+	padding: 0px 0px 0px 3px;
+	border: 0px;
+}
+
+
+.titoloCertiRed {
+	font-weight: bold;
+	font-size: 12px; 
+	color: #8c0029; 
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: left;
+	margin: 0px;
+	padding: 0px 0px 0px 3px;
+	border: 0px;
+}
+
+.titoloCertiBlue{
+	font-weight: bold;
+	font-size: 12px; 
+	color: #084199;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: left;
+	margin: 0px;
+	padding: 0px 0px 0px 3px;
+	border: 0px;
+}
+.titoloCertiBold
+{
+	font-weight: bold;
+	font-size: 12px;
+	color: #000000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: left;
+	margin: 0px;
+	padding: 0px 0px 0px 3px;
+	border: 0px;
+}
+.titoloCertiError
+{
+	padding-left: 2px;
+	font-weight: bold;
+	font-size: 12px;
+	color: #8c0029;
+	line-height: 30px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+}
+
+.Titoletto
+{
+	font-weight: bold;
+	font-size: 12pt;
+	color :#8a032e;
+	
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+
+

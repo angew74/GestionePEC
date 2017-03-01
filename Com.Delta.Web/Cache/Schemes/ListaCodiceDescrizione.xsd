@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="ListaCodiceDescrizione"
+                  targetNamespace="http://tempuri.org/ListaCodiceDescrizione.xsd"
+           xmlns:mstns="http://tempuri.org/ListaCodiceDescrizione.xsd"
+           xmlns="http://tempuri.org/ListaCodiceDescrizione.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+           xmlns:msprop="urn:schemas-microsoft-com:xml-msprop"
+           attributeFormDefault="qualified"
+           elementFormDefault="qualified"
+           msdata:schemafragmentcount="2">
+  <xs:element name="ListaCodiceDescrizione" msdata:IsDataSet="true" msdata:Locale="en-US" msprop:Generator_UserDSName="ListaCodiceDescrizione" msprop:Generator_DataSetName="ListaCodiceDescrizione">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Riga" form="unqualified" msprop:Generator_UserTableName="Riga" msprop:Generator_RowDeletedName="RigaRowDeleted" msprop:Generator_TableClassName="RigaDataTable" msprop:Generator_RowChangedName="RigaRowChanged" msprop:Generator_RowClassName="RigaRow" msprop:Generator_RowChangingName="RigaRowChanging" msprop:Generator_RowEvArgName="RigaRowChangeEvent" msprop:Generator_RowEvHandlerName="RigaRowChangeEventHandler" msprop:Generator_TablePropName="Riga" msprop:Generator_TableVarName="tableRiga" msprop:Generator_RowDeletingName="RigaRowDeleting" maxOccurs="79228162514264337593543950335">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Codice" form="unqualified" msprop:Generator_UserColumnName="Codice" msprop:Generator_ColumnPropNameInRow="Codice" msprop:Generator_ColumnVarNameInTable="columnCodice" msprop:Generator_ColumnPropNameInTable="CodiceColumn" type="xs:string" />
+              <xs:element name="Descrizione" form="unqualified" msprop:Generator_UserColumnName="Descrizione" msprop:Generator_ColumnPropNameInRow="Descrizione" msprop:Generator_ColumnVarNameInTable="columnDescrizione" msprop:Generator_ColumnPropNameInTable="DescrizioneColumn" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="RigaKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Riga" />
+      <xs:field xpath="Codice" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,169 @@
+﻿.InnerMailItem
+{
+	background-position:left;
+	background-image:url(images/mail_set/noread.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	border-width:0px;
+	cursor:pointer;
+	display:inline;
+	padding-left:18px;
+	margin-left:5px;
+}
+
+.AttchmentItem
+{
+	background-position:left;
+	background-image:url(images/buttons/attachment.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	cursor:pointer;
+	border-width:0px;
+	display:inline;
+	padding-left:18px;
+	
+	margin-left:5px;
+	
+}
+
+.mailForward
+{
+	background-position:center;
+	background-image:url(images/mail_set/forward.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	width:22px;
+	height:22px;
+	border-width:0px;
+	vertical-align:middle;
+	cursor:pointer;
+	float:left;
+	margin-top:-3px;
+	margin-bottom:-2px;
+}
+
+.mailReplyAll
+{
+	background-position:center;
+	background-image:url(images/mail_set/reply_all.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	width:22px;
+	height:22px;
+	border-width:0px;
+	vertical-align:middle;
+	cursor:pointer;
+	float:left;
+	margin-top:-3px;
+	margin-bottom:-2px;
+}
+
+.mailReplyTo
+{
+	background-position:center;
+	background-image:url(images/mail_set/reply.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	width:22px;
+	height:22px;
+	border-width:0px;
+	vertical-align:middle;
+	cursor:pointer;
+	float:left;
+	margin-top:-3px;
+	margin-bottom:-2px;
+}
+
+.mailAcquire
+{
+	background-position:center;
+	background-image:url(images/mail_set/acquire_1.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	width:22px;
+	height:22px;
+	border-width:0px;
+	vertical-align:middle;
+	cursor:pointer;
+	float:left;
+	margin-top:-3px;
+	margin-bottom:-2px;
+}
+
+.fatherMail
+{
+	background-position:center;
+	background-image:url(images/mail_set/upper_mail.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	width:22px;
+	height:22px;
+	border-width:0px;
+	vertical-align:middle;
+	cursor:pointer;
+	float:left;
+	margin-top:-3px;
+	margin-bottom:-2px;
+	display: inline-block;
+}
+
+.PrintBodyMail
+{
+	background-position:center;
+	background-image:url(images/buttons/bAdobe.jpg);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	width:22px;
+	height:22px;
+	border-width:0px;
+	vertical-align:middle;
+	cursor:pointer;
+	float:left;
+	margin-top:-3px;
+	margin-bottom:-2px;
+}
+
+.PrintPDUBodyMail
+{
+	background-position:center;
+	background-image:url(images/buttons/iPrint.gif);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	width:22px;
+	height:22px;
+	border-width:0px;
+	vertical-align:middle;
+	cursor:pointer;
+	float:left;
+	margin-top:-3px;
+	margin-bottom:-2px;
+}
+
+.Expanding-Blue-Header
+{
+    background-image:url(images/panel/pnl-blue-borderless.gif);
+    background-repeat:repeat-x;
+    background-position: top;
+    background-color:#deecfd;
+    min-height: 24px;
+    overflow:hidden;
+    margin: 0 auto;
+    margin-top:-1px;
+    border: solid 1px #99bbe8; 
+}
+.download-mail
+{
+	background-position: center;
+	background-image: url(images/mail_set/download.png);
+	background-repeat: no-repeat;
+	background-color: Transparent;
+	width: 22px;
+	height: 22px;
+	border-width: 0px;
+	vertical-align: middle;
+	cursor: pointer;
+	float: left;
+	margin-top: -3px;
+	margin-bottom: -2px;
+}
+

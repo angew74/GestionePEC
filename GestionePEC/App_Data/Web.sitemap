@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode>
+  <siteMapNode url="" title="Gestione Posta">
+    <siteMapNode url="" title="Inbox">      
+    </siteMapNode>
+    <siteMapNode url="" title="Ricerca Mail"></siteMapNode>
+    <siteMapNode url="" title="Ricerca Storia Mail"></siteMapNode>
+  </siteMapNode>
+  <siteMapNode url="" title="Amministra Caselle">
+    <siteMapNode url="" title="Server Settings">
+    </siteMapNode>
+    <siteMapNode url="" title="Amministrazione"></siteMapNode>
+    <siteMapNode url="" title="Statistiche"></siteMapNode>
+  </siteMapNode>
+    <siteMapNode url="" title="Rubrica">
+      <siteMapNode url="" title="Cerca Contatto">
+      </siteMapNode>
+      <siteMapNode url="" title="Mappa"></siteMapNode>
+      <siteMapNode url="" title="Accedi Mappatura"></siteMapNode>
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>

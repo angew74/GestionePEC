@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3A83AE95-C23F-48B4-9F1A-AD4B32C37B93}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ActiveUp.Net.Common</RootNamespace>
+    <AssemblyName>ActiveUp.Net.Common</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>ActiveUp.Net.Common.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\ActiveUp.Net.Common.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Trial|AnyCPU' ">
+    <OutputPath>bin\Trial\</OutputPath>
+    <DefineConstants>TRACE;TRIAL</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <DocumentationFile>../Obfuscation/Trial/ActiveUp.Net.Common.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Retail|AnyCPU' ">
+    <OutputPath>bin\Retail\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <DocumentationFile>../Obfuscation/Retail/ActiveUp.Net.Common.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MailSystem Dev|AnyCPU' ">
+    <OutputPath>bin\MailSystem Dev\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>../Obfuscation/Retail/ActiveUp.Net.Common.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\ActiveUp.Net.Common.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Trial|x86'">
+    <OutputPath>bin\x86\Trial\</OutputPath>
+    <DefineConstants>TRACE;TRIAL</DefineConstants>
+    <DocumentationFile>../Obfuscation/Trial/ActiveUp.Net.Common.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Retail|x86'">
+    <OutputPath>bin\x86\Retail\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>../Obfuscation/Retail/ActiveUp.Net.Common.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MailSystem Dev|x86'">
+    <OutputPath>bin\x86\MailSystem Dev\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>../Obfuscation/Retail/ActiveUp.Net.Common.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\ActiveUp.Net.Common.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Trial|x64'">
+    <OutputPath>bin\x64\Trial\</OutputPath>
+    <DefineConstants>TRACE;TRIAL</DefineConstants>
+    <DocumentationFile>../Obfuscation/Trial/ActiveUp.Net.Common.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Retail|x64'">
+    <OutputPath>bin\x64\Retail\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>../Obfuscation/Retail/ActiveUp.Net.Common.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MailSystem Dev|x64'">
+    <OutputPath>bin\x64\MailSystem Dev\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>../Obfuscation/Retail/ActiveUp.Net.Common.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Address.cs" />
+    <Compile Include="AddressCollection.cs" />
+    <Compile Include="Attachment.cs" />
+    <Compile Include="AttachmentCollection.cs" />
+    <Compile Include="BayesianFilter.cs" />
+    <Compile Include="BodyFormat.cs" />
+    <Compile Include="BodyTemplate.cs" />
+    <Compile Include="BodyTemplateCollection.cs" />
+    <Compile Include="BounceResult.cs" />
+    <Compile Include="Codec.cs" />
+    <Compile Include="Condition.cs" />
+    <Compile Include="ConditionalCollection.cs" />
+    <Compile Include="ContentDisposition.cs" />
+    <None Include="ContentDispositionv1.cs" />
+    <Compile Include="ContentTransferEncoding.cs" />
+    <Compile Include="ContentType.cs" />
+    <Compile Include="Converter.cs" />
+    <Compile Include="IFlag.cs" />
+    <Compile Include="IFlagCollection.cs" />
+    <Compile Include="IMailbox.cs" />
+    <Compile Include="Crypto.cs" />
+    <Compile Include="CtchClient.cs" />
+    <Compile Include="DomainKeys.CanonicalizationAlgorithm.cs" />
+    <Compile Include="DomainKeys.Canonicalizer.cs" />
+    <Compile Include="DomainKeys.KeyType.cs" />
+    <Compile Include="DomainKeys.OutboundSigningPolicy.cs" />
+    <Compile Include="DomainKeys.PublicKeyRecord.cs" />
+    <Compile Include="DomainKeys.QueryMethod.cs" />
+    <Compile Include="DomainKeys.SendingDomainPolicy.cs" />
+    <Compile Include="DomainKeys.Signature.cs" />
+    <None Include="EncryptionStandard.cs" />
+    <Compile Include="EmbeddedObjectCollection.cs" />
+    <Compile Include="EncryptionType.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="FieldFormat.cs" />
+    <Compile Include="FieldFormatCollection.cs" />
+    <Compile Include="Header.cs" />
+    <Compile Include="HeaderCollection.cs" />
+    <Compile Include="ListTemplate.cs" />
+    <Compile Include="ListTemplateCollection.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="MessageCollection.cs" />
+    <Compile Include="MessagePriority.cs" />
+    <Compile Include="MimeBody.cs" />
+    <Compile Include="MimePart.cs" />
+    <Compile Include="MimePartCollection.cs" />
+    <Compile Include="MimeTypesHelper.cs" />
+    <Compile Include="MxRecord.cs" />
+    <Compile Include="MxRecordCollection.cs" />
+    <Compile Include="Dns\A6Record.cs" />
+    <Compile Include="Dns\AAAARecord.cs" />
+    <Compile Include="Dns\AfsdbRecord.cs" />
+    <Compile Include="Dns\Answer.cs" />
+    <Compile Include="Dns\ARecord.cs" />
+    <Compile Include="Dns\CNameRecord.cs" />
+    <Compile Include="Dns\DataBuffer.cs" />
+    <Compile Include="Dns\DNameRecord.cs" />
+    <Compile Include="Dns\DnsAnswer.cs" />
+    <Compile Include="Dns\DnsEntry.cs" />
+    <Compile Include="Dns\DnsQuery.cs" />
+    <Compile Include="Dns\DomainNameOnly.cs" />
+    <Compile Include="Dns\DSRecord.cs" />
+    <Compile Include="Dns\ExceptionRecord.cs" />
+    <Compile Include="Dns\HInfoRecord.cs" />
+    <Compile Include="Dns\IRecordData.cs" />
+    <Compile Include="Dns\IsdnRecord.cs" />
+    <Compile Include="Dns\KeyRecord.cs" />
+    <Compile Include="Dns\KXRecord.cs" />
+    <Compile Include="Dns\LocRecord.cs" />
+    <Compile Include="Dns\MBRecord.cs" />
+    <Compile Include="Dns\MGRecord.cs" />
+    <Compile Include="Dns\MInfoRecord.cs" />
+    <Compile Include="Dns\MRRecord.cs" />
+    <Compile Include="Dns\MXRecord.cs" />
+    <Compile Include="Dns\NaptrRecord.cs" />
+    <Compile Include="Dns\NsapRecord.cs" />
+    <Compile Include="Dns\NSRecord.cs" />
+    <Compile Include="Dns\NullRecord.cs" />
+    <Compile Include="Dns\PrefAndDomain.cs" />
+    <Compile Include="Dns\PtrRecord.cs" />
+    <Compile Include="Dns\PXRecord.cs" />
+    <Compile Include="Dns\Question.cs" />
+    <Compile Include="Dns\Record.cs" />
+    <Compile Include="Dns\RPRecord.cs" />
+    <Compile Include="Dns\RTRecord.cs" />
+    <Compile Include="Dns\Server.cs" />
+    <Compile Include="Dns\SigRecord.cs" />
+    <Compile Include="Dns\SoaRecord.cs" />
+    <Compile Include="Dns\SrvRecord.cs" />
+    <Compile Include="Dns\TextOnly.cs" />
+    <Compile Include="Dns\TKeyRecord.cs" />
+    <Compile Include="Dns\TSigRecord.cs" />
+    <Compile Include="Dns\TxtRecord.cs" />
+    <Compile Include="Dns\Utils.cs" />
+    <Compile Include="Dns\WksRecord.cs" />
+    <Compile Include="Dns\X25Record.cs" />
+    <Compile Include="Imap\Fetch.cs" />
+    <Compile Include="Imap\Flag.cs" />
+    <Compile Include="Imap\FlagCollection.cs" />
+    <Compile Include="Imap\Imap4Client.cs" />
+    <Compile Include="Imap\Imap4Exception.cs" />
+    <Compile Include="Imap\Mailbox.cs" />
+    <Compile Include="Imap\MailboxCollection.cs" />
+    <Compile Include="Imap\MailboxPermission.cs" />
+    <Compile Include="Smtp\SmtpClient.cs" />
+    <Compile Include="Smtp\SmtpException.cs" />
+    <Compile Include="Smtp\SmtpExceptionCollection.cs" />
+    <Compile Include="Smtp\SmtpMessage.cs" />
+    <Compile Include="Smtp\SmtpMessageCollection.cs" />
+    <Compile Include="Smtp\SmtpValidator.cs" />
+    <Compile Include="Pop3\Pop3Client.cs" />
+    <Compile Include="Pop3\Pop3Exception.cs" />
+    <Compile Include="OperatorType.cs" />
+    <Compile Include="PaddingDirection.cs" />
+    <Compile Include="Parser.cs" />
+    <None Include="Parserv1.cs" />
+    <Compile Include="ParsingException.cs" />
+    <Compile Include="ProductHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueuingService.cs" />
+    <Compile Include="Region.cs" />
+    <Compile Include="RegionCollection.cs" />
+    <Compile Include="SaslMechanism.cs" />
+    <Compile Include="Server.cs" />
+    <Compile Include="ServerCollection.cs" />
+    <Compile Include="Signatures.cs" />
+    <Compile Include="SslHandShake.cs" />
+    <Compile Include="StringEnum.cs" />
+    <Compile Include="StructuredHeaderField.cs" />
+    <Compile Include="Templater.cs" />
+    <Compile Include="TimedUdpClient.cs" />
+    <Compile Include="Tokenizer.cs" />
+    <Compile Include="TraceInfo.cs" />
+    <Compile Include="TraceInfoCollection.cs" />
+    <Compile Include="TrustAllCertificatePolicy.cs" />
+    <Compile Include="DeltaExt\Action.cs" />
+    <Compile Include="DeltaExt\Enumerators.cs" />
+    <Compile Include="DeltaExt\Folder.cs" />
+    <Compile Include="DeltaExt\MailHeader.cs" />
+    <Compile Include="DeltaExt\MailHeaderExtended.cs" />
+    <Compile Include="DeltaExt\MailServer.cs" />
+    <Compile Include="DeltaExt\MailUser.cs" />
+    <Compile Include="DeltaExt\ResultList.cs" />
+    <Compile Include="UsenetXrefList.cs" />
+    <Compile Include="Validator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ActiveUp.Net.Common.snk" />
+    <None Include="Dns\ActiveUp.Net.Dns.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="bouncedSignatures.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Com.Delta.Logging\Com.Delta.Logging.csproj">
+      <Project>{a8c15d12-6e47-4af5-badf-b6cbc421ec40}</Project>
+      <Name>Com.Delta.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

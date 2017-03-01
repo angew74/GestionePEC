@@ -1,0 +1,86 @@
+
+/*css contenitore generale per l'allineamento a colonna dei vari oggetti */
+
+.AlignContainer
+{
+	border: none;
+	width: 100%;
+	overflow: hidden;
+	clear: both;
+}
+
+
+/*css suddivisione a colonna dei vari oggetti*/
+
+.AlignCol
+{
+	float: left;
+}
+
+
+/*css suddivisione a colonna dei vari oggetti per label*/
+
+.AlignLabel
+{
+	float: left;
+	text-align: right;
+}
+
+
+/*css suddivisione a colonna dei vari oggetti per field*/
+
+.AlignField
+{
+	float: left;
+	text-align: left;
+}
+
+.grid_layout
+{
+	/*width: 98%;*/
+	border: solid 0px #8fb5e6;
+	border-left-width: 1px;
+	border-top-width: 1px;
+	color: #717171;
+	margin: 3px 2px 3px 2px;
+	min-width: 98%;
+	text-align: center;
+}
+
+.grid_header_layout
+{
+	/* fallback (Opera) */
+	background: #e8f1ff; 
+	/* Mozilla: */
+	background: -moz-linear-gradient(top, #ffffff 0%, #e8f1ff 100%);
+	 /* Chrome, Safari:*/
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e8f1ff)); 
+	/*font*/
+	font-weight: bold;
+	color: #15428b;
+	min-height: 2em;
+	text-align: center;
+}
+
+.grid_alt_row_layout
+{
+	background-color: #ffffff;
+}
+
+.grid_column_left_align
+{
+	border: solid 0px #8fb5e6;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	text-align: left;
+	padding: 2px 3px 2px 3px;
+}
+
+.grid_columns_center_align
+{
+	border: solid 0px #8fb5e6;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	padding: 2px 3px 2px 3px;
+	text-align: center;
+}

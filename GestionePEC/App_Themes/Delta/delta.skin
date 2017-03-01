@@ -1,0 +1,184 @@
+<%@ Register TagPrefix="cc1" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit"  %>
+
+<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+CssClass="x-form-item-label"
+CssClass="x-form-text x-form-field" ---> x text box
+--%>
+
+<asp:Label CssClass="LabelBlack" runat="server"></asp:Label>
+
+<asp:Label SkinId="lab_red_bold_8" CssClass="LabelRed" runat="server"></asp:Label>
+
+<asp:Label SkinId="lab_red_bold_8_margin" CssClass="LabelRedMargin" runat="server"></asp:Label>
+
+<asp:Label SkinId="lab_red_bold_8_middle" CssClass="LabelRedMiddle" runat="server"></asp:Label>
+
+<asp:Label SkinId="label_caption" CssClass="LabelCaption" runat="server"></asp:Label>
+
+<asp:Label SkinId="lab_blue_bold_10" CssClass="header-title" runat="server"></asp:Label>
+
+<asp:Label SkinId="LabelSpace" CssClass="LabelBlackLeftSpace" runat="server"></asp:Label>
+
+<asp:Label SkinId="LabelBlue" CssClass="LabelBlue" runat="server"></asp:Label>
+
+<asp:TextBox runat="server" CssClass="TextBoxBlack" ></asp:TextBox>
+
+<asp:TextBox SkinId="tbMiddle" runat="server" CssClass="TextBoxMiddle" ></asp:TextBox>
+
+<asp:TextBox SkinId="tbMiddleUc" runat="server" CssClass="TextBoxMiddleUc" ></asp:TextBox>
+
+<asp:TextBox SkinId="tbLong" runat="server" CssClass="TextBoxMiddle" Style="width:314px" ></asp:TextBox>
+
+<asp:TextBox SkinId="tbSearch" runat="server" CssClass="TextBoxSearch" ></asp:TextBox>
+
+<asp:TextBox SkinId="tbGeneral" runat="server" CssClass="TextBoxWhite" ></asp:TextBox>
+
+<asp:TextBox SkinId="tbDateTimeMiddle" CssClass="TextBoxMiddle"  Style="width:2.8em" runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tbDateTime10Char" CssClass="TextBoxMiddle"  Style="width:6.0em" runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tbDateTime" CssClass="TextBoxBlack"  Style="width:2.8em" runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb1Char" CssClass="TextBoxMiddle" Style="width:1em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb2Char" CssClass="TextBoxMiddle" Style="width:1.4em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb4Char" CssClass="TextBoxMiddle"  Style="width:2.8em" runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb5Char" CssClass="TextBoxMiddle"  Style="width:3.2em" runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb6Char" CssClass="TextBoxMiddle" Style="width:3.8em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb7Char" CssClass="TextBoxMiddle" Style="width:4.7em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb8Char" CssClass="TextBoxMiddle" Style="width:5.6em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb8CharUc" CssClass="TextBoxMiddleUc" Style="width:5.6em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb9Char" CssClass="TextBoxMiddle" Style="width:6.3em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb10Char" CssClass="TextBoxMiddle" Style="width:7.0em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb11Char" CssClass="TextBoxMiddle" Style="width:7.7em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb15Char" CssClass="TextBoxMiddle" Style="width:8.6em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb16Char" CssClass="TextBoxMiddle" Style="width:11.2em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb16CharUc" CssClass="TextBoxMiddleUc" Style="width:11.2em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb20Char" CssClass="TextBoxMiddle" Style="width:11.1em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb25Char" CssClass="TextBoxMiddle" Style="width:13.4em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb30Char" CssClass="TextBoxMiddle" Style="width:21em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb30CharReq" CssClass="TextBoxMiddleReq" Style="width:21em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tb50Char" CssClass="TextBoxMiddle" Style="width:50em"  runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tbComponents" CssClass="TextBoxBlack" Style="width:20px" runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tbNote" CssClass="TextArea" runat="server"></asp:TextBox>
+
+<asp:TextBox SkinId="tbIndNS" CssClass="TextAreaIndirizzoNS" runat="server"></asp:TextBox>
+
+<asp:DropDownList runat="server" CssClass="TextBoxBlack"></asp:DropDownList>
+
+<asp:DropDownList runat="server" SkinId="ddlMiddle" CssClass="DropDownMiddle"></asp:DropDownList>
+
+<asp:Button runat="server" CssClass="button" />
+
+<asp:Button SkinId="ImageButton" runat="server" Width="16px" Height="16px"/>
+
+<asp:Button SkinId="ImageButton_free_dim" runat="server" />
+
+<asp:Button SkinId="GridButton" runat="server"/>
+
+<asp:Button SkinId="ToolboxButton" runat="server" Width="18px" Height="17px"/>
+
+<asp:Button SkinId="find" runat="server" Width="16px" Height="16px" CssClass="button-find" />
+
+<asp:Button SkinId="search" runat="server" Width="16px" Height="16px" CssClass="button-search" />
+
+<asp:Button SkinId="but_ok" runat="server" Width="24px" Height="25px" CssClass="button-ok" />
+
+<asp:Panel runat="server" SkinId="pnlBorder" CssClass="panel_asp"></asp:Panel>
+
+<asp:Panel runat="server" SkinId="pnlFrame" CssClass="panel_asp_frame"></asp:Panel>
+
+<asp:RadioButtonList runat="server" CssClass="LabelRadioButton"></asp:RadioButtonList>
+
+<asp:CheckBoxList  runat="server" CssClass="LabelRadioButton"></asp:CheckBoxList>
+
+
+<asp:GridView CssClass="mGrid" runat="server" CellPadding="4"
+    PagerStyle-CssClass="pgr" HeaderStyle-Wrap="false"
+    AlternatingRowStyle-CssClass="alt"
+    ForeColor="#15428b" GridLines="None"
+    AllowSorting="false" PageSize="5">
+    <RowStyle HorizontalAlign="Center" />
+    <AlternatingRowStyle HorizontalAlign="Center" />
+</asp:GridView>
+
+
+<asp:GridView SkinId="mGridAdvanced" CssClass="mGrid" runat="server" CellPadding="4"
+    PagerStyle-CssClass="pgr" HeaderStyle-Wrap="false"
+    ForeColor="#15428b" GridLines="None"
+    AllowSorting="false" PageSize="5">
+    <RowStyle HorizontalAlign="Center" />
+    <AlternatingRowStyle HorizontalAlign="Center" />
+    <selectedrowstyle backcolor="#EFEFEF"
+        forecolor="DarkBlue"
+        font-bold="true"/>  
+</asp:GridView>
+
+
+<asp:GridView SkinId="gvBase" runat="server" CellPadding="4" 
+        ForeColor="#333333" GridLines="None">
+	<RowStyle BackColor="#EFF3FB" Height="25px" />
+    <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+    <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+    <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+    <HeaderStyle BackColor="#507CD1" ForeColor="White" Height="20px" 
+            Font-Size="Medium" CssClass="GridViewHeaderStyle" />
+    <EditRowStyle BackColor="#2461BF" />
+    <AlternatingRowStyle BackColor="White" />
+</asp:GridView>
+
+
+<asp:Calendar runat="server" Width="230px" BackColor="White" BorderColor="#1E3C73"
+    Font-Names="Verdana" NextMonthText="»" PrevMonthText="«" Font-Size="8pt" ForeColor="#1b376c"
+    BorderWidth="1px" Height="240px"
+    DayNameFormat="Shortest" SelectMonthText="»" SelectWeekText="»" CellPadding="4">
+    <SelectedDayStyle BackColor="#D4E1F1" BorderWidth="1px" Font-Bold="True" BorderStyle="Solid" />
+    <TodayDayStyle BackColor="#FFFFC0" ForeColor="Maroon" BorderStyle="None" Font-Bold="True" />
+    <OtherMonthDayStyle ForeColor="Silver" />
+    <NextPrevStyle Font-Size="9pt" ForeColor="#A5B0C6" />
+    <DayHeaderStyle Font-Bold="True" BackColor="#D4E1F1" Height="1px" />
+    <TitleStyle BackColor="#1B376C" Font-Size="9pt" Font-Bold="True" ForeColor="White" />
+    <SelectorStyle BackColor="#D4E1F1" />
+    <DayStyle ForeColor="Black" />
+</asp:Calendar>
+
+
+<cc1:TabContainer SkinID="TabStandardXP" runat="server" CssClass="ajax__tab_xp-theme"></cc1:TabContainer>
+
+<cc1:TabContainer SkinID="TabContainerDevEx" runat="server" CssClass="devex__tab_xp-theme"></cc1:TabContainer>
+
+<cc1:TabContainer SkinID="TabContainerExtjs" runat="server" CssClass="extjs-theme"></cc1:TabContainer>
+
+<cc1:TabContainer SkinID="TabContainerExtjs-Gray" runat="server" CssClass="extjs-theme-gray"></cc1:TabContainer>

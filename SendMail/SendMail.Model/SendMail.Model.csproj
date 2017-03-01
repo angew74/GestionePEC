@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{647C1188-A0DA-412B-9640-218CF6C3E99A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SendMail.Model</RootNamespace>
+    <AssemblyName>SendMail.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>panet_strongname.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BackendUser.cs" />
+    <Compile Include="ComunicazioniMapping\ComAllegato.cs" />
+    <Compile Include="ComunicazioniMapping\ComFlusso.cs" />
+    <Compile Include="ComunicazioniMapping\ComFlussoProtocollo.cs" />
+    <Compile Include="ComunicazioniMapping\Comunicazioni.cs" />
+    <Compile Include="ComunicazioniMapping\ComunicazioniProtocollo.cs" />
+    <Compile Include="ComunicazioniMapping\MailContent.cs" />
+    <Compile Include="ComunicazioniMapping\RubrEntitaUsed.cs" />
+    <Compile Include="ContactApplicationMapping\ContactsApplicationMapping.cs" />
+    <Compile Include="ContactApplicationMapping\ContactsBackendMap.cs" />
+    <Compile Include="RubricaMapping\RubricaAddress.cs" />
+    <Compile Include="RubricaMapping\RubricaContatti.cs" />
+    <Compile Include="RubricaMapping\RubricaEntita.cs" />
+    <Compile Include="SendersFolders.cs" />
+    <Compile Include="Titolario\BackEndRefCode.cs" />
+    <Compile Include="base\IDomainObject.cs" />
+    <Compile Include="EnumTypes.cs" />
+    <Compile Include="MailAddressee.cs" />
+    <Compile Include="Mail.cs" />
+    <Compile Include="MailRefs.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RubricaBean.cs" />
+    <Compile Include="Rubrica.cs" />
+    <Compile Include="RawMessage.cs" />
+    <Compile Include="Titolario\SottoTitolo.cs" />
+    <Compile Include="Titolario\Titolo.cs" />
+    <Compile Include="Utility\DatabaseFieldAttribute.cs" />
+    <Compile Include="Utility\DataItem.cs" />
+    <Compile Include="Utility\EnumerableExtension.cs" />
+    <Compile Include="Utility\IEnumerableExtension.cs" />
+    <Compile Include="Utility\IListExtension.cs" />
+    <Compile Include="Utility\ModelHelper.cs" />
+    <Compile Include="Utility\SearchableAttribute.cs" />
+    <Compile Include="WebserviceMappings\Item.cs" />
+    <Compile Include="WebserviceMappings\StatoComunicazioneItem.cs" />
+    <Compile Include="Wrappers\SimpleResultItem.cs" />
+    <Compile Include="Wrappers\UserResultItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Infrastructure\SendMail.Model.cd" />
+    <None Include="panet_strongname.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ActiveUp.Net\ActiveUp.Net.Common\ActiveUp.Net.Common.csproj">
+      <Project>{3A83AE95-C23F-48B4-9F1A-AD4B32C37B93}</Project>
+      <Name>ActiveUp.Net.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Com.Delta.Logging\Com.Delta.Logging.csproj">
+      <Project>{a8c15d12-6e47-4af5-badf-b6cbc421ec40}</Project>
+      <Name>Com.Delta.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

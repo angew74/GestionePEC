@@ -1,0 +1,298 @@
+
+.modal-content-panel-bordered
+{
+	border: solid 1px #99bbe8; 
+	margin-top:4px;
+	margin-bottom: 4px;
+	margin-left:2px;
+	margin-right:2px;
+}
+
+
+.modal-content-panel
+{
+	padding:1px;
+	padding-top:0px;
+	border: solid 1px #839DBE; 
+	background-color: #EEF0F1;
+	width:331px;
+	height:183px
+}
+
+
+.modal-header-panel
+{
+    background-image:url(images/panel/modal-header.gif);
+    background-repeat:repeat-x;
+    height:26px;
+    overflow:hidden;
+    margin: 0 auto;
+}
+
+
+.modal-header-row
+{
+	background-color:White; 
+	height:20px;  
+	line-height:normal; 
+	margin-top:4px; 
+	margin-left:4px; 
+	margin-right:4px; 
+	border:1px solid #8FB3E5;
+}
+
+.modal-body-panel
+{
+	background-color: #C3D4E8;
+	background-repeat:repeat-x;
+	height:149px;
+	padding:4px;
+	padding-right:6px;
+}
+
+
+.modal-inner-panel
+{
+	border: solid 1px #8FB3E5; 
+	background-color: #DBE5F5;
+	width:100%;
+	height:100%;
+}
+
+
+.modal-progress-panel
+{
+	margin-top:80px; 
+	padding-left:80px;
+	text-align:center; 
+	width:100%;	
+}
+
+
+.modal-wait
+{
+	width: 16px;
+	height: 16px;
+	background: url(images/loader/loader.gif) no-repeat 0 0;
+	text-align:center;
+	border:none;
+}
+
+
+.modal-message-panel
+{
+	height:48px;
+	overflow:hidden;
+	width:309px;
+	
+	margin-left:5px;
+	margin-right:5px;
+	padding:6px;
+	line-height:normal;
+	text-align:left;
+	font-size:9pt; /*Fisso perchè la popup non si ridimensiona sulla base del font */
+	
+	border-left:solid 1px #99BBE8;
+	border-right:solid 1px #99BBE8;
+	border-bottom:solid 1px #99BBE8;
+}
+
+
+.TablePopup
+{
+	color:Black;
+	border:solid 1px #DBE5F5;
+	border-bottom:solid 1px white;
+	font-family:Verdana;
+	width:100%;
+}
+
+
+.PopupGridItem
+{
+	font-family:Verdana;
+	/*font-size: 11px;             commentato per compatibilità font*/
+	padding-left: 1px;
+	padding-right: 1px;
+	white-space:nowrap;
+	line-height:normal;
+	
+	border-top:solid 1px white;
+	background-color: #DBE5F5;
+	text-align:left;
+}
+
+
+.PopupGridItem A
+{
+	text-decoration:none;
+	color:Black;
+}
+
+
+.PopupGridItem A:visited
+{	
+	text-decoration:none;
+	color:Black;
+}
+
+
+.PopupGridItem A:active	
+{	
+	text-decoration:none;
+	color:Black;
+}
+		
+		
+.PopupGridItem A:hover	
+{	
+	text-decoration:underline;
+	color:Black;
+}
+
+
+
+.control-main
+{
+	margin-top:6px;
+	margin-bottom: 4px;
+	margin-left:2px;
+	margin-right:2px;
+	background-color: #F7FAFF;
+	
+	 padding-bottom:2px;
+}
+
+
+.control-header-gray
+{
+    background-image:url(images/panel/pnl-gray-borderless.gif);
+    background-repeat:repeat-x;
+    height:24px;
+    overflow:hidden;
+    margin: 0 auto;
+    border: solid 1px #99bbe8; 
+}
+
+
+.control-header-blue
+{
+    background-image:url(images/panel/pnl-blue-borderless.gif);
+    background-repeat:repeat-x;
+    height:24px;
+    overflow:hidden;
+    margin: 0 auto;
+    border: solid 1px #99bbe8; 
+}
+
+
+.control-header-title{
+   top:3px;
+   left:3px;
+   color:#15428b;
+   height:20px;
+   font-weight:bold;
+   /*font-size:10pt;                    commentato per compatibilità font*/
+}
+
+.control-header-text-left{
+    float:left;
+    padding:3px;
+    padding-top:4px;
+}
+
+.control-header-text-right{
+    float:right;
+    padding:3px;
+    padding-top:4px;
+}
+
+
+.control-body-gray
+{
+	padding-left:3px;
+	padding-right:3px;
+	padding-top:3px;
+	padding-bottom:3px;
+	background-color: #F7FAFF;
+	border: solid 1px #99bbe8; 
+	border-top: solid 0px #99bbe8; 
+}
+
+.control-body
+{
+	padding-left:3px;
+	padding-right:3px;
+	padding-top:3px;
+	padding-bottom:3px;
+	background-color: #FFFFFF;
+	border: solid 1px #99bbe8; 
+	border-top: solid 0px #99bbe8; 
+}
+
+.control-footer-gray
+{
+	padding-left:3px;
+	padding-right:3px;
+	padding-top:3px;
+	padding-bottom:3px;
+	
+	border: solid 1px #99bbe8; 
+	border-top: solid 0px #99bbe8; 
+	
+	background-color:#EEEFF1; /*Grigia*/
+}
+
+
+.control-footer-blue
+{
+	padding-left:3px;
+	padding-right:3px;
+	padding-top:3px;
+	padding-bottom:3px;
+	
+	border: solid 1px #99bbe8; 
+	border-top: solid 0px #99bbe8; 
+	
+	background-color:#DDE7F0; /*Azzurra*/
+}
+
+
+.control-tab-gray
+{
+	padding-left:3px;
+	padding-right:3px;
+	padding-top:3px;
+	padding-bottom:3px;
+	background-color: #F7FAFF;
+}
+
+
+.general-search-text
+{
+	background-color:White; 
+	border:1px solid #A7A6AA;
+	margin-top:0.5em;
+}
+
+
+.TextBoxWhite
+{
+	color:Black;
+	vertical-align:middle;
+	margin-right:0px;
+	margin-left:1px;
+	width:280px;
+	border:0px solid white;
+}
+
+.panel-info
+{
+	padding:2px 0px 2px 7px;
+	vertical-align:middle;
+	height:1em;
+	margin-left:4px;
+	color:#4F4F4F;
+	white-space:nowrap;
+	font-weight:bold;	
+}

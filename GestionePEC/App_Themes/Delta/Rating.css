@@ -1,0 +1,114 @@
+﻿/*------------------------*rating*------------------------*/
+
+.star-rating{
+list-style:none;
+margin-left:5px !important;
+padding:0px;
+width: 80px;
+height: 17px;
+position: relative;
+background: url(images/rating.png) top left repeat-x; 
+margin-top:-3px;
+margin-bottom:-2px;
+float:left;
+}
+.star-rating li{
+padding:0px;
+margin:0px;
+/*\*/
+float: left;
+/* */
+}
+.star-rating li a{
+display:block;
+width:20px;
+height: 20px;
+text-decoration: none;
+text-indent: -9000px;
+z-index: 20;
+position: absolute;
+padding: 0px;
+}
+.star-rating li a:hover{
+background: url(images/rating.png) left bottom;
+z-index: 2;
+left: 0px;
+}
+.star-rating a:focus,
+.star-rating a:active{
+border:0; 
+-moz-outline-style: none;
+outline: none; 
+}
+.star-rating a.one-star{
+left: 0px;
+}
+.star-rating a.one-star:hover{
+width:20px;
+}
+.star-rating a.two-stars{
+left:20px;
+}
+.star-rating a.two-stars:hover{
+width: 40px;
+}
+.star-rating a.three-stars{
+left: 40px;
+}
+.star-rating a.three-stars:hover{
+width: 60px;
+}
+.star-rating a.four-stars{
+left: 60px;
+} 
+.star-rating a.four-stars:hover{
+width: 80px;
+}
+.star-rating a.five-stars{
+left: 80px;
+}
+.star-rating a.five-stars:hover{
+width: 100px;
+}
+.star-rating li.current-rating{
+background: url(images/rating.png) left center;
+position: absolute;
+height: 20px;
+display: block;
+text-indent: -9000px;
+z-index: 1;
+}
+/*------------------------*fine rating*------------------------*/
+
+/*-------------------------*semaforo*-------------------------*/
+
+.tlight0, .tlight1, .tlight2, .tlight3
+{
+	width:60px;
+	height:20px;
+}
+
+.tlight0 > div, .tlight1 > div, .tlight2 > div, .tlight3 > div
+{
+	width:20px;
+	height:20px;
+	float:left;
+	background: url(images/semaforo.png) left center;
+	background-position: -60px;
+}
+.tlight1 > div.tl1
+{
+	background-position: 0px;
+}
+
+.tlight2 > div.tl2
+{
+	background-position: -20px;
+}
+
+
+.tlight3 > div.tl3
+{
+	background-position: -40px;
+}
+/*-------------------------*fine semaforo*-------------------------*/

@@ -1,0 +1,48 @@
+﻿.rating
+{
+	background: url(images/rating.png) no-repeat center left !important;
+}
+
+.rating_1
+{
+	background: url(images/rating_1.png) no-repeat center left !important;
+}
+
+.rating_2
+{
+	background: url(images/rating_2.png) no-repeat center left !important;
+}
+
+.rating_3
+{
+	background: url(images/rating_3.png) no-repeat center left !important;
+}
+
+.rating_4
+{
+	background: url(images/rating_4.png) no-repeat center left !important;
+}
+
+.semaforo_spento
+{
+	background: url(images/semaforo_spento.png) no-repeat center left !important;
+}
+
+.semaforo_green
+{
+	background: url(images/semaforo_green.png) no-repeat center left !important;
+}
+
+.semaforo_yellow
+{
+	background: url(images/semaforo_yellow.png) no-repeat center left !important;
+}
+
+.semaforo_red
+{
+	background: url(images/semaforo_red.png) no-repeat center left !important;
+}
+.has_attachment
+{
+	background: url(images/buttons/attachment.png) no-repeat center !important;
+}

@@ -1,0 +1,240 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Mail.master.cs" Inherits="GestionePEC.Master.Mail" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<%@ Register Assembly="System.Web.Extensions" Namespace="System.Web.UI" TagPrefix="asp" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it-it">
+<head id="Head1" runat="server">
+    <title>GESTIONE RICHIESTE FAX PEC</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <script type="text/javascript">
+        var AppRootPath = '<%# Request.ApplicationPath %>';
+    </script>
+</head>
+
+<script type="text/javascript" src='<%= this.ResolveClientUrl("~/scripts/uty.js") %>'></script>
+
+<body onmousemove="SetProgressPosition(event, 'div-update')" onunload="fnUnloadHandler()"
+    onload="backButtonOverride()" style="visibility: hidden;">
+    <noscript>
+        <hr style="color: Red" />
+        <b>Il tuo browser ha Javascript disattivato.</b><br />
+        Vedrai meglio questo sito abilitando Javascript.
+        <hr style="color: Red" />
+    </noscript>
+    <form id="form1" runat="server" enctype="multipart/form-data" method="post">
+    <asp:HiddenField ID="hfUser" runat="server" />
+    <asp:HiddenField ID="hfDipUser" runat="server" />
+        <asp:ScriptManager ID="ManagerScript" runat="server" EnableScriptGlobalization="true"
+            EnablePageMethods="True" AsyncPostBackTimeout="300">
+            <compositescript>
+            <Scripts>             
+                <asp:ScriptReference Path="../ExtJS5/ext-all-debug.js" />              
+                <asp:ScriptReference Path="../ExtJS5/main.js" />         
+                <asp:ScriptReference Path="../ExtJS5/extcorrezioni.js" />   
+            </Scripts>
+        </compositescript>
+        </asp:ScriptManager>
+
+    <script type="text/javascript">
+        Ext.BLANK_IMAGE_URL = '/GestionePEC/App_Themes/delta/images/default/s.gif';        
+    </script>
+  
+    <div id="north">
+        <div id="headerContainer">
+            <div id="headerLeft">
+            </div>
+            <div id="headerRight">
+            </div>
+            <div id="headerTopMenu">
+                  <table border="0">
+                        <tr>
+                            <td>
+                                <asp:HyperLink ID="imgMenu" ToolTip="Vai al menu delle applicazioni" ImageAlign="Middle"
+                                    NavigateUrl="http://uniapp.comune.roma/menu/" Visible="true" runat="server" ImageUrl="~/App_Themes/Delta/images/buttons/home.png"></asp:HyperLink>
+                                </td>
+                             <td>
+                                  <asp:HyperLink ID="HyperLink1" ToolTip="Esci dall'applicazione" ImageAlign="Middle"
+                                    NavigateUrl="~/LogOff.aspx" Visible="true" runat="server" ImageUrl="~/App_Themes/Delta/images/buttons/exit.png"></asp:HyperLink>
+                                 <!-- <div id="logoffbutton" style="height:60px; width: 60px; border-width: 0px;vertical-align:top"></div>-->
+                            </td>                            
+                            <asp:LoginView ID="LoginView1" runat="server">
+                                <LoggedInTemplate>
+                                   
+                                     <%--   <asp:ImageButton ID="LogoffButton" ToolTip="Esci dall'applicazione" ImageAlign="Middle" UseSubmitBehavior="false"
+                                            runat="server" ImageUrl="~/Content/themes/unisys/images/buttons/exit.png" Style="height: 32px; width: 32px; border-width: 0px;"
+                                      OnClick="LogoffButton_Click"      />    --%>  
+                                    <td>
+                                        <asp:Image ID="ImageUser" ToolTip="Utente autenticato" ImageAlign="Middle" Visible="true"
+                                            runat="server" ImageUrl="~/App_Themes/themes/Delta/images/buttons/personal.png" Style="height: 32px; width: 32px; border-width: 0px;" />
+                                    </td>
+                                    <td>
+                                        <asp:Label runat="server" ToolTip="Utente autenticato" ID="lblCurrentUser"></asp:Label>
+                                    </td>
+                                </LoggedInTemplate>
+                            </asp:LoginView>
+                        </tr>
+                    </table>
+            </div>
+            <div id="headerBottomMenu">               
+                <span>GESTIONE PEC</span>
+            </div>
+        </div>
+    </div>
+    <div id="west" class="body-panel-west">
+        <div class="MenuItem">
+            <asp:UpdatePanel ID="upMain" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <asp:SiteMapDataSource ID="MailSiteMap"  runat="server" />
+                    <asp:TreeView ID="TreeView1" runat="server" Width="202px" DataSourceID="MailSiteMap">
+                        <DataBindings>
+                            <asp:TreeNodeBinding DataMember="SiteMapNode" NavigateUrlField="Description" TextField="Title"
+                                ToolTipField="Title" />
+                        </DataBindings>
+                    </asp:TreeView>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <br />
+            <asp:ContentPlaceHolder ID="WestContentPlaceHolder" runat="server">
+            </asp:ContentPlaceHolder>
+            <br />
+            <div id="MenuDebug" runat="server" class="tabella" style="padding: 4px; margin-top: 5px;
+                width: auto">
+                <asp:TreeView ID="TreePanel1" runat="server" NodeIndent="12" ShowLines="false" />
+            </div>
+        </div>
+    </div>
+    <div id="south">
+    </div>
+    <asp:Panel runat="server" ID="pnlCenter">
+        <div id="center" style="background-color: Transparent;">
+            <asp:HiddenField ID="hfCenterTitle" runat="server" />
+            <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server">
+            </asp:ContentPlaceHolder>
+
+            <script type="text/javascript">
+               
+    
+
+function findPos(obj) {
+
+	var curleft = curtop = 0;
+    if (obj.offsetParent) {
+        do {
+			curleft += obj.offsetLeft;
+			curtop += obj.offsetTop;
+            } while (obj = obj.offsetParent);
+    this.x=curleft;
+    this.y=curtop;
+}}
+
+            </script>
+
+        </div>
+    </asp:Panel>
+    <div id="east">
+        <asp:ContentPlaceHolder ID="RightContentPlaceHolder" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div id="div-update" style="position: absolute">
+        <asp:UpdateProgress ID="updateProgress" runat="server">
+            <ProgressTemplate>
+                <iframe src="javascript:void(0);" scrolling="no" frameborder="0" style="position: absolute;
+                    width: 120px; height: 40px; top: 0px; left: 0px; border: none; display: block;
+                    z-index: 0; background-color: #e3effc"></iframe>
+                <div class="overlay" id="divProgress">
+                    <table border="0" cellpadding="0" cellspacing="2" style="width: 120px; height: 40px">
+                        <tr>
+                            <td style="width: 90px; text-align: right">
+                                <label style="color: #15428b; font-weight: bold">
+                                    Attendere...</label>
+                            </td>
+                            <td style="width: 30px">
+                                <asp:Image ID="imgUpd" ImageUrl="~/App_Themes/delta/images/loader/loader.gif" runat="server" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>
+    </div>
+    <asp:UpdatePanel ID="upMessaggi" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+            <div id="divMessaggiMP" onclick="return MinimizePanelMessaggi('<%= pnlContainerMsg.ClientID %>','<%= bMinimize.ClientID %>')">
+                <asp:Panel ID="pnlContainerMsg" runat="server" Visible="false" Width="100%" Style="background-color: #DFE8F6;">
+                    <div class="content-panel-error">
+                        <div class="header-panel-blue">
+                            <div class="header-title">
+                                <div class="header-text-left">
+                                    <asp:Literal ID="litErrore" runat="server"></asp:Literal>
+                                </div>
+                                <div class="header-text-right">
+                                    <asp:Button ID="bClose" runat="server" SkinID="GridButton" CssClass="bClose" ToolTip="Chiudi"
+                                        CausesValidation="false" OnClientClick="javascript:divMessaggiMP.style.visibility='hidden'" />
+                                </div>
+                                <div class="header-text-right">
+                                    <asp:Button ID="bMinimize" runat="server" SkinID="GridButton" CssClass="bMinimize"
+                                        ToolTip="Minimizza" CausesValidation="false" />
+                                </div>
+                            </div>
+                        </div>
+                        <asp:Panel ID="pnlMessaggi" runat="server" CssClass="error-panel">
+                            <asp:Literal ID="litMsgErrore" runat="server"></asp:Literal>
+                        </asp:Panel>
+                    </div>
+                </asp:Panel>
+            </div>
+            <cc1:AlwaysVisibleControlExtender ID="avcMessaggi" runat="server" TargetControlID="pnlContainerMsg"
+                ScrollEffectDuration=".1" HorizontalOffset="0" VerticalSide="Bottom" VerticalOffset="0">
+            </cc1:AlwaysVisibleControlExtender>
+            <cc1:AnimationExtender TargetControlID="pnlContainerMsg" runat="server" ID="animPnlMessaggi">
+                <Animations>
+                        <OnLoad>
+                            <Sequence>
+                                <FadeOut Duration = ".1"></FadeOut> 
+                                <StyleAction Attribute ="display" value="block"></StyleAction>
+                                <FadeIn Duration = "1"></FadeIn>
+                            </Sequence>
+                        </OnLoad>
+                </Animations>
+            </cc1:AnimationExtender>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    <iframe id="ifrmDownload" src="" style="visibility: hidden;"></iframe>
+    </form>
+</body>
+</html>
+
+<script type="text/javascript">
+    var utente = document.getElementById('<%= hfUser.ClientID %>').value; 
+    var dipartimento = document.getElementById('<%= hfDipUser.ClientID %>').value; 
+    var logOffFromBrowser="/GestionePEC/LogOffFromBrowser.aspx";
+ 
+    /* test: gestione centralizza updateProgress su pagerequest */       
+    function pageLoad()
+    {
+        var manager = Sys.WebForms.PageRequestManager.getInstance();
+        manager.add_endRequest(OnEndRequest);
+        manager.add_beginRequest(OnBeginRequest);
+        // If function contentPageLoad exists, execute it.
+        if (typeof contentPageLoad == 'function') {
+            contentPageLoad();
+        }
+    }
+
+    function OnBeginRequest(sender, args)
+    {
+        var postBackElement = args.get_postBackElement();
+        //if (postBackElement.id == clientID)
+        $get('ctl00_updateProgress').style.display = "block";  
+    }
+   
+    function OnEndRequest(sender, args)
+    {
+        $get('ctl00_updateProgress').style.display = "none";  
+    } 
+</script>
+

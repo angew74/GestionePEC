@@ -1,0 +1,83 @@
+﻿
+.confirm-dialog
+{
+	background: url(images/modal/modal_base.png);
+	background-repeat:no-repeat;
+	width:331px;
+	height:163px;
+	position:absolute;
+	top:200px;
+}
+
+.confirm-close
+{
+	display: block;
+	background: url(images/modal/close.png) no-repeat;
+	left: 310px;
+	width: 15px;
+	position: absolute;
+	top: 5px;
+	height: 15px;
+}
+
+.confirm-title
+{
+	display: block;
+	left: 30px;
+	position: absolute;
+	top: 5px;
+	color:#15428b;
+	font-weight:bold;
+}
+
+.confirm-wrapp
+{
+	position:absolute; 
+	top:30px; left:9px; height:120px; 
+	width:310px;
+	padding:2px;
+}
+
+.confirm-riga
+{
+	width:290px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.modalBackground
+{
+    background-color: Gray;
+    z-index: 1;
+    -moz-opacity: 0.50;
+    opacity: 0.50;
+    filter: alpha(opacity=30);
+    position:absolute;
+    top:0px; left:0px;
+
+}
+
+.modalBackground_new
+{
+    background-color: Gray;
+    z-index: 1;       
+    filter: alpha(opacity=30);
+    position:absolute;
+    top:0px; left:0px;
+
+}
+
+.modalPopup
+{
+   background-color:#dfe8f6; border: solid 1px #99bbe8; height:auto; 
+}
+
+.thDati {border: 1px solid #666666; background-color:#9999CD}
+.tdIntestazione {font-weight: bolder; color: #000000; background-color: #eccec4; border: 1px solid #666666;}
+.tdDati {border: 0px solid #666666;color: #990000; background-color:#fff}
+.tdCampo {font-weight: bolder; color: #000000; background-color: #f5f1de; border: 0px solid #666666;}
+
+
+
+
+

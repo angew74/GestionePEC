@@ -1,0 +1,1359 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{31B57540-8663-40F3-BEEF-B5E238822D5F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GestionePEC</RootNamespace>
+    <AssemblyName>GestionePEC</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=16.1.1.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxControlToolkit.16.1.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\..\APP\FAXPec\CertiWebAppAnag\Bin\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\APP\FAXPec\CertiWebAppAnag\Bin\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.12.1.2400\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\Delta\aligned-layout.css" />
+    <Content Include="App_Themes\Delta\autocomplete.css" />
+    <Content Include="App_Themes\Delta\button.css" />
+    <Content Include="App_Themes\Delta\cert.css" />
+    <Content Include="App_Themes\Delta\editTable.css" />
+    <Content Include="App_Themes\Delta\ext-theme-crisp-all.css" />
+    <Content Include="App_Themes\Delta\extender.css" />
+    <Content Include="App_Themes\Delta\grid.css" />
+    <Content Include="App_Themes\Delta\header.css" />
+    <Content Include="App_Themes\Delta\images\alert\help.gif" />
+    <Content Include="App_Themes\Delta\images\alert\important.gif" />
+    <Content Include="App_Themes\Delta\images\alert\info.gif" />
+    <Content Include="App_Themes\Delta\images\alert\title.gif" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-arrow-open-rtl.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-arrow-open.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-arrow.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-scroll-left.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-scroll-right.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-split-arrow-open-rtl.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-split-arrow-open.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-split-arrow-over-rtl.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-split-arrow-over.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-split-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\breadcrumb\default-split-arrow.png" />
+    <Content Include="App_Themes\Delta\images\btn-group\btn-group-default-framed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn-group\btn-group-default-framed-notitle-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn-group\btn-group-default-framed-notitle-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn-group\btn-group-default-framed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-disabled-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-disabled-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-focus-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-focus-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-focus-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-focus-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-large-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-disabled-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-disabled-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-focus-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-focus-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-focus-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-focus-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-medium-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-disabled-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-disabled-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-focus-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-focus-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-focus-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-focus-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-small-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-disabled-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-disabled-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-focus-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-focus-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-focus-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-focus-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-large-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-disabled-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-disabled-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-focus-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-focus-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-focus-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-focus-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-medium-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-disabled-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-disabled-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-focus-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-focus-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-focus-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-focus-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-default-toolbar-small-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-large-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-large-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-large-focus-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-large-focus-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-large-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-large-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-large-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-large-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-medium-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-medium-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-medium-focus-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-medium-focus-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-medium-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-medium-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-medium-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-medium-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-small-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-small-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-small-focus-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-small-focus-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-small-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-small-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-small-pressed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\btn\btn-plain-toolbar-small-pressed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\accept.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\Add-gray.bmp" />
+    <Content Include="App_Themes\Delta\images\buttons\Add.bmp" />
+    <Content Include="App_Themes\Delta\images\buttons\add.png" />
+    <Content Include="App_Themes\Delta\images\buttons\addcontact.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\attachment.png" />
+    <Content Include="App_Themes\Delta\images\buttons\back.png" />
+    <Content Include="App_Themes\Delta\images\buttons\bAdobe.jpg" />
+    <Content Include="App_Themes\Delta\images\buttons\bclear.png" />
+    <Content Include="App_Themes\Delta\images\buttons\bif.png" />
+    <Content Include="App_Themes\Delta\images\buttons\btn9823_0.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\btn9823_1.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\calendar.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\clear.png" />
+    <Content Include="App_Themes\Delta\images\buttons\clona_copia.png" />
+    <Content Include="App_Themes\Delta\images\buttons\close.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\close_down.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\close_up.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\delete.png" />
+    <Content Include="App_Themes\Delta\images\buttons\down.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\exit.png" />
+    <Content Include="App_Themes\Delta\images\buttons\find.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\home.png" />
+    <Content Include="App_Themes\Delta\images\buttons\iAdd.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iAdd.png" />
+    <Content Include="App_Themes\Delta\images\buttons\iApri.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\ibDefinisci.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\ibDel.bmp" />
+    <Content Include="App_Themes\Delta\images\buttons\ibEdit.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\IbPlaceHolder.GIF" />
+    <Content Include="App_Themes\Delta\images\buttons\iCancella.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iCancellaDoc.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iCartella.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iCerca.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iCestino.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iChiudi.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iDefinisci.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iDel.bmp" />
+    <Content Include="App_Themes\Delta\images\buttons\iDettaglioDoc.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iDocumento.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iDOmanda.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iEdit.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iEsci.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iInvia.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iLettera.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iNOOK.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iOK.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iPassword.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iPenna.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iPolizia.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iPrint.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iSearch-gray.GIF" />
+    <Content Include="App_Themes\Delta\images\buttons\iSearch.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iSearch_white.GIF" />
+    <Content Include="App_Themes\Delta\images\buttons\iSendMail.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\iStampa.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\mail.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\maximize.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\minimize.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\modifyR.png" />
+    <Content Include="App_Themes\Delta\images\buttons\no-action.png" />
+    <Content Include="App_Themes\Delta\images\buttons\Off.png" />
+    <Content Include="App_Themes\Delta\images\buttons\personal.png" />
+    <Content Include="App_Themes\Delta\images\buttons\print.png" />
+    <Content Include="App_Themes\Delta\images\buttons\printF.png" />
+    <Content Include="App_Themes\Delta\images\buttons\printG.png" />
+    <Content Include="App_Themes\Delta\images\buttons\printP2.png" />
+    <Content Include="App_Themes\Delta\images\buttons\printP3.png" />
+    <Content Include="App_Themes\Delta\images\buttons\processa.png" />
+    <Content Include="App_Themes\Delta\images\buttons\resultset_first.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\resultset_first_dis.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\resultset_last.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\resultset_last_dis.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\resultset_next.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\resultset_next_dis.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\resultset_previous.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\resultset_previous_dis.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\salva.jpg" />
+    <Content Include="App_Themes\Delta\images\buttons\search.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\search_blu.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\search_down.png" />
+    <Content Include="App_Themes\Delta\images\buttons\select.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\up.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\user.png" />
+    <Content Include="App_Themes\Delta\images\button\default-large-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-large-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-large-s-arrow-b-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-large-s-arrow-b.png" />
+    <Content Include="App_Themes\Delta\images\button\default-large-s-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-large-s-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-medium-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-medium-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-medium-s-arrow-b-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-medium-s-arrow-b.png" />
+    <Content Include="App_Themes\Delta\images\button\default-medium-s-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-medium-s-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-small-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-small-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-small-s-arrow-b-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-small-s-arrow-b.png" />
+    <Content Include="App_Themes\Delta\images\button\default-small-s-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-small-s-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-large-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-large-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-large-s-arrow-b-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-large-s-arrow-b.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-large-s-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-large-s-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-medium-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-medium-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-medium-s-arrow-b-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-medium-s-arrow-b.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-medium-s-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-medium-s-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-small-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-small-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-small-s-arrow-b-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-small-s-arrow-b.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-small-s-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\default-toolbar-small-s-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\grid-cell-small-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\grid-cell-small-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\grid-cell-small-s-arrow-b.png" />
+    <Content Include="App_Themes\Delta\images\button\grid-cell-small-s-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\grid-cell-small-s-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-large-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-large-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-large-s-arrow-b-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-large-s-arrow-b.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-large-s-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-large-s-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-medium-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-medium-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-medium-s-arrow-b-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-medium-s-arrow-b.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-medium-s-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-medium-s-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-small-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-small-arrow.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-small-s-arrow-b-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-small-s-arrow-b.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-small-s-arrow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\button\plain-toolbar-small-s-arrow.png" />
+    <Content Include="App_Themes\Delta\images\datepicker\arrow-left.png" />
+    <Content Include="App_Themes\Delta\images\datepicker\arrow-right.png" />
+    <Content Include="App_Themes\Delta\images\datepicker\month-arrow.png" />
+    <Content Include="App_Themes\Delta\images\dd\drop-add.png" />
+    <Content Include="App_Themes\Delta\images\dd\drop-no.png" />
+    <Content Include="App_Themes\Delta\images\dd\drop-yes.png" />
+    <Content Include="App_Themes\Delta\images\default\box\corners-blue.gif" />
+    <Content Include="App_Themes\Delta\images\default\box\corners.gif" />
+    <Content Include="App_Themes\Delta\images\default\box\l-blue.gif" />
+    <Content Include="App_Themes\Delta\images\default\box\l.gif" />
+    <Content Include="App_Themes\Delta\images\default\box\r-blue.gif" />
+    <Content Include="App_Themes\Delta\images\default\box\r.gif" />
+    <Content Include="App_Themes\Delta\images\default\box\tb-blue.gif" />
+    <Content Include="App_Themes\Delta\images\default\box\tb.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\arrow.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\binoculars.png" />
+    <Content Include="App_Themes\Delta\images\default\button\btn.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\group-cs.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\group-lr.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\group-tb.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\no-search.png" />
+    <Content Include="App_Themes\Delta\images\default\button\s-arrow-b-noline.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\s-arrow-b.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\s-arrow-bo.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\s-arrow-noline.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\s-arrow-o.gif" />
+    <Content Include="App_Themes\Delta\images\default\button\s-arrow.gif" />
+    <Content Include="App_Themes\Delta\images\default\dd\drop-add.gif" />
+    <Content Include="App_Themes\Delta\images\default\dd\drop-no.gif" />
+    <Content Include="App_Themes\Delta\images\default\dd\drop-yes.gif" />
+    <Content Include="App_Themes\Delta\images\default\editor\tb-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\form\checkbox.gif" />
+    <Content Include="App_Themes\Delta\images\default\form\clear-trigger.gif" />
+    <Content Include="App_Themes\Delta\images\default\form\date-trigger.gif" />
+    <Content Include="App_Themes\Delta\images\default\form\error-tip-corners.gif" />
+    <Content Include="App_Themes\Delta\images\default\form\exclamation.gif" />
+    <Content Include="App_Themes\Delta\images\default\form\radio.gif" />
+    <Content Include="App_Themes\Delta\images\default\form\search-trigger.gif" />
+    <Content Include="App_Themes\Delta\images\default\form\text-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\form\trigger-tpl.gif" />
+    <Content Include="App_Themes\Delta\images\default\form\trigger.gif" />
+    <Content Include="App_Themes\Delta\images\default\gradient-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\arrow-left-white.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\arrow-right-white.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\col-move-bottom.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\col-move-top.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\columns.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\dirty.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\done.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\drop-no.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\drop-yes.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\footer-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid-blue-hd.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid-blue-split.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid-hrow.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid-loading.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid-split.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid-vista-hd.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid3-hd-btn.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid3-hrow-over.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid3-hrow.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid3-special-col-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\grid3-special-col-sel-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\group-by.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\group-expand-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\hd-pop.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\hmenu-asc.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\hmenu-desc.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\hmenu-lock.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\hmenu-lock.png" />
+    <Content Include="App_Themes\Delta\images\default\grid\hmenu-unlock.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\hmenu-unlock.png" />
+    <Content Include="App_Themes\Delta\images\default\grid\invalid_line.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\loading.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\mso-hd.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\nowait.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\page-first-disabled.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\page-first.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\page-last-disabled.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\page-last.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\page-next-disabled.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\page-next.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\page-prev-disabled.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\page-prev.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\pick-button.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\refresh-disabled.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\refresh.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\row-check-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\row-expand-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\row-over.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\row-sel.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\sort-hd.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\sort_asc.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\sort_desc.gif" />
+    <Content Include="App_Themes\Delta\images\default\grid\wait.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\collapse.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\expand.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\gradient-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\mini-bottom.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\mini-left.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\mini-right.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\mini-top.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\ns-collapse.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\ns-expand.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\panel-close.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\panel-title-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\panel-title-light-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\stick.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\stuck.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\tab-close-on.gif" />
+    <Content Include="App_Themes\Delta\images\default\layout\tab-close.gif" />
+    <Content Include="App_Themes\Delta\images\default\menu\checked.gif" />
+    <Content Include="App_Themes\Delta\images\default\menu\group-checked.gif" />
+    <Content Include="App_Themes\Delta\images\default\menu\item-over.gif" />
+    <Content Include="App_Themes\Delta\images\default\menu\menu-parent.gif" />
+    <Content Include="App_Themes\Delta\images\default\menu\menu.gif" />
+    <Content Include="App_Themes\Delta\images\default\menu\unchecked.gif" />
+    <Content Include="App_Themes\Delta\images\default\panel\corners-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\panel\left-right.gif" />
+    <Content Include="App_Themes\Delta\images\default\panel\light-hd.gif" />
+    <Content Include="App_Themes\Delta\images\default\panel\tool-sprite-tpl.gif" />
+    <Content Include="App_Themes\Delta\images\default\panel\tool-sprites.gif" />
+    <Content Include="App_Themes\Delta\images\default\panel\tools-sprites-trans.gif" />
+    <Content Include="App_Themes\Delta\images\default\panel\top-bottom.gif" />
+    <Content Include="App_Themes\Delta\images\default\panel\top-bottom.png" />
+    <Content Include="App_Themes\Delta\images\default\panel\white-corners-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\panel\white-left-right.gif" />
+    <Content Include="App_Themes\Delta\images\default\panel\white-top-bottom.gif" />
+    <Content Include="App_Themes\Delta\images\default\pixel.gif" />
+    <Content Include="App_Themes\Delta\images\default\progress\progress-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\qtip\bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\qtip\close.gif" />
+    <Content Include="App_Themes\Delta\images\default\qtip\tip-anchor-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\qtip\tip-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\s.gif" />
+    <Content Include="App_Themes\Delta\images\default\shadow-c.png" />
+    <Content Include="App_Themes\Delta\images\default\shadow-lr.png" />
+    <Content Include="App_Themes\Delta\images\default\shadow.png" />
+    <Content Include="App_Themes\Delta\images\default\shared\blue-loading.gif" />
+    <Content Include="App_Themes\Delta\images\default\shared\calendar.gif" />
+    <Content Include="App_Themes\Delta\images\default\shared\glass-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\shared\hd-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\shared\large-loading.gif" />
+    <Content Include="App_Themes\Delta\images\default\shared\left-btn.gif" />
+    <Content Include="App_Themes\Delta\images\default\shared\loading-balls.gif" />
+    <Content Include="App_Themes\Delta\images\default\shared\right-btn.gif" />
+    <Content Include="App_Themes\Delta\images\default\shared\warning.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\e-handle-dark.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\e-handle.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\ne-handle-dark.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\ne-handle.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\nw-handle-dark.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\nw-handle.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\s-handle-dark.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\s-handle.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\se-handle-dark.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\se-handle.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\square.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\sw-handle-dark.gif" />
+    <Content Include="App_Themes\Delta\images\default\sizer\sw-handle.gif" />
+    <Content Include="App_Themes\Delta\images\default\slider\slider-bg.png" />
+    <Content Include="App_Themes\Delta\images\default\slider\slider-thumb.png" />
+    <Content Include="App_Themes\Delta\images\default\slider\slider-v-bg.png" />
+    <Content Include="App_Themes\Delta\images\default\slider\slider-v-thumb.png" />
+    <Content Include="App_Themes\Delta\images\default\tabs\scroll-left.gif" />
+    <Content Include="App_Themes\Delta\images\default\tabs\scroll-right.gif" />
+    <Content Include="App_Themes\Delta\images\default\tabs\scroller-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\tabs\tab-btm-inactive-left-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\tabs\tab-btm-inactive-right-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\tabs\tab-btm-left-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\tabs\tab-btm-right-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\tabs\tab-close.gif" />
+    <Content Include="App_Themes\Delta\images\default\tabs\tab-strip-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\tabs\tab-strip-bg.png" />
+    <Content Include="App_Themes\Delta\images\default\tabs\tab-strip-btm-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\tabs\tabs-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\toolbar\bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\toolbar\btn-arrow-light.gif" />
+    <Content Include="App_Themes\Delta\images\default\toolbar\btn-arrow.gif" />
+    <Content Include="App_Themes\Delta\images\default\toolbar\btn-over-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\toolbar\gray-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\toolbar\more.gif" />
+    <Content Include="App_Themes\Delta\images\default\toolbar\tb-bg.gif" />
+    <Content Include="App_Themes\Delta\images\default\toolbar\tb-btn-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\toolbar\tb-xl-btn-sprite.gif" />
+    <Content Include="App_Themes\Delta\images\default\toolbar\tb-xl-sep.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\arrows.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\drop-add.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\drop-between.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\drop-no.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\drop-over.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\drop-under.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\drop-yes.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow-end-minus-nl.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow-end-minus.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow-end-plus-nl.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow-end-plus.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow-end.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow-line.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow-minus-nl.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow-minus.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow-plus-nl.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow-plus.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\elbow.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\folder-open.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\folder.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\leaf.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\loading.gif" />
+    <Content Include="App_Themes\Delta\images\default\tree\s.gif" />
+    <Content Include="App_Themes\Delta\images\default\window\icon-error.gif" />
+    <Content Include="App_Themes\Delta\images\default\window\icon-info.gif" />
+    <Content Include="App_Themes\Delta\images\default\window\icon-question.gif" />
+    <Content Include="App_Themes\Delta\images\default\window\icon-warning.gif" />
+    <Content Include="App_Themes\Delta\images\default\window\left-corners.png" />
+    <Content Include="App_Themes\Delta\images\default\window\left-right.png" />
+    <Content Include="App_Themes\Delta\images\default\window\right-corners.png" />
+    <Content Include="App_Themes\Delta\images\default\window\top-bottom.png" />
+    <Content Include="App_Themes\Delta\images\editor\tb-sprite.png" />
+    <Content Include="App_Themes\Delta\images\fieldset\collapse-tool.png" />
+    <Content Include="App_Themes\Delta\images\form\checkbox.png" />
+    <Content Include="App_Themes\Delta\images\form\clear-trigger-rtl.png" />
+    <Content Include="App_Themes\Delta\images\form\clear-trigger.png" />
+    <Content Include="App_Themes\Delta\images\form\date-trigger-rtl.png" />
+    <Content Include="App_Themes\Delta\images\form\date-trigger.png" />
+    <Content Include="App_Themes\Delta\images\form\exclamation.png" />
+    <Content Include="App_Themes\Delta\images\form\radio.png" />
+    <Content Include="App_Themes\Delta\images\form\search-trigger-rtl.png" />
+    <Content Include="App_Themes\Delta\images\form\search-trigger.png" />
+    <Content Include="App_Themes\Delta\images\form\spinner-down-rtl.png" />
+    <Content Include="App_Themes\Delta\images\form\spinner-down.png" />
+    <Content Include="App_Themes\Delta\images\form\spinner-rtl.png" />
+    <Content Include="App_Themes\Delta\images\form\spinner-up-rtl.png" />
+    <Content Include="App_Themes\Delta\images\form\spinner-up.png" />
+    <Content Include="App_Themes\Delta\images\form\spinner.png" />
+    <Content Include="App_Themes\Delta\images\form\tag-field-item-close.png" />
+    <Content Include="App_Themes\Delta\images\form\trigger-rtl.png" />
+    <Content Include="App_Themes\Delta\images\form\trigger.png" />
+    <Content Include="App_Themes\Delta\images\grid-row-editor-buttons\grid-row-editor-buttons-default-bottom-corners.gif" />
+    <Content Include="App_Themes\Delta\images\grid-row-editor-buttons\grid-row-editor-buttons-default-bottom-sides.gif" />
+    <Content Include="App_Themes\Delta\images\grid-row-editor-buttons\grid-row-editor-buttons-default-top-corners.gif" />
+    <Content Include="App_Themes\Delta\images\grid-row-editor-buttons\grid-row-editor-buttons-default-top-sides.gif" />
+    <Content Include="App_Themes\Delta\images\grid\col-move-bottom.png" />
+    <Content Include="App_Themes\Delta\images\grid\col-move-top.png" />
+    <Content Include="App_Themes\Delta\images\grid\columns.png" />
+    <Content Include="App_Themes\Delta\images\grid\dd-insert-arrow-left.png" />
+    <Content Include="App_Themes\Delta\images\grid\dd-insert-arrow-right.png" />
+    <Content Include="App_Themes\Delta\images\grid\dirty-rtl.png" />
+    <Content Include="App_Themes\Delta\images\grid\dirty.png" />
+    <Content Include="App_Themes\Delta\images\grid\drop-no.png" />
+    <Content Include="App_Themes\Delta\images\grid\drop-yes.png" />
+    <Content Include="App_Themes\Delta\images\grid\filters\equals.png" />
+    <Content Include="App_Themes\Delta\images\grid\filters\find.png" />
+    <Content Include="App_Themes\Delta\images\grid\filters\greater_than.png" />
+    <Content Include="App_Themes\Delta\images\grid\filters\less_than.png" />
+    <Content Include="App_Themes\Delta\images\grid\group-by.png" />
+    <Content Include="App_Themes\Delta\images\grid\group-collapse.png" />
+    <Content Include="App_Themes\Delta\images\grid\group-expand.png" />
+    <Content Include="App_Themes\Delta\images\grid\hd-pop.png" />
+    <Content Include="App_Themes\Delta\images\grid\hmenu-asc.png" />
+    <Content Include="App_Themes\Delta\images\grid\hmenu-desc.png" />
+    <Content Include="App_Themes\Delta\images\grid\hmenu-lock.png" />
+    <Content Include="App_Themes\Delta\images\grid\hmenu-unlock.png" />
+    <Content Include="App_Themes\Delta\images\grid\loading.gif" />
+    <Content Include="App_Themes\Delta\images\grid\page-first.png" />
+    <Content Include="App_Themes\Delta\images\grid\page-last.png" />
+    <Content Include="App_Themes\Delta\images\grid\page-next.png" />
+    <Content Include="App_Themes\Delta\images\grid\page-prev.png" />
+    <Content Include="App_Themes\Delta\images\grid\pick-button.png" />
+    <Content Include="App_Themes\Delta\images\grid\refresh.png" />
+    <Content Include="App_Themes\Delta\images\grid\sort_asc.png" />
+    <Content Include="App_Themes\Delta\images\grid\sort_desc.png" />
+    <Content Include="App_Themes\Delta\images\icons\alert.png" />
+    <Content Include="App_Themes\Delta\images\icons\alert_win.png" />
+    <Content Include="App_Themes\Delta\images\icons\application.png" />
+    <Content Include="App_Themes\Delta\images\icons\application_view_columns.png" />
+    <Content Include="App_Themes\Delta\images\icons\cancel.png" />
+    <Content Include="App_Themes\Delta\images\icons\CDF.png" />
+    <Content Include="App_Themes\Delta\images\icons\close_down.png" />
+    <Content Include="App_Themes\Delta\images\icons\close_left.png" />
+    <Content Include="App_Themes\Delta\images\icons\close_right.png" />
+    <Content Include="App_Themes\Delta\images\icons\close_up.png" />
+    <Content Include="App_Themes\Delta\images\icons\CRE.png" />
+    <Content Include="App_Themes\Delta\images\icons\CRI.png" />
+    <Content Include="App_Themes\Delta\images\icons\delete.png" />
+    <Content Include="App_Themes\Delta\images\icons\disk_upload.png" />
+    <Content Include="App_Themes\Delta\images\icons\find.png" />
+    <Content Include="App_Themes\Delta\images\icons\folder.png" />
+    <Content Include="App_Themes\Delta\images\icons\folder_go.png" />
+    <Content Include="App_Themes\Delta\images\icons\grid.png" />
+    <Content Include="App_Themes\Delta\images\icons\group.png" />
+    <Content Include="App_Themes\Delta\images\icons\group_edit.png" />
+    <Content Include="App_Themes\Delta\images\icons\group_link.png" />
+    <Content Include="App_Themes\Delta\images\icons\information.png" />
+    <Content Include="App_Themes\Delta\images\icons\lock_key.png" />
+    <Content Include="App_Themes\Delta\images\icons\manuale.png" />
+    <Content Include="App_Themes\Delta\images\icons\page.png" />
+    <Content Include="App_Themes\Delta\images\icons\page_comune.png" />
+    <Content Include="App_Themes\Delta\images\icons\page_white_delete.png" />
+    <Content Include="App_Themes\Delta\images\icons\page_white_link.png" />
+    <Content Include="App_Themes\Delta\images\icons\pratica.png" />
+    <Content Include="App_Themes\Delta\images\icons\pratica_lock.png" />
+    <Content Include="App_Themes\Delta\images\icons\pratica_locked.PNG" />
+    <Content Include="App_Themes\Delta\images\icons\pratica_nolock.png" />
+    <Content Include="App_Themes\Delta\images\icons\table.png" />
+    <Content Include="App_Themes\Delta\images\icons\user.png" />
+    <Content Include="App_Themes\Delta\images\icons\wand.png" />
+    <Content Include="App_Themes\Delta\images\loader\loader.gif" />
+    <Content Include="App_Themes\Delta\images\loader\roller.gif" />
+    <Content Include="App_Themes\Delta\images\loadmask\loading.gif" />
+    <Content Include="App_Themes\Delta\images\login\base.png" />
+    <Content Include="App_Themes\Delta\images\login\base2.png" />
+    <Content Include="App_Themes\Delta\images\magnify.png" />
+    <Content Include="App_Themes\Delta\images\mail_icon\email-error.png" />
+    <Content Include="App_Themes\Delta\images\mail_icon\email-send.png" />
+    <Content Include="App_Themes\Delta\images\mail_icon\email_reply.png" />
+    <Content Include="App_Themes\Delta\images\mail_icon\mail_deleted.png" />
+    <Content Include="App_Themes\Delta\images\mail_icon\mail_forward.png" />
+    <Content Include="App_Themes\Delta\images\mail_icon\mail_read.png" />
+    <Content Include="App_Themes\Delta\images\mail_icon\mail_reply_all.png" />
+    <Content Include="App_Themes\Delta\images\mail_icon\mail_saved.png" />
+    <Content Include="App_Themes\Delta\images\mail_icon\mail_send_again.png" />
+    <Content Include="App_Themes\Delta\images\mail_icon\mail_unread.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\acquire.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\acquire_1.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\download.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\forward.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\noread.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\Rating.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\read.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\reply.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\reply_all.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\send-again.png" />
+    <Content Include="App_Themes\Delta\images\mail_set\upper_mail.png" />
+    <Content Include="App_Themes\Delta\images\menu\default-checked.png" />
+    <Content Include="App_Themes\Delta\images\menu\default-group-checked.png" />
+    <Content Include="App_Themes\Delta\images\menu\default-menu-parent-left.png" />
+    <Content Include="App_Themes\Delta\images\menu\default-menu-parent.png" />
+    <Content Include="App_Themes\Delta\images\menu\default-scroll-bottom.png" />
+    <Content Include="App_Themes\Delta\images\menu\default-scroll-top.png" />
+    <Content Include="App_Themes\Delta\images\menu\default-unchecked.png" />
+    <Content Include="App_Themes\Delta\images\message\accept.png" />
+    <Content Include="App_Themes\Delta\images\message\alert.png" />
+    <Content Include="App_Themes\Delta\images\message\error.png" />
+    <Content Include="App_Themes\Delta\images\message\info.png" />
+    <Content Include="App_Themes\Delta\images\modal\accept.png" />
+    <Content Include="App_Themes\Delta\images\modal\close.png" />
+    <Content Include="App_Themes\Delta\images\modal\mask.png" />
+    <Content Include="App_Themes\Delta\images\modal\modal_base.png" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-bottom-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-bottom-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-collapsed-bottom-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-collapsed-bottom-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-collapsed-left-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-collapsed-left-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-collapsed-left-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-collapsed-right-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-collapsed-right-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-collapsed-right-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-collapsed-top-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-collapsed-top-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-left-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-left-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-left-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-right-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-right-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-right-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-top-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-default-framed-top-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-bottom-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-bottom-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-collapsed-bottom-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-collapsed-bottom-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-collapsed-left-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-collapsed-left-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-collapsed-left-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-collapsed-right-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-collapsed-right-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-collapsed-right-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-collapsed-top-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-collapsed-top-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-left-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-left-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-left-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-right-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-right-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-right-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-top-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel-header\panel-header-light-framed-top-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel\panel-default-framed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel\panel-default-framed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\panel\panel-light-framed-corners.gif" />
+    <Content Include="App_Themes\Delta\images\panel\panel-light-framed-sides.gif" />
+    <Content Include="App_Themes\Delta\images\rating.png" />
+    <Content Include="App_Themes\Delta\images\rating_1.png" />
+    <Content Include="App_Themes\Delta\images\rating_2.png" />
+    <Content Include="App_Themes\Delta\images\rating_3.png" />
+    <Content Include="App_Themes\Delta\images\rating_4.png" />
+    <Content Include="App_Themes\Delta\images\ric_generica.png" />
+    <Content Include="App_Themes\Delta\images\ric_strade.png" />
+    <Content Include="App_Themes\Delta\images\s.gif" />
+    <Content Include="App_Themes\Delta\images\semaforo.png" />
+    <Content Include="App_Themes\Delta\images\semaforo_green.png" />
+    <Content Include="App_Themes\Delta\images\semaforo_red.png" />
+    <Content Include="App_Themes\Delta\images\semaforo_spento.png" />
+    <Content Include="App_Themes\Delta\images\semaforo_yellow.png" />
+    <Content Include="App_Themes\Delta\images\shadow.png" />
+    <Content Include="App_Themes\Delta\images\shared\icon-error.png" />
+    <Content Include="App_Themes\Delta\images\shared\icon-info.png" />
+    <Content Include="App_Themes\Delta\images\shared\icon-question.png" />
+    <Content Include="App_Themes\Delta\images\shared\icon-warning.png" />
+    <Content Include="App_Themes\Delta\images\sizer\e-handle.png" />
+    <Content Include="App_Themes\Delta\images\sizer\ne-handle.png" />
+    <Content Include="App_Themes\Delta\images\sizer\nw-handle.png" />
+    <Content Include="App_Themes\Delta\images\sizer\s-handle.png" />
+    <Content Include="App_Themes\Delta\images\sizer\se-handle.png" />
+    <Content Include="App_Themes\Delta\images\sizer\sw-handle.png" />
+    <Content Include="App_Themes\Delta\images\slider\slider-bg.png" />
+    <Content Include="App_Themes\Delta\images\slider\slider-thumb.png" />
+    <Content Include="App_Themes\Delta\images\slider\slider-v-bg.png" />
+    <Content Include="App_Themes\Delta\images\slider\slider-v-thumb.png" />
+    <Content Include="App_Themes\Delta\images\tab-bar\default-plain-scroll-bottom.png" />
+    <Content Include="App_Themes\Delta\images\tab-bar\default-plain-scroll-left.png" />
+    <Content Include="App_Themes\Delta\images\tab-bar\default-plain-scroll-right.png" />
+    <Content Include="App_Themes\Delta\images\tab-bar\default-plain-scroll-top.png" />
+    <Content Include="App_Themes\Delta\images\tab-bar\default-scroll-bottom.png" />
+    <Content Include="App_Themes\Delta\images\tab-bar\default-scroll-left.png" />
+    <Content Include="App_Themes\Delta\images\tab-bar\default-scroll-right.png" />
+    <Content Include="App_Themes\Delta\images\tab-bar\default-scroll-top.png" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-active-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-active-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-active-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-disabled-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-disabled-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-disabled-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-focus-active-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-focus-active-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-focus-active-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-focus-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-focus-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-focus-over-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-focus-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-over-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-bottom-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-close.png" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-active-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-active-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-active-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-disabled-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-disabled-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-disabled-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-focus-active-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-focus-active-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-focus-active-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-focus-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-focus-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-focus-over-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-focus-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-over-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-left-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-active-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-active-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-active-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-disabled-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-disabled-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-disabled-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-focus-active-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-focus-active-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-focus-active-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-focus-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-focus-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-focus-over-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-focus-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-over-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-right-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-active-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-active-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-active-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-disabled-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-disabled-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-disabled-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-focus-active-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-focus-active-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-focus-active-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-focus-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-focus-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-focus-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-focus-over-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-focus-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-focus-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-over-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-over-fbg.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-over-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tab\tab-default-top-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tip\tip-default-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tip\tip-default-sides.gif" />
+    <Content Include="App_Themes\Delta\images\tip\tip-form-invalid-corners.gif" />
+    <Content Include="App_Themes\Delta\images\tip\tip-form-invalid-sides.gif" />
+    <Content Include="App_Themes\Delta\images\toolbar\default-more-left.png" />
+    <Content Include="App_Themes\Delta\images\toolbar\default-more.png" />
+    <Content Include="App_Themes\Delta\images\toolbar\default-scroll-bottom.png" />
+    <Content Include="App_Themes\Delta\images\toolbar\default-scroll-left.png" />
+    <Content Include="App_Themes\Delta\images\toolbar\default-scroll-right.png" />
+    <Content Include="App_Themes\Delta\images\toolbar\default-scroll-top.png" />
+    <Content Include="App_Themes\Delta\images\toolbar\footer-more-left.png" />
+    <Content Include="App_Themes\Delta\images\toolbar\footer-more.png" />
+    <Content Include="App_Themes\Delta\images\toolbar\footer-scroll-left.png" />
+    <Content Include="App_Themes\Delta\images\toolbar\footer-scroll-right.png" />
+    <Content Include="App_Themes\Delta\images\tools\tool-sprites-dark.png" />
+    <Content Include="App_Themes\Delta\images\tools\tool-sprites.png" />
+    <Content Include="App_Themes\Delta\images\tree\arrows-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\arrows.png" />
+    <Content Include="App_Themes\Delta\images\tree\drop-above.png" />
+    <Content Include="App_Themes\Delta\images\tree\drop-add.gif" />
+    <Content Include="App_Themes\Delta\images\tree\drop-add.png" />
+    <Content Include="App_Themes\Delta\images\tree\drop-append.png" />
+    <Content Include="App_Themes\Delta\images\tree\drop-below.png" />
+    <Content Include="App_Themes\Delta\images\tree\drop-between.gif" />
+    <Content Include="App_Themes\Delta\images\tree\drop-between.png" />
+    <Content Include="App_Themes\Delta\images\tree\drop-no.gif" />
+    <Content Include="App_Themes\Delta\images\tree\drop-no.png" />
+    <Content Include="App_Themes\Delta\images\tree\drop-over.gif" />
+    <Content Include="App_Themes\Delta\images\tree\drop-over.png" />
+    <Content Include="App_Themes\Delta\images\tree\drop-under.gif" />
+    <Content Include="App_Themes\Delta\images\tree\drop-under.png" />
+    <Content Include="App_Themes\Delta\images\tree\drop-yes.gif" />
+    <Content Include="App_Themes\Delta\images\tree\drop-yes.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-end-minus-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-end-minus.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-end-plus-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-end-plus.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-end-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-end.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-line-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-line.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-minus-nl-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-minus-nl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-minus-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-minus.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-plus-nl-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-plus-nl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-plus-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-plus.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\elbow.png" />
+    <Content Include="App_Themes\Delta\images\tree\folder-open-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\folder-open.png" />
+    <Content Include="App_Themes\Delta\images\tree\folder-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\folder.png" />
+    <Content Include="App_Themes\Delta\images\tree\leaf-rtl.png" />
+    <Content Include="App_Themes\Delta\images\tree\leaf.png" />
+    <Content Include="App_Themes\Delta\images\tree\loading.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\collapse.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\expand.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\gradient-bg.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\mini-bottom.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\mini-left.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\mini-right.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\mini-top.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\ns-collapse.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\ns-expand.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\panel-close.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\panel-title-bg.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\panel-title-light-bg.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\stick.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\stuck.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\tab-close-on.gif" />
+    <Content Include="App_Themes\Delta\images\util\splitter\tab-close.gif" />
+    <Content Include="App_Themes\Delta\images\ux\dashboard\magnify.png" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-bottom-corners.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-bottom-sides.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-collapsed-bottom-corners.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-collapsed-bottom-sides.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-collapsed-left-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-collapsed-left-corners.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-collapsed-left-sides.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-collapsed-right-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-collapsed-right-corners.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-collapsed-right-sides.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-collapsed-top-corners.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-collapsed-top-sides.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-left-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-left-corners.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-left-sides.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-right-corners-rtl.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-right-corners.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-right-sides.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-top-corners.gif" />
+    <Content Include="App_Themes\Delta\images\window-header\window-header-default-top-sides.gif" />
+    <Content Include="App_Themes\Delta\images\window\toast\fade-blue.png" />
+    <Content Include="App_Themes\Delta\images\window\toast\fader.png" />
+    <Content Include="App_Themes\Delta\images\window\toast\icon16_error.png" />
+    <Content Include="App_Themes\Delta\images\window\toast\icon16_info.png" />
+    <Content Include="App_Themes\Delta\images\window\window-default-corners.gif" />
+    <Content Include="App_Themes\Delta\images\window\window-default-sides.gif" />
+    <Content Include="App_Themes\Delta\iterpratica.css" />
+    <Content Include="App_Themes\Delta\label.css" />
+    <Content Include="App_Themes\Delta\MailClient.css" />
+    <Content Include="App_Themes\Delta\mailStatus.css" />
+    <Content Include="App_Themes\Delta\modal.css" />
+    <Content Include="App_Themes\Delta\ModalExtGrid.css" />
+    <Content Include="App_Themes\Delta\panel.css" />
+    <Content Include="App_Themes\Delta\Rating.css" />
+    <Content Include="App_Themes\Delta\tab.css" />
+    <Content Include="App_Themes\Delta\delta.css" />
+    <Content Include="Controls\InBox.ascx" />
+    <Content Include="Controls\MailBoxLogin.ascx" />
+    <Content Include="Controls\MailBoxNavigator.ascx" />
+    <Content Include="Controls\MailComposer.ascx" />
+    <Content Include="Controls\MailTreeViewer.ascx" />
+    <Content Include="Controls\MailViewer.ascx" />
+    <Content Include="Controls\NewMail.ascx" />
+    <Content Include="pages\common\Default.aspx" />
+    <Content Include="ExtJS5\ext-all-debug.js" />
+    <Content Include="ExtJS5\ext-all.js" />
+    <Content Include="ExtJS5\extcorrezioni.js" />
+    <Content Include="ExtJS5\main.js" />
+    <Content Include="ExtJS5\pdf.js" />
+    <Content Include="Global.asax" />
+    <Content Include="Login.aspx" />
+    <Content Include="LogOff.aspx" />
+    <Content Include="LogOffFromBrowser.aspx" />
+    <Content Include="pages\common\ErrorPage.aspx" />
+    <Content Include="pages\Default.aspx" />
+    <Content Include="pages\MailClient\MailAdmin.aspx" />
+    <Content Include="pages\MailClient\MailBoxInBox.aspx" />
+    <Content Include="pages\MailClient\MailBoxStat.aspx" />
+    <Content Include="pages\MailClient\MailMove.aspx" />
+    <Content Include="pages\MailClient\MailSearch.aspx" />
+    <Content Include="pages\MailClient\MailServerSettings.aspx" />
+    <Content Include="pages\Mail\GestRubrica.aspx" />
+    <Content Include="pages\Rubrica\AccessoMappatura.aspx" />
+    <Content Include="pages\Rubrica\EntiResearch.aspx" />
+    <Content Include="pages\Rubrica\Mapping.aspx" />
+    <Content Include="scripts\uty.js" />
+    <Content Include="Users\Register.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="api\LoginServiceController.cs" />
+    <Compile Include="api\MailController.cs" />
+    <Compile Include="api\SessionStateRouteHandler.cs" />
+    <Compile Include="App_Start\SessionableControllerHandler.cs" />
+    <Compile Include="App_Start\SessionStateRouteHandler.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controls\InBox.ascx.cs">
+      <DependentUpon>InBox.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\InBox.ascx.designer.cs">
+      <DependentUpon>InBox.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MailBoxLogin.ascx.cs">
+      <DependentUpon>MailBoxLogin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MailBoxLogin.ascx.designer.cs">
+      <DependentUpon>MailBoxLogin.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MailBoxNavigator.ascx.cs">
+      <DependentUpon>MailBoxNavigator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MailBoxNavigator.ascx.designer.cs">
+      <DependentUpon>MailBoxNavigator.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MailComposer.ascx.cs">
+      <DependentUpon>MailComposer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MailComposer.ascx.designer.cs">
+      <DependentUpon>MailComposer.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MailTreeViewer.ascx.cs">
+      <DependentUpon>MailTreeViewer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MailTreeViewer.ascx.designer.cs">
+      <DependentUpon>MailTreeViewer.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MailViewer.ascx.cs">
+      <DependentUpon>MailViewer.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MailViewer.ascx.designer.cs">
+      <DependentUpon>MailViewer.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NewMail.ascx.cs">
+      <DependentUpon>NewMail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\NewMail.ascx.designer.cs">
+      <DependentUpon>NewMail.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\Helpers.cs" />
+    <Compile Include="Extensions\InlineScript.cs" />
+    <Compile Include="Extensions\LinqExtensionMethods.cs" />
+    <Compile Include="pages\common\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\common\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Extensions\Estensioni.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogOff.aspx.cs">
+      <DependentUpon>LogOff.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LogOff.aspx.designer.cs">
+      <DependentUpon>LogOff.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogOffFromBrowser.aspx.cs">
+      <DependentUpon>LogOffFromBrowser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LogOffFromBrowser.aspx.designer.cs">
+      <DependentUpon>LogOffFromBrowser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\IBaseMaster.cs" />
+    <Compile Include="Master\Mail.Master.cs">
+      <DependentUpon>Mail.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\Mail.Master.designer.cs">
+      <DependentUpon>Mail.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="pages\common\ErrorPage.aspx.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\common\ErrorPage.aspx.designer.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\Interfaces\IAccessPage.cs" />
+    <Compile Include="pages\Interfaces\IHomePage.cs" />
+    <Compile Include="pages\MailClient\MailAdmin.aspx.cs">
+      <DependentUpon>MailAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\MailClient\MailAdmin.aspx.designer.cs">
+      <DependentUpon>MailAdmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\MailClient\MailBoxInBox.aspx.cs">
+      <DependentUpon>MailBoxInBox.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\MailClient\MailBoxInBox.aspx.designer.cs">
+      <DependentUpon>MailBoxInBox.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\MailClient\MailBoxStat.aspx.cs">
+      <DependentUpon>MailBoxStat.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\MailClient\MailBoxStat.aspx.designer.cs">
+      <DependentUpon>MailBoxStat.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\MailClient\MailMove.aspx.cs">
+      <DependentUpon>MailMove.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\MailClient\MailMove.aspx.designer.cs">
+      <DependentUpon>MailMove.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\MailClient\MailSearch.aspx.cs">
+      <DependentUpon>MailSearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\MailClient\MailSearch.aspx.designer.cs">
+      <DependentUpon>MailSearch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\MailClient\MailServerSettings.aspx.cs">
+      <DependentUpon>MailServerSettings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\MailClient\MailServerSettings.aspx.designer.cs">
+      <DependentUpon>MailServerSettings.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\Mail\GestRubrica.aspx.cs">
+      <DependentUpon>GestRubrica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Mail\GestRubrica.aspx.designer.cs">
+      <DependentUpon>GestRubrica.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\Rubrica\AccessoMappatura.aspx.cs">
+      <DependentUpon>AccessoMappatura.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Rubrica\AccessoMappatura.aspx.designer.cs">
+      <DependentUpon>AccessoMappatura.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\Rubrica\EntiResearch.aspx.cs">
+      <DependentUpon>EntiResearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Rubrica\EntiResearch.aspx.designer.cs">
+      <DependentUpon>EntiResearch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\Rubrica\Mapping.aspx.cs">
+      <DependentUpon>Mapping.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Rubrica\Mapping.aspx.designer.cs">
+      <DependentUpon>Mapping.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routing\WebFormRouteHandler.cs" />
+    <Compile Include="Users\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Users\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <Content Include="Master\Mail.Master" />
+    <Content Include="App_Themes\Delta\delta.skin" />
+    <Content Include="App_Themes\Delta\images\default\box\Thumbs.db" />
+    <Content Include="App_Themes\Delta\images\default\form\clear-trigger.psd" />
+    <Content Include="App_Themes\Delta\images\default\form\date-trigger.psd" />
+    <Content Include="App_Themes\Delta\images\default\form\search-trigger.psd" />
+    <Content Include="App_Themes\Delta\images\default\form\trigger.psd" />
+    <Content Include="App_Themes\Delta\images\default\grid\Thumbs.db" />
+    <Content Include="App_Themes\Delta\images\default\panel\Thumbs.db" />
+    <Content Include="App_Themes\Delta\images\default\window\left-corners.psd" />
+    <Content Include="App_Themes\Delta\images\default\window\left-right.psd" />
+    <Content Include="App_Themes\Delta\images\default\window\right-corners.psd" />
+    <Content Include="App_Themes\Delta\images\default\window\top-bottom.psd" />
+    <Content Include="App_Data\Web.sitemap" />
+    <Content Include="log4net.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Themes\Delta\extjs\" />
+    <Folder Include="App_Themes\Delta\images\layout\" />
+    <Folder Include="App_Themes\Delta\images\logo\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ActiveUp.Net\ActiveUp.Net.Common\ActiveUp.Net.Common.csproj">
+      <Project>{3a83ae95-c23f-48b4-9f1a-ad4b32c37b93}</Project>
+      <Name>ActiveUp.Net.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Logging\Com.Delta.Logging.csproj">
+      <Project>{a8c15d12-6e47-4af5-badf-b6cbc421ec40}</Project>
+      <Name>Com.Delta.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Mail\Com.Delta.Mail.csproj">
+      <Project>{62E74FAF-8C36-4874-8598-545F2A8371DA}</Project>
+      <Name>Com.Delta.Mail</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Messaging\Com.Delta.Messaging.csproj">
+      <Project>{6d059f33-f847-4727-8c8a-000b99121a8a}</Project>
+      <Name>Com.Delta.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.PrintManager\Com.Delta.PrintManager.csproj">
+      <Project>{71BFA2EB-BACD-4576-8448-D9A7187FA62F}</Project>
+      <Name>Com.Delta.PrintManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Security\Com.Delta.Security.csproj">
+      <Project>{d71d572b-6055-4944-aad2-2e83a8cb3b0d}</Project>
+      <Name>Com.Delta.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Web\Com.Delta.Web.csproj">
+      <Project>{cdb0c146-9a70-4dd9-b878-29bb982157ca}</Project>
+      <Name>Com.Delta.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SendMail\SendMail.Model\SendMail.Model.csproj">
+      <Project>{647C1188-A0DA-412B-9640-218CF6C3E99A}</Project>
+      <Name>SendMail.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SendMail\SendMailBusiness\SendMail.Business.csproj">
+      <Project>{adb531c5-221b-4182-8270-799af268c75a}</Project>
+      <Name>SendMail.Business</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>54016</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/GestionePEC</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Questo progetto fa riferimento a uno o più pacchetti NuGet che non sono presenti in questo computer. Usare lo strumento di ripristino dei pacchetti NuGet per scaricarli. Per altre informazioni, vedere http://go.microsoft.com/fwlink/?LinkID=322105. Il file mancante è {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

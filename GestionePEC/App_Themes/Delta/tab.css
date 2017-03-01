@@ -1,0 +1,215 @@
+/* ajax__tab_xp-theme theme */
+.devex__tab_xp-theme .ajax__tab_header
+{
+    font-family: verdana,tahoma,helvetica;
+    font-size: 11px;
+    background: url(images/tab/xp/tab-line.gif) repeat-x bottom;
+}
+.devex__tab_xp-theme .ajax__tab_header .ajax__tab_outer
+{
+    padding-right: 4px;
+    background: url(images/tab/xp/devex-tab-right.bmp) no-repeat right;
+    height: 21px;
+}
+.devex__tab_xp-theme .ajax__tab_header .ajax__tab_inner
+{
+    padding-left: 3px;
+    background: url(images/tab/xp/devex-tab-left.bmp) no-repeat;
+}
+.devex__tab_xp-theme .ajax__tab_header .ajax__tab_tab
+{
+    height: 25px;
+    padding: 4px;
+    margin: 0;
+    background: url(images/tab/xp/devex-tab.bmp) repeat-x;
+}
+
+.devex__tab_xp-theme .ajax__tab_header .ajax__tab_tab:hover
+{
+    cursor:pointer;
+    cursor: -webkit-grab;
+    background: rgba(0,0,0,0);
+	color: #3a7999;
+	box-shadow: inset 0 0 0 3px #3a7999;
+}
+
+.devex__tab_xp-theme .ajax__tab_hover .ajax__tab_outer
+{
+    background: url(images/tab/xp/devex-tab-hover-right.bmp) no-repeat right;
+}
+.devex__tab_xp-theme .ajax__tab_hover .ajax__tab_inner
+{
+    background: url(images/tab/xp/devex-tab-hover-left.bmp) no-repeat;
+}
+.devex__tab_xp-theme .ajax__tab_hover .ajax__tab_tab
+{
+    background: url(images/tab/xp/devex-tab-hover.bmp) repeat-x;
+}
+.devex__tab_xp-theme .ajax__tab_active .ajax__tab_outer
+{
+    background: url(images/tab/xp/devex-tab-active-right.bmp) no-repeat right;
+}
+.devex__tab_xp-theme .ajax__tab_active .ajax__tab_inner
+{
+    background: url(images/tab/xp/devex-tab-active-left.bmp) no-repeat;
+}
+.devex__tab_xp-theme .ajax__tab_active .ajax__tab_tab
+{
+    background: url(images/tab/xp/devex-tab-active.bmp) repeat-x;
+}
+.devex__tab_xp-theme .ajax__tab_body
+{
+    font-family: verdana,tahoma,helvetica;
+    /*font-size: 10pt;*/
+    border: 1px solid #99bbe8;
+    border-top: 0;
+    padding: 8px;
+    background-color: #ffffff;
+}
+
+
+
+
+
+
+
+/* ext.js theme */
+.extjs-theme .ajax__tab_header
+{
+    font-family: verdana,tahoma,helvetica;
+    font-size: 11px;
+    background: url(images/tab/xp/tab-line.gif) repeat-x bottom;
+}
+.extjs-theme .ajax__tab_header .ajax__tab_outer
+{
+    padding-right: 4px;
+    background: url(images/tab/xp/extjs-tab-right.bmp) no-repeat right;
+    height: 21px;
+}
+.extjs-theme .ajax__tab_header .ajax__tab_inner
+{
+    padding-left: 3px;
+    background: url(images/tab/xp/extjs-tab-left.bmp) no-repeat;
+}
+.extjs-theme .ajax__tab_header .ajax__tab_tab
+{
+    height: 25px;
+    padding: 4px;
+    margin: 0;
+    background: url(images/tab/xp/extjs-tab.bmp) repeat-x;
+    color:#15428b;
+}
+    .extjs-theme .ajax__tab_header .ajax__tab_tab:hover {
+        cursor: pointer;
+        cursor: -webkit-grab;
+        background: rgba(0,0,0,0);
+        color: #3a7999;
+        box-shadow: inset 0 0 0 3px #3a7999;
+    }
+.extjs-theme .ajax__tab_hover .ajax__tab_outer
+{
+    background: url(images/tab/xp/extjs-tab-hover-right.bmp) no-repeat right;
+}
+.extjs-theme .ajax__tab_hover .ajax__tab_inner
+{
+    background: url(images/tab/xp/extjs-tab-hover-left.bmp) no-repeat;
+}
+.extjs-theme .ajax__tab_hover .ajax__tab_tab
+{
+    background: url(images/tab/xp/extjs-tab-hover.bmp) repeat-x;
+}
+.extjs-theme .ajax__tab_active .ajax__tab_outer
+{
+    background: url(images/tab/xp/extjs-tab-active-right.bmp) no-repeat right;
+}
+.extjs-theme .ajax__tab_active .ajax__tab_inner
+{
+    background: url(images/tab/xp/extjs-tab-active-left.bmp) no-repeat;
+}
+.extjs-theme .ajax__tab_active .ajax__tab_tab
+{
+    background: url(images/tab/xp/extjs-tab-active.bmp) repeat-x;
+    font-weight:bold;
+}
+.extjs-theme .ajax__tab_body
+{
+    font-family: verdana,tahoma,helvetica;
+    /*font-size: 10pt;*/
+    border: 1px solid #99bbe8;
+    border-top: 0;
+    padding: 8px;
+    background-color: #ffffff;
+}
+
+
+
+
+/* ext.js-gray  theme */
+.extjs-theme-gray .ajax__tab_header
+{
+    font-family: verdana,tahoma,helvetica;
+    font-size: 11px;
+    background: url(images/tab/xp/tab-line.gif) repeat-x bottom;
+}
+.extjs-theme-gray .ajax__tab_header .ajax__tab_outer
+{
+    padding-right: 4px;
+    background: url(images/tab/xp/extjs-tab-right.bmp) no-repeat right;
+    height: 21px;
+}
+.extjs-theme-gray .ajax__tab_header .ajax__tab_inner
+{
+    padding-left: 3px;
+    background: url(images/tab/xp/extjs-tab-left.bmp) no-repeat;
+}
+.extjs-theme-gray .ajax__tab_header .ajax__tab_tab
+{
+    height: 25px;
+    padding: 4px;
+    margin: 0;
+    background: url(images/tab/xp/extjs-tab.bmp) repeat-x;
+    color:#15428b;
+}
+    .extjs-theme-gray .ajax__tab_header .ajax__tab_tab:hover {
+        cursor: pointer;
+        cursor: -webkit-grab;
+        background: rgba(0,0,0,0);
+        color: #3a7999;
+        box-shadow: inset 0 0 0 3px #3a7999;
+    }
+
+.extjs-theme-gray .ajax__tab_hover .ajax__tab_outer
+{
+    background: url(images/tab/xp/extjs-tab-hover-right.bmp) no-repeat right;
+}
+.extjs-theme-gray .ajax__tab_hover .ajax__tab_inner
+{
+    background: url(images/tab/xp/extjs-tab-hover-left.bmp) no-repeat;
+}
+.extjs-theme-gray .ajax__tab_hover .ajax__tab_tab
+{
+    background: url(images/tab/xp/extjs-tab-hover.bmp) repeat-x;
+}
+.extjs-theme-gray .ajax__tab_active .ajax__tab_outer
+{
+    background: url(images/tab/xp/extjs-tab-active-right.bmp) no-repeat right;
+}
+.extjs-theme-gray .ajax__tab_active .ajax__tab_inner
+{
+    background: url(images/tab/xp/extjs-tab-active-left.bmp) no-repeat;
+}
+.extjs-theme-gray .ajax__tab_active .ajax__tab_tab
+{
+    background: url(images/tab/xp/extjs-tab-active.bmp) repeat-x;
+    font-weight:bold;
+}
+.extjs-theme-gray .ajax__tab_body
+{
+    font-family: verdana,tahoma,helvetica;
+    /*font-size: 10pt;*/
+    border: 1px solid #99bbe8;
+    border-top: 0;
+    padding: 8px;
+    background-color: #ffffff;
+    background-color: #F7FAFF;
+}

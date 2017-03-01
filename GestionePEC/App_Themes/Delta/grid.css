@@ -1,0 +1,61 @@
+﻿.mGrid
+{
+	width: 100%;
+	background-color: #fff;
+	/*margin: 5px 0 10px 0;*/
+	margin: 3px 0 3px 0;
+	border: solid 1px #CECECE;
+	border-top:solid 0px;
+	border-collapse: collapse;
+}
+.mGrid td
+{
+	padding: 2px;
+	border: solid 1px #CECECE;
+	color: #717171;
+	white-space:nowrap;
+	margin: 0 auto;
+}
+.mGrid th
+{
+	padding: 4px 2px;
+	color: #717171;
+	background-image:url(images/grid/grd_header.gif);
+	border-left: solid 1px #CECECE;
+	font: 1em Tahoma;
+	font-weight:bold;
+	text-align:center;
+}
+.mGrid .alt
+{
+	background: #CECECE url(images/grid/grd_alt.gif) repeat-x top;
+}
+.mGrid .pgr
+{
+	background-image:url(images/grid/grd_footer.gif);
+	border-top:solid 0px;
+    background-repeat:repeat-x;
+}
+.mGrid .pgr table
+{
+	margin: 5px 0;
+}
+.mGrid .pgr td
+{
+	border-width: 0;
+	padding: 0 6px;
+	border-left: solid 1px #CECECE;
+	font-weight: bold;
+	color: #000;
+	line-height: 12px;
+}
+.mGrid .pgr a
+{
+	color: #666;
+	text-decoration: none;
+}
+.mGrid .pgr a:hover
+{
+	color: #000;
+	text-decoration: none;
+}

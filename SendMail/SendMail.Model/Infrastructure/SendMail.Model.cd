@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SendMail.Model.BackEndRefCode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABBCAMAAABAAAAAgAAgAAAQAAAAAAABACAAiAACEAAA=</HashCode>
+      <FileName>Titolario\BackEndRefCode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.BackendUser" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAABAAAAAAAAAAgABAwAEgAAAAgAAQAAAAEAAAA=</HashCode>
+      <FileName>BackendUser.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.BackEndUserMailUserMapping" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAQAAAAAAAgAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BackendUser.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.ContactsApplicationMapping" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiICgAgJCEQAAyAAgAAQSAAAAAACoAAAAEIwQECAA=</HashCode>
+      <FileName>ContactApplicationMapping\ContactsApplicationMapping.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.Mail" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEABAAACAAAACCAAAIgAAAQAABAAAAAAAAIAAAEAA0A=</HashCode>
+      <FileName>Mail.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.MailAddressee" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAgAgAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MailAddressee.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.MailRefs" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAQgAAARAAAAAAAAAEAAAAAAIAAA=</HashCode>
+      <FileName>MailRefs.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.ComunicazioniMapping.ComAllegato" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAgAAAQGAAAIAAgAQAAAEAAAAUA=</HashCode>
+      <FileName>ComunicazioniMapping\ComAllegato.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.ComunicazioniMapping.ComFlusso" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAxABAAAAAAAABAAAAgAAASABAAAAAAERAAAAAAAAEA=</HashCode>
+      <FileName>ComunicazioniMapping\ComFlusso.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.ComunicazioniMapping.ComFlussoProtocollo" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwABAAAAAAACAEAAAgAAAQAEAAAAAAEBgAAAAAAAEA=</HashCode>
+      <FileName>ComunicazioniMapping\ComFlussoProtocollo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.ComunicazioniMapping.Comunicazioni" BaseTypeListCollapsed="true">
+    <Position X="7.75" Y="6" Width="1.5" />
+    <AssociationLine Name="RubricaEntitaUsed" Type="SendMail.Model.ComunicazioniMapping.RubrEntitaUsed">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.202" Y="-0.285" Height="0.16" Width="0.862" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AEAQAQAgQlCQFCIQgAgAAgQBACgIAGBAoAoQMLQAEAg=</HashCode>
+      <FileName>ComunicazioniMapping\Comunicazioni.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MailComunicazione" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="RubricaEntitaUsed" />
+      <Property Name="ComAllegati" />
+      <Property Name="ComFlussiProtocollo" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.ComunicazioniMapping.ComunicazioniProtocollo" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAQBCBACIQAAAABCAgIgAYCAAAAgABCAAAAAAAAAEA=</HashCode>
+      <FileName>ComunicazioniMapping\ComunicazioniProtocollo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.ComunicazioniMapping.MailContent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBAAACAAAACAAAAAgAACQAAAAACABAAAAAIABAAAA=</HashCode>
+      <FileName>ComunicazioniMapping\MailContent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.ComunicazioniMapping.MailRefs" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAgAAAQAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>ComunicazioniMapping\MailContent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.ComunicazioniMapping.RubrEntitaUsed" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAQEAoASAEAEACAgABQSAAABAAIAAAgAAAwEEAAA=</HashCode>
+      <FileName>ComunicazioniMapping\RubrEntitaUsed.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.ComunicazioniMapping.DataItem&lt;K, V&gt;" Collapsed="true">
+    <Position X="5.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Utility\DataItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SendMail.Model.ContactApplicationMapping.ContactsBackendMap" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAgAAASAAAAAAAgAAAAAAEQAAAA=</HashCode>
+      <FileName>ContactApplicationMapping\ContactsBackendMap.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.RubricaMapping.RubricaAddress" BaseTypeListCollapsed="true">
+    <Position X="5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAASAAAAAAAhAAASQBABgAIAAAAAAAAAAABA=</HashCode>
+      <FileName>RubricaMapping\RubricaAddress.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.673" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.RubricaMapping.RubricaContatti" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FIAhIACAggSGwgAACAgAAAyQAAAAAABAAAIAAwEAAhA=</HashCode>
+      <FileName>RubricaMapping\RubricaContatti.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Entita" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.RubricaMapping.RubricaEntita" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAQAAEAIASAkAEAAAgABQQQQAAAAAHCBAIEAAEEEhA=</HashCode>
+      <FileName>RubricaMapping\RubricaEntita.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ReferralType" />
+      <Property Name="Address" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SendMail.Model.Utility.EnumerableExtension" Collapsed="true">
+    <Position X="7" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utility\EnumerableExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SendMail.Model.WebserviceMappings.Item" Collapsed="true">
+    <Position X="8.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAQAAA=</HashCode>
+      <FileName>WebserviceMappings\Item.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SendMail.Model.Wrappers.BaseResultItem" Collapsed="true">
+    <Position X="1.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Wrappers\SimpleResultItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SendMail.Model.Wrappers.SimpleResultItem" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Wrappers\SimpleResultItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SendMail.Model.Wrappers.SimpleTreeItem" Collapsed="true">
+    <Position X="2.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAgAAQAACAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Wrappers\SimpleResultItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="SendMail.Model.AllegatoProtocolloStatus" Collapsed="true">
+    <Position X="3.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABIAAAAAAAAAAAAAQAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SendMail.Model.EntitaType" Collapsed="true">
+    <Position X="5.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAgACEABAAAAACAIAEABAAAQAACAAAEAAgACEAAAg=</HashCode>
+      <FileName>EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SendMail.Model.TipoCanale" Collapsed="true">
+    <Position X="5.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACABAAAAAAAAEAAAAAAAAAAACAAAAAAAACAAE=</HashCode>
+      <FileName>EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SendMail.Model.ProtocolloStatus" Collapsed="true">
+    <Position X="5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAgDAAAAAAAAAAAAAAAAAwAAAAAAACAAAAAAA=</HashCode>
+      <FileName>EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SendMail.Model.ProtocolloTypes" Collapsed="true">
+    <Position X="2.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAACICAAA=</HashCode>
+      <FileName>EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SendMail.Model.TipoComunicazione" Collapsed="true">
+    <Position X="3.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAQIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SendMail.Model.FastIndexedAttributes" Collapsed="true">
+    <Position X="2.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAUAAEAAAAAAAAAQgAAAAAAAAAA=</HashCode>
+      <FileName>EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SendMail.Model.MailIndexedSearch" Collapsed="true">
+    <Position X="3.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAEAAAAAAgAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SendMail.Model.IndexedCatalogs" Collapsed="true">
+    <Position X="4.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAIAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SendMail.Model.MailPecForCheck" Collapsed="true">
+    <Position X="1.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAACQAAAAAgAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

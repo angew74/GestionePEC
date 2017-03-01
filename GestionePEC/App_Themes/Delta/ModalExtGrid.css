@@ -1,0 +1,56 @@
+﻿.amodal-header-row
+{
+	border:1px solid #8FB3E5;
+}
+
+.amodal-body-panel
+{
+	background-color: #C3D4E8;
+	padding:4px;
+	position:absolute;
+}
+
+.amodal-inner-panel
+{
+	border: solid 1px #8FB3E5; 
+	background-color: #DBE5F5;
+	width:100%;
+	position:relative;
+}
+
+.amodal-progress-panel
+{
+	text-align:center; 
+	width:100%;
+}
+
+.amodal-message-panel
+{
+	margin:5px;
+	margin:5px;
+	line-height:normal;
+	text-align:left;
+}
+
+.asd
+{
+    margin-right:18px;	
+}
+
+.toolbarFind
+{
+	background-image: url(images/default/button/binoculars.png) !important;
+	background-position: center center;
+	background-repeat: no-repeat;
+     background-color : #dfe8f5;
+      border-color :  #dfe8f5;
+}
+
+.toolbarFindDisabled
+{
+	background-image: url(images/default/button/no-search.png) !important;
+	background-position: center center;
+	background-repeat: no-repeat;
+    background-color : #dfe8f5;
+    border-color :  #dfe8f5;
+}

@@ -1,0 +1,69 @@
+﻿#headerContainer
+{
+    border: none;
+	width:100%; 
+	overflow:hidden;
+}
+
+#north
+{
+    background-image: url('./images/logo/header_filler.jpg');
+    background-repeat: repeat-x;
+    margin:0 0 6 0;
+    height:85px;
+}
+
+#headerLeft
+{
+    background-image: url('./images/logo/header_left.jpg');
+    width: 112px;
+    height: 85px;
+    float: left;
+    text-align: left;
+}
+
+#headerRight
+{
+    background-image: url('./images/logo/header_right.jpg');
+    width: 762px;
+    height: 85px;
+    float: right;
+    text-align: right;
+}
+
+#headerTopMenu
+{
+    position: absolute;
+    top: 10px;
+    left: 5px;
+}
+
+        
+#headerBottomMenu
+{
+    position: absolute;
+    bottom: 5px;
+    left: 118px;
+}
+
+div#headerContainer a , div#headerContainer label, div#headerContainer span
+{
+    font-family: Arial;
+    font-size: 10pt;
+	text-decoration: none;
+	color: White;
+	color: #ffffff;
+}
+
+
+div#headerContainer a:hover	
+{
+	text-decoration: underline;
+}
+
+div#headerContainer .headerMenuSpacer
+{
+margin-left:4px;
+margin-right:4px;    
+}
+

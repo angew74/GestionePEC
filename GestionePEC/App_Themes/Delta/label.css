@@ -1,0 +1,26 @@
+.LabelCaption
+{
+	/*font-weight:bold;*/ /*font-size:9pt;            commentato per compatibilità font*/
+	color: #4F4F4F; /*color:Red;*/
+}
+
+.Fixed120
+{
+	display: inline-block;
+	width: 120px;
+}
+
+.Fixed300
+{
+	display: inline-block;
+	width: 300px;
+}
+
+.FixedBorder300
+{
+	display: inline-block;
+	width: 300px;
+	border: solid 1px LightSteelBlue;
+	background-color: Transparent;
+	border-collapse: collapse;
+}

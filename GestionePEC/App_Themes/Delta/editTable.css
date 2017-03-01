@@ -1,0 +1,24 @@
+
+.lblCell
+{
+	text-align:right;
+	
+	white-space:nowrap;
+}
+
+.cntCell
+{
+	text-align:left;
+	
+	white-space:nowrap;
+}
+
+.lastCell
+{
+	text-align:left;
+	white-space:nowrap;
+	
+}
+
+
+

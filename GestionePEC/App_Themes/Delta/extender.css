@@ -1,0 +1,529 @@
++
+.CustomValidator
+{
+    position: relative;
+    margin-left: -18px;
+    margin-top: 5px;
+}
+
+.CustomValidator div
+{
+    border: solid 1px #99BBE8;
+    background-color: #DFE8F6;
+    position: relative;
+}
+
+.CustomValidator td
+{
+    border: solid 1px #99BBE8;
+    background-color: #DFE8F6;
+}
+
+.CustomValidator .ajax__validatorcallout_popup_table
+{
+    display: none;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.CustomValidator .ajax__validatorcallout_popup_table_row
+{
+    vertical-align: top;
+    height: 100%;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.CustomValidator .ajax__validatorcallout_callout_cell
+{
+    width: 20px;
+    height: 100%;
+    text-align: right;
+    vertical-align: top;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.CustomValidator .ajax__validatorcallout_callout_table
+{
+    height: 80%;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.CustomValidator .ajax__validatorcallout_callout_table_row
+{
+    background-color: transparent;
+    padding: 0px;
+}
+
+.CustomValidator .ajax__validatorcallout_callout_arrow_cell
+{
+    padding: 8px 0px 0px 0px;
+    text-align: right;
+    vertical-align: top;
+    font-size: 1px;
+    border: none;
+    background-color: transparent;
+}
+
+.CustomValidator .ajax__validatorcallout_callout_arrow_cell .ajax__validatorcallout_innerdiv
+{
+    font-size: 1px;
+    position: relative;
+    left: 1px;
+    border-bottom: none;
+    border-right: none;
+    border-left: none;
+    width: 15px;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.CustomValidator .ajax__validatorcallout_callout_arrow_cell .ajax__validatorcallout_innerdiv div
+{
+    height: 1px;
+    overflow: hidden;
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+    padding: 0px;
+    margin-left: auto;
+}
+
+.CustomValidator .ajax__validatorcallout_error_message_cell
+{
+    font-family: Verdana;
+    font-size: 10px;
+    padding: 5px;
+    border-right: none;
+    border-left: none;
+    width: 100%;
+}
+
+.CustomValidator .ajax__validatorcallout_icon_cell
+{
+    width: 14px;
+    height: 14px;
+    padding: 5px;
+    border-right: none;
+}
+
+.CustomValidator .ajax__validatorcallout_close_button_cell
+{
+    vertical-align: top;
+    padding: 0px;
+    text-align: right;
+    border-left: none;
+}
+
+.CustomValidator .ajax__validatorcallout_close_button_cell .ajax__validatorcallout_innerdiv
+{
+    border: none;
+    text-align: center;
+    width: 10px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+
+.txtarea_CustomValidator
+{
+    position: relative;
+    margin-left: -210px;
+    margin-top: 5px;
+}
+
+.txtarea_CustomValidator div
+{
+    border: solid 1px #99BBE8;
+    background-color: #DFE8F6;
+    position: relative;
+}
+
+.txtarea_CustomValidator td
+{
+    border: solid 1px #99BBE8;
+    background-color: #DFE8F6;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_popup_table
+{
+    display: none;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_popup_table_row
+{
+    vertical-align: top;
+    height: 100%;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_callout_cell
+{
+    width: 20px;
+    height: 100%;
+    text-align: right;
+    vertical-align: top;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_callout_table
+{
+    height: 80%;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_callout_table_row
+{
+    background-color: transparent;
+    padding: 0px;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_callout_arrow_cell
+{
+    padding: 8px 0px 0px 0px;
+    text-align: right;
+    vertical-align: top;
+    font-size: 1px;
+    border: none;
+    background-color: transparent;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_callout_arrow_cell .ajax__validatorcallout_innerdiv
+{
+    font-size: 1px;
+    position: relative;
+    left: 1px;
+    border-bottom: none;
+    border-right: none;
+    border-left: none;
+    width: 15px;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_callout_arrow_cell .ajax__validatorcallout_innerdiv div
+{
+    height: 1px;
+    overflow: hidden;
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+    padding: 0px;
+    margin-left: auto;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_error_message_cell
+{
+    font-family: Verdana;
+    font-size: 10px;
+    padding: 5px;
+    border-right: none;
+    border-left: none;
+    width: 100%;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_icon_cell
+{
+    width: 14px;
+    height: 14px;
+    padding: 5px;
+    border-right: none;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_close_button_cell
+{
+    vertical-align: top;
+    padding: 0px;
+    text-align: right;
+    border-left: none;
+}
+
+.txtarea_CustomValidator .ajax__validatorcallout_close_button_cell .ajax__validatorcallout_innerdiv
+{
+    border: none;
+    text-align: center;
+    width: 10px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+
+
+/* ajax__tab_xp-theme theme */
+.ajax__tab_xp-theme .ajax__tab_header
+{
+    font-family: verdana,tahoma,helvetica;
+    font-size: 11px;
+    background: url(images/tab/xp/tab-line.gif) repeat-x bottom;
+}
+.ajax__tab_xp-theme .ajax__tab_header .ajax__tab_outer
+{
+    padding-right: 4px;
+    background: url(images/tab/xp/tab-right.gif) no-repeat right;
+    height: 21px;
+}
+.ajax__tab_xp-theme .ajax__tab_header .ajax__tab_inner
+{
+    padding-left: 3px;
+    background: url(images/tab/xp/tab-left.gif) no-repeat;
+}
+.ajax__tab_xp-theme .ajax__tab_header .ajax__tab_tab
+{
+    height: 25px;
+    padding: 4px;
+    margin: 0;
+    background: url(images/tab/xp/tab.gif) repeat-x;
+}
+
+.ajax__tab_xp-theme .ajax__tab_header .ajax__tab_tab:hover
+{
+    cursor:pointer;
+    cursor: -webkit-grab;   
+	color: #3a7999;	
+}
+.ajax__tab_xp-theme .ajax__tab_hover .ajax__tab_outer
+{
+    background: url(images/tab/xp/tab-hover-right.gif) no-repeat right;
+}
+.ajax__tab_xp-theme .ajax__tab_hover .ajax__tab_inner
+{
+    background: url(images/tab/xp/tab-hover-left.gif) no-repeat;
+}
+.ajax__tab_xp-theme .ajax__tab_hover .ajax__tab_tab
+{
+    background: url(images/tab/xp/tab-hover.gif) repeat-x;
+}
+.ajax__tab_xp-theme .ajax__tab_active .ajax__tab_outer
+{
+    background: url(images/tab/xp/tab-active-right-blue.bmp) no-repeat right;
+}
+.ajax__tab_xp-theme .ajax__tab_active .ajax__tab_inner
+{
+    background: url(images/tab/xp/tab-active-left-blue.bmp) no-repeat;
+}
+.ajax__tab_xp-theme .ajax__tab_active .ajax__tab_tab
+{
+    background: url(images/tab/xp/tab-active-blue.bmp) repeat-x;
+}
+.ajax__tab_xp-theme .ajax__tab_body
+{
+    font-family: verdana,tahoma,helvetica;
+    /*font-size: 10pt;*/
+    border: 1px solid #99bbe8;
+    border-top: 0;
+    padding: 8px;
+    background-color: #ffffff;
+}
+
+
+
+
+/* ajax__tab_yuitabview-theme theme (images/tab/yui/sprite.png) */
+.ajax__tab_yuitabview-theme .ajax__tab_header
+{
+    font-family: arial,helvetica,clean,sans-serif;
+    font-size: small;
+    border-bottom: solid 5px #2647a0;
+}
+.ajax__tab_yuitabview-theme .ajax__tab_header .ajax__tab_outer
+{
+    background: url(images/tab/yui/sprite.png) #d8d8d8 repeat-x;
+    margin: 0px 0.16em 0px 0px;
+    padding: 1px 0px 1px 0px;
+    vertical-align: bottom;
+    border: solid 1px #a3a3a3;
+    border-bottom-width: 0px;
+}
+.ajax__tab_yuitabview-theme .ajax__tab_header .ajax__tab_tab
+{
+    color: #000;
+    padding: 0.35em 0.75em;
+    margin-right: 0.01em;
+}
+.ajax__tab_yuitabview-theme .ajax__tab_hover .ajax__tab_outer
+{
+    background: url(images/tab/yui/sprite.png) #bfdaff repeat-x left -1300px;
+}
+.ajax__tab_yuitabview-theme .ajax__tab_active .ajax__tab_tab
+{
+    color: #fff;
+}
+.ajax__tab_yuitabview-theme .ajax__tab_active .ajax__tab_outer
+{
+    background: url(images/tab/yui/sprite.png) #2647a0 repeat-x left -1400px;
+}
+.ajax__tab_yuitabview-theme .ajax__tab_body
+{
+    font-family: verdana,tahoma,helvetica;
+    /*font-size: 9pt;*/
+    padding: 0.25em 0.5em;
+    background-color: #edf5ff;
+    border: solid 1px #808080;
+    border-top-width: 0px;
+}
+
+/* ajax__tab_technorati-theme theme */
+.ajax__tab_technorati-theme .ajax__tab_header
+{
+    font-family: "Helvetica Neue" , Arial, Sans-Serif;
+    background: url(images/tab/technorati/tab-line.png) repeat-x bottom;
+    font-size: 12px;
+    display: block;
+}
+.ajax__tab_technorati-theme .ajax__tab_header .ajax__tab_outer
+{
+    background: url(images/tab/technorati/tab.png) no-repeat left top;
+    border-color: #222;
+    color: #222;
+    padding-left: 10px;
+    margin-right: 3px;
+}
+.ajax__tab_technorati-theme .ajax__tab_header .ajax__tab_inner
+{
+    background: url(images/tab/technorati/tab.png) no-repeat right top;
+    border-color: #666;
+    color: #666;
+    padding: 3px 10px 2px 0px;
+}
+.ajax__tab_technorati-theme .ajax__tab_hover .ajax__tab_inner
+{
+    color: #000000;
+}
+.ajax__tab_technorati-theme .ajax__tab_active .ajax__tab_outer
+{
+    background: url(images/tab/technorati/tab.png) no-repeat 0pt -40px;
+    border-bottom-color: #ffffff;
+}
+.ajax__tab_technorati-theme .ajax__tab_active .ajax__tab_inner
+{
+    background: url(images/tab/technorati/tab.png) no-repeat right -40px;
+    color: #000000;
+    border-color: #333;
+}
+.ajax__tab_technorati-theme .ajax__tab_body
+{
+    font-family: verdana,tahoma,helvetica;
+    /*font-size: 9pt;*/
+    padding: 8px;
+    background-color: #ffffff;
+    border: solid 1px #d7d7d7;
+    border-top-width: 0;
+}
+
+/* ajax__tab_msngallery-theme theme */
+.ajax__tab_msngallery-theme .ajax__tab_header
+{
+    background: url(images/tab/msngallery/tab-line.png) repeat-x bottom;
+    font-size: 12px;
+    display: block;
+}
+.ajax__tab_msngallery-theme .ajax__tab_header .ajax__tab_outer
+{
+    border: solid 1px #D7DCE1;
+    padding: 1px 1px 0px 1px;
+    border-bottom: solid 2px #A8D4D9;
+    background-color: #edf2fb;
+}
+.ajax__tab_msngallery-theme .ajax__tab_header .ajax__tab_tab
+{
+    padding: 6px 10px 6px 10px;
+    color: #444444;
+    width: 117px;
+    display: block;
+    text-align: center;
+}
+.ajax__tab_msngallery-theme .ajax__tab_header .ajax__tab_tab img
+{
+    height: 24px;
+    width: 24px;
+}
+.ajax__tab_msngallery-theme .ajax__tab_header .ajax__tab_tab div
+{
+    font-family: Verdana, Arial, Sans-Serif;
+    font-weight: bold;
+    white-space: nowrap;
+    line-height: 145%;
+    font-size: 92%;
+}
+.ajax__tab_msngallery-theme .ajax__tab_active .ajax__tab_outer
+{
+    padding: 0px 0px 0px 0px;
+    border: solid 2px #A8D4D9;
+    border-bottom-color: #ffffff;
+    background-color: #ffffff;
+}
+.ajax__tab_msngallery-theme .ajax__tab_body
+{
+    font-family: verdana,tahoma,helvetica;
+    /*font-size: 9pt;*/
+    padding: 8px;
+    background-color: #ffffff;
+    border: solid 2px #A8D4D9;
+    border-top-width: 0;
+}
+
+/* ajax__tab_ie-theme theme */
+.ajax__tab_ie-theme .ajax__tab_header
+{
+    padding-left: 5px;
+}
+.ajax__tab_ie-theme .ajax__tab_header .ajax__tab_tab
+{
+    margin-right: 0px;
+    background: url(images/tab/ie/tab_unselected.gif);
+    width: 116px;
+    padding: 9px 0px 3px 0px;
+    text-align: center;
+    color: #006699;
+    font-family: verdana;
+    font-size: 13px;
+    display: block;
+}
+.ajax__tab_ie-theme .ajax__tab_active .ajax__tab_tab
+{
+    padding: 6px 0px 3px 0px;
+    background: url(images/tab/ie/tab_selected.gif);
+}
+.ajax__tab_ie-theme .ajax__tab_body
+{
+    background: url(images/tab/ie/ie_tabbacker_720x296.jpg) no-repeat;
+    font-size: 13px;
+    font-family: verdana;
+    height: 296px;
+    width: 716px;
+}
+.ajax__tab_ie-theme .ajax__tab_body div
+{
+    padding: 8px;
+}
+
+
+
+#ajax__calendar_close_button
+{
+    margin-right: 5px;
+    margin-left: auto;
+    width: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: right;
+    color: Red;
+}
+
+
+
+
+

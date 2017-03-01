@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CrabMailDetailsLog"
+    targetNamespace="http://delta.dev/gestionepec-details-log"
+    elementFormDefault="qualified"
+    xmlns="http://delta.dev/gestionepec-details-log"
+    xmlns:mstns="http://delta.dev/gestionepec-details-log"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+	<xs:complexType name="flusso-type">
+		<xs:attribute name="oldStatus" type="xs:int"/>
+		<xs:attribute name="newStatus" type="xs:int"/>
+	</xs:complexType>
+
+	<xs:complexType name="destinatari-type">
+		<xs:sequence>
+			<xs:element name="destinatario" type ="xs:string" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="allegato-type">
+		<xs:attribute name="nome" type="xs:string"/>
+		<xs:attribute name="ext" type="xs:string"/>
+	</xs:complexType>
+	
+	<xs:complexType name="allegati-type">
+		<xs:sequence>
+			<xs:element name="allegato" type="mstns:allegato-type" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="documento-protocollo-type">
+		<xs:sequence>
+			<xs:element name="codice" type="xs:string" minOccurs="0"/>
+			<xs:element name="oggetto" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="risposta-protocollo-type">
+		<xs:sequence>
+			<xs:element name="tipo" type="xs:string"/>
+			<xs:element name="anno" type="xs:int"/>
+			<xs:element name="numero" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="protocollo-type">
+		<xs:sequence>
+			<xs:element name="documento" type="mstns:documento-protocollo-type"/>
+			<xs:element name="risposta" type="mstns:risposta-protocollo-type" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="tipo" type="xs:string"/>
+	</xs:complexType>
+	
+	<xs:complexType name="comunicazione-type">
+		<xs:sequence>
+			<xs:element name="mittente" type="xs:string"/>
+			<xs:element name="destinatari" type="mstns:destinatari-type" minOccurs="0"/>
+			<xs:element name="oggetto" type="xs:string" minOccurs="0"/>
+			<xs:element name="flusso" type="mstns:flusso-type"/>
+			<xs:element name="allegati" type="mstns:allegati-type" minOccurs="0"/>
+			<xs:element name="protocollo" type="mstns:protocollo-type" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:int"/>
+		<xs:attribute name="canale" type ="xs:string"/>
+		<xs:attribute name="x-ref-id-com" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="info-type">
+		<xs:sequence>
+			<xs:element name="comunicazione" type="mstns:comunicazione-type"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="info" type="mstns:info-type"/>
+</xs:schema>

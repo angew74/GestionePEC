@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{71BFA2EB-BACD-4576-8448-D9A7187FA62F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Com.Delta.PrintManager</RootNamespace>
+    <AssemblyName>Com.Delta.PrintManager</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Engine\Barcode.cs" />
+    <Compile Include="Engine\Box.cs" />
+    <Compile Include="Engine\ChartBox.cs" />
+    <Compile Include="Engine\ConnectionInfo.cs" />
+    <Compile Include="Engine\editors\ChartDataEditor.cs" />
+    <Compile Include="Engine\editors\ChartDataEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Engine\editors\ColumnsEditor.cs" />
+    <Compile Include="Engine\editors\ConditionEditor.cs" />
+    <Compile Include="Engine\editors\ConditionEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Engine\editors\DateEditor.cs" />
+    <Compile Include="Engine\editors\DateEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Engine\editors\FormatMaskEditor.cs" />
+    <Compile Include="Engine\editors\FormatMaskEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Engine\editors\ImageFileEditor.cs" />
+    <Compile Include="Engine\editors\ImageFileEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Engine\editors\MapDataEditor.cs" />
+    <Compile Include="Engine\editors\MapDataEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Engine\editors\PlainTextEditor.cs" />
+    <Compile Include="Engine\editors\PlainTextEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Engine\editors\StaticTableEditor.cs" />
+    <Compile Include="Engine\editors\StaticTableEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Engine\Elipse.cs" />
+    <Compile Include="Engine\HtmlSerializer.cs" />
+    <Compile Include="Engine\HttpReportHandler.cs" />
+    <Compile Include="Engine\ICustomPaint.cs" />
+    <Compile Include="Engine\ImageSerializer.cs" />
+    <Compile Include="Engine\Line.cs" />
+    <Compile Include="Engine\Map.cs" />
+    <Compile Include="Engine\Paper.cs" />
+    <Compile Include="Engine\Parse\Html\DynaString.cs" />
+    <Compile Include="Engine\Parse\Html\FastHash.cs" />
+    <Compile Include="Engine\Parse\Html\HTMLchunk.cs" />
+    <Compile Include="Engine\Parse\Html\HtmlEngine.cs" />
+    <Compile Include="Engine\Parse\Html\HTMLentities.cs" />
+    <Compile Include="Engine\Parse\Html\HTMLheuristics.cs" />
+    <Compile Include="Engine\Parse\Html\HtmlParser.cs" />
+    <Compile Include="Engine\Parse\Html\TagParser.cs" />
+    <Compile Include="Engine\PdfSerializer.cs" />
+    <Compile Include="Engine\Pdf\PdfArea.cs" />
+    <Compile Include="Engine\Pdf\PdfDocument.cs" />
+    <Compile Include="Engine\Pdf\PdfDocumentFormat.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\CCITTG4Encoder.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\Fonts\ByteBuffer.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\Fonts\FontFileResolver.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\Fonts\PdfFont.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\Fonts\PdfFontDescriptor.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\Fonts\PdfTrueTypeFont.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\Fonts\Type1Font.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfCatalog.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfCircle.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfHeader.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfImage.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfImageContent.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfImageMask.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfLine.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfObject.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfPage.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfRectangle.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfRichTextBox.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfRoot.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfShading.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfShadingPattern.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\PdfTextArea.cs" />
+    <Compile Include="Engine\Pdf\PdfObjects\RandomAccessBuffer.cs" />
+    <Compile Include="Engine\Pdf\PdfWriter.cs" />
+    <Compile Include="Engine\Pdf\Table Objects\BorderTypes.cs" />
+    <Compile Include="Engine\Pdf\Table Objects\PdfCell.cs" />
+    <Compile Include="Engine\Pdf\Table Objects\PdfCellRange.cs" />
+    <Compile Include="Engine\Pdf\Table Objects\PdfColumn.cs" />
+    <Compile Include="Engine\Pdf\Table Objects\PdfRow.cs" />
+    <Compile Include="Engine\Pdf\Table Objects\PdfTable.cs" />
+    <Compile Include="Engine\Pdf\Table Objects\PdfTablePage.cs" />
+    <Compile Include="Engine\Pdf\Utility.cs" />
+    <Compile Include="Engine\PictureBox.cs" />
+    <Compile Include="Engine\PieChart.cs" />
+    <Compile Include="Engine\PieSlice.cs" />
+    <Compile Include="Engine\PrinterBounds.cs" />
+    <Compile Include="Engine\QueryData.cs" />
+    <Compile Include="Engine\RawPrinterHelper.cs" />
+    <Compile Include="Engine\RichTextField.cs" />
+    <Compile Include="Engine\Scatter.cs" />
+    <Compile Include="Engine\Section.cs" />
+    <Compile Include="Engine\StampaDocument.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Engine\StampaPrintController.cs" />
+    <Compile Include="Engine\StartInfo.cs" />
+    <Compile Include="Engine\StyledTable.cs" />
+    <Compile Include="Engine\StyledTableColumn.cs" />
+    <Compile Include="Engine\TextField.cs" />
+    <Compile Include="Engine\TextLine.cs" />
+    <Compile Include="Engine\TextSegment.cs" />
+    <Compile Include="Engine\Timeline.cs" />
+    <Compile Include="Engine\UserPaint.cs" />
+    <Compile Include="Engine\ZipLib\Checksums\Adler32.cs" />
+    <Compile Include="Engine\ZipLib\Checksums\CRC32.cs" />
+    <Compile Include="Engine\ZipLib\Checksums\IChecksum.cs" />
+    <Compile Include="Engine\ZipLib\SharpZipBaseException.cs" />
+    <Compile Include="Engine\ZipLib\Zip\Compression\Deflater.cs" />
+    <Compile Include="Engine\ZipLib\Zip\Compression\DeflaterConstants.cs" />
+    <Compile Include="Engine\ZipLib\Zip\Compression\DeflaterEngine.cs" />
+    <Compile Include="Engine\ZipLib\Zip\Compression\DeflaterHuffman.cs" />
+    <Compile Include="Engine\ZipLib\Zip\Compression\DeflaterPending.cs" />
+    <Compile Include="Engine\ZipLib\Zip\Compression\PendingBuffer.cs" />
+    <Compile Include="Engine\ZipLib\Zip\Compression\Streams\DeflaterOutputStream.cs" />
+    <Compile Include="Flush.cs" />
+    <Compile Include="FlushPRUBuilt.cs" />
+    <Compile Include="PDFBuilder.cs" />
+    <Compile Include="Print.cs" />
+    <Compile Include="PrintPDF.cs" />
+    <Compile Include="PrintPDFByte.cs" />
+    <Compile Include="PrintPDFHandler.cs" />
+    <Compile Include="PrintPDFUrl.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PRUBuilder.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Engine\editors\ChartDataEditorDialog.resx">
+      <DependentUpon>ChartDataEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\editors\ConditionEditorDialog.resx">
+      <DependentUpon>ConditionEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\editors\DateEditorDialog.resx">
+      <DependentUpon>DateEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\editors\FormatMaskEditorDialog.resx">
+      <DependentUpon>FormatMaskEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\editors\ImageFileEditorDialog.resx">
+      <DependentUpon>ImageFileEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\editors\MapDataEditorDialog.resx">
+      <DependentUpon>MapDataEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\editors\PlainTextEditorDialog.resx">
+      <DependentUpon>PlainTextEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\editors\StaticTableEditorDialog.resx">
+      <DependentUpon>StaticTableEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Engine\StampaDocument.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
