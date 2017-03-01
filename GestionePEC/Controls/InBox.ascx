@@ -573,6 +573,7 @@ Ext.onReady(function () {
                 dock: 'top',
                 items: [{
                     xtype: 'tbtext',
+                    width:'100',
                     text: 'Cartella:'
                 }, Folder, { xtype: 'tbseparator' },
                     {
