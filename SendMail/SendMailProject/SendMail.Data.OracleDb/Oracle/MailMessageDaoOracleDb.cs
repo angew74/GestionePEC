@@ -1012,8 +1012,9 @@ namespace SendMail.Data.OracleDb
                         }
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
+                    _log.Error(ex.Message);
                     throw;
                 }
             }

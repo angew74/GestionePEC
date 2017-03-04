@@ -82,6 +82,7 @@ Ext.onReady(function () {
         readOnly: true,
         mode: 'local',
         width: 350,
+        labelWidth:50,
         mode: 'local',       
         tabIndex: 4,
         store: new Ext.data.ArrayStore({
@@ -168,6 +169,39 @@ Ext.onReady(function () {
         }
     });
 
+    function GetFilterCustom() {
+        var sType = '';
+        var filterCustomFunc;
+        var folderFilter = Ext.getCmp('folders').getValue();
+        var txt = '';
+        var status = '';
+        if (typeof FilterAction != 'undefined') {
+            sType = Ext.getCmp('FilterAction').getValue();
+        };
+        if (typeof FindText != 'undefined') {
+            txt = Ext.getCmp('FindText').getValue();
+        };
+        if (typeof StatusFilter != 'undefined') {
+            status = StatusFilter.getValue();
+        };
+        if ((sType != '' && sType != '0' && txt.length > 3) || (status != '' && status != null)) {
+            var filter = {
+                text: {
+                    tipo: sType,
+                    value: txt
+                },
+                status: {
+                    tipo: '<%= (int)MailIndexedSearch.STATUS_MAIL %>',
+                    value: status
+                }
+            };
+            if (typeof store != 'undefined') {
+                var filterCustomFunc = JSON.stringify(filter);
+            }
+        }
+        return filterCustomFunc;
+    }
+
 
     var store = new Ext.data.JsonStore({
         // root: 'Data',
@@ -203,13 +237,13 @@ Ext.onReady(function () {
                 //  s.setBaseParam('mailIds', selectedIds);
                 //  s.setBaseParam('parFolder',parentFolder);  
               //  currentFolder = document.getElementById('ctl00_MainContentPlaceHolder_Inbox1_hfCurrentFolder').value;             
-                         
+                var filterCustomLoad = GetFilterCustom();
                 store.getProxy().extraParams = {}; // clear all previous
                 store.getProxy().extraParams.folder = Ext.getCmp('folders').getValue();
                 store.getProxy().extraParams.mailAction = mailAction;
                 store.getProxy().extraParams.mailIds = selectedIds;
                 store.getProxy().extraParams.parFolder = parentFolder;
-                store.getProxy().extraParams.filter = filterCustom;
+                store.getProxy().extraParams.filter = filterCustomLoad;
             }
         }
     });   
@@ -320,7 +354,9 @@ Ext.onReady(function () {
             id: 'ComboActions',
             model: 'ActionsModel',
             disabled: true,
-            width: 300,
+            width: 300,           
+            hideLabel: true,
+            labelWidth: 10,
             queryMode: 'local',
             hideTrigger: true,
             forceSelection: true,
@@ -428,7 +464,7 @@ Ext.onReady(function () {
             // forceSelection: true,
             //lazyRender: true,
             emptyText: 'Filtra per...',
-            width: 100,
+            width: 150,
             labelWidth: 30,
             // mode: 'local',
             queryMode: 'local',
@@ -480,6 +516,7 @@ Ext.onReady(function () {
 
         var FindText = Ext.create('Ext.form.field.Text', {
             width: 350,
+            labelWidth: 20,
             emptyText: 'cerca...',
             validateOnBlur: false,
             disabled: true,
@@ -573,12 +610,12 @@ Ext.onReady(function () {
                 dock: 'top',
                 items: [{
                     xtype: 'tbtext',
-                    width:'100',
+                    width: 10,
                     text: 'Cartella:'
                 }, Folder, { xtype: 'tbseparator' },
                     {
                         xtype: 'panel',
-                        layout: 'fit',
+                       // layout: 'fit',
                         bodyStyle: { 'background-color': 'transparent' },
                         border: false,
                         buttonAlign: 'center',
@@ -593,8 +630,8 @@ Ext.onReady(function () {
        {xtype: 'toolbar',
         dock: 'top',
         items: [{
-                        xtype: 'tbtext',
-                        text: 'Azioni:'
+            xtype: 'tbtext',
+           text: 'Azioni:'
                     },
                     MailActions,
                     { xtype: 'tbseparator' },
@@ -630,7 +667,9 @@ Ext.onReady(function () {
 
         var grid = Ext.create('Ext.grid.Panel', {
             id: 'mailGrid',
-            height: 300,
+            height: 350,
+            forceFit: true,            
+            //split: true,
             selModel: selectionModel,
             loadMask: {
                 msg: 'Caricamento...'
@@ -657,14 +696,14 @@ Ext.onReady(function () {
                 {
                     id: 'status',
                     dataIndex: 'sStatus',
-                    width: 48,
+                    width: 55,
                     fixed: true,
                     sortable: false,
                     renderer: renderStatus
                 }, {
                     id: 'attachments',
                     dataIndex: 'attach',
-                    width: 23,
+                    width: 30,
                     fixed: true,
                     sortable: false,
                     renderer: renderAttachments
@@ -672,7 +711,7 @@ Ext.onReady(function () {
                     id: 'utente',
                     header: 'Utente',
                     dataIndex: 'utente',
-                    width: 90,
+                    width: 110,
                     fixed: true,
                     sortable: false,
                     renderer: renderTopic
@@ -680,7 +719,7 @@ Ext.onReady(function () {
                     id: 'date',
                     header: "Ricevuto il",
                     dataIndex: 'date',
-                    width: 140,
+                    width: 150,
                     fixed: true,
                     renderer: renderLast,
                     sortable: true
@@ -689,7 +728,7 @@ Ext.onReady(function () {
                     header: "Mittente",
                     dataIndex: 'from',
                     renderer: renderTopic,
-                    width: 300,
+                    width: 350,
                     sortable: true
                 }, {
                     id: 'subject',

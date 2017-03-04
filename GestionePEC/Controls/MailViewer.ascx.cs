@@ -22,6 +22,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace GestionePEC.Controls
 {
@@ -327,13 +328,16 @@ namespace GestionePEC.Controls
                     { ibShowMailTree.Visible = true; }
                     else { ibShowMailTree.Visible = false; }
                 }
+                else
                 {
-                    ibShowMailTree.Visible = false;
-                    int id = msg.Id;
-                    string uid = msg.Uid;
                     try
                     {
+                        int id = msg.Id;
+                        string uid = msg.Uid;
                         ActiveUp.Net.Mail.Header header = Parser.ParseHeader(msg.OriginalData);
+
+                        System.Reflection.PropertyInfo[] t = typeof(ActiveUp.Net.Mail.Header).GetProperties(); //tutte le proprietà header
+
                         foreach (System.Reflection.PropertyInfo pi in
                             typeof(ActiveUp.Net.Mail.Header).GetProperties())
                         {
@@ -344,56 +348,76 @@ namespace GestionePEC.Controls
                                     System.Reflection.PropertyInfo pm = (from p in typeof(Message).GetProperties()
                                                                          where p.Name == pi.Name
                                                                          select p).SingleOrDefault();
-                                    if (pm != null && pm.CanWrite)
+                                    if (pm.Name != "ConfirmRead" && pm.Name != "Xref")
                                     {
-                                        pm.SetValue(msg, pi.GetValue(header, null), null);
+                                        if (pm != null && pm.CanWrite)
+                                        {
+                                            pm.SetValue(msg, pi.GetValue(header, null), null);
+                                        }
                                     }
                                 }
                             }
                             catch (Exception ex)
-                            {
+                            {                               
                                 if (ex.GetType() != typeof(ManagedException))
                                 {
-                                    ManagedException mEx = new ManagedException(ex.Message, "ERR_G045", string.Empty, string.Empty, ex);
+                                    ManagedException mEx = new ManagedException("Errore nella lettura delle proprietà dei messaggi. Dettaglio: "
+                                        + ex.Message,
+                                        "ERR_MV001",
+                                        string.Empty,
+                                        string.Empty,
+                                        ex.InnerException);
+                                    mEx.addEnanchedInfosTag("DETAILS", new XElement("info",
+                                        new XElement("MAIL_INBOX.ID_MAIL", id.ToString()),
+                                        new XElement("MAIL_INBOX.UID", uid.ToString()),
+                                        new XElement("user_msg", "Errore nella lettura delle proprietà dei messaggi. Dettaglio: " + ex.Message),
+                                        new XElement("exception",
+                                            new XElement("message", ex.Message),
+                                            new XElement("source", ex.Source),
+                                            new XElement("stack", ex.StackTrace),
+                                            new XElement("innerException", ex.InnerException))).ToString(SaveOptions.DisableFormatting));
                                     ErrorLogInfo er = new ErrorLogInfo(mEx);
+                                    er.objectID = (id != null) ? id.ToString() : "-";
                                     _log.Error(er);
+                                    throw mEx;
                                 }
+                                else throw ex;
                             }
-                        }
+                        }                       
+                        msg.Id = id;
+                        hfIdMail.Value = id.ToString();
+                        hfUIDMail.Value = msg.Uid = uid;                      
+                        lbDownload.Visible = true;
+                        this.CurrentMessage = msg;                       
+                        ReplyButton.Visible = ForwardButton.Visible = lnbSMBack.Visible = ibReSend.Visible = ibShowMailTree.Visible = lbStampaPdf.Visible = false;
+                        MailContent.Visible = PnlAttachment.Visible = PnlInnerMail.Visible = PnlEmbeddedElements.Visible = false;
+                        return;
                     }
                     catch (Exception ex)
-                    {
+                    {                       
                         if (ex.GetType() != typeof(ManagedException))
                         {
-               
-                            ManagedException mEx = new ManagedException(ex.Message, "ERR_G046", string.Empty, string.Empty, ex);
+                            ManagedException mEx = new ManagedException("Errore lettura degli header >> " + ex.Message,
+                                "ERR987",
+                                string.Empty,
+                                string.Empty,
+                                ex.InnerException);
+                            mEx.addEnanchedInfosTag("DETAILS", new XElement("info",
+                                new XElement("user_msg", "Errore lettura degli header. Dettaglio: " + ex.Message),
+                                new XElement("exception",
+                                    new XElement("message", ex.Message),
+                                    new XElement("source", ex.Source),
+                                    new XElement("stack", ex.StackTrace),
+                                    new XElement("innerException", ex.InnerException))).ToString(SaveOptions.DisableFormatting));
                             ErrorLogInfo er = new ErrorLogInfo(mEx);
+                            er.objectID = (msg != null) ? msg.Id.ToString() : " - ";
                             _log.Error(er);
                         }
+                        (this.Page as BasePage).info.AddMessage("Impossibile elaborare la email riprovare in un secondo momento", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                        return;
                     }
-                    //msg = Parser.ParseMessage(msg.OriginalData);
-                    msg.Id = id;
-                    hfIdMail.Value = id.ToString();
-                    hfUIDMail.Value = msg.Uid = uid;
-                    // WebMailClientManager.CurrentMailSet(msg);
-                    //WebMailClientManager.CurrentMailRemove();
-                    lbDownload.Visible = true;
-                    this.CurrentMessage = msg;
-                    //lnbSMBack.Visible = ReplyButton.Visible = ForwardButton.Visible = ibReSend.Visible = ibShowMailTree.Visible = lbStampaPdf.Visible = false;
-                    lnbSMBack.Visible = ibReSend.Visible = ibShowMailTree.Visible = lbStampaPdf.Visible = false;
-                    MailContent.Visible = PnlAttachment.Visible = PnlInnerMail.Visible = PnlEmbeddedElements.Visible = false; return;
-                }
-                //}
-                //catch (Exception ex)
-                //{
-                //    ErrorLogInfo error = new ErrorLogInfo();
-                //    error.freeTextDetails =" Errore nel parsing email : " + ex.Message + " + " + ex.InnerException;
-                //    error.logCode = "ERR987";
-                //    error.loggingAppCode = "CRAB";
-                //    _log.Error(error);
-                //    (this.Page as BasePage).info.AddMessage("Impossibile elaborare la email riprovare in un secondo momento", Com.Unisys.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                //    return;
-                //}
+
+                }               
             }
             this.DataBind();
         }

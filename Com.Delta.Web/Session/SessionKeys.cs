@@ -48,8 +48,7 @@ namespace Com.Delta.Web.Session
 
         TESTO_MAIL_ELE,
 
-        TESTO_MAIL_NEW
-       
-
+        TESTO_MAIL_NEW,
+        ACCOUNTS_LIST
     }
 }

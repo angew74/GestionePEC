@@ -1,4 +1,4 @@
-﻿using Com.Unisys.Logging.Errors;
+﻿using Com.Delta.Logging.Errors;
 using iTextSharp.text;
 using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;

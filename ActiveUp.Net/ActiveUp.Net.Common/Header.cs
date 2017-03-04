@@ -712,7 +712,11 @@ namespace ActiveUp.Net.Mail
             }
             set
             {
-                this.AddHeaderField("Disposition-Notification-To", value.Merged);
+                // nr modificato il 04/03/2017
+                if (value != null)
+                {
+                    this.AddHeaderField("Disposition-Notification-To", value.Merged);
+                }
             }
         }
 
@@ -1136,9 +1140,13 @@ namespace ActiveUp.Net.Mail
             get
             {
                 UsenetXrefList xref = new UsenetXrefList();
-                xref.Host = this.HeaderFields["xref"].Split(' ')[0];
-                string[] splitted = this.HeaderFields["xref"].Split(' ');
-                for (int i = 1; i < splitted.Length; i++) if (splitted[i].IndexOf(":") != -1) xref.Groups.Add(splitted[i].Split(':')[0], splitted[i].Split(':')[1]);
+                // nr modifica 04/03/2017
+                if (this.HeaderFields["xref"] != null)
+                {
+                    xref.Host = this.HeaderFields["xref"].Split(' ')[0];
+                    string[] splitted = this.HeaderFields["xref"].Split(' ');
+                    for (int i = 1; i < splitted.Length; i++) if (splitted[i].IndexOf(":") != -1) xref.Groups.Add(splitted[i].Split(':')[0], splitted[i].Split(':')[1]);
+                }
                 return xref;
             }
             set

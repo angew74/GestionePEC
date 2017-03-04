@@ -29,7 +29,7 @@ namespace GestionePEC
                 System.Threading.Thread.CurrentPrincipal = null;
                 Context.User = null;
                 System.Web.Security.FormsAuthentication.SignOut();
-                Session.Abandon();
+                Session.Abandon();             
 
             }
             catch (ManagedException) { }
@@ -38,7 +38,7 @@ namespace GestionePEC
                 _log.Error(new Com.Delta.Logging.Errors.ErrorLog("MAIL", ex, string.Empty, string.Empty, string.Empty));
                 info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
             }
-
+            Response.Redirect("~/Login.aspx");
         }
     }
 }

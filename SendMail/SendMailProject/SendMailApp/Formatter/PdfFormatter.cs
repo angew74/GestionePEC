@@ -6,7 +6,7 @@ using ApacheFop;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using log4net;
-using Com.Unisys.Logging.Errors;
+using Com.Delta.Logging.Errors;
 
 namespace SendMailApp.Formatter
 {

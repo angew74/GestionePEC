@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
-using Com.Unisys.MetaBus.Base;
+using Com.Delta.MetaBus.Base;
 using SendMail.Model;
-using Com.Unisys.MetaBus.Schemas.Envelope;
-using Com.Unisys.MetaBus.Schemas.Smtp;
-using ActiveUp.Net.Common.UnisysExt;
+using Com.Delta.MetaBus.Schemas.Envelope;
+using Com.Delta.MetaBus.Schemas.Smtp;
+using ActiveUp.Net.Common.DeltaExt;
 
 namespace SendMailApp
 {

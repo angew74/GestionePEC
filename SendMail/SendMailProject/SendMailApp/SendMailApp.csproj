@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SendMailApp</RootNamespace>
     <AssemblyName>SendMailApp</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -46,8 +46,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -108,11 +109,12 @@
     <Reference Include="itextsharp">
       <HintPath>..\..\..\UnisysLibrary\da_prod\itextsharp.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\NEWAPP\GestionePEC\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Oracle.DataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -146,11 +148,8 @@
     <Compile Include="Formatter\XmlUty.cs" />
     <Compile Include="Inbox\ReceiverMail.cs" />
     <Compile Include="Options.cs" />
-    <Compile Include="Send\ComunicazioneConverter.cs" />
-    <Compile Include="Send\MailConverter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Send\SenderMail.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -159,33 +158,36 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\ActiveUp.Net\ActiveUp.Net.Common\ActiveUp.Net.Common.csproj">
-      <Project>{3A83AE95-C23F-48B4-9F1A-AD4B32C37B93}</Project>
+      <Project>{3a83ae95-c23f-48b4-9f1a-ad4b32c37b93}</Project>
       <Name>ActiveUp.Net.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Com.Unisys.MetaBus v1.1\Com.Unisys.MetaBus.Base\Com.Unisys.MetaBus.Base.csproj">
-      <Project>{97C0BA3F-DE73-42D4-B5C8-B146356F2131}</Project>
-      <Name>Com.Unisys.MetaBus.Base</Name>
+    <ProjectReference Include="..\..\..\Com.Delta.Logging\Com.Delta.Logging.csproj">
+      <Project>{a8c15d12-6e47-4af5-badf-b6cbc421ec40}</Project>
+      <Name>Com.Delta.Logging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Com.Unisys\Com.Unisys.PrintDirector\Com.Unisys.PrintDirector\Com.Unisys.PrintDirector.csproj">
-      <Project>{48E375BB-AD83-4412-89F6-1828FE029423}</Project>
-      <Name>Com.Unisys.PrintDirector</Name>
+    <ProjectReference Include="..\..\..\Com.Delta.Mail\Com.Delta.Mail.csproj">
+      <Project>{62e74faf-8c36-4874-8598-545f2a8371da}</Project>
+      <Name>Com.Delta.Mail</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\FAXPec\Com.Unisys.Mail\Com.Unisys.Mail.csproj">
-      <Project>{80A498FA-5A52-4CF9-8F48-3BF753B6FE44}</Project>
-      <Name>Com.Unisys.Mail</Name>
+    <ProjectReference Include="..\..\..\Com.Delta.Print\Com.Delta.Print.csproj">
+      <Project>{a3e89e05-618d-4c9e-b961-e684c1476168}</Project>
+      <Name>Com.Delta.Print</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\UnisysLibrary\Com.Unisys.Logging\Com.Unisys.Logging.csproj">
-      <Project>{F35A26AE-E79F-4FC2-832A-01F6F4550128}</Project>
-      <Name>Com.Unisys.Logging</Name>
-      <Private>True</Private>
+    <ProjectReference Include="..\..\..\Com.Delta.Web\Com.Delta.Web.csproj">
+      <Project>{cdb0c146-9a70-4dd9-b878-29bb982157ca}</Project>
+      <Name>Com.Delta.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SendMail.Model\SendMail.Model.csproj">
-      <Project>{647C1188-A0DA-412B-9640-218CF6C3E99A}</Project>
+      <Project>{647c1188-a0da-412b-9640-218cf6c3e99a}</Project>
       <Name>SendMail.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SendMailBusiness\SendMail.Business.csproj">
       <Project>{adb531c5-221b-4182-8270-799af268c75a}</Project>
       <Name>SendMail.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SendMail.Data.OracleDb\SendMail.Data.OracleDb.csproj">
+      <Project>{492c4859-0e27-4f6a-8e85-ec0b479fe035}</Project>
+      <Name>SendMail.Data.OracleDb</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +196,7 @@
     <Content Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -240,6 +243,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Send\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

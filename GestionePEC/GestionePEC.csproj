@@ -954,7 +954,11 @@
     <Content Include="App_Themes\Delta\images\tree\folder.png" />
     <Content Include="App_Themes\Delta\images\tree\leaf-rtl.png" />
     <Content Include="App_Themes\Delta\images\tree\leaf.png" />
+    <Content Include="App_Themes\Delta\images\tree\left-blue-arrow.png" />
     <Content Include="App_Themes\Delta\images\tree\loading.gif" />
+    <Content Include="App_Themes\Delta\images\tree\right-red-arrow.png" />
+    <Content Include="App_Themes\Delta\images\tree\s.gif" />
+    <Content Include="App_Themes\Delta\images\tree\view-tree.png" />
     <Content Include="App_Themes\Delta\images\util\splitter\collapse.gif" />
     <Content Include="App_Themes\Delta\images\util\splitter\expand.gif" />
     <Content Include="App_Themes\Delta\images\util\splitter\gradient-bg.gif" />
@@ -1009,6 +1013,7 @@
     <Content Include="App_Themes\Delta\tab.css" />
     <Content Include="App_Themes\Delta\delta.css" />
     <Content Include="Asmx\FoldersService.svc" />
+    <Content Include="Controls\DateTime.ascx" />
     <Content Include="Controls\InBox.ascx" />
     <Content Include="Controls\MailBoxLogin.ascx" />
     <Content Include="Controls\MailBoxNavigator.ascx" />
@@ -1017,6 +1022,8 @@
     <Content Include="Controls\MailTreeViewer.ascx" />
     <Content Include="Controls\MailViewer.ascx" />
     <Content Include="Controls\NewMail.ascx" />
+    <Content Include="Controls\Paging.ascx" />
+    <Content Include="Controls\RicercaMail.ascx" />
     <Content Include="pages\common\Default.aspx" />
     <Content Include="ExtJS5\ext-all-debug.js" />
     <Content Include="ExtJS5\ext-all.js" />
@@ -1060,6 +1067,13 @@
     </Compile>
     <Compile Include="Asmx\FoldersService.svc.cs">
       <DependentUpon>FoldersService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DateTime.ascx.cs">
+      <DependentUpon>DateTime.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\DateTime.ascx.designer.cs">
+      <DependentUpon>DateTime.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\InBox.ascx.cs">
       <DependentUpon>InBox.ascx</DependentUpon>
@@ -1116,9 +1130,24 @@
     <Compile Include="Controls\NewMail.ascx.designer.cs">
       <DependentUpon>NewMail.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Paging.ascx.cs">
+      <DependentUpon>Paging.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Paging.ascx.designer.cs">
+      <DependentUpon>Paging.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RicercaMail.ascx.cs">
+      <DependentUpon>RicercaMail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\RicercaMail.ascx.designer.cs">
+      <DependentUpon>RicercaMail.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\Helpers.cs" />
     <Compile Include="Extensions\InlineScript.cs" />
     <Compile Include="Extensions\LinqExtensionMethods.cs" />
+    <Compile Include="Extensions\Utility.cs" />
     <Compile Include="pages\common\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1250,6 +1279,11 @@
       <DependentUpon>Mapping.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Routing\WebFormRouteHandler.cs" />
     <Compile Include="Users\Register.aspx.cs">
       <DependentUpon>Register.aspx</DependentUpon>
@@ -1278,6 +1312,11 @@
     <Content Include="log4net.config" />
     <Content Include="Ashx\GestoreRatingMail.ashx" />
     <Content Include="Ashx\GeneralSearcher.ashx" />
+    <None Include="Properties\PublishProfiles\Delta.pubxml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

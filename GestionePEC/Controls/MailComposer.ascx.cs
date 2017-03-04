@@ -640,7 +640,7 @@ namespace GestionePEC.Controls
                 this.addEmailsTo(ToTextBox.Text, msg);
                 this.addEmailsCc(CCTextBox.Text, msg);
                 this.addEmailCcn(BCCTextBox.Text, msg);
-                msg.Date = DateTime.Now;
+                msg.Date = System.DateTime.Now;
                 //mantengo il vecchio testo perché in caso di ErrorEventArgs lo devo ripristinare
                 bodyBag = msg.BodyHtml.Text;
                 BodyChunk bb = new BodyChunk();
@@ -781,7 +781,7 @@ namespace GestionePEC.Controls
             {
                 if (ex.GetType() != typeof(ManagedException))
                     _log.Error(new Com.Delta.Logging.Errors.ErrorLog(new ManagedException(ex.Message, "FAC_007", string.Empty, string.Empty, ex)));
-                //_log.Error(new Com.Unisys.Logging.Errors.ErrorLog("FAC_007", ex, string.Empty, string.Empty, string.Empty));
+                //_log.Error(new Com.Delta.Logging.Errors.ErrorLog("FAC_007", ex, string.Empty, string.Empty, string.Empty));
 
                 MailMessageComposer.CurrentSendMailGet().BodyHtml.Text = bodyBag;
                 ErrorLabel.Visible = true;
@@ -970,7 +970,7 @@ namespace GestionePEC.Controls
                         w.RenderBeginTag(HtmlTextWriterTag.P);
                         w.WriteLine();
                         w.Indent++;
-                        if (msg.Date != DateTime.MinValue)
+                        if (msg.Date != System.DateTime.MinValue)
                             w.WriteLine("Inviata il: " + msg.Date.ToString("dd/MM/yyyy HH:mm:ss"));
                         else
                             w.WriteLine("Inviata il: " + msg.DateString);

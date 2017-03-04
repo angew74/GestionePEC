@@ -56,16 +56,15 @@
                                 <asp:HyperLink ID="imgMenu" ToolTip="Vai al menu delle applicazioni" ImageAlign="Middle"
                                     NavigateUrl="http://uniapp.comune.roma/menu/" Visible="true" runat="server" ImageUrl="~/App_Themes/Delta/images/buttons/home.png"></asp:HyperLink>
                                 </td>
+                        <asp:LoginView ID="LoginView1" runat="server">
+                                <LoggedInTemplate>
                              <td>
                                   <asp:HyperLink ID="HyperLink1" ToolTip="Esci dall'applicazione" ImageAlign="Middle"
                                     NavigateUrl="~/LogOff.aspx" Visible="true" runat="server" ImageUrl="~/App_Themes/Delta/images/buttons/exit.png"></asp:HyperLink>
                                  <!-- <div id="logoffbutton" style="height:60px; width: 60px; border-width: 0px;vertical-align:top"></div>-->
-                            </td>                            
-                            <asp:LoginView ID="LoginView1" runat="server">
-                                <LoggedInTemplate>
-                                   
+                            </td>                           
                                      <%--   <asp:ImageButton ID="LogoffButton" ToolTip="Esci dall'applicazione" ImageAlign="Middle" UseSubmitBehavior="false"
-                                            runat="server" ImageUrl="~/Content/themes/unisys/images/buttons/exit.png" Style="height: 32px; width: 32px; border-width: 0px;"
+                                            runat="server" ImageUrl="~/Content/themes/Delta/images/buttons/exit.png" Style="height: 32px; width: 32px; border-width: 0px;"
                                       OnClick="LogoffButton_Click"      />    --%>  
                                     <td>
                                         <asp:Image ID="ImageUser" ToolTip="Utente autenticato" ImageAlign="Middle" Visible="true"

@@ -7,63 +7,90 @@
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace GestionePEC.pages.MailClient {
+namespace GestionePEC.Controls {
     
     
-    public partial class MailSearch {
+    public partial class DateTime {
         
         /// <summary>
-        /// Controllo pnlLogin.
+        /// Controllo Contenitore.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlLogin;
+        protected global::System.Web.UI.WebControls.Panel Contenitore;
         
         /// <summary>
-        /// Controllo MailResearch.
+        /// Controllo lblTitle.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::GestionePEC.Controls.RicercaMail MailResearch;
+        protected global::System.Web.UI.WebControls.Label lblTitle;
         
         /// <summary>
-        /// Controllo pnlMail.
+        /// Controllo tdDataG.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlMail;
+        protected global::System.Web.UI.WebControls.TextBox tdDataG;
         
         /// <summary>
-        /// Controllo MailViewer1.
+        /// Controllo tdDataM.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::GestionePEC.Controls.MailViewer MailViewer1;
+        protected global::System.Web.UI.WebControls.TextBox tdDataM;
         
         /// <summary>
-        /// Controllo ucSendMail.
+        /// Controllo tdDataY.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::GestionePEC.Controls.MailModal ucSendMail;
+        protected global::System.Web.UI.WebControls.TextBox tdDataY;
         
         /// <summary>
-        /// Controllo mailTreeViewer.
+        /// Controllo rfvAnno.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::GestionePEC.Controls.MailTreeViewer mailTreeViewer;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvAnno;
+        
+        /// <summary>
+        /// Controllo vceAnno.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ValidatorCalloutExtender vceAnno;
+        
+        /// <summary>
+        /// Controllo revAnno.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revAnno;
+        
+        /// <summary>
+        /// Controllo cvREVAnno.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ValidatorCalloutExtender cvREVAnno;
     }
 }

@@ -5,12 +5,9 @@ using log4net;
 using System.Threading;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using Com.Unisys.Logging;
-using Com.Unisys.Logging.Errors;
+using Com.Delta.Logging;
+using Com.Delta.Logging.Errors;
 using System.Configuration;
-using System.Collections.Specialized;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
 
 #endregion
 
@@ -110,14 +107,14 @@ namespace SendMailApp
                     switch (tipoOp)
                     {
                         case "SEND":
-                            SenderMail.Send(mail, maxNrMail);
+                           // SenderMail.Send(mail, maxNrMail);
                             break;
                         case "RECEIVE":
                             ReceiverMail.Receive(mail);
                             break;
                         case "ALL":
                             ReceiverMail.Receive(mail);
-                            SenderMail.Send(mail, maxNrMail);
+                          //  SenderMail.Send(mail, maxNrMail);
                             break;
                         default:
                             throw new ArgumentException("Operazione non gestita");

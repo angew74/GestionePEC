@@ -87,13 +87,13 @@
                         <cc1:AsyncFileUpload runat="server" ID="asyncFileUpload" ThrobberID="throbber" Width="500px"
                             UploaderStyle="Traditional" OnClientUploadError="onUploadError" OnClientUploadComplete="onUploadComplete"
                             OnUploadedComplete="asyncFileUpload_UploadedComplete" OnUploadedFileError="asyncFileUpload_UploadedFileError" />
-                        <asp:Image runat="server" ID="throbber" ImageUrl="~/App_Themes/unisys/images/default/tree/loading.gif" />
+                        <asp:Image runat="server" ID="throbber" ImageUrl="~/App_Themes/Delta/images/tree/loading.gif" />
                         <asp:Button ID="Button2" runat="server" Text="Aggiungi" OnClick="btnPostFileUpload_Click" />
                         <asp:Repeater runat="server" ID="rptNewAttach" DataSource='<%# CurrentMessage.Attachments.Cast<MimePart>().Where(x => x.ParentMessage == null) %>'
                             OnItemCommand="rpAttach_ItemCommand" Visible='<%# CurrentMessage.Attachments.Cast<MimePart>().Where(x => x.ParentMessage == null).Count() != 0 %>'>
                             <ItemTemplate>
                                 <div>
-                                    <asp:ImageButton runat="server" ID="ibRemoveNewAttach" ImageAlign="Middle" ImageUrl="~/App_Themes/unisys/images/buttons/delete.png"
+                                    <asp:ImageButton runat="server" ID="ibRemoveNewAttach" ImageAlign="Middle" ImageUrl="~/App_Themes/Delta/images/buttons/delete.png"
                                         CommandName="RemoveAttach" CommandArgument='<%# Eval("Filename") %>' />
                                     <label>
                                         <%# Eval("Filename") %>;</label>
@@ -119,7 +119,7 @@
                             OnItemCommand="rpAttach_ItemCommand" Visible='<%# DivsVisibility[Divs.Attachments] %>'>
                             <ItemTemplate>
                                 <div>
-                                    <asp:ImageButton runat="server" ID="ibRemoveAttach" ImageAlign="Middle" ImageUrl="~/App_Themes/unisys/images/buttons/delete.png"
+                                    <asp:ImageButton runat="server" ID="ibRemoveAttach" ImageAlign="Middle" ImageUrl="~/App_Themes/Delta/images/buttons/delete.png"
                                         CommandName="RemoveAttach" CommandArgument='<%# Eval("Filename") %>' Visible='<%# MailEditabile %>' />
                                     <label>
                                         <%# Eval("Filename") %>;</label>

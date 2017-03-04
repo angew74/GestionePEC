@@ -70,7 +70,7 @@ namespace GestionePEC.Asmx
                                    where f.Id == idfolder
                                    select f.Azioni).ToList();
                     folderResponse.ActionsList = results[0];
-                    //List<ActiveUp.Net.Common.UnisysExt.Action> actions =(List<ActiveUp.Net.Common.UnisysExt.Action>) Folders.Where(f => f.TipoFolder.ToUpper() == tipoFolder && f.Id == idfolder).ToList().First().Azioni;
+                    //List<ActiveUp.Net.Common.DeltaExt.Action> actions =(List<ActiveUp.Net.Common.DeltaExt.Action>) Folders.Where(f => f.TipoFolder.ToUpper() == tipoFolder && f.Id == idfolder).ToList().First().Azioni;
                     //folderResponse.data = new Actions(actions);  
                     folderResponse.success = "true";
                     folderResponse.total = folderResponse.ActionsList.Count;

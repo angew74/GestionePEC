@@ -67,15 +67,6 @@ namespace GestionePEC.Master {
         protected global::System.Web.UI.WebControls.HyperLink imgMenu;
         
         /// <summary>
-        /// Controllo HyperLink1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink HyperLink1;
-        
-        /// <summary>
         /// Controllo LoginView1.
         /// </summary>
         /// <remarks>

@@ -7,63 +7,45 @@
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace GestionePEC.pages.MailClient {
+namespace GestionePEC.Controls {
     
     
-    public partial class MailSearch {
+    public partial class Paging {
         
         /// <summary>
-        /// Controllo pnlLogin.
+        /// Controllo labPager.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlLogin;
+        protected global::System.Web.UI.WebControls.Label labPager;
         
         /// <summary>
-        /// Controllo MailResearch.
+        /// Controllo ddlPagerPages.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::GestionePEC.Controls.RicercaMail MailResearch;
+        protected global::System.Web.UI.WebControls.DropDownList ddlPagerPages;
         
         /// <summary>
-        /// Controllo pnlMail.
+        /// Controllo labPagerPages.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlMail;
+        protected global::System.Web.UI.WebControls.Label labPagerPages;
         
         /// <summary>
-        /// Controllo MailViewer1.
+        /// Controllo hfPagingValue.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::GestionePEC.Controls.MailViewer MailViewer1;
-        
-        /// <summary>
-        /// Controllo ucSendMail.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::GestionePEC.Controls.MailModal ucSendMail;
-        
-        /// <summary>
-        /// Controllo mailTreeViewer.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::GestionePEC.Controls.MailTreeViewer mailTreeViewer;
+        protected global::System.Web.UI.WebControls.HiddenField hfPagingValue;
     }
 }

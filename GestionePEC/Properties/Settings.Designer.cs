@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SendMailApp.Properties {
+namespace GestionePEC.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,10 +25,10 @@ namespace SendMailApp.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://10.173.9.28/MetaBus/MetaBus.asmx")]
-        public string Com_Delta_MetaBus_Base_MetBusProxy_MetaBus {
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public string ListaRisultatiPerPagina {
             get {
-                return ((string)(this["Com_Delta_MetaBus_Base_MetBusProxy_MetaBus"]));
+                return ((string)(this["ListaRisultatiPerPagina"]));
             }
         }
     }

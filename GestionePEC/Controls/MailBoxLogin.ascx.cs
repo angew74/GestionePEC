@@ -3,6 +3,7 @@ using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
 using Com.Delta.Mail.MailMessage;
 using Com.Delta.Security;
+using Com.Delta.Web.Session;
 using GestionePEC.Extensions;
 using log4net;
 using SendMail.Locator;
@@ -110,11 +111,15 @@ namespace GestionePEC.Controls
         protected void ddlManagedAccounts_DataBinding(object sender, EventArgs e)
         {
             string username = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
-
-            IList<MailUser> l = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetManagedAccountByUser(username);
-            if (l == null) l = new List<MailUser>();
-            if (l.Where(x => x.UserId.Equals(-1)).Count() == 0)
-                l.Insert(0, new MailUser() { UserId = -1, EmailAddress = "" });
+            List<MailUser> l = SessionManager<List<MailUser>>.get(SessionKeys.ACCOUNTS_LIST);
+            if (!(l != null && l.Count != 0))
+            {
+                l = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetManagedAccountByUser(username).ToList();
+                if (l == null) l = new List<MailUser>();
+                if (l.Where(x => x.UserId.Equals(-1)).Count() == 0)
+                    l.Insert(0, new MailUser() { UserId = -1, EmailAddress = "" });
+                SessionManager<List<MailUser>>.set(SessionKeys.ACCOUNTS_LIST,l);
+            }
             DropDownList ddl = sender as DropDownList;
             ddl.DataSource = l;
             ddl.DataTextField = "EmailAddress";

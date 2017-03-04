@@ -67,11 +67,11 @@
                     CssClass="mailAcquire" ToolTip="Acquisisci Mail" Visible="<%# ButtonVisible[HeaderButtons.Acquire] && (String.IsNullOrEmpty(this.rating.InnerHtml) || (int.Parse(this.rating.InnerHtml) == 0)) %>"></asp:LinkButton>
                 <% } %>
                 <asp:ImageButton ID="ibReSend" runat="server" OnCommand="Action_WorkOn" CommandName="Re_Send"
-                    ImageUrl="~/App_Themes/unisys/images/mail_set/send-again.png" ImageAlign="Middle"
+                    ImageUrl="~/App_Themes/Delta/images/mail_set/send-again.png" ImageAlign="Middle"
                     ToolTip="Rinvia la mail" Visible='<%# ButtonVisible[HeaderButtons.ReSend] && !String.IsNullOrEmpty(this.rating.InnerHtml) && (int.Parse(this.rating.InnerHtml) > 20) %>' />
                 <% if (EnableMailTree)
                    { %>
-                <asp:ImageButton ID="ibShowMailTree" runat="server" ImageUrl="~/App_Themes/unisys/images/tree/view-tree.png"
+                <asp:ImageButton ID="ibShowMailTree" runat="server" ImageUrl="~/App_Themes/Delta/images/tree/view-tree.png"
                     ImageAlign="Middle" ToolTip="Visualizza l'albero delle comunicazioni" Visible="<%# ButtonVisible[HeaderButtons.MailTree]%>" />
                 <% } %>
             </div>
@@ -199,7 +199,7 @@
             proxy: {
                 type: 'ajax',
                 model: 'TreeAlberoModel',
-                url: '<%= Page.ResolveClientUrl("~/api/Mail/GetTreeStructure") %>' + '?idM=' +  document.getElementById('<%= hfIdMail.ClientID %>').value,
+                url: '<%= Page.ResolveClientUrl("~/api/PECController/GetTreeStructure") %>' + '?idM=' +  document.getElementById('<%= hfIdMail.ClientID %>').value,
                 reader: {
                     type: 'json',
                     rootProperty: 'data',                  

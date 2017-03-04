@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web.Http;
@@ -59,24 +60,26 @@ namespace GestionePEC.Api
             internal string TotalCount;
            
             internal string success;
-        }
+        }   
+    
 
-      
+
+        [DataContract]
         [Serializable]
         internal class SubFilter<T>
         {
-            
-            private string tipo { get; set; }
-           
-            private string value { get; set; }
+            [DataMember(Name = "tipo")]
+            private string _tipo { get; set; }
+            [DataMember(Name = "value")]
+            private string _value { get; set; }
 
-            internal MailIndexedSearch tipoSearch
+            internal MailIndexedSearch tipo
             {
                 get
                 {
                     MailIndexedSearch mis = MailIndexedSearch.UNKNOWN;
                     int idx = -1;
-                    if (!String.IsNullOrEmpty(tipo) && int.TryParse(tipo, out idx))
+                    if (!String.IsNullOrEmpty(_tipo) && int.TryParse(_tipo, out idx))
                     {
                         mis = (MailIndexedSearch)idx;
                     }
@@ -87,9 +90,9 @@ namespace GestionePEC.Api
             {
                 get
                 {
-                    if (value != null)
+                    if (_value != null)
                     {
-                        string[] vals = value.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] vals = _value.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
                         T[] resp = new T[vals.Length];
                         Type ty = typeof(T);
                         TypeCode tc = Type.GetTypeCode(ty);
@@ -111,56 +114,55 @@ namespace GestionePEC.Api
             }
         }
 
-        
+        [DataContract]
         [Serializable]
         internal class Filter
         {
-           
+            [DataMember]
             internal SubFilter<string> text { get; set; }
-           
+            [DataMember]
             internal SubFilter<MailStatus> status { get; set; }
         }
 
-        
+        [DataContract]
         [Serializable]
         internal class CarrierModel
         {
-         
+            [DataMember]
             internal List<Carrier> data;
-          
+            [DataMember]
             internal string Message;
-           
+            [DataMember]
             internal string TotalCount;
-          
+            [DataMember]
             internal string success;
         }
 
 
-       
+        [DataContract]
         [Serializable]
         internal class Carrier
         {
-          
+            [DataMember]
             internal string id;
-            
+            [DataMember]
             internal string from;
-           
+            [DataMember]
             internal string date;
-           
+            [DataMember]
             internal string subject;
-          
+            [DataMember]
             internal string sStatus;
-          
+            [DataMember]
             internal string mStatus;
-           
+            [DataMember]
             internal string attach;
-            
+            [DataMember]
             internal string utente;
-            
-            internal int dimen;           
+            [DataMember]
+            internal int dimen;
         }
 
-   
 
 
         [Authorize]
@@ -267,15 +269,15 @@ namespace GestionePEC.Api
                 Filter filtro = (Filter)s.ReadObject(ms);
 
                 Dictionary<MailIndexedSearch, List<string>> sValues = new Dictionary<MailIndexedSearch, List<string>>();
-                if (filtro.text.tipoSearch != MailIndexedSearch.UNKNOWN &&
+                if (filtro.text.tipo != MailIndexedSearch.UNKNOWN &&
                     (filtro.text.values != null && filtro.text.values.Length > 0))
                 {
-                    sValues.Add(filtro.text.tipoSearch, filtro.text.values.ToList());
+                    sValues.Add(filtro.text.tipo, filtro.text.values.ToList());
                 }
-                if (filtro.status.tipoSearch != MailIndexedSearch.UNKNOWN &&
+                if (filtro.status.tipo != MailIndexedSearch.UNKNOWN &&
                     (filtro.status.values != null && filtro.status.values.Length > 0))
                 {
-                    sValues.Add(filtro.status.tipoSearch, filtro.status.values.Select(e => ((int)e).ToString()).ToList());
+                    sValues.Add(filtro.status.tipo, filtro.status.values.Select(e => ((int)e).ToString()).ToList());
                 }
 
                 ResultList<MailHeaderExtended> rl = ServiceLocator.GetServiceFactory().MailLocalService.GetMailsByParams(

@@ -8,7 +8,7 @@ using System.Text;
 using System.Configuration;
 using log4net;
 
-using Com.Unisys.MetaBus.Base;
+using Com.Delta.MetaBus.Base;
 
 using SendMail.Contracts;
 using SendMail.Business.Contracts;
@@ -17,14 +17,14 @@ using SendMail.Model;
 using SendMail.Business;
 using System.Xml;
 //using PrintDirectorTpu.Model;
-using Com.Unisys.Logging;
-using Com.Unisys.Logging.Errors;
+using Com.Delta.Logging;
+using Com.Delta.Logging.Errors;
 using System.Xml.Linq;
-using Com.Unisys.MetaBus.Schemas.Envelope;
-using Com.Unisys.MetaBus.Schemas.Smtp;
-using ActiveUp.Net.Common.UnisysExt;
-using ActiveUp.Net.Mail.UnisysExt;
-using Com.Unisys.PrintDirector;
+using Com.Delta.MetaBus.Schemas.Envelope;
+using Com.Delta.MetaBus.Schemas.Smtp;
+using ActiveUp.Net.Common.DeltaExt;
+using ActiveUp.Net.Mail.DeltaExt;
+using Com.Delta.PrintDirector;
 using SendMailApp.Formatter;
 using System.IO;
 using Com.Delta.Logging.CrabMail;
@@ -373,8 +373,8 @@ namespace SendMailApp
                 Response resp = null;
                 try
                 {
-                    Com.Unisys.MetaBus.Base.MetaBusProxy.MetaBus metabus = new Com.Unisys.MetaBus.Base.MetaBusProxy.MetaBus();
-                    metabus.Url = Settings.Default.Com_Unisys_MetaBus_Base_MetBusProxy_MetaBus;
+                    Com.Delta.MetaBus.Base.MetaBusProxy.MetaBus metabus = new Com.Delta.MetaBus.Base.MetaBusProxy.MetaBus();
+                    metabus.Url = Settings.Default.Com_Delta_MetaBus_Base_MetBusProxy_MetaBus;
                     resp = metabus.SendSync(ric);
                     if (!string.IsNullOrEmpty(resp.Message.DescrizioneMessaggio) && resp.Message.DescrizioneMessaggio.ToLower().Contains("daily cos quota violation"))
                     {

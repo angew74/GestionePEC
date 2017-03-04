@@ -125,7 +125,7 @@ namespace GestionePEC.pages.MailClient
                             //{
                             //    List<string> uids = new List<string>();
                             //    uids.Add(msg.Uid);
-                            //    string utente = Com.Unisys.Anag.Security.MySecurityProvider.CurrentPrincipalName;
+                            //    string utente = Com.Delta.Anag.Security.MySecurityProvider.CurrentPrincipalName;
                             //    ServiceLocator.GetServiceFactory().getMailServerFacade(muser).MailMove(uids, MailStatus.LETTA, "1", utente, parentFolder);
                             //    FaxPec.Caching.Session.SessionManager<Richiesta>.set(FaxPec.Caching.Session.SessionKeys.FAXPEC_RICHIESTA, req);
                             //}

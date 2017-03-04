@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using log4net;
-using ActiveUp.Net.Mail.UnisysExt;
-using Com.Unisys.Logging;
-using Com.Unisys.Logging.Errors;
+using Com.Delta.Logging;
+using Com.Delta.Logging.Errors;
 using SendMail.Business.MailFacades;
 using SendMail.Business.Contracts;
 using SendMail.Locator;
-using ActiveUp.Net.Common.UnisysExt;
 using ActiveUp.Net.Mail;
 using SendMailApp.extension;
 using System.Configuration;
-using Com.Unisys.Logging.CrabMail;
-using System.Threading;
-
+using Com.Delta.Logging.Mail;
 
 namespace SendMailApp
 {
     public class ReceiverMail
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(SenderMail));
+        private static readonly ILog _log = LogManager.GetLogger(typeof(ReceiverMail));
         private static String APP_CODE;
         private static string LOG_CODE = "SEND_MAIL_";
         private static int prog = 0;
@@ -33,7 +28,7 @@ namespace SendMailApp
             if (configSection != null)
                 APP_CODE = configSection.AppCode;
 
-            IList<MailUser> listUsers = null;
+            IList<ActiveUp.Net.Mail.DeltaExt.MailUser> listUsers = null;
             try
             {
                 //listUsers = ServiceLocator.GetServiceFactory().MailAccountService.GetAllManaged();
@@ -70,9 +65,9 @@ namespace SendMailApp
 
             IMailServerService mailService = null;
             SendMail.Business.MailFacades.MailLocalService mailMessageService = null;
-            foreach (MailUser user in listUsers)
+            foreach (ActiveUp.Net.Mail.DeltaExt.MailUser user in listUsers)
             {
-                _log.Info(new CrabMailLogInfo(APP_CODE, "", user.DisplayName,
+                _log.Info(new MailLogInfo(APP_CODE, "", user.DisplayName,
                     user.EmailAddress, (string)null));
                 try
                 {
@@ -139,7 +134,7 @@ namespace SendMailApp
                 {
                     if (mailService.IsIncomingConnected())
                         Disconnect(mailService);
-                    _log.Info(new CrabMailLogInfo(APP_CODE, "", user.DisplayName,
+                    _log.Info(new MailLogInfo(APP_CODE, "", user.DisplayName,
                         user.EmailAddress, "Nessun messaggio da scaricare"));
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Non vi sono messaggi da scaricare");
@@ -151,10 +146,10 @@ namespace SendMailApp
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(String.Format("Vi sono {0} messaggi da scaricare", listUIds.Count()));
                 Console.ResetColor();
-                List<MailStatusServer> stSer = new List<MailStatusServer>();
-                stSer.Add(MailStatusServer.PRESENTE);
-                stSer.Add(MailStatusServer.DA_NON_CANCELLARE);
-                Dictionary<MailStatusServer, List<string>> savedUidsAll = (Dictionary<MailStatusServer, List<string>>)mailMessageService.GetAllUIDsByAccount(user.EmailAddress, stSer);
+                List<ActiveUp.Net.Common.DeltaExt.MailStatusServer> stSer = new List<ActiveUp.Net.Common.DeltaExt.MailStatusServer>();
+                stSer.Add(ActiveUp.Net.Common.DeltaExt.MailStatusServer.PRESENTE);
+                stSer.Add(ActiveUp.Net.Common.DeltaExt.MailStatusServer.DA_NON_CANCELLARE);
+                Dictionary<ActiveUp.Net.Common.DeltaExt.MailStatusServer, List<string>> savedUidsAll = (Dictionary<ActiveUp.Net.Common.DeltaExt.MailStatusServer, List<string>>)mailMessageService.GetAllUIDsByAccount(user.EmailAddress, stSer);
                 List<string> savedUids = null;
                 if (savedUidsAll != null && savedUidsAll.Count > 0)
                 {
@@ -170,20 +165,20 @@ namespace SendMailApp
                 if (user.FlgManaged == 2 && toCancel)
                 {
                     //se ci sono email da cencellare
-                    if (savedUidsAll != null && savedUidsAll.ContainsKey(MailStatusServer.PRESENTE) && savedUidsAll[MailStatusServer.PRESENTE].Count != 0)
+                    if (savedUidsAll != null && savedUidsAll.ContainsKey(ActiveUp.Net.Common.DeltaExt.MailStatusServer.PRESENTE) && savedUidsAll[ActiveUp.Net.Common.DeltaExt.MailStatusServer.PRESENTE].Count != 0)
                     {
                         try
                         {
                             //seleziona gli uid da cancellare                           
                             var mailToCancel = listUIds.Where(x => 
-                                savedUidsAll[MailStatusServer.PRESENTE].Contains(x.UId.Replace(',','§')));
+                                savedUidsAll[ActiveUp.Net.Common.DeltaExt.MailStatusServer.PRESENTE].Contains(x.UId.Replace(',','§')));
                             foreach (var uid in mailToCancel)
                             {
                                 //cancella dal server
                                 mailService.DeleteMessageFromServer(uid.UId);
                                 Disconnect(mailService);
                                 Connect(mailService);
-                                mailMessageService.UpdateMessageServerStatus(user.EmailAddress, uid.UId, MailStatusServer.CANCELLATA);
+                                mailMessageService.UpdateMessageServerStatus(user.EmailAddress, uid.UId, ActiveUp.Net.Common.DeltaExt.MailStatusServer.CANCELLATA);
                                 idx = mailToCancel.IndexOf(uid) + 1;
                                 //disconnect ogni 10 mail per committare sul server
                                 if ((idx % 10) == 0)
@@ -200,7 +195,7 @@ namespace SendMailApp
                                     }
                                 }
                             }
-                            _log.Info(new CrabMailLogInfo(APP_CODE, "", user.DisplayName,
+                            _log.Info(new MailLogInfo(APP_CODE, "", user.DisplayName,
                                 user.EmailAddress, "Cancellati " + idx + " messaggi"));
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Cancellati " + idx + " messaggi");
@@ -218,7 +213,7 @@ namespace SendMailApp
                             {
                                 if (mailService.IsIncomingConnected())
                                     Disconnect(mailService);
-                                _log.Info(new CrabMailLogInfo(APP_CODE, "", user.DisplayName,
+                                _log.Info(new MailLogInfo(APP_CODE, "", user.DisplayName,
                                     user.EmailAddress, "Nessun messaggio da scaricare"));
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("Non vi sono messaggi da scaricare");
@@ -226,14 +221,14 @@ namespace SendMailApp
                                 continue;
                             }
                             //esclude quelli da già in banca dati, se vi sono
-                            var lUids = listUIds.Where(x => !savedUidsAll[MailStatusServer.PRESENTE].Contains(x.UId));
+                            var lUids = listUIds.Where(x => !savedUidsAll[ActiveUp.Net.Common.DeltaExt.MailStatusServer.PRESENTE].Contains(x.UId));
                             if (lUids.Count() == 0)
                                 continue;
                             listUIds = lUids.OrderBy(x => x.Ordinal).ToList();
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine(String.Format("Vi sono {0} messaggi da scaricare", listUIds.Count()));
                             Console.ResetColor();
-                            _log.Info(new CrabMailLogInfo(APP_CODE, "", user.DisplayName,
+                            _log.Info(new MailLogInfo(APP_CODE, "", user.DisplayName,
                                 user.EmailAddress, "Vi sono " + listUIds.Count + " messaggi da scaricare"));
                         }
                         catch
@@ -249,11 +244,11 @@ namespace SendMailApp
                     {
                     _log.Debug("WORKING UID:" + uId.UId);
                     _log.Debug("WORKING ORDINAL:" + uId.Ordinal);
-                    List<MailHeader> ml = ((MailServerService)mailService).Pop3.RetrieveHeaders(uId.Ordinal, 1);
+                    List<ActiveUp.Net.Mail.DeltaExt.MailHeader> ml = ((MailServerService)mailService).Pop3.RetrieveHeaders(uId.Ordinal, 1);
                     if (ml == null || ml.Count == 0)
                     {
-                        ml = new List<MailHeader>();
-                        ml.Add(new MailHeader { UniqueId = uId.UId });
+                        ml = new List<ActiveUp.Net.Mail.DeltaExt.MailHeader>();
+                        ml.Add(new ActiveUp.Net.Mail.DeltaExt.MailHeader { UniqueId = uId.UId });
                     }
                     _log.Debug(string.Format("WORKING HEADER: FROM - {0} ; SUBJECT - {1} ; UID - {2}", ml[0].From, ml[0].Subject, ml[0].UniqueId));
                     //maxSize da configurazione
@@ -307,7 +302,7 @@ namespace SendMailApp
                         }
                         catch (Exception ex)
                         {
-                            _log.Info(new CrabMailLogInfo(APP_CODE, "", user.DisplayName, user.EmailAddress,
+                            _log.Info(new MailLogInfo(APP_CODE, "", user.DisplayName, user.EmailAddress,
                                 "Messaggio " + uId.UId + " non trovato"));
                             msx = null;
                         }
@@ -354,7 +349,7 @@ namespace SendMailApp
 
                     try
                     {
-                        if (savedUidsAll != null && savedUidsAll.ContainsKey(MailStatusServer.DA_NON_CANCELLARE) && savedUidsAll[MailStatusServer.DA_NON_CANCELLARE].Contains(m.Uid))
+                        if (savedUidsAll != null && savedUidsAll.ContainsKey(ActiveUp.Net.Common.DeltaExt.MailStatusServer.DA_NON_CANCELLARE) && savedUidsAll[ActiveUp.Net.Common.DeltaExt.MailStatusServer.DA_NON_CANCELLARE].Contains(m.Uid))
                         {
                             mailMessageService.Update(user, m);
                         }
@@ -367,35 +362,35 @@ namespace SendMailApp
                         if (!String.IsNullOrEmpty(m.HeaderFields["X-Ricevuta"]))
                         {
                             string ric = m.HeaderFields["X-Ricevuta"].ToLower();
-                            MailStatus newSt = MailStatus.UNKNOWN;
+                                ActiveUp.Net.Common.DeltaExt.MailStatus newSt = ActiveUp.Net.Common.DeltaExt.MailStatus.UNKNOWN;
 
                             switch (ric)
                             {
                                 case "accettazione":
-                                    newSt = MailStatus.ACCETTAZIONE;
+                                    newSt = ActiveUp.Net.Common.DeltaExt.MailStatus.ACCETTAZIONE;
                                     break;
                                 case "non-accettazione":
-                                    newSt = MailStatus.NON_ACCETTAZIONE;
+                                    newSt = ActiveUp.Net.Common.DeltaExt.MailStatus.NON_ACCETTAZIONE;
                                     break;
                                 case "presa-in-carico":
                                     break;
                                 case "avvenuta-consegna":
-                                    newSt = MailStatus.AVVENUTA_CONSEGNA;
+                                    newSt = ActiveUp.Net.Common.DeltaExt.MailStatus.AVVENUTA_CONSEGNA;
                                     break;
                                 case "posta-certificata":
                                     break;
                                 case "errore-consegna":
-                                    newSt = MailStatus.ERRORE_CONSEGNA;
+                                    newSt = ActiveUp.Net.Common.DeltaExt.MailStatus.ERRORE_CONSEGNA;
                                     break;
                                 case "preavviso-errore-consegna":
-                                    newSt = MailStatus.ERRORE_CONSEGNA;
+                                    newSt = ActiveUp.Net.Common.DeltaExt.MailStatus.ERRORE_CONSEGNA;
                                     break;
                                 case "rilevazione-virus":
-                                    newSt = MailStatus.ERROR;
+                                    newSt = ActiveUp.Net.Common.DeltaExt.MailStatus.ERROR;
                                     break;
                             }
 
-                            if (newSt != MailStatus.UNKNOWN)
+                            if (newSt != ActiveUp.Net.Common.DeltaExt.MailStatus.UNKNOWN)
                             {
                                 string idOldString = m.HeaderFields["X-Riferimento-Message-ID"];
                                 if (idOldString.StartsWith("<"))
@@ -413,10 +408,10 @@ namespace SendMailApp
                                         SendMail.Model.ComunicazioniMapping.ComFlusso flusso = com.ComFlussi[SendMail.Model.TipoCanale.MAIL].Last();
 
                                         //se si trova in stato di errore non aggiorno
-                                        if (flusso.StatoComunicazioneNew == MailStatus.ERROR ||
-                                            flusso.StatoComunicazioneNew == MailStatus.CANCELLED ||
-                                            flusso.StatoComunicazioneNew == MailStatus.NON_ACCETTAZIONE ||
-                                            flusso.StatoComunicazioneNew == MailStatus.ERRORE_CONSEGNA)
+                                        if (flusso.StatoComunicazioneNew == ActiveUp.Net.Common.DeltaExt.MailStatus.ERROR ||
+                                            flusso.StatoComunicazioneNew == ActiveUp.Net.Common.DeltaExt.MailStatus.CANCELLED ||
+                                            flusso.StatoComunicazioneNew == ActiveUp.Net.Common.DeltaExt.MailStatus.NON_ACCETTAZIONE ||
+                                            flusso.StatoComunicazioneNew == ActiveUp.Net.Common.DeltaExt.MailStatus.ERRORE_CONSEGNA)
                                         {
                                             idx = listUIds.ToList().IndexOf(uId);
                                             if ((idx != 0) && ((idx % 50) == 0))
@@ -424,7 +419,7 @@ namespace SendMailApp
                                                 Console.ForegroundColor = ConsoleColor.Red;
                                                 Console.WriteLine("Inseriti " + idx + " messaggi");
                                                 Console.ResetColor();
-                                                _log.Info(new CrabMailLogInfo(APP_CODE,
+                                                _log.Info(new MailLogInfo(APP_CODE,
                                                     "", user.DisplayName, user.EmailAddress,
                                                     "Inseriti " + idx + " messaggi"));
                                             }
@@ -495,7 +490,7 @@ namespace SendMailApp
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Inseriti " + idx + " messaggi");
                         Console.ResetColor();
-                        _log.Info(new CrabMailLogInfo(APP_CODE, "", user.DisplayName,
+                        _log.Info(new MailLogInfo(APP_CODE, "", user.DisplayName,
                             user.EmailAddress, "Inseriti " + idx + " messaggi"));
                     }
                 }
@@ -505,7 +500,7 @@ namespace SendMailApp
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Inseriti " + listUIds.Count + " messaggi");
                 Console.ResetColor();
-                _log.Info(new CrabMailLogInfo(APP_CODE, "", user.DisplayName,
+                _log.Info(new MailLogInfo(APP_CODE, "", user.DisplayName,
                     user.EmailAddress, "Inseriti " + listUIds.Count + " messaggi"));
             }
         }
@@ -527,7 +522,7 @@ namespace SendMailApp
 
         static void Parser_BodyParsed(object sender, Message message)
         {
-            _log.Info(new CrabMailLogInfo(APP_CODE, "", message.To[0].Name,
+            _log.Info(new MailLogInfo(APP_CODE, "", message.To[0].Name,
                 message.To[0].Email, message.Subject));
         }
 

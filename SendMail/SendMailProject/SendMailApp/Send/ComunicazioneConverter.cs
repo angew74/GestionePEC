@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SendMail.Model.ComunicazioniMapping;
-using Com.Unisys.MetaBus.Base;
-using Com.Unisys.MetaBus.Schemas.Smtp;
-using Com.Unisys.MetaBus.Schemas.Envelope;
-using ActiveUp.Net.Common.UnisysExt;
+using Com.Delta.MetaBus.Base;
+using Com.Delta.MetaBus.Schemas.Smtp;
+using Com.Delta.MetaBus.Schemas.Envelope;
+using ActiveUp.Net.Common.DeltaExt;
 
 namespace SendMailApp
 {

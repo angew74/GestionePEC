@@ -32,7 +32,7 @@
                     <mail:MailBoxLogin ID="Login" runat="server" OnChangeStatus="Login_OnChangeStatus">
                     </mail:MailBoxLogin>
                     <mail:Inbox ID="Inbox1" runat="server" Visible="false" OnRowSelected="Inbox1_OnRowSelected"
-                        MailBoxProvider="~/api/PEC/GetMails" />
+                        MailBoxProvider="~/api/PECController/GetMails" />
                 </ContentTemplate>
             </asp:UpdatePanel>
             <asp:UpdatePanel ID="pnlMail" runat="server" RenderMode="Block" UpdateMode="Conditional"
