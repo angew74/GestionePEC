@@ -4,13 +4,13 @@
   <siteMapNode url="" title="Gestione Posta" roles="*">
    <siteMapNode url="~/pages/MailClient/MailBoxInBox.aspx" title="Inbox" roles="*" />   
     <siteMapNode url="~/pages/MailClient/MailSearch.aspx" title="Ricerca Mail" roles="*"></siteMapNode>
-    <siteMapNode url="" title="Ricerca Storia Mail" roles="*"></siteMapNode>
+    <siteMapNode url="~/pages/MailClient/MailMove.aspx" title="Ricerca Storia Mail" roles="*"></siteMapNode>
   </siteMapNode>
   <siteMapNode url="" title="Amministra Caselle" roles="*">
     <siteMapNode url="" title="Server Settings" roles="*">
     </siteMapNode>
-    <siteMapNode url="" title="Amministrazione" roles="*"></siteMapNode>
-    <siteMapNode url="" title="Statistiche" roles="*"></siteMapNode>
+    <siteMapNode url="~/pages/MailClient/MailAdmin.aspx" title="Amministrazione" roles="*"></siteMapNode>
+    <siteMapNode url="~/pages/MailClient/MailBoxStat.aspx" title="Statistiche" roles="*"></siteMapNode>
   </siteMapNode>
     <siteMapNode url="" title="Rubrica" roles="*">
       <siteMapNode url="" title="Cerca Contatto" roles="*">

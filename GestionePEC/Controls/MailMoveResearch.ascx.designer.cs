@@ -7,261 +7,270 @@
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace GestionePEC.pages.MailClient {
+namespace GestionePEC.Controls {
     
     
-    public partial class MailAdmin {
+    public partial class MailMoveResearch {
         
         /// <summary>
-        /// Controllo Navigator.
+        /// Controllo pnlContent.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::GestionePEC.Controls.MailBoxNavigator Navigator;
+        protected global::System.Web.UI.WebControls.Panel pnlContent;
         
         /// <summary>
-        /// Controllo upGestioneEmail.
+        /// Controllo hdTabIndex.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upGestioneEmail;
+        protected global::System.Web.UI.WebControls.HiddenField hdTabIndex;
         
         /// <summary>
-        /// Controllo gvElencoEmailsShared.
+        /// Controllo pnlTabContainer.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvElencoEmailsShared;
+        protected global::System.Web.UI.WebControls.Panel pnlTabContainer;
         
         /// <summary>
-        /// Controllo pnlGestioneEmail.
+        /// Controllo pnlCasella.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlGestioneEmail;
+        protected global::System.Web.UI.WebControls.Panel pnlCasella;
         
         /// <summary>
-        /// Controllo ControlHeaderLabel.
+        /// Controllo UpdAccounts.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ControlHeaderLabel;
+        protected global::System.Web.UI.UpdatePanel UpdAccounts;
         
         /// <summary>
-        /// Controllo odsMailConfig.
+        /// Controllo ddlManagedAccounts.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource odsMailConfig;
+        protected global::System.Web.UI.WebControls.DropDownList ddlManagedAccounts;
         
         /// <summary>
-        /// Controllo fvEmail.
+        /// Controllo rblIOBox.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FormView fvEmail;
+        protected global::System.Web.UI.WebControls.RadioButtonList rblIOBox;
         
         /// <summary>
-        /// Controllo pnlDettaglioEmailServer.
+        /// Controllo rblTipoFolder.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlDettaglioEmailServer;
+        protected global::System.Web.UI.WebControls.RadioButtonList rblTipoFolder;
         
         /// <summary>
-        /// Controllo odsServerConfig.
+        /// Controllo UpdCartella.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource odsServerConfig;
+        protected global::System.Web.UI.UpdatePanel UpdCartella;
         
         /// <summary>
-        /// Controllo fvServer.
+        /// Controllo ddlCartella.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FormView fvServer;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCartella;
         
         /// <summary>
-        /// Controllo pnlElencoUtenti.
+        /// Controllo rfvddlCartella.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlElencoUtenti;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvddlCartella;
         
         /// <summary>
-        /// Controllo lblDepartment.
+        /// Controllo vceCartella.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDepartment;
+        protected global::AjaxControlToolkit.ValidatorCalloutExtender vceCartella;
         
         /// <summary>
-        /// Controllo ddlListaDipartimenti.
+        /// Controllo dtInizio.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlListaDipartimenti;
+        protected global::GestionePEC.Controls.DateTime dtInizio;
         
         /// <summary>
-        /// Controllo lvDipendentiNONAbilitati.
+        /// Controllo dtFine.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView lvDipendentiNONAbilitati;
+        protected global::GestionePEC.Controls.DateTime dtFine;
         
         /// <summary>
-        /// Controllo btnAbilita.
+        /// Controllo UpdUtente.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnAbilita;
+        protected global::System.Web.UI.UpdatePanel UpdUtente;
         
         /// <summary>
-        /// Controllo btnDisabilita.
+        /// Controllo ddlUtente.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnDisabilita;
+        protected global::System.Web.UI.WebControls.DropDownList ddlUtente;
         
         /// <summary>
-        /// Controllo lvDipendentiAbilitati.
+        /// Controllo chkUfficio.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView lvDipendentiAbilitati;
+        protected global::System.Web.UI.WebControls.CheckBox chkUfficio;
         
         /// <summary>
-        /// Controllo pnlAdmin.
+        /// Controllo btnRicerca.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlAdmin;
+        protected global::System.Web.UI.WebControls.Button btnRicerca;
         
         /// <summary>
-        /// Controllo Label1.
+        /// Controllo pnlMainUpdate.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.UpdatePanel pnlMainUpdate;
         
         /// <summary>
-        /// Controllo lvUtenti.
+        /// Controllo PanelGrid.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView lvUtenti;
+        protected global::System.Web.UI.WebControls.Panel PanelGrid;
         
         /// <summary>
-        /// Controllo btnAdminAbil.
+        /// Controllo gridBox.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnAdminAbil;
+        protected global::System.Web.UI.WebControls.GridView gridBox;
         
         /// <summary>
-        /// Controllo btnAdminDis.
+        /// Controllo btnStampaDistinta.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnAdminDis;
+        protected global::System.Web.UI.WebControls.Button btnStampaDistinta;
         
         /// <summary>
-        /// Controllo lvUtentiAdmin.
+        /// Controllo btnLetta.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView lvUtentiAdmin;
+        protected global::System.Web.UI.WebControls.Button btnLetta;
         
         /// <summary>
-        /// Controllo pnlGestioneFolders.
+        /// Controllo btnUnLetta.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlGestioneFolders;
+        protected global::System.Web.UI.WebControls.Button btnUnLetta;
         
         /// <summary>
-        /// Controllo lvCartelleNonAbilitate.
+        /// Controllo btnSposta.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView lvCartelleNonAbilitate;
+        protected global::System.Web.UI.WebControls.Button btnSposta;
         
         /// <summary>
-        /// Controllo ImageButton3.
+        /// Controllo UpdCartellaSposta.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImageButton3;
+        protected global::System.Web.UI.UpdatePanel UpdCartellaSposta;
         
         /// <summary>
-        /// Controllo ImageButton4.
+        /// Controllo pnlSposta.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImageButton4;
+        protected global::System.Web.UI.WebControls.Panel pnlSposta;
         
         /// <summary>
-        /// Controllo lvCartelleAbilitate.
+        /// Controllo ddlCartellaSposta.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView lvCartelleAbilitate;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCartellaSposta;
+        
+        /// <summary>
+        /// Controllo btnOk.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnOk;
     }
 }

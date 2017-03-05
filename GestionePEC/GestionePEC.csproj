@@ -271,6 +271,9 @@
     <Content Include="App_Themes\Delta\images\buttons\Add.bmp" />
     <Content Include="App_Themes\Delta\images\buttons\add.png" />
     <Content Include="App_Themes\Delta\images\buttons\addcontact.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\add_border.png" />
+    <Content Include="App_Themes\Delta\images\buttons\add_contact.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\administrator.png" />
     <Content Include="App_Themes\Delta\images\buttons\attachment.png" />
     <Content Include="App_Themes\Delta\images\buttons\back.png" />
     <Content Include="App_Themes\Delta\images\buttons\bAdobe.jpg" />
@@ -326,7 +329,10 @@
     <Content Include="App_Themes\Delta\images\buttons\mail.gif" />
     <Content Include="App_Themes\Delta\images\buttons\maximize.gif" />
     <Content Include="App_Themes\Delta\images\buttons\minimize.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\modify.png" />
     <Content Include="App_Themes\Delta\images\buttons\modifyR.png" />
+    <Content Include="App_Themes\Delta\images\buttons\navigate_left_256.png" />
+    <Content Include="App_Themes\Delta\images\buttons\navigate_right_256.png" />
     <Content Include="App_Themes\Delta\images\buttons\no-action.png" />
     <Content Include="App_Themes\Delta\images\buttons\no-search.png" />
     <Content Include="App_Themes\Delta\images\buttons\Off.png" />
@@ -1019,11 +1025,13 @@
     <Content Include="Controls\MailBoxNavigator.ascx" />
     <Content Include="Controls\MailComposer.ascx" />
     <Content Include="Controls\MailModal.ascx" />
+    <Content Include="Controls\MailMoveResearch.ascx" />
     <Content Include="Controls\MailTreeViewer.ascx" />
     <Content Include="Controls\MailViewer.ascx" />
     <Content Include="Controls\NewMail.ascx" />
     <Content Include="Controls\Paging.ascx" />
     <Content Include="Controls\RicercaMail.ascx" />
+    <Content Include="Controls\RicercaStat.ascx" />
     <Content Include="pages\common\Default.aspx" />
     <Content Include="ExtJS5\ext-all-debug.js" />
     <Content Include="ExtJS5\ext-all.js" />
@@ -1110,6 +1118,13 @@
     <Compile Include="Controls\MailModal.ascx.designer.cs">
       <DependentUpon>MailModal.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MailMoveResearch.ascx.cs">
+      <DependentUpon>MailMoveResearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\MailMoveResearch.ascx.designer.cs">
+      <DependentUpon>MailMoveResearch.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MailTreeViewer.ascx.cs">
       <DependentUpon>MailTreeViewer.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1143,6 +1158,13 @@
     </Compile>
     <Compile Include="Controls\RicercaMail.ascx.designer.cs">
       <DependentUpon>RicercaMail.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RicercaStat.ascx.cs">
+      <DependentUpon>RicercaStat.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\RicercaStat.ascx.designer.cs">
+      <DependentUpon>RicercaStat.ascx</DependentUpon>
     </Compile>
     <Compile Include="Extensions\Helpers.cs" />
     <Compile Include="Extensions\InlineScript.cs" />
@@ -1313,6 +1335,7 @@
     <Content Include="Ashx\GestoreRatingMail.ashx" />
     <Content Include="Ashx\GeneralSearcher.ashx" />
     <None Include="Properties\PublishProfiles\Delta.pubxml" />
+    <None Include="Properties\PublishProfiles\Localhost.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

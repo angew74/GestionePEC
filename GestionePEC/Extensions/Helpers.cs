@@ -10,11 +10,55 @@ using System.IO;
 using iTextSharp.text.pdf;
 using Com.Delta.Web;
 using System.Configuration;
+using SendMail.Model.Wrappers;
 
 namespace GestionePEC.Extensions
 {
     public class Helpers
     {
+        public static DataTable StampaStatisticaExcel(List<UserResultItem> list, string account,
+            string dati, string dataf)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Account", typeof(string));
+            dt.Columns.Add("Utente", typeof(string));
+            dt.Columns.Add("Totale", typeof(decimal));
+            for (int i = 0; i < list.Count; i++)
+            {
+                dt.Rows.Add(list[i].Account, list[i].User, list[i].Operazioni);
+            }
+            return dt;
+        }
+        public static byte[] StampaStatisticaITEXT(List<UserResultItem> list, string account, string datai, string dataf)
+        {
+            // step 1: creation of a document-object
+            Document document = new Document(PageSize.A4.Rotate(), 10, 10, 70, 15);
+            MemoryStream ms = new MemoryStream();
+            // step 2: we create a writer that listens to the document
+            PdfWriter writer = PdfWriter.GetInstance(document, ms);
+            iTextSharp.text.Image imageHeader = iTextSharp.text.Image.GetInstance(ConfigurationManager.AppSettings["Image"]);
+            MyPageEventHandler e = new MyPageEventHandler()
+            {
+                ImageHeader = imageHeader,
+                Titolo = "N. righe : " + list.Count.ToString() + " - Email: " + account + " intervallo date : " + datai + " - " + dataf
+            };
+            writer.PageEvent = e;
+            //set some header stuff
+            document.AddTitle("Statistica Lavorazioni");
+            document.AddSubject("Statistica Lavorazioni");
+            document.AddCreator("Roma Capitale");
+            document.AddAuthor("n.r.");
+
+            // step 3: we open the document
+            document.Open();
+
+            // step 4: we add content to the document
+            CollectionToPDFStat(ref document, list);
+
+            // step 5: we close the document
+            document.Close();
+            return ms.ToArray();
+        }
         public static byte[] StampaEmailAttoITEXT(List<MailHeaderExtended> dt, string account, string cartella, string datai, string dataf, string parentFolder, string accountid)
         {
 
@@ -47,6 +91,31 @@ namespace GestionePEC.Extensions
             document.Close();
             return ms.ToArray();
 
+        }
+
+
+        private static void CollectionToPDFStat(ref Document document, List<UserResultItem> list)
+        {
+            int cols = 3;
+            PdfPTable pdfTable = new PdfPTable(cols);
+            pdfTable.DefaultCell.Padding = 2;
+            pdfTable.WidthPercentage = 100; // percentage
+            pdfTable.DefaultCell.BorderWidth = 2;
+            pdfTable.DefaultCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            int rows = list.Count;
+            pdfTable.AddCell(FormatHeaderPhrase("CASELLA"));
+            pdfTable.AddCell(FormatHeaderPhrase("UTENTE"));
+            pdfTable.AddCell(FormatHeaderPhrase("TOTALE"));
+            pdfTable.HeaderRows = 1;  // this is the end of the table header
+            pdfTable.DefaultCell.BorderWidth = 1;
+            foreach (UserResultItem row in list)
+            {
+
+                pdfTable.AddCell(FormatPhraseEvento(row.Account));
+                pdfTable.AddCell(FormatPhraseEvento(row.User));
+                pdfTable.AddCell(FormatPhraseEvento(row.Operazioni));
+            }
+            document.Add(pdfTable);
         }
 
         private static void CollectionToPDFTableAtti(ref Document document, List<MailHeaderExtended> beans, string parentFolder, string accountid)

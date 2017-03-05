@@ -49,6 +49,7 @@ namespace Com.Delta.Web.Session
         TESTO_MAIL_ELE,
 
         TESTO_MAIL_NEW,
-        ACCOUNTS_LIST
+        ACCOUNTS_LIST,
+        BACKEND_USER
     }
 }
