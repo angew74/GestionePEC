@@ -64,7 +64,8 @@ namespace GestionePEC
             var contextWrapper = new HttpContextWrapper(HttpContext.Current);
             var virtualPath = RouteTable.Routes.GetVirtualPath(new RequestContext(contextWrapper, new RouteData()),
                 "ErrorPage", null);
-            Response.Redirect(virtualPath.VirtualPath);
+            if (!Response.IsRequestBeingRedirected)
+            { Response.Redirect("~/pages/common/ErrorPage.aspx"); }
             Context.Response.End();
         }
 

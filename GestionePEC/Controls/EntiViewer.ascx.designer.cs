@@ -7,126 +7,126 @@
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace GestionePEC.pages.Rubrica {
+namespace GestionePEC.Controls {
     
     
-    public partial class AccessoMappatura {
+    public partial class EntiViewer {
         
         /// <summary>
-        /// Controllo panParoleChiavi.
+        /// Controllo FormView1.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panParoleChiavi;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl FormView1;
         
         /// <summary>
-        /// Controllo btnSearch.
+        /// Controllo hidInsertType.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.HiddenField hidInsertType;
         
         /// <summary>
-        /// Controllo btnIns.
+        /// Controllo headerBut.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnIns;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl headerBut;
         
         /// <summary>
-        /// Controllo bkcode.
+        /// Controllo ibEntitaEdit.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label bkcode;
+        protected global::System.Web.UI.WebControls.ImageButton ibEntitaEdit;
         
         /// <summary>
-        /// Controllo codiceback.
+        /// Controllo odsEntita.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox codiceback;
+        protected global::System.Web.UI.WebControls.ObjectDataSource odsEntita;
         
         /// <summary>
-        /// Controllo bkdescr.
+        /// Controllo EntFormView.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label bkdescr;
+        protected global::System.Web.UI.WebControls.FormView EntFormView;
         
         /// <summary>
-        /// Controllo descrizioneback.
+        /// Controllo ScriptManagerProxy.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox descrizioneback;
+        protected global::System.Web.UI.ScriptManagerProxy ScriptManagerProxy;
         
         /// <summary>
-        /// Controllo coddescr.
+        /// Controllo FormView2.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator coddescr;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl FormView2;
         
         /// <summary>
-        /// Controllo pnlGrid.
+        /// Controllo btnContactInsert.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlGrid;
+        protected global::System.Web.UI.WebControls.ImageButton btnContactInsert;
         
         /// <summary>
-        /// Controllo griBackend.
+        /// Controllo ImageButton1.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView griBackend;
+        protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
         
         /// <summary>
-        /// Controllo PanelInsDettRic.
+        /// Controllo ImageButton2.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PanelInsDettRic;
+        protected global::System.Web.UI.WebControls.ImageButton ImageButton2;
         
         /// <summary>
-        /// Controllo odsBackend.
+        /// Controllo gvContacts.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource odsBackend;
+        protected global::System.Web.UI.WebControls.GridView gvContacts;
         
         /// <summary>
-        /// Controllo AccessoView.
+        /// Controllo ContactsFormView.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FormView AccessoView;
+        protected global::System.Web.UI.WebControls.FormView ContactsFormView;
     }
 }

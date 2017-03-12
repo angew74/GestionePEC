@@ -158,7 +158,7 @@ namespace SendMail.Business
                 {
                     case IndexedCatalogs.ALL:
                         list = list.Concat(dao.LoadTree(null, IndexedCatalogs.RUBR, levels)).ToDictionary(e => e.Key, e => e.Value);
-                        list = list.Concat(dao.LoadTree(null, IndexedCatalogs.IPA, levels)).ToDictionary(e => e.Key, e => e.Value);
+                       // list = list.Concat(dao.LoadTree(null, IndexedCatalogs.IPA, levels)).ToDictionary(e => e.Key, e => e.Value);
                         break;
                     default:
                         list = dao.LoadTree(null, catalog, levels);

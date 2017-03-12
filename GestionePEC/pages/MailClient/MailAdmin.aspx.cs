@@ -497,8 +497,8 @@ namespace GestionePEC.pages.MailClient
                 ErrorLogInfo err = new ErrorLogInfo(mEx);
                 err.loggingAppCode = "WEB_MAIL";
                 err.objectID = this.Context.Session.SessionID;
-                if (MySecurityProvider.CurrentPrincipal != null && MySecurityProvider.CurrentPrincipal.Identity != null)
-                    err.userID = MySecurityProvider.CurrentPrincipal.Identity.Name;
+                if (MySecurityProvider.CurrentPrincipal != null && MySecurityProvider.CurrentPrincipal.MyIdentity != null)
+                    err.userID = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
                 log.Error(err);    
                 info.AddMessage(mEx);
             }
@@ -707,7 +707,7 @@ namespace GestionePEC.pages.MailClient
             {
                 ServiceLocator.GetServiceFactory().MailAccountService.Insert(mu);
                 this.IdSender_ViewState = mu.UserId;
-                _bUser = (BackendUser)ServiceLocator.GetServiceFactory().BackendUserService.GetByUserName(MySecurityProvider.CurrentPrincipalName);
+                _bUser = (BackendUser)ServiceLocator.GetServiceFactory().BackendUserService.GetByUserName(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
                 popolaGridElencoEmailsShared();
                 info.AddMessage("Operazione effettuata", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.OK);
             }
@@ -832,8 +832,8 @@ namespace GestionePEC.pages.MailClient
                 ErrorLogInfo err = new ErrorLogInfo(mEx);
                 err.loggingAppCode = "WEB_MAIL";
                 err.objectID = this.Context.Session.SessionID;
-                if (MySecurityProvider.CurrentPrincipal != null && MySecurityProvider.CurrentPrincipal.Identity != null)
-                    err.userID = MySecurityProvider.CurrentPrincipal.Identity.Name;
+                if (MySecurityProvider.CurrentPrincipal != null && MySecurityProvider.CurrentPrincipal.MyIdentity != null)
+                    err.userID = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
                 log.Error(err);  
                 info.AddMessage(mEx.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
             }
@@ -861,8 +861,8 @@ namespace GestionePEC.pages.MailClient
                 ErrorLogInfo err = new ErrorLogInfo(mEx);
                 err.loggingAppCode = "WEB_MAIL";
                 err.objectID = this.Context.Session.SessionID;
-                if (MySecurityProvider.CurrentPrincipal != null && MySecurityProvider.CurrentPrincipal.Identity != null)
-                    err.userID = MySecurityProvider.CurrentPrincipal.Identity.Name;
+                if (MySecurityProvider.CurrentPrincipal != null && MySecurityProvider.CurrentPrincipal.MyIdentity != null)
+                    err.userID = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
                 log.Error(err);               
                 info.AddMessage(mEx.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
             }

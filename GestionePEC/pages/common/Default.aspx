@@ -25,7 +25,7 @@
         Ext.onReady(function () {
             Ext.tip.QuickTipManager.init();
             var htmlFirst = "<div><b><i>Informazioni</i></b>" +
-                            "<ul style='margin-top: 0px'>" +
+                            "<ul style='margin-top: 0px; list-style-type: none;'>" +
                             "<li>Attraverso questa applicazione sarà possibile: </li>" +
                             "<li>1) visualizzare le emails delle caselle di Posta Elettronica collegate al proprio profilo utente. </li>" +
                             " <li>2) Archiviare le emails, archiviarle in cartelle personalizzate. Cestinare le emails per recuperarle in un secondo momento.</li>" +
@@ -37,7 +37,7 @@
                            " </ul></div>";
 
             var htmlSecond = "<div><b><i>Dati riepilogativi del profilo utente:</i></b>" +
-                             " <br /> <ul> <li>User:<b><i><label id='lblUser' /></i></b></li><br /> " +
+                             " <br /> <ul style='list-style-type: none;'> <li>User:<b><i><label id='lblUser' /></i></b></li><br /> " +
                             " <li> Dipartimento:<b><i><label id='lblDip' /></i></b></li><br /> " +
                              " <li> Nome Cognome:<b><i><label id='lblcognom'  /></i></b></li><br /> " +
                             "  </ul>   <p style='padding-right: 5px; margin-top: 20px; padding-left: 5px; margin-bottom: 5px; padding-bottom: 5px; padding-top: 5px'>" +
@@ -49,7 +49,7 @@
                             " <p> <font style='color: #FF9933;'>Attenzione l'applicazione può non avere <u>Tutte le Funzionalità abilitate e funzionanti</u> poichè si tratta di " +
                             " un prototipo </font> </p> <br />  I servizi abilitati per il tuo profilo sono elencati nel menù a sinistra: selezionare " +
                           "una voce per procedere.  <br /> <br /> <b><i>Supporto tecnico e informazioni</i></b> " +
-                            "<ul style='margin-top: 0px'>  <li>1) Consultare la guida in linea accessibile tramite la voce <b><i>Opzioni Utente</i></b>. </li> " +
+                            "<ul style='margin-top: 0px; list-style-type: none;'>  <li>1) Consultare la guida in linea accessibile tramite la voce <b><i>Opzioni Utente</i></b>. </li> " +
                             "<li>2) La gestione dei profili utente e la raccolta di segnalazioni tecniche inerenti anomalie " +
                             " o malfunzionamenti del sistema può essere fatta telefonando il numero unico 06/xxxxxx la richiesta " +
                            " verrà inoltrata al primo operatore disponibile. </li> " +

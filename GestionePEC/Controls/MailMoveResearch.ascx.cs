@@ -164,8 +164,15 @@ namespace GestionePEC.Controls
         {
             if (ddlManagedAccounts.SelectedValue != null && ddlManagedAccounts.SelectedValue != string.Empty && ddlManagedAccounts.SelectedValue != "-1")
             {
-
-                List<BackendUser> listaDipendentiAbilitati = ServiceLocator.GetServiceFactory().BackendUserService.GetDipendentiDipartimentoAbilitati(decimal.Parse(ddlManagedAccounts.SelectedValue));
+                List<BackendUser> listaDipendentiAbilitati = null;
+                if (SessionManager<List<BackendUser>>.exist(SessionKeys.UTENTIBACKEND))
+                {
+                    listaDipendentiAbilitati = SessionManager<List<BackendUser>>.get(SessionKeys.UTENTIBACKEND);
+                }
+                else
+                {
+                    listaDipendentiAbilitati = ServiceLocator.GetServiceFactory().BackendUserService.GetDipendentiDipartimentoAbilitati(decimal.Parse(ddlManagedAccounts.SelectedValue));
+                }
                 if (listaDipendentiAbilitati != null)
                 {
                     ddlUtente.DataValueField = "UserId";
@@ -227,7 +234,14 @@ namespace GestionePEC.Controls
                             break;
                     }
                 }
-                list = ServiceLocator.GetServiceFactory().MailLocalService.getFoldersByAccount(decimal.Parse(ddlManagedAccounts.SelectedValue)).Where(x => x.TipoFolder == f || x.TipoFolder == m).ToList();
+                if (SessionManager<List<Folder>>.exist(SessionKeys.FOLDERS))
+                {
+                    list = SessionManager<List<Folder>>.get(SessionKeys.FOLDERS);
+                }
+                else
+                {
+                    list = ServiceLocator.GetServiceFactory().MailLocalService.getFoldersByAccount(decimal.Parse(ddlManagedAccounts.SelectedValue)).Where(x => x.TipoFolder == f || x.TipoFolder == m).ToList();
+                }
                 if (f == "C" && m == "I")
                 { list = list.Where(x => x.TipoFolder == f && (x.IdNome == "1" || x.IdNome == "3")).ToList(); }
                 if (f == "C" && m == "O")
@@ -325,7 +339,7 @@ namespace GestionePEC.Controls
             idx = getDictionaryChoice();
             try
             {
-                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.UpdateAllMails(MailStatus.LETTA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.Identity.Name, idx);
+                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.UpdateAllMails(MailStatus.LETTA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, idx);
                 if (ok == true)
                 {
                     (this.Page as BasePage).info.AddMessage("Aggiornamento effettuato", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);
@@ -343,7 +357,7 @@ namespace GestionePEC.Controls
             idx = getDictionaryChoice();
             try
             {
-                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.UpdateAllMails(MailStatus.SCARICATA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.Identity.Name, idx);
+                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.UpdateAllMails(MailStatus.SCARICATA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, idx);
                 if (ok == true)
                 {
                     (this.Page as BasePage).info.AddMessage("Aggiornamento effettuato", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);
@@ -378,7 +392,7 @@ namespace GestionePEC.Controls
             try
             {
                 decimal idaccount = decimal.Parse(ddlManagedAccounts.SelectedValue);
-                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.MoveAllMails(ddlManagedAccounts.SelectedItem.Text, idaccount, ddlCartellaSposta.SelectedValue, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.Identity.Name, rblIOBox.SelectedValue, idx);
+                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.MoveAllMails(ddlManagedAccounts.SelectedItem.Text, idaccount, ddlCartellaSposta.SelectedValue, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, rblIOBox.SelectedValue, idx);
                 if (ok == true)
                 {
                     (this.Page as BasePage).info.AddMessage("Spostamento effettuato", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);

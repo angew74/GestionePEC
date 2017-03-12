@@ -282,16 +282,20 @@
     <Content Include="App_Themes\Delta\images\buttons\binoculars.png" />
     <Content Include="App_Themes\Delta\images\buttons\btn9823_0.gif" />
     <Content Include="App_Themes\Delta\images\buttons\btn9823_1.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\building_add.png" />
     <Content Include="App_Themes\Delta\images\buttons\calendar.gif" />
     <Content Include="App_Themes\Delta\images\buttons\clear.png" />
     <Content Include="App_Themes\Delta\images\buttons\clona_copia.png" />
     <Content Include="App_Themes\Delta\images\buttons\close.gif" />
     <Content Include="App_Themes\Delta\images\buttons\close_down.gif" />
     <Content Include="App_Themes\Delta\images\buttons\close_up.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\company_star.png" />
     <Content Include="App_Themes\Delta\images\buttons\delete.png" />
     <Content Include="App_Themes\Delta\images\buttons\down.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\Email.png" />
     <Content Include="App_Themes\Delta\images\buttons\exit.png" />
     <Content Include="App_Themes\Delta\images\buttons\find.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\folder.png" />
     <Content Include="App_Themes\Delta\images\buttons\home.png" />
     <Content Include="App_Themes\Delta\images\buttons\iAdd.gif" />
     <Content Include="App_Themes\Delta\images\buttons\iAdd.png" />
@@ -356,6 +360,8 @@
     <Content Include="App_Themes\Delta\images\buttons\search_blu.gif" />
     <Content Include="App_Themes\Delta\images\buttons\search_down.png" />
     <Content Include="App_Themes\Delta\images\buttons\select.gif" />
+    <Content Include="App_Themes\Delta\images\buttons\select.png" />
+    <Content Include="App_Themes\Delta\images\buttons\server.png" />
     <Content Include="App_Themes\Delta\images\buttons\up.gif" />
     <Content Include="App_Themes\Delta\images\buttons\user.png" />
     <Content Include="App_Themes\Delta\images\button\default-large-arrow-rtl.png" />
@@ -1018,8 +1024,10 @@
     <Content Include="App_Themes\Delta\Rating.css" />
     <Content Include="App_Themes\Delta\tab.css" />
     <Content Include="App_Themes\Delta\delta.css" />
-    <Content Include="Asmx\FoldersService.svc" />
     <Content Include="Controls\DateTime.ascx" />
+    <Content Include="Controls\EntitaSearch.ascx" />
+    <Content Include="Controls\EntiViewer.ascx" />
+    <Content Include="Controls\GeneralEntiyTree.ascx" />
     <Content Include="Controls\InBox.ascx" />
     <Content Include="Controls\MailBoxLogin.ascx" />
     <Content Include="Controls\MailBoxNavigator.ascx" />
@@ -1053,7 +1061,8 @@
     <Content Include="pages\Mail\GestRubrica.aspx" />
     <Content Include="pages\Rubrica\AccessoMappatura.aspx" />
     <Content Include="pages\Rubrica\EntiResearch.aspx" />
-    <Content Include="pages\Rubrica\Mapping.aspx" />
+    <Content Include="scripts\CheckCodiceFiscale.js" />
+    <Content Include="scripts\EntiResearch.js" />
     <Content Include="scripts\uty.js" />
     <Content Include="Users\Register.aspx" />
     <Content Include="Web.config">
@@ -1061,9 +1070,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="api\EntiMappingController.cs" />
+    <Compile Include="api\FolderController.cs" />
+    <Compile Include="api\GeneralSearchController.cs" />
     <Compile Include="api\LoginServiceController.cs" />
     <Compile Include="api\PECController.cs" />
     <Compile Include="api\SessionStateRouteHandler.cs" />
+    <Compile Include="api\TreeController.cs" />
     <Compile Include="App_Start\SessionableControllerHandler.cs" />
     <Compile Include="App_Start\SessionStateRouteHandler.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -1073,8 +1086,11 @@
     <Compile Include="Ashx\GestoreRatingMail.ashx.cs">
       <DependentUpon>GestoreRatingMail.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Asmx\FoldersService.svc.cs">
-      <DependentUpon>FoldersService.svc</DependentUpon>
+    <Compile Include="Ashx\TreeEnt.ashx.cs">
+      <DependentUpon>TreeEnt.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Ashx\TreeViewDataSource.ashx.cs">
+      <DependentUpon>TreeViewDataSource.ashx</DependentUpon>
     </Compile>
     <Compile Include="Controls\DateTime.ascx.cs">
       <DependentUpon>DateTime.ascx</DependentUpon>
@@ -1082,6 +1098,27 @@
     </Compile>
     <Compile Include="Controls\DateTime.ascx.designer.cs">
       <DependentUpon>DateTime.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EntitaSearch.ascx.cs">
+      <DependentUpon>EntitaSearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\EntitaSearch.ascx.designer.cs">
+      <DependentUpon>EntitaSearch.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EntiViewer.ascx.cs">
+      <DependentUpon>EntiViewer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\EntiViewer.ascx.designer.cs">
+      <DependentUpon>EntiViewer.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GeneralEntiyTree.ascx.cs">
+      <DependentUpon>GeneralEntiyTree.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\GeneralEntiyTree.ascx.designer.cs">
+      <DependentUpon>GeneralEntiyTree.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\InBox.ascx.cs">
       <DependentUpon>InBox.ascx</DependentUpon>
@@ -1166,10 +1203,13 @@
     <Compile Include="Controls\RicercaStat.ascx.designer.cs">
       <DependentUpon>RicercaStat.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\CodFisCheck.cs" />
+    <Compile Include="Extensions\CodFisProvvCheck.cs" />
     <Compile Include="Extensions\Helpers.cs" />
     <Compile Include="Extensions\InlineScript.cs" />
     <Compile Include="Extensions\LinqExtensionMethods.cs" />
     <Compile Include="Extensions\Utility.cs" />
+    <Compile Include="Models\TreeModel.cs" />
     <Compile Include="pages\common\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1293,13 +1333,6 @@
     <Compile Include="pages\Rubrica\EntiResearch.aspx.designer.cs">
       <DependentUpon>EntiResearch.aspx</DependentUpon>
     </Compile>
-    <Compile Include="pages\Rubrica\Mapping.aspx.cs">
-      <DependentUpon>Mapping.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="pages\Rubrica\Mapping.aspx.designer.cs">
-      <DependentUpon>Mapping.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1334,6 +1367,8 @@
     <Content Include="log4net.config" />
     <Content Include="Ashx\GestoreRatingMail.ashx" />
     <Content Include="Ashx\GeneralSearcher.ashx" />
+    <Content Include="Ashx\TreeViewDataSource.ashx" />
+    <Content Include="Ashx\TreeEnt.ashx" />
     <None Include="Properties\PublishProfiles\Delta.pubxml" />
     <None Include="Properties\PublishProfiles\Localhost.pubxml" />
     <None Include="Properties\Settings.settings">
@@ -1352,6 +1387,7 @@
     <Folder Include="App_Themes\Delta\images\default\tree\" />
     <Folder Include="App_Themes\Delta\images\layout\" />
     <Folder Include="App_Themes\Delta\images\logo\" />
+    <Folder Include="Asmx\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>

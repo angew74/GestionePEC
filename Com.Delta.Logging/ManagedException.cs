@@ -123,9 +123,20 @@ namespace Com.Delta.Logging
             XmlAttribute at = doc.CreateAttribute("n");
             at.Value = name;
             el.Attributes.Append(at);
-            el.InnerXml = innerXml;
-            doc.FirstChild.AppendChild(el);
-            EnanchedInfos = doc.DocumentElement.OuterXml;
+            string parsingText = innerXml.Replace(".", "").Replace("/","").Replace(";","").Replace("\\","");
+            try
+            {
+                el.InnerXml = parsingText;
+            }
+            catch (Exception ex)
+            {
+                el.InnerXml = "Errore non gestito";
+            }
+            finally
+            {
+                doc.FirstChild.AppendChild(el);
+                EnanchedInfos = doc.DocumentElement.OuterXml;
+            }
         }
 
         public XmlDocument getXmlDetails()

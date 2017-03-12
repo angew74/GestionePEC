@@ -50,6 +50,10 @@ namespace Com.Delta.Web.Session
 
         TESTO_MAIL_NEW,
         ACCOUNTS_LIST,
-        BACKEND_USER
+        BACKEND_USER,
+        FOLDERS,
+        UTENTIBACKEND,
+        TITOLI,
+        TITOLARIO
     }
 }

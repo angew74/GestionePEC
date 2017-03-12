@@ -456,7 +456,7 @@ namespace GestionePEC.Api
         {
             string[] mailIds = AllIds.Split(',');
             List<string> idMail = mailIds.Where(x => !String.IsNullOrEmpty(x)).ToList();
-            string utente = MySecurityProvider.CurrentPrincipalName;
+            string utente = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
             int folderMezzo = 0;
             int.TryParse(folder, out folderMezzo);
             if (folderMezzo == 0)

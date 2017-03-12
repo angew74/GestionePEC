@@ -779,7 +779,7 @@
                         <div class="body-panel">
                             <div style="display: table; width: 100%;">
                                 <div style="display: table-row;">
-                                    <div style="float: left; display: table-cell;" class="content-panel-gray">
+                                    <div style="float: left; display: table-cell;" id="utentiNonAbilitati" class="content-panel-gray">
                                         <div class="header-panel-gray">
                                             <div class="header-title">
                                                 <div class="header-text-left">
@@ -793,7 +793,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="body-panel" style="overflow: auto; height: 400px; min-width:100%;">
+                                        <div class="body-panel">
                                             <asp:ListView ID="lvDipendentiNONAbilitati" runat="server">
                                                 <LayoutTemplate>
                                                     <div id="itemContainer" style="display: inline-table;">
@@ -844,7 +844,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="body-panel" style="overflow: auto; height: 400px; min-width: 450px;">
+                                        <div class="body-panel">
                                             <asp:ListView ID="lvDipendentiAbilitati" runat="server" OnItemDataBound="lvDipendentiAbilitati_ItemDataBound">
                                                 <LayoutTemplate>
                                                     <div id="itemContainer" style="display: inline-table;">
@@ -889,7 +889,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="body-panel" style="overflow: auto; height: 400px; min-width:40%; max-width: 700px">
+                                        <div class="body-panel">
                                             <asp:ListView ID="lvUtenti" runat="server">
                                                 <LayoutTemplate>
                                                     <div id="itemContainer" style="display: inline-table;">
@@ -940,7 +940,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="body-panel" style="overflow: auto; height: 400px; min-width:40%;max-width:750px">
+                                        <div class="body-panel" id="utentiAdmin">
                                             <asp:ListView ID="lvUtentiAdmin" runat="server" OnItemDataBound="lvUtentiAdmin_ItemDataBound">
                                                 <LayoutTemplate>
                                                     <div id="itemContainer" style="display: inline-table;">
@@ -985,7 +985,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="body-panel" style="overflow: auto; height: 400px; min-width: 400px; max-width: 500px">
+                                        <div class="body-panel" id="cartelleNonAbilitate">
                                             <asp:ListView ID="lvCartelleNonAbilitate" runat="server">
                                                 <LayoutTemplate>
                                                     <div id="itemContainer" style="display: inline-table;">
@@ -1035,7 +1035,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="body-panel" style="overflow: auto; height: 400px; min-width: 450px;">
+                                        <div class="body-panel" id="cartelleAbilitate">
                                             <asp:ListView ID="lvCartelleAbilitate" runat="server" OnItemDataBound="lvCartelleAbilitate_ItemDataBound">
                                                 <LayoutTemplate>
                                                     <div id="itemContainer" style="display: inline-table;">

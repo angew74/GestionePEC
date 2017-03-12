@@ -6,7 +6,7 @@
     <asp:HiddenField runat="server" ID="hdTabIndex" />
     <asp:Panel runat="server" ID="pnlTabContainer">
     </asp:Panel>
-    <asp:Panel runat="server" ID="pnlCasella" Style="height: 190px; font-size: smaller" CssClass="control-tab-gray">
+    <asp:Panel runat="server" ID="pnlCasella" Style="height: 190px; font-size: smaller; width:90%;" CssClass="control-tab-gray">
         <table class="NewTableSmall">
             <tr>
                 <td>
@@ -374,18 +374,22 @@
             { document.getElementById('<%=pnlCasella.ClientID %>').style.display = 'block'; }
         }
 
-        function superCreatePanel() {
+      function superCreatePanel() {
             var PanelRicerca = Ext.create('Ext.tab.Panel', ({
                 renderTo: document.getElementById('<%= pnlTabContainer.ClientID %>'),
                 activeTab: 0,
                 plain: true,
                 forceFit: true,
-                maxWidth:1700,
+                layout: 'fit',
+              //  maxTabWidth: 1600,
+              //  maxWidth:1500,
                 id: 'PanelRichiesta',
                 frame: false,
                 defaults: { autoHeight: true, autoWidth: true, autoScroll: true },
                 items: [{
                     title: 'Casella Mail',
+                    forceFit: true,
+                    layout: 'fit',
                     contentEl: document.getElementById('<%=pnlCasella.ClientID %>'),
                     listeners:
                         {
@@ -394,6 +398,7 @@
                 }], listeners: { 'tabchange': RIAactiveTabChanged }
             }))
         }
+         
 
         function RIAhandleActivate(tab) {
             var pnl = document.getElementById(tab.contentEl);
@@ -434,7 +439,15 @@
             }
             return fResult;
         }
+        // Ext.EventManager.onWindowResize(myEvilPanel.doLayout, myEvilPanel);
 
+        //var panel = Ext.getCmp('PanelRichiesta');
+        //panel.on('beforerender', function () {
+        //    var tmpHeight = Ext.getBody().getViewSize().height - 160;
+        //    var height = Ext.getBody().getViewSize().height - 140;
+        //    var panel = Ext.getCmp('PanelRichiesta');
+        //    panel.setSize(width, height);
+        //});
 
     });
 </script>

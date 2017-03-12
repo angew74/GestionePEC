@@ -5,7 +5,7 @@
     <asp:HiddenField runat="server" ID="hdTabIndex" />
     <asp:Panel runat="server" ID="pnlTabContainer">
     </asp:Panel>
-    <asp:Panel runat="server" ID="pnlStatistica" Style="display: none;" CssClass="control-tab-gray">
+    <asp:Panel runat="server" ID="pnlStatistica" CssClass="control-tab-gray">
         <table class="NewTable">
             <tr>
                 <td>

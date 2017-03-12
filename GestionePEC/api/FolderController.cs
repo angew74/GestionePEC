@@ -4,50 +4,32 @@ using Com.Delta.Mail.MailMessage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Activation;
-using System.ServiceModel.Web;
-using System.Text;
-using System.Web;
-using System.Web.SessionState;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
-namespace GestionePEC.Asmx
+namespace GestionePEC.api
 {
-    [ServiceContract(Namespace = "")]
-    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
-    public class FoldersService : IHttpHandler, IRequiresSessionState
+
+    public class FoldersResponse
     {
-        public class FoldersResponse
-        {
-            public string message { get; set; }
-            public int total { get; set; }
-            public string success { get; set; }
-            public List<ActiveUp.Net.Common.DeltaExt.Action> ActionsList { get; set; }
-        }
+        public string message { get; set; }
+        public int total { get; set; }
+        public string success { get; set; }
+        public List<ActiveUp.Net.Common.DeltaExt.Action> ActionsList { get; set; }
+    }
 
 
-        [WebGet(UriTemplate = "folders/folder/{idFolder}",
-        RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
-        [OperationContract]
-        FoldersResponse GetActions(string idFolder)
+    public class FolderController : ApiController
+    {
+        [Authorize]
+        [Route("api/FolderController/GetActions")]
+        public HttpResponseMessage GetActions(string idFolder,string page, string start,string limit)
         {
             return createJsonActions(idFolder);
         }
 
-        public void ProcessRequest(HttpContext context)
-        {
-        }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        private FoldersResponse createJsonActions(string folder)
+        private HttpResponseMessage createJsonActions(string folder)
         {
 
             FoldersResponse folderResponse = new FoldersResponse();
@@ -56,7 +38,7 @@ namespace GestionePEC.Asmx
             {
                 folderResponse.message = "Sessione scaduta";
                 folderResponse.success = "false";
-                return folderResponse;
+                return  this.Request.CreateResponse<FoldersResponse>(HttpStatusCode.OK, folderResponse); 
             }
             bool managed = m.IsManaged;
             if (managed)
@@ -81,7 +63,7 @@ namespace GestionePEC.Asmx
                     folderResponse.success = "false";
                 }
             }
-            return folderResponse;
+            return this.Request.CreateResponse<FoldersResponse>(HttpStatusCode.OK, folderResponse);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace GestionePEC
             {
                 if (MySecurityProvider.CurrentPrincipal != null)
                 {
-                    MailLogInfo loginfo = new MailLogInfo("MAIL", "LGO", MySecurityProvider.CurrentPrincipal.Identity.Name,"", "");
+                    MailLogInfo loginfo = new MailLogInfo("MAIL", "LGO", MySecurityProvider.CurrentPrincipal.MyIdentity.UserName,"", "");
                     Cache.Remove(Context.User.Identity.Name);
                 }
                 System.Threading.Thread.CurrentPrincipal = null;

@@ -245,7 +245,7 @@ namespace GestionePEC.Extensions
             {
                 if (MySecurityProvider.CurrentPrincipal == null)
                     return;
-                string user = MySecurityProvider.CurrentPrincipal.Identity.Name;
+                string user = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
                 string dip = MySecurityProvider.CurrentPrincipal.MyIdentity.dipartimento;
                 //BUSPraticaCRI pratica = new BUSPraticaCRI();
                 //pratica.UnLock<MessaggiResponse>("", user, dip);
