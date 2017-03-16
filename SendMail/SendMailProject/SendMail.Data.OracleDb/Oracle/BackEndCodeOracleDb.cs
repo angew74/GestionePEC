@@ -354,7 +354,7 @@ namespace SendMail.Data.OracleDb
                         Direction = ParameterDirection.Input,
                         OracleDbType = OracleDbType.Varchar2,
                         ParameterName = "p_backend_descr",
-                        Value = string.Format("%{0}%", backendDescr)
+                        Value = string.Format("%{0}%", backendDescr.ToUpper())
                     });
                     return (List<BackEndRefCode>)DaoOracleDbHelper<BackEndRefCode>.ExecSelectCommand(cmd,
                         DaoOracleDbHelper.MapToBackEndRefCode);

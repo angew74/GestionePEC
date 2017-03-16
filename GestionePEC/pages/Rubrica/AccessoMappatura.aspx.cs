@@ -329,12 +329,15 @@ namespace GestionePEC.pages.Rubrica
                             //griBackend.DataSource = listadescr;
 
                             Session["Accesso"] = listadescr;
-                            int index = listadescr.IndexOf(listadescr.First(x => x.Codice == entity.Codice));
-                            OnAccessoPagerIndexChanged("", index / PagerSize);
+                            if (listadescr.Count > 0)
+                            {
+                                int index = listadescr.IndexOf(listadescr.First(x => x.Codice == entity.Codice));
+                                OnAccessoPagerIndexChanged("", index / PagerSize);
 
-                            // OnAccessoPagerIndexChanged("", 0);
-                            if (listadescr.Count <= PagerSize)
-                                griBackend.BottomPagerRow.Visible = false;
+                                // OnAccessoPagerIndexChanged("", 0);
+                                if (listadescr.Count <= PagerSize)
+                                    griBackend.BottomPagerRow.Visible = false;
+                            }
                         }
                     }
                     else

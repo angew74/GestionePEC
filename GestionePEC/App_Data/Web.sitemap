@@ -15,8 +15,7 @@
     <siteMapNode url="" title="Rubrica" roles="*">
       <siteMapNode url="~/pages/Rubrica/EntiResearch.aspx" title="Cerca Contatto" roles="*">
       </siteMapNode>
-      <siteMapNode url="" title="Mappa" roles="*"></siteMapNode>
-      <siteMapNode url="" title="Accedi Mappatura" roles="*"></siteMapNode>
+      <siteMapNode url="~/pages/Rubrica/AccessoMappatura.aspx" title="Accedi Mappatura" roles=""></siteMapNode>    
     </siteMapNode>
   </siteMapNode>
 </siteMap>

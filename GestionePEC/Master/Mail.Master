@@ -223,6 +223,12 @@ function findPos(obj) {
             contentPageLoad();
         }
     }
+    function InitializeRequest(sender, args) {
+        var postBackElement = args.get_postBackElement();
+        //if (postBackElement.id == clientID)
+        //$get('ctl00_updateProgress').style.display = "block";  
+        $get('updateProgress').style.display = "block";
+    }
 
     function OnBeginRequest(sender, args)
     {
@@ -236,6 +242,34 @@ function findPos(obj) {
     {
         //    $get('ctl00_updateProgress').style.display = "none";  
         $get('updateProgress').style.display = "none";
-    } 
+    }
+
+     var prm = Sys.WebForms.PageRequestManager.getInstance(); 
+    prm.add_initializeRequest(InitializeRequest);
+    prm.add_endRequest(EndRequest);
+    var postBackElement;
+    function InitializeRequest(sender, args)
+    { 
+      if (prm.get_isInAsyncPostBack())
+      args.set_cancel(true);
+      postBackElement = args.get_postBackElement(); 
+
+      if ((postBackElement.className.indexOf('upd') != -1) 
+            || (postBackElement.id.indexOf('but') != -1)
+            || (postBackElement.id.indexOf('rbl') != -1))
+            
+        $get('<%=updateProgress.ClientID %>').style.display = 'block';
+    };
+    function EndRequest(sender, args)
+    { 
+      if ((postBackElement.className.indexOf('upd') != -1) 
+            || (postBackElement.id.indexOf('but') != -1)
+            || (postBackElement.id.indexOf('rbl') != -1))
+            
+      {  
+            $get('<%=updateProgress.ClientID %>').style.display = 'none'; 
+        
+       }
+    };
 </script>
 

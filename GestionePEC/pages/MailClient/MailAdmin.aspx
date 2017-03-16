@@ -779,7 +779,7 @@
                         <div class="body-panel">
                             <div style="display: table; width: 100%;">
                                 <div style="display: table-row;">
-                                    <div style="float: left; display: table-cell;" id="utentiNonAbilitati" class="content-panel-gray">
+                                    <div style="float: left; display: table-cell;" class="content-panel-gray">
                                         <div class="header-panel-gray">
                                             <div class="header-title">
                                                 <div class="header-text-left">
@@ -793,7 +793,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="body-panel">
+                                        <div class="body-panel" style="height: 400px; min-width: 400px; max-width: 900px">
                                             <asp:ListView ID="lvDipendentiNONAbilitati" runat="server">
                                                 <LayoutTemplate>
                                                     <div id="itemContainer" style="display: inline-table;">
@@ -844,7 +844,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="body-panel">
+                                        <div class="body-panel" style="overflow: auto; height: 400px; min-width: 450px;max-width:1200px">
                                             <asp:ListView ID="lvDipendentiAbilitati" runat="server" OnItemDataBound="lvDipendentiAbilitati_ItemDataBound">
                                                 <LayoutTemplate>
                                                     <div id="itemContainer" style="display: inline-table;">

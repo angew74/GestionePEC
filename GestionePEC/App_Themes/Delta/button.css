@@ -434,15 +434,3 @@
 	vertical-align:middle;
 }
 
-.bRispostaManuale
-{
-	background-position:center;
-	background-image:url(images/buttons/iAdd.png);
-	background-repeat:no-repeat;
-	background-color:Transparent;
-	width:22px;
-	height:13px;
-	cursor:pointer;
-	border-width:0px;
-	vertical-align:middle;
-}

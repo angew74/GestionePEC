@@ -22,7 +22,7 @@
                             CssClass="bSearchWhite" Style="float: right; margin-top: 2px;" UseSubmitBehavior="false"
                             CausesValidation="false" />
                         <asp:Button ID="btnIns" runat="server" OnClick="btnIns_Click" SkinID="ToolboxButton"
-                            CssClass="bInsert" Style="float: right; margin-top: 2px;" UseSubmitBehavior="false"
+                            CssClass="bAdd" Style="float: right; margin-top: 2px;" UseSubmitBehavior="false"
                             CausesValidation="false" />
                     <%--</div>--%>
                 </div>
