@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{94438DEF-1DC1-4240-8645-822C94B41DB4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SendMail.Data.SQLServerDB</RootNamespace>
+    <AssemblyName>SendMail.Data.SQLServerDB</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.0.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ACTIONS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ACTIONS_FOLDERS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_ALLEGATI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_CANALI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_DESTINATARI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_DESTINATARI_PROT.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_ENTITA_USED.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_FLUSSO.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_FLUSSO_PROT.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_PROTOCOLLO.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_PROTOCOLLO_XML.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_SOTTOTITOLI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COMUNICAZIONI_TITOLI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Contracts\CachedDao\IReferralTypeDao.cs" />
+    <Compile Include="Contracts\ExeptionMessages.cs" />
+    <Compile Include="Contracts\IBackEndCodeDao.cs" />
+    <Compile Include="Contracts\IBackendUserDao.cs" />
+    <Compile Include="Contracts\IComAllegatoDao.cs" />
+    <Compile Include="Contracts\IComFlussoDao.cs" />
+    <Compile Include="Contracts\IComunicazioniDao.cs" />
+    <Compile Include="Contracts\IContactsApplicationMappingDao.cs" />
+    <Compile Include="Contracts\IContactsBackendDao.cs" />
+    <Compile Include="Contracts\IContattoDao.cs" />
+    <Compile Include="Contracts\IDao.cs" />
+    <Compile Include="Contracts\IMailAddresseDao.cs" />
+    <Compile Include="Contracts\IMailDao.cs" />
+    <Compile Include="Contracts\IMailRefsDao.cs" />
+    <Compile Include="Contracts\IRubricaDao.cs" />
+    <Compile Include="Contracts\IRubricaEntitaDao.cs" />
+    <Compile Include="Contracts\ISendersFoldersDao.cs" />
+    <Compile Include="Contracts\ISessionModel.cs" />
+    <Compile Include="Contracts\ISottoTitoloDao.cs" />
+    <Compile Include="Contracts\ITitoloDao.cs" />
+    <Compile Include="Contracts\Mail\IMailAccountsDao.cs" />
+    <Compile Include="Contracts\Mail\IMailHeaderDao.cs" />
+    <Compile Include="Contracts\Mail\IMailMessageDao.cs" />
+    <Compile Include="Contracts\Mail\IMailServerDao.cs" />
+    <Compile Include="FAXPECEntity.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FAXPECEntity.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAXPECEntity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAXPECEntity.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FAXPECEntity.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Mapping\AutoMapperConfiguration .cs" />
+    <Compile Include="Mapping\DaoSQLServerDBHelper.cs" />
+    <Compile Include="Mapping\LinqExtensions.cs" />
+    <Compile Include="PECSQLContext.cs" />
+    <Compile Include="FOLDERS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FOLDERS_SENDERS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IPA.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LOG_ACTIONS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LOG_APP_CODES.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LOG_APP_ERRORS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LOG_ERRORS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LOG_LOG_CODES.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAILSERVERS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_CONTENT.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_INBOX.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_INBOX_FLUSSO.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_LIST.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_LIST_STORICO.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_REFS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_REFS_NEW.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_SENDERS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_USERS_ADMIN_BACKEND.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_USERS_BACKEND.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_USERS_SENDER_BACKEND.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ComAllegatoSQLDb.cs" />
+    <Compile Include="Repository\ComFlussoSQLDb.cs" />
+    <Compile Include="Repository\ComunicazioniSQLDb.cs" />
+    <Compile Include="Repository\MailHeaderDaoSQLDb.cs" />
+    <Compile Include="Repository\MailRefsSQLDb.cs" />
+    <Compile Include="ROLES.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUBR_ADDRESS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUBR_BACKEND.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUBR_CONTATTI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUBR_CONTATTI_BACKEND.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUBR_ENTITA.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUBR_ENTITA_USED.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUBR_MAPPING_PROTOCOLLO.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUBR_REFERRAL_TYPE.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUBR_STATI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUBR_TAGS.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TERRIT_COMUNI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TERRIT_NAZIONI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_COMUNICAZIONI_COMPLETE.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_CONTATTI_RUBR_AND_IPA.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_MAP_APPL_CONTATTI_NEW.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_RUBR_CONTATTI.cs">
+      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="FAXPECEntity.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FAXPECEntity.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="FAXPECEntity.edmx.diagram">
+      <DependentUpon>FAXPECEntity.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FAXPECEntity.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FAXPECEntity.edmx</DependentUpon>
+      <LastGenOutput>FAXPECEntity.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="FAXPECEntity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FAXPECEntity.edmx</DependentUpon>
+      <LastGenOutput>FAXPECEntity.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ActiveUp.Net\ActiveUp.Net.Common\ActiveUp.Net.Common.csproj">
+      <Project>{3a83ae95-c23f-48b4-9f1a-ad4b32c37b93}</Project>
+      <Name>ActiveUp.Net.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Data.DeltaStub\Com.Delta.Data.DeltaStub.csproj">
+      <Project>{C67D38CA-DC29-416B-8ECA-3F9317ED0C88}</Project>
+      <Name>Com.Delta.Data.DeltaStub</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Logging\Com.Delta.Logging.csproj">
+      <Project>{A8C15D12-6E47-4AF5-BADF-B6CBC421EC40}</Project>
+      <Name>Com.Delta.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Web\Com.Delta.Web.csproj">
+      <Project>{CDB0C146-9A70-4DD9-B878-29BB982157CA}</Project>
+      <Name>Com.Delta.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SendMail\SendMail.Model\SendMail.Model.csproj">
+      <Project>{647c1188-a0da-412b-9640-218cf6c3e99a}</Project>
+      <Name>SendMail.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

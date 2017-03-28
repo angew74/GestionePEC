@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="468177daefe94904839784c9ed6931ab" Name="Diagram1">
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.ACTIONS" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.ACTIONS_FOLDERS" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI" Width="1.5" PointX="7.5" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_ALLEGATI" Width="1.5" PointX="9.75" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_CANALI" Width="1.5" PointX="3" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_DESTINATARI" Width="1.5" PointX="12" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_DESTINATARI_PROT" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_ENTITA_USED" Width="1.5" PointX="12.75" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_FLUSSO" Width="1.5" PointX="9.75" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_FLUSSO_PROT" Width="1.5" PointX="9.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_PROTOCOLLO" Width="1.5" PointX="9.75" PointY="24" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_PROTOCOLLO_XML" Width="1.5" PointX="9.75" PointY="27.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_SOTTOTITOLI" Width="1.5" PointX="5.25" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.COMUNICAZIONI_TITOLI" Width="1.5" PointX="3" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.FOLDERS" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.FOLDERS_SENDERS" Width="1.5" PointX="3" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.LOG_ACTIONS" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.LOG_APP_CODES" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.LOG_APP_ERRORS" Width="1.5" PointX="5.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.LOG_ERRORS" Width="1.5" PointX="11.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.LOG_LOG_CODES" Width="1.5" PointX="13.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_CONTENT" Width="1.5" PointX="12" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_INBOX" Width="1.5" PointX="9.75" PointY="30.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_LIST" Width="1.5" PointX="15.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_LIST_STORICO" Width="1.5" PointX="17.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_REFS" Width="1.5" PointX="14.25" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_REFS_NEW" Width="1.5" PointX="17.25" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_SENDERS" Width="1.5" PointX="0.75" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_USERS_ADMIN_BACKEND" Width="1.5" PointX="13.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_USERS_BACKEND" Width="1.5" PointX="0.75" PointY="24.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_USERS_SENDER_BACKEND" Width="1.5" PointX="3" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAILSERVERS" Width="1.5" PointX="17.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.ROLES" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.RUBR_ADDRESS" Width="1.5" PointX="7.5" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.RUBR_BACKEND" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.RUBR_CONTATTI" Width="1.5" PointX="17.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.RUBR_CONTATTI_BACKEND" Width="1.5" PointX="5.25" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.RUBR_ENTITA" Width="1.5" PointX="9.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.RUBR_ENTITA_USED" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.RUBR_MAPPING_PROTOCOLLO" Width="1.5" PointX="19.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.RUBR_REFERRAL_TYPE" Width="1.5" PointX="7.5" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.RUBR_STATI" Width="1.5" PointX="19.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.RUBR_TAGS" Width="1.5" PointX="15" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.TERRIT_COMUNI" Width="1.5" PointX="19.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.TERRIT_NAZIONI" Width="1.5" PointX="14.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.IPA" Width="1.5" PointX="19.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.MAIL_INBOX_FLUSSO" Width="1.5" PointX="16.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.V_COMUNICAZIONI_COMPLETE" Width="1.5" PointX="21.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.V_CONTATTI_RUBR_AND_IPA" Width="1.5" PointX="21.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.V_MAP_APPL_CONTATTI_NEW" Width="1.5" PointX="21.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Com.Delta.PEC.Model.V_RUBR_CONTATTI" Width="1.5" PointX="14.75" PointY="22.75" IsExpanded="true" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.ACTIONS_FOLDERS_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.COMUNICAZIONI_ALLEGATI_CO_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.COMUNICAZIONI_COMUNICAZIO_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.COMUNICAZIONI_ENTITA_USED_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.COMUNICAZIONI_FLUSSO_COMU_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.COMUNICAZIONI_FLUSSO_PROT_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.COMUNICAZIONI_PROT_XML__FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.COMUNICAZIONI_PROTOCOLLO__FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.MAIL_CONTENT_COMUNICAZION_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.MAIL_INBOX_COMUNICAZIONI_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.RUBR_CONTATTI_BACKEND_COM_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.COMUNICAZIONI_DESTINATARI_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.COMUNICAZIONI_ENTITA_USED_FK2" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.MAIL_REFS_COM_DEST_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.MAIL_REFS_NEW_COM_DEST_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.MAIL_CONTENT_FLUSSI_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.MAIL_CONTENT_FLUSSI_FK2" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.COMUNICAZIONI_SOTTOTITOLI_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.RUBR_CONTATTI_BACKEND_COM_FK2" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.FK_FOLDERS_SENDERS_FOLDERS" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.FK_FOLDERS_SENDERS_SENDERS" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.MAIL_REFS_MAIL_CONTEN_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.MAIL_REFS_NEW_MAIL_CONTEN_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.USERS_SENDER_BACKEND_MAIL_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.USERS_SENDER_BACKEND_USER_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.RUBR_ENTITA_RUBR_ADDRESS_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.RUBR_CONTATTI_BACKEND_RUB_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.RUBR_ENTITA_RUBR_ENTITA_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.RUBR_ENTITA_RUBR_REFERRAL_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.MAIL_SENDERS_TITOLI" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.RUBR_CONTATTI_TAGS" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.RUBR_REFERRAL_TYPE_TAGS" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
