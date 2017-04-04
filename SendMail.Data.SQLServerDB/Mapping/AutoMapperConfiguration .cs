@@ -1,8 +1,15 @@
-﻿using AutoMapper;
+﻿using ActiveUp.Net.Common.DeltaExt;
+using ActiveUp.Net.Mail;
+using ActiveUp.Net.Mail.DeltaExt;
+using AutoMapper;
 using SendMail.Model;
 using SendMail.Model.ComunicazioniMapping;
+using SendMail.Model.ContactApplicationMapping;
+using SendMail.Model.RubricaMapping;
+using SendMail.Model.Wrappers;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -143,7 +150,84 @@ namespace SendMail.Data.SQLServerDB.Mapping
 
         }
 
-        public static COMUNICAZIONI_DESTINATARI fromRubrContattiToComunicazioniDestinatari(V_RUBR_CONTATTI v_rubr_contatti)
+      internal  static ContactsApplicationMapping MapToContactsApplicationModel(V_MAP_APPL_CONTATTI_NEW v)
+        {
+            ContactsApplicationMapping m = new ContactsApplicationMapping();
+            m.AppCode = v.APP_CODE;
+            m.BackendCode = v.BACKEND_CODE;
+            m.BackendDescr = v.BACKEND_DESCR;
+            m.Category = v.CATEGORY;
+            m.Codice = v.CODICE;
+            m.ComCode = v.CODICE;
+            m.DescrPlus = v.DESCR_PLUS;
+            m.Fax = v.FAX;
+            m.IdBackend = (long)v.ID_BACKEND;
+            m.IdCanale = (long)v.ID_CANALE;
+            m.IdContact = (long)v.ID_CONTACT;
+            m.IdMap = (long)v.ID_MAP;
+            m.IdSottotitolo = (long)v.ID_SOTTOTITOLO;
+            m.IdTitolo = (long)v.ID_TITOLO;
+            m.IsSottotitoloActive =LinqExtensions.TryParseBoolDecimal(v.SOTTOTITOLO_ACTIVE);
+            m.IsTitoloActive = LinqExtensions.TryParseBoolDecimal(v.TITOLO_ACTIVE);
+            m.Mail = v.MAIL;
+            m.RefIdReferral = (long)v.REF_ID_REFERRAL;
+            m.RefOrg = (long)v.REF_ORG;
+            m.Sottotitolo = v.SOTTOTITOLO;
+            m.SottotitoloCode = v.SOTTOTITOLO_PROT_CODE;
+            m.Telefono = v.TELEFONO;
+            m.Titolo = v.TITOLO;
+            m.TitoloCode = v.TITOLO_PROT_CODE;
+            return m;
+        }
+        internal static RubricaEntita MapToRubrEntita(RUBR_ENTITA e)
+        {
+            RubricaEntita re = new RubricaEntita();
+            re.IdReferral = (Nullable<Int64>)e.ID_REFERRAL;
+            re.IdPadre = (Nullable<Int64>)e.ID_PADRE;
+            re.ReferralType = (EntitaType)Enum.Parse(typeof(EntitaType), e.REFERRAL_TYPE);
+            re.Cognome = e.COGNOME;
+            re.Nome = e.NOME;
+            re.CodiceFiscale = e.COD_FIS;
+            re.PartitaIVA = e.P_IVA;
+            re.RagioneSociale = e.RAGIONE_SOCIALE;
+            re.Ufficio = e.UFFICIO;
+            re.Note = e.NOTE;
+            re.RefIdAddress = (Nullable<Int64>)e.REF_ID_ADDRESS;
+            re.IsIPA = (e.FLG_IPA == null) ? false : Convert.ToBoolean(int.Parse(e.FLG_IPA));
+            re.IPAdn = e.IPA_DN;
+            re.IPAId = e.IPA_ID;
+            re.DisambPre = e.DISAMB_PRE;
+            re.DisambPost = e.DISAMB_POST;
+            re.RefOrg = (Nullable<Int64>)e.REF_ORG;
+            re.SitoWeb = e.SITO_WEB;
+            re.AffIPA = (Nullable<Int16>)e.AFF_IPA;
+            return re;
+        }
+        internal static ActiveUp.Net.Mail.DeltaExt.MailServer FromMailServersToModel(MAILSERVERS m)
+    {
+        MailServer ms = new MailServer
+        {
+            Id = (decimal)m.ID_SVR,
+            DisplayName = m.NOME,
+            Dominus = m.DOMINUS,
+            IncomingProtocol = m.PROTOCOLLO_IN,
+            IncomingServer = m.INDIRIZZO_IN,
+            IsIncomeSecureConnection = bool.Parse(m.SSL_IN),
+            IsOutgoingSecureConnection = bool.Parse(m.SSL_OUT),
+            IsPec = Convert.ToBoolean(int.Parse(m.FLG_ISPEC)),
+            OutgoingServer = m.INDIRIZZO_OUT,
+            IsOutgoingWithAuthentication = bool.Parse(m.AUTH_OUT),
+            PortIncomingChecked = !m.PORTA_IN.Equals(110),
+            PortIncomingServer = int.Parse(m.PORTA_IN),
+            PortOutgoingChecked = !m.PORTA_OUT.Equals(25),
+            PortOutgoingServer = int.Parse(m.PORTA_OUT)
+
+        };
+        return ms;
+    }
+
+
+    public static COMUNICAZIONI_DESTINATARI fromRubrContattiToComunicazioniDestinatari(V_RUBR_CONTATTI v_rubr_contatti)
         {
             COMUNICAZIONI_DESTINATARI destinatari = new COMUNICAZIONI_DESTINATARI
             {
@@ -399,6 +483,275 @@ namespace SendMail.Data.SQLServerDB.Mapping
             return comunicazione;
         }
 
+        internal static MAIL_INBOX_FLUSSO MapToMailInboxFlussoDto(int id, string oldStatus, string newStatus, DateTime? data, string ute)
+        {
+
+            MAIL_INBOX_FLUSSO inboxFlusso = new MAIL_INBOX_FLUSSO()
+            {
+
+                REF_ID_MAIL = id,
+                STATUS_MAIL_OLD = (!String.IsNullOrEmpty(oldStatus)) ? oldStatus : null,
+                STATUS_MAIL_NEW = newStatus,
+                UTE_OPE = ute
+            };
+            return inboxFlusso;
+        }
+
+        internal static MAIL_INBOX MapToMailInBoxDto(MailUser us, ActiveUp.Net.Mail.Message m)
+        {
+            MAIL_INBOX inbox = new MAIL_INBOX()
+            {
+                DATA_RICEZIONE = m.Date.ToLocalTime(),
+                MAIL_SERVER_ID = m.Uid.Replace(',', '§'),
+                MAIL_ACCOUNT = us.EmailAddress,
+                MAIL_FROM = m.From.ToString(),
+                MAIL_TO = String.Join(";", m.To.Select(to => to.Email).ToArray()),
+                MAIL_CC = String.Join(";", m.Cc.Select(cc => cc.Email).ToArray()),
+                MAIL_CCN = String.Join(";", m.Bcc.Select(bcc => bcc.Email).ToArray()),
+                MAIL_SUBJECT = m.Subject,
+                MAIL_TEXT = LinqExtensions.TryParseBody(m.BodyText),
+                DATA_INVIO = m.ReceivedDate.ToLocalTime(),
+                STATUS_SERVER = (String.IsNullOrEmpty(m.MessageId)) ? ((int)MailStatusServer.DA_NON_CANCELLARE).ToString() : ((int)MailStatusServer.PRESENTE).ToString(),
+                STATUS_MAIL = (String.IsNullOrEmpty(m.MessageId)) ? ((int)MailStatus.SCARICATA_INCOMPLETA).ToString() : ((int)MailStatus.SCARICATA).ToString(),
+                FLG_INTEG_APPL = "0",
+                MAIL_FILE = System.Text.Encoding.GetEncoding("iso-8859-1").GetString(m.OriginalData),
+                FLG_ATTACHMENTS = Convert.ToInt16(m.Attachments.Count > 0).ToString(),
+                FOLDERID = String.IsNullOrEmpty(m.HeaderFields["X-Ricevuta"]) ? 1 : 3,
+                FOLDERTIPO = "I",
+                FOLLOWS = LinqExtensions.TryParseFollows(m.HeaderFields),
+                MSG_LENGTH = m.OriginalData.Length
+            };
+            return inbox;
+        }
+
+        internal static System.Tuples.Tuple<Message, string, int, string> MapToMailTuple(MAIL_INBOX inbox)
+        {
+            System.Tuples.Tuple<ActiveUp.Net.Mail.Message, string, int, string> tuple =
+               new System.Tuples.Tuple<ActiveUp.Net.Mail.Message, string, int, string>();
+            ActiveUp.Net.Mail.Message mex = new ActiveUp.Net.Mail.Message();
+            if (inbox.ID_MAIL != 0)
+            { mex.Id = (int)inbox.ID_MAIL; }
+            mex.Uid = inbox.MAIL_SERVER_ID;
+            int lobSize = inbox.MAIL_FILE.ToCharArray().Count();
+            char[] file = new char[lobSize];
+            file = inbox.MAIL_FILE.ToCharArray();
+            mex.OriginalData = Encoding.UTF8.GetBytes(file);
+            tuple.Element1 = mex;
+            tuple.Element2 = inbox.FOLDERID.ToString();
+            tuple.Element4 = inbox.FOLDERTIPO;
+            tuple.Element3 = int.Parse(inbox.FLG_RATING.ToString()); // ??? booooooooooooo
+            return tuple;
+        }
+
+        internal static Message MapToMessageModel(MAIL_INBOX inbox)
+        {
+            int lobSize = inbox.MAIL_FILE.ToCharArray().Count();
+            char[] file = new char[lobSize];
+            file = inbox.MAIL_FILE.ToCharArray();
+            Message msg = new Message();
+            // msg = Parser.ParseMessage(new string(file));
+            msg.OriginalData = Encoding.UTF8.GetBytes(file);
+            msg.Uid = inbox.MAIL_SERVER_ID;
+            msg.Id = (int)inbox.ID_MAIL;
+            msg.FolderId = (decimal)inbox.FOLDERID;
+            msg.FolderTipo = inbox.FOLDERTIPO;
+            msg.ParentFolder = "1";
+            return msg;
+        }
+
+        internal static Message MapToMessageModelOut(MAIL_CONTENT content, List<COMUNICAZIONI_ALLEGATI> allegati)
+        {
+
+            Encoding encoding = Codec.GetEncoding("iso-8859-1");
+            ActiveUp.Net.Mail.Message msg = new ActiveUp.Net.Mail.Message();
+            msg.Charset = encoding.BodyName;
+            msg.ContentTransferEncoding = ContentTransferEncoding.QuotedPrintable;
+            msg.ContentType = new ContentType();
+            string appo = null;
+            foreach (MAIL_REFS_NEW refs in content.MAIL_REFS_NEW)
+            {
+                switch (refs.TIPO_REF)
+                {
+                    case "TO":
+                        msg.To += Parser.ParseAddresses(refs.MAIL_DESTINATARIO);
+                        break;
+                    case "CC":
+                        msg.Cc += Parser.ParseAddresses(refs.MAIL_DESTINATARIO);
+                        break;
+                    case "CCN":
+                        msg.Bcc += Parser.ParseAddresses(refs.MAIL_DESTINATARIO);
+                        break;
+
+                }
+            }
+            if (!String.IsNullOrEmpty(appo = content.MAIL_TEXT))
+            {
+                msg.BodyHtml = new ActiveUp.Net.Mail.MimeBody(ActiveUp.Net.Mail.BodyFormat.Html);
+                msg.BodyHtml.Text = appo;
+                appo = null;
+            }
+            msg.From = Parser.ParseAddress(content.MAIL_SENDER);
+            msg.Id = (int)content.ID_MAIL;
+            msg.Subject = content.MAIL_SUBJECT;
+            foreach (COMUNICAZIONI_ALLEGATI allegato in allegati)
+            {
+                ActiveUp.Net.Mail.MimePart mp = new ActiveUp.Net.Mail.MimePart();
+                mp.ContentId = allegato.ID_ALLEGATO.ToString();
+                mp.Filename = allegato.ALLEGATO_NAME;
+                mp.ParentMessage = msg;
+                msg.Attachments.Add(mp);
+
+            }
+            return msg;
+        }
+
+
+        internal static BackendUser MapToBackendUser(System.Data.Common.DbDataReader r)
+        {
+            BackendUser bUser = new BackendUser();
+            bUser.UserId = (long)r.GetValue("ID_USER");
+            bUser.UserName = r.GetValue("USER_NAME").ToString();
+            bUser.Department = r.GetInt64("DEPARTMENT");
+            if (r.GetValue("MUNICIPIO") != null)
+            {
+                bUser.Municipio = r.GetValue("MUNICIPIO").ToString();
+            }
+            else
+            {
+                bUser.Municipio = string.Empty;
+            }
+
+            bUser.Domain = r.GetValue("DOMAIN").ToString();
+            bUser.Cognome = r.GetValue("COGNOME").ToString();
+            bUser.Nome = r.GetValue("NOME").ToString();
+            bUser.UserRole = int.Parse(r.GetValue("ROLE_USER").ToString());
+            if (r.GetValue("ROLE_MAIL") != null)
+            {
+                bUser.RoleMail = int.Parse(r.GetValue("ROLE_MAIL").ToString());
+            }
+
+            return bUser;
+        }
+
+        internal static Titolo MapToTitolo(COMUNICAZIONI_TITOLI t)
+        {
+            Titolo a = new Titolo();
+            a.AppCode = t.APP_CODE;
+            a.CodiceProtocollo = t.PROT_CODE;
+            a.Id = t.ID_TITOLO;
+            a.Nome = t.TITOLO;
+            a.Note = t.NOTE;
+            return a;
+        }
+
+        internal static RubricaContatti MapToRubrContatti(RUBR_CONTATTI r, RUBR_ENTITA e, COMUNICAZIONI_TITOLI t, List<decimal> lt)
+        {
+            RubricaContatti c = new RubricaContatti();
+            c.AffIPA =(short) r.AFF_IPA;
+            c.ContactRef = r.CONTACT_REF;
+            c.Fax = r.FAX;
+            c.IdContact = (Nullable<long>) r.ID_CONTACT;
+            c.IPAdn = r.IPA_DN;
+            c.IPAId = r.IPA_ID;
+            c.IsIPA = Convert.ToBoolean(r.FLG_IPA);
+            c.IsPec = Convert.ToBoolean(r.FLG_PEC);
+            c.Mail = r.MAIL;
+            c.Note = r.NOTE;
+            c.RefIdReferral =(long) r.REF_ID_REFERRAL;
+            c.Src = "R";
+            c.Source = null;
+            c.Telefono = r.TELEFONO;
+            c.T_Ufficio = e.UFFICIO;
+            c.T_RagioneSociale =e.RAGIONE_SOCIALE;
+            c.T_MappedAppName = t.TITOLO;
+            c.T_MappedAppID =(long) t.ID_TITOLO;
+            foreach (int i in lt)
+            {
+                if (!(c.MappedAppsId.Contains(i)))
+                { c.MappedAppsId.Add(i); }
+            }
+
+            return c;
+            // c.T_isMappedAppDefault
+
+            //c.TipoContatto
+
+        }
+
+        internal static ContactsBackendMap MapToContactsBackendMap(RUBR_CONTATTI_BACKEND dr,RUBR_CONTATTI l, RUBR_ENTITA e, List<decimal> t)
+        {
+            ContactsBackendMap cbm = new ContactsBackendMap();
+            cbm.Contatto = AutoMapperConfiguration.MapToRubrContatti(l, e, dr.COMUNICAZIONI_TITOLI, t);
+            cbm.Titolo = AutoMapperConfiguration.MapToTitolo(dr.COMUNICAZIONI_TITOLI);
+
+            if (dr.ID_MAP != null)
+            { cbm.Id = (int)dr.ID_MAP; }
+            else { cbm.Id = -1; }
+            cbm.Canale = TipoCanale.UNKNOWN;
+            if (dr.REF_ID_CANALE != null)
+            { cbm.Canale = (TipoCanale)(int)dr.REF_ID_CANALE; }
+            if (dr.REF_ID_BACKEND != null)
+            { cbm.Backend = new BackEndRefCode { Id = (decimal)dr.REF_ID_BACKEND }; }
+            cbm.Contatto = new RubricaContatti();
+            if (dr.REF_ID_CONTATTO != null)
+                cbm.Contatto.IdContact = (long)dr.REF_ID_CONTATTO;
+            else
+                cbm.Contatto.IdContact = -1;
+            if (dr.REF_ID_TITOLO != null)
+                cbm.Titolo = new Titolo { Id = (decimal)dr.REF_ID_TITOLO };
+            return cbm;
+        }
+
+        internal static UserResultItem MapToUserResult(IDataRecord dr)
+        {
+            UserResultItem user = new UserResultItem();
+            user.Account = dr.GetString("ACCOUNT");
+            user.User = dr.GetString("UTE");
+            user.Operazioni = dr.GetDecimal("TOT").ToString();
+            return user;
+        }
+
+        internal static BackendUser MapToDepartment(IDataRecord dr)
+        {
+            BackendUser bUser = new BackendUser();
+            bUser.Department = dr.GetInt64("DEPARTMENT");
+            return bUser;
+        }
+
+
+        internal static BackendUser MapToDepartmentModel(MAIL_USERS_BACKEND m)
+        {
+            BackendUser bUser = new BackendUser();
+            bUser.Department =(long) m.DEPARTMENT;
+            return bUser;
+        }
+
+        internal static BackendUser FromMailUsersBackendToModel(MAIL_USERS_BACKEND d)
+        {
+            BackendUser bUser = new BackendUser();
+            bUser.UserId =(long) d.ID_USER;
+            bUser.UserName = d.USER_NAME;
+            bUser.Department =(long) d.DEPARTMENT;
+            bUser.Municipio = string.IsNullOrEmpty(d.MUNICIPIO) ? string.Empty : d.MUNICIPIO;
+            bUser.Domain = d.DOMAIN;
+            bUser.Cognome = d.COGNOME;
+            bUser.Nome = d.NOME;
+            bUser.UserRole = string.IsNullOrEmpty(d.ROLE) ? 0 : int.Parse(d.ROLE);
+            bUser.RoleMail = 0;
+            return bUser;
+        }
+
+
+
+        internal static RUBR_BACKEND FromModelToRubrBackendDto(BackEndRefCode entity, RUBR_BACKEND b)
+        {
+            b.BACKEND_CODE = entity.Codice;
+            b.BACKEND_DESCR = entity.Descrizione;
+            b.CATEGORY = entity.Categoria;
+            b.DESCR_PLUS = entity.DescrizionePlus;
+            return b;
+        }
+
         private static ComFlusso fromFlussoToModel(COMUNICAZIONI_FLUSSO flusso)
         {
             ComFlusso comFlusso = new ComFlusso()
@@ -414,7 +767,42 @@ namespace SendMail.Data.SQLServerDB.Mapping
             return comFlusso;
         }
 
+        internal static BackEndRefCode FromRubrBackendToSingleModel(RUBR_BACKEND b)
+        {
+            BackEndRefCode st = new BackEndRefCode();
+            st.Id = b.ID_BACKEND;
+            st.Codice = b.BACKEND_CODE;
+            st.Descrizione = b.BACKEND_DESCR;
+            st.Categoria = b.CATEGORY;
+            return st;
+        }
 
+        internal static RUBR_BACKEND FromRubrBackendToDto(BackEndRefCode entity)
+        {
+            RUBR_BACKEND r = new RUBR_BACKEND()
+            {
+                BACKEND_CODE = entity.Codice,
+                BACKEND_DESCR = entity.Descrizione,
+                CATEGORY = entity.Categoria,
+                DESCR_PLUS = entity.DescrizionePlus
+            };
+            return r;
+        }
+
+        internal static List<BackEndRefCode> FromRubrBackendToModel(List<RUBR_BACKEND> allEntity)
+        {
+            List<BackEndRefCode> l = new List<BackEndRefCode>();
+            foreach (RUBR_BACKEND b in allEntity)
+            {
+                BackEndRefCode st = new BackEndRefCode();
+                st.Id = b.ID_BACKEND;
+                st.Codice = b.BACKEND_CODE;
+                st.Descrizione = b.BACKEND_DESCR;
+                st.Categoria = b.CATEGORY;
+                l.Add(st);
+            }
+            return l;
+        }
 
         internal static ComFlussoProtocollo FromProtocolloToModel(COMUNICAZIONI_FLUSSO_PROT protocollo)
         {

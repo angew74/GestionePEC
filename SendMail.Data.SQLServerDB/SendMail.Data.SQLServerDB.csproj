@@ -52,6 +52,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Tuples, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4fd8e9d53546134f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Tuples.dll</HintPath>
+    </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
       <Private>True</Private>
@@ -210,10 +214,18 @@
       <DependentUpon>FAXPECEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\BackEndCodeSQLDb.cs" />
+    <Compile Include="Repository\BackEndUserSQLDb.cs" />
+    <Compile Include="Repository\ContactsApplicationMappingSQLDb.cs" />
+    <Compile Include="Repository\RubrEntitaSQLDb.cs" />
     <Compile Include="Repository\ComAllegatoSQLDb.cs" />
     <Compile Include="Repository\ComFlussoSQLDb.cs" />
     <Compile Include="Repository\ComunicazioniSQLDb.cs" />
+    <Compile Include="Repository\ContactsBackEndSQLDb.cs" />
+    <Compile Include="Repository\ContattoSQLDb.cs" />
+    <Compile Include="Repository\MailAccountSQLDb.cs" />
     <Compile Include="Repository\MailHeaderDaoSQLDb.cs" />
+    <Compile Include="Repository\MailMessageDaoSQLDb.cs" />
     <Compile Include="Repository\MailRefsSQLDb.cs" />
     <Compile Include="ROLES.cs">
       <DependentUpon>FAXPECEntity.tt</DependentUpon>
@@ -289,6 +301,7 @@
       <DependentUpon>FAXPECEntity.edmx</DependentUpon>
       <LastGenOutput>FAXPECEntity.cs</LastGenOutput>
     </Content>
+    <Content Include="Lib\System.Tuples.dll" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

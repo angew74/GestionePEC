@@ -11,6 +11,46 @@ namespace SendMail.Data.SQLServerDB.Mapping
     public class LinqExtensions
 
     {
+
+
+        internal static string TryParseBody(ActiveUp.Net.Mail.MimeBody mimeBody)
+        {
+            string m = string.Empty;
+            if (mimeBody != null && !string.IsNullOrEmpty(mimeBody.TextStripped))
+            {
+                m = mimeBody.TextStripped;
+            }
+            else if (m != null && !String.IsNullOrEmpty(mimeBody.TextStripped))
+            {
+                m = mimeBody.TextStripped;
+            }
+            return m;
+        }
+
+        internal static int? TryParseFollows(System.Collections.Specialized.NameValueCollection m)
+        {
+            int idOld = -1;
+            if (!string.IsNullOrEmpty(m["X-Ricevuta"]) &&
+                 !m["X-Ricevuta"].Equals("posta-certificata") &&
+                 !String.IsNullOrEmpty(m["X-Riferimento-Message-ID"]))
+            {
+                string idOldString = m["X-Riferimento-Message-ID"];
+                if (idOldString.StartsWith("<"))
+                    idOldString = idOldString.Substring(1);
+                if (idOldString.EndsWith(">"))
+                    idOldString = idOldString.Substring(0, idOldString.Length - 1);
+                string[] idOldStr = idOldString.Split('.');
+                if (idOldStr.Length > 0 && int.TryParse(idOldStr[0], out idOld))
+                {
+                    return idOld;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            return idOld;
+        }
         public static int TryParseInt(long? id)
         {
             int val = 0;
@@ -183,6 +223,11 @@ namespace SendMail.Data.SQLServerDB.Mapping
         }
 
         internal static long? TryParseLongNullable(decimal? iD_REFERRAL)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static bool TryParseBoolDecimal(decimal? sOTTOTITOLO_ACTIVE)
         {
             throw new NotImplementedException();
         }

@@ -16,7 +16,7 @@ namespace SendMail.Data.Contracts.Mail
         void InsertFlussoInbox(Int64 id, MailStatus oldSt, MailStatus newSt, DateTime? dataOp, string uteOpe);
         Message GetById(string mailID, string mailAccount, string mailFolder);
         Message GetOutBoxMessageByComId(string comId);
-        Tuple<Message, string, int,string> GetMessageById(string id);
+        System.Tuples.Tuple<Message, string, int,string> GetMessageById(string id);
         void Delete(string mailID, string mailAccount);
         ActiveUp.Net.Mail.DeltaExt.ResultList<Message> GetAllMessageByAccount(string account, int da, int per);
         int UpdateRating(string idMail, string account, int rating);
