@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SendMail.Data.SQLServerDB.Repository
 {
-    class MailRefsSQLDb : IMailRefsDao
+   public class MailRefsSQLDb : IMailRefsDao
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(MailRefsSQLDb));
 

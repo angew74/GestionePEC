@@ -127,7 +127,6 @@
     <Compile Include="Contracts\IRubricaDao.cs" />
     <Compile Include="Contracts\IRubricaEntitaDao.cs" />
     <Compile Include="Contracts\ISendersFoldersDao.cs" />
-    <Compile Include="Contracts\ISessionModel.cs" />
     <Compile Include="Contracts\ISottoTitoloDao.cs" />
     <Compile Include="Contracts\ITitoloDao.cs" />
     <Compile Include="Contracts\Mail\IMailAccountsDao.cs" />
@@ -217,6 +216,7 @@
     <Compile Include="Repository\BackEndCodeSQLDb.cs" />
     <Compile Include="Repository\BackEndUserSQLDb.cs" />
     <Compile Include="Repository\ContactsApplicationMappingSQLDb.cs" />
+    <Compile Include="Repository\MailServerDaoSQLDb.cs" />
     <Compile Include="Repository\RubrEntitaSQLDb.cs" />
     <Compile Include="Repository\ComAllegatoSQLDb.cs" />
     <Compile Include="Repository\ComFlussoSQLDb.cs" />
@@ -227,6 +227,10 @@
     <Compile Include="Repository\MailHeaderDaoSQLDb.cs" />
     <Compile Include="Repository\MailMessageDaoSQLDb.cs" />
     <Compile Include="Repository\MailRefsSQLDb.cs" />
+    <Compile Include="Repository\RubricaSQLDb.cs" />
+    <Compile Include="Repository\SendersFoldersSQLDb.cs" />
+    <Compile Include="Repository\SottoTitoloSQLDb.cs" />
+    <Compile Include="Repository\TitoloSQLDb.cs" />
     <Compile Include="ROLES.cs">
       <DependentUpon>FAXPECEntity.tt</DependentUpon>
     </Compile>

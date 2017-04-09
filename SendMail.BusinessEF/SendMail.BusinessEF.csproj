@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3D5BFE16-2A1A-4F08-B4B8-589CEABFFB57}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SendMail.BusinessEF</RootNamespace>
+    <AssemblyName>SendMail.BusinessEF</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Tuples, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4fd8e9d53546134f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Tuples.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="base\BaseSingletonService.cs" />
+    <Compile Include="Contracts\IBackEndDictionaryService.cs" />
+    <Compile Include="Contracts\IBackendUserService.cs" />
+    <Compile Include="Contracts\IBaseService.cs" />
+    <Compile Include="Contracts\IComunicazioniService.cs" />
+    <Compile Include="Contracts\IContactsBackendService.cs" />
+    <Compile Include="Contracts\IContactsMappingService.cs" />
+    <Compile Include="Contracts\IContattoService.cs" />
+    <Compile Include="Contracts\IMailAccountService.cs" />
+    <Compile Include="Contracts\IMailRefsService.cs" />
+    <Compile Include="Contracts\IMailServerService.cs" />
+    <Compile Include="Contracts\IMailService.cs" />
+    <Compile Include="Contracts\IReferralTypeService.cs" />
+    <Compile Include="Contracts\IRubricaEntitaService.cs" />
+    <Compile Include="Contracts\IRubricaService.cs" />
+    <Compile Include="Contracts\ISendersFoldersService.cs" />
+    <Compile Include="Contracts\ITitolarioService.cs" />
+    <Compile Include="MailFacades\MailAccountService.cs" />
+    <Compile Include="MailFacades\MailLocalService.cs" />
+    <Compile Include="MailFacades\MailServerConfigFacade.cs" />
+    <Compile Include="MailFacades\MailServerFacade.cs" />
+    <Compile Include="MailFacades\MailServerService.cs" />
+    <Compile Include="Operations\BackEndDictionaryService.cs" />
+    <Compile Include="Operations\BackendUserService.cs" />
+    <Compile Include="Operations\ComunicazioniService.cs" />
+    <Compile Include="Operations\ContactsBackendService.cs" />
+    <Compile Include="Operations\ContactsMappingService.cs" />
+    <Compile Include="Operations\ContattoServices.cs" />
+    <Compile Include="Operations\MailRefs.cs" />
+    <Compile Include="Operations\RubricaEntitaService.cs" />
+    <Compile Include="Operations\SendersFoldersService.cs" />
+    <Compile Include="Operations\TitolarioService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ActiveUp.Net\ActiveUp.Net.Common\ActiveUp.Net.Common.csproj">
+      <Project>{3a83ae95-c23f-48b4-9f1a-ad4b32c37b93}</Project>
+      <Name>ActiveUp.Net.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Data.DeltaStub\Com.Delta.Data.DeltaStub.csproj">
+      <Project>{c67d38ca-dc29-416b-8eca-3f9317ed0c88}</Project>
+      <Name>Com.Delta.Data.DeltaStub</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Logging\Com.Delta.Logging.csproj">
+      <Project>{a8c15d12-6e47-4af5-badf-b6cbc421ec40}</Project>
+      <Name>Com.Delta.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Mail\Com.Delta.Mail.csproj">
+      <Project>{62E74FAF-8C36-4874-8598-545F2A8371DA}</Project>
+      <Name>Com.Delta.Mail</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Print\Com.Delta.Print.csproj">
+      <Project>{a3e89e05-618d-4c9e-b961-e684c1476168}</Project>
+      <Name>Com.Delta.Print</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Delta.Web\Com.Delta.Web.csproj">
+      <Project>{cdb0c146-9a70-4dd9-b878-29bb982157ca}</Project>
+      <Name>Com.Delta.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SendMail.Data.SQLServerDB\SendMail.Data.SQLServerDB.csproj">
+      <Project>{94438def-1dc1-4240-8645-822c94b41db4}</Project>
+      <Name>SendMail.Data.SQLServerDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SendMail\SendMail.Model\SendMail.Model.csproj">
+      <Project>{647c1188-a0da-412b-9640-218cf6c3e99a}</Project>
+      <Name>SendMail.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\System.Tuples.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -13,9 +13,14 @@ using System.Linq;
 using System.Data;
 namespace SendMail.Data.SQLServerDB.Repository
 {
-    public class RubrEntitaSQLDb : IRubricaDao
+    public class RubrEntitaSQLDb : IRubricaEntitaDao
     {
         private static readonly ILog log = LogManager.GetLogger("RubrEntitaSQLDb");
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
 
         #region Costanti
 
@@ -359,197 +364,189 @@ namespace SendMail.Data.SQLServerDB.Repository
         public IList<SimpleTreeItem> LoadRubricaEntitaTreeByIdPadre(Int64 idPadre)
         {
             IList<SimpleTreeItem> entitaTree = null;
-            try
+            using (var dbcontext = new FAXPECContext())
             {
-                using (OracleCommand oCmd = base.CurrentConnection.CreateCommand())
+                using (var oCmd = dbcontext.Database.Connection.CreateCommand())
                 {
-                    oCmd.CommandText = selectRubricaEntitaByPadre;
-                    oCmd.BindByName = true;
-                    oCmd.Parameters.Add("p_ID_PADRE", OracleDbType.Decimal, idPadre, ParameterDirection.Input);
-
-                    using (OracleDataReader r = oCmd.ExecuteReader())
+                    try
                     {
-                        entitaTree = new List<SimpleTreeItem>();
-                        while (r.Read())
-                        {
-                            entitaTree.Add(MapToSimpleTreeItem(r));
-                        }
-                    }
 
-                    if (entitaTree.Count == 0) entitaTree = null;
+                        string selectRubricaEntitaByPadre = "SELECT DISTINCT"
+                                                                             + " ID_REFERRAL as \"ID_REF\","
+                                                                             + " ID_PADRE AS \"ID_PAD\","
+                                                                             + " DECODE((SELECT COUNT(*) FROM RUBR_ENTITA WHERE ID_PADRE = RE.ID_REFERRAL), 0, 0, 1) AS \"IS_PADRE\","
+                                                                             + " CASE"
+                                                                                 + " WHEN REFERRAL_TYPE IN ('AZ_PF', 'AZ_UFF_PF', 'PA_PF','PA_UFF_PF', 'PF', 'PG')"
+                                                                                     + " THEN COGNOME||' '||NOME"
+                                                                                 + " WHEN REFERRAL_TYPE IN ('AZ_UFF', 'PA_UFF') THEN UFFICIO"
+                                                                                 + " WHEN DISAMB_PRE IS NOT NULL THEN TRIM(DISAMB_PRE||' '||RAGIONE_SOCIALE||' '||DISAMB_POST)"
+                                                                                 + " ELSE TRIM(RAGIONE_SOCIALE||' '||DISAMB_POST)"
+                                                                             + " END AS \"RAG_SOC\","
+                                                                             + " 'RUBR' AS \"SRC\","
+                                                                             + " REFERRAL_TYPE AS \"REF_TYP\""
+                                                                             + " FROM RUBR_ENTITA RE"
+                                                                             + " WHERE ID_PADRE = " + idPadre
+                                                                             + " ORDER BY RAG_SOC";
+
+                        using (var r = oCmd.ExecuteReader())
+                        {
+                            entitaTree = new List<SimpleTreeItem>();
+                            while (r.Read())
+                            {
+                                entitaTree.Add(MapToSimpleTreeItem(r));
+                            }
+                        }
+
+                        if (entitaTree.Count == 0) entitaTree = null;
+                    }
+                    catch (Exception excp)
+                    {
+                        if (excp.GetType() != typeof(ManagedException))
+                        {
+                            ManagedException mEx = new ManagedException(excp.Message,
+                                "RUB_ORA005",
+                                string.Empty,
+                                string.Empty,
+                                excp);
+                            ErrorLogInfo er = new ErrorLogInfo(mEx);
+                            log.Error(er);
+                            throw mEx;
+                        }
+                        else throw excp;
+                    }
                 }
-            }
-            catch
-            {
-                throw;
             }
             return entitaTree;
         }
 
         public ResultList<RubricaEntita> LoadEntitaByMailDomain(IList<EntitaType> tEnt, string mail, int da, int per)
         {
+
             ResultList<RubricaEntita> r = new ResultList<RubricaEntita>();
-
-            string query = null;
-
-            if (tEnt != null)
-                tEnt = tEnt.Where(e => e != EntitaType.ALL).ToList();
-
-            if (tEnt == null || tEnt.Count == 0)
+            try
             {
-                query = selectEntitaByMailDomain;
-
-            }
-            else
-            {
-                query = "SELECT * FROM (";
-                query += selectEntitaByMailDomain;
-                query += ") WHERE REFERRAL_TYPE IN ('"
-                      + String.Join("','", tEnt.Select(x => x.ToString()).ToArray())
-                      + "')";
-            }
-            string queryCnt = "SELECT COUNT(*) FROM (" + query + ")";
-
-            using (OracleCommand ocmd = base.CurrentConnection.CreateCommand())
-            {
-                ocmd.CommandText = queryCnt;
-                ocmd.BindByName = true;
-                ocmd.Parameters.Add("p_mailDomain", mail);
-
-                ocmd.CommandText = queryCnt;
-                try
+                using (var dbcontext = new FAXPECContext())
                 {
-                    int tot = Convert.ToInt32(ocmd.ExecuteScalar());
+                    var query = dbcontext.RUBR_ENTITA.AsQueryable();
+                    query = dbcontext.RUBR_CONTATTI.Where(x => x.MAIL.ToUpper().Contains(mail.ToUpper())).Select(z => z.RUBR_ENTITA).AsQueryable();
+                    if (tEnt != null && tEnt.Count != 0 && !tEnt.Contains(EntitaType.ALL))
+                    {
+                        string[] wherees = tEnt.Select(e => e.ToString()).ToArray();
+                        query.Where(x => wherees.Contains(x.REFERRAL_TYPE));
+                    }
+                    int tot = Convert.ToInt32(query.Count());
                     r.Da = ((da == 0) ? ++da : da);
                     r.Per = ((tot < per) ? tot : per);
                     r.Totale = tot;
-                }
-                catch
-                {
-                    throw;
-                }
-
-                if (r.Totale > 0)
-                {
-                    ocmd.CommandText = OrderedTOracleDB.GetOrderedQuery(query, da, per);
-
-                    try
+                    var entities = query.Skip(r.Da).Take(r.Per).ToList();
+                    r.List = new List<RubricaEntita>();
+                    foreach (var e in entities)
                     {
-                        using (OracleDataReader rr = ocmd.ExecuteReader())
-                        {
-                            if (rr.HasRows)
-                            {
-                                r.List = new List<RubricaEntita>();
-                                while (rr.Read())
-                                {
-                                    r.List.Add(DaoOracleDbHelper.MapToRubricaEntita(rr));
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception excp)
-                    {
-                        r.List = null;
-
-                        if (excp.GetType() != typeof(ManagedException))
-                        {
-                            //Allineamento log - Ciro
-                            ManagedException mEx = new ManagedException(excp.Message,
-                                "RUB_ORA001",
-                                string.Empty,
-                                string.Empty,
-                                excp);
-                            ErrorLogInfo er = new ErrorLogInfo(mEx);
-                            log.Error(er);
-                            throw mEx;
-                        }
-                        else throw excp;
+                        RubricaEntita ent = AutoMapperConfiguration.MapToRubrEntita(e);
+                        r.List.Add(ent);
                     }
                 }
+            }
+            catch (Exception excp)
+            {
+                r.List = null;
+                if (excp.GetType() != typeof(ManagedException))
+                {
+                    ManagedException mEx = new ManagedException(excp.Message,
+                        "RUB_ORA001",
+                        string.Empty,
+                        string.Empty,
+                        excp);
+                    ErrorLogInfo er = new ErrorLogInfo(mEx);
+                    log.Error(er);
+                    throw mEx;
+                }
+                else throw excp;
             }
             return r;
         }
 
         public ResultList<RubricaEntita> LoadEntitaIPAByMailDomain(string mail, int da, int per)
         {
-            ResultList<RubricaEntita> re = new ResultList<RubricaEntita>();
-            string query = selectEntitaIPAByMailDomain;
-            string queryCnt = "SELECT COUNT(*) FROM (" + query + ")";
+            throw new NotImplementedException();
+            //ResultList<RubricaEntita> re = new ResultList<RubricaEntita>();
+            //string query = selectEntitaIPAByMailDomain;
+            //string queryCnt = "SELECT COUNT(*) FROM (" + query + ")";
 
-            using (OracleCommand oCmd = base.CurrentConnection.CreateCommand())
-            {
-                oCmd.CommandText = queryCnt;
-                oCmd.BindByName = true;
-                oCmd.Parameters.Add("p_mailDomain", OracleDbType.Varchar2, mail, ParameterDirection.Input);
+            //using (OracleCommand oCmd = base.CurrentConnection.CreateCommand())
+            //{
+            //    oCmd.CommandText = queryCnt;
+            //    oCmd.BindByName = true;
+            //    oCmd.Parameters.Add("p_mailDomain", OracleDbType.Varchar2, mail, ParameterDirection.Input);
 
-                try
-                {
-                    int tot = Convert.ToInt32(oCmd.ExecuteScalar());
-                    re.Da = ((da == 0) ? ++da : da);
-                    re.Per = ((tot < per) ? tot : per);
-                    re.Totale = tot;
-                }
-                catch
-                {
-                    throw;
-                }
+            //    try
+            //    {
+            //        int tot = Convert.ToInt32(oCmd.ExecuteScalar());
+            //        re.Da = ((da == 0) ? ++da : da);
+            //        re.Per = ((tot < per) ? tot : per);
+            //        re.Totale = tot;
+            //    }
+            //    catch
+            //    {
+            //        throw;
+            //    }
 
-                if (re.Totale > 0)
-                {
-                    oCmd.CommandText = OrderedTOracleDB.GetOrderedQuery(query, da, per);
+            //    if (re.Totale > 0)
+            //    {
+            //        oCmd.CommandText = OrderedTOracleDB.GetOrderedQuery(query, da, per);
 
-                    try
-                    {
-                        using (OracleDataReader rr = oCmd.ExecuteReader())
-                        {
-                            if (rr.HasRows)
-                            {
-                                re.List = new List<RubricaEntita>();
-                                while (rr.Read())
-                                {
-                                    re.List.Add(DaoOracleDbHelper.MapIPAToRubricaEntita(rr));
-                                }
-                            }
-                        }
-                        if (re.List != null && re.List.Count > 0)
-                        {
-                            ((List<RubricaEntita>)re.List).ForEach(e =>
-                            {
-                                if (e.ReferralType == EntitaType.UNKNOWN)
-                                {
-                                    if (String.IsNullOrEmpty(e.Ufficio))
-                                    {
-                                        e.ReferralType = EntitaType.PA;
-                                    }
-                                    else
-                                    {
-                                        e.ReferralType = EntitaType.PA_UFF;
-                                    }
-                                }
-                            });
-                        }
-                    }
-                    catch (Exception excp)
-                    {
-                        re.List = null;
-                        if (excp.GetType() != typeof(ManagedException))
-                        {
-                            //Allineamento log - Ciro
-                            ManagedException mEx = new ManagedException(excp.Message,
-                                "RUB_ORA002",
-                                string.Empty,
-                                string.Empty,
-                                excp);
-                            ErrorLogInfo er = new ErrorLogInfo(mEx);
-                            log.Error(er);
-                            throw mEx;
-                        }
-                        else throw excp;
-                    }
-                }
+            //        try
+            //        {
+            //            using (OracleDataReader rr = oCmd.ExecuteReader())
+            //            {
+            //                if (rr.HasRows)
+            //                {
+            //                    re.List = new List<RubricaEntita>();
+            //                    while (rr.Read())
+            //                    {
+            //                        re.List.Add(DaoOracleDbHelper.MapIPAToRubricaEntita(rr));
+            //                    }
+            //                }
+            //            }
+            //            if (re.List != null && re.List.Count > 0)
+            //            {
+            //                ((List<RubricaEntita>)re.List).ForEach(e =>
+            //                {
+            //                    if (e.ReferralType == EntitaType.UNKNOWN)
+            //                    {
+            //                        if (String.IsNullOrEmpty(e.Ufficio))
+            //                        {
+            //                            e.ReferralType = EntitaType.PA;
+            //                        }
+            //                        else
+            //                        {
+            //                            e.ReferralType = EntitaType.PA_UFF;
+            //                        }
+            //                    }
+            //                });
+            //            }
+            //        }
+            //        catch (Exception excp)
+            //        {
+            //            re.List = null;
+            //            if (excp.GetType() != typeof(ManagedException))
+            //            {
+            //                //Allineamento log - Ciro
+            //                ManagedException mEx = new ManagedException(excp.Message,
+            //                    "RUB_ORA002",
+            //                    string.Empty,
+            //                    string.Empty,
+            //                    excp);
+            //                ErrorLogInfo er = new ErrorLogInfo(mEx);
+            //                log.Error(er);
+            //                throw mEx;
+            //            }
+            //            else throw excp;
+            //        }
+            //    }
 
-            }
-            return re;
+            //}
+            //return re;
         }
 
         public List<RubricaEntita> LoadEntitaByName(IList<EntitaType> tEnt, string name)
@@ -557,26 +554,19 @@ namespace SendMail.Data.SQLServerDB.Repository
             List<RubricaEntita> lEnt = null;
             try
             {
-                using (OracleCommand oCmd = base.CurrentConnection.CreateCommand())
+                using (var dbcontext = new FAXPECContext())
                 {
-                    oCmd.CommandText =
-                        String.Format("SELECT * FROM RUBR_ENTITA WHERE RAGIONE_SOCIALE LIKE '%{0}%' OR UFFICIO LIKE '%{0}%' OR COGNOME||' '||NOME LIKE '%{0}%'",
-                        name);
+                    var query = dbcontext.RUBR_ENTITA.Where(x => x.RAGIONE_SOCIALE.ToUpper().Contains(name.ToUpper()) || x.COGNOME.ToUpper().Contains(name.ToUpper()) || x.NOME.ToUpper().Contains(name.ToUpper()));
                     if (tEnt != null && tEnt.Count != 0 && !tEnt.Contains(EntitaType.ALL))
                     {
-                        oCmd.CommandText += " AND REFERRAL_TYPE IN ('" + string.Join("','", tEnt.Select(e => e.ToString()).ToArray()) + "')";
+                        string[] wherees = tEnt.Select(e => e.ToString()).ToArray();
+                        query.Where(x => wherees.Contains(x.REFERRAL_TYPE));
                     }
-
-                    using (OracleDataReader r = oCmd.ExecuteReader())
+                    var entities = query.ToList();
+                    foreach (var e in entities)
                     {
-                        if (r.HasRows)
-                        {
-                            lEnt = new List<RubricaEntita>();
-                            while (r.Read())
-                            {
-                                lEnt.Add(DaoOracleDbHelper.MapToRubricaEntita(r));
-                            }
-                        }
+                        RubricaEntita ent = AutoMapperConfiguration.MapToRubrEntita(e);
+                        lEnt.Add(ent);
                     }
                 }
             }
@@ -590,16 +580,36 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         public List<RubricaEntita> LoadEntitaIPAbyIPAid(string IPAid)
         {
-            V_Rubr_Contatti_Obj obj = new V_Rubr_Contatti_Obj(this.context);
-            List<RubricaEntita> re = obj.GetEntitaIPAbyIPAid(IPAid).Cast<RubricaEntita>().ToList();
-            return re;
+            throw new NotImplementedException();
+            //V_Rubr_Contatti_Obj obj = new V_Rubr_Contatti_Obj(this.context);
+            //List<RubricaEntita> re = obj.GetEntitaIPAbyIPAid(IPAid).Cast<RubricaEntita>().ToList();
+            //return re;
         }
 
         public List<RubricaEntita> LoadEntitaByPartitaIVA(string partitaIVA)
         {
-            V_Rubr_Contatti_Obj obj = new V_Rubr_Contatti_Obj(this.context);
-            List<RubricaEntita> re = obj.GetEntitaByPartitaIVA(partitaIVA).Cast<RubricaEntita>().ToList(); ;
-            return re;
+            // V_Rubr_Contatti_Obj obj = new V_Rubr_Contatti_Obj(this.context);
+            // List<RubricaEntita> re = obj.GetEntitaByPartitaIVA(partitaIVA).Cast<RubricaEntita>().ToList(); ;
+            List<RubricaEntita> lEnt = null;
+            try
+            {
+                using (var dbcontext = new FAXPECContext())
+                {
+                    var query = dbcontext.RUBR_ENTITA.Where(x => x.P_IVA.ToUpper().Contains(partitaIVA.ToUpper()));
+                    var entities = query.ToList();
+                    foreach (var e in entities)
+                    {
+                        RubricaEntita ent = AutoMapperConfiguration.MapToRubrEntita(e);
+                        lEnt.Add(ent);
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return lEnt;
+
         }
         #endregion
 
@@ -616,16 +626,12 @@ namespace SendMail.Data.SQLServerDB.Repository
 
             try
             {
-                using (OracleCommand oCmd = base.CurrentConnection.CreateCommand())
+                using (var dbcontext = new FAXPECContext())
                 {
-                    oCmd.CommandText = "SELECT * FROM RUBR_ENTITA WHERE ID_REFERRAL = " + id;
-                    using (OracleDataReader r = oCmd.ExecuteReader())
-                    {
-                        while (r.Read())
-                        {
-                            re = DaoOracleDbHelper.MapToRubricaEntita(r);
-                        }
-                    }
+
+                    var r = dbcontext.RUBR_ENTITA.Where(x => x.ID_REFERRAL == id).First();
+                    re = AutoMapperConfiguration.MapToRubrEntita(r);
+
                 }
             }
             catch
@@ -637,18 +643,17 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         public void Insert(SendMail.Model.RubricaMapping.RubricaEntita entity)
         {
-            using (OracleCommand ocmd = base.CurrentConnection.CreateCommand())
+            using (var dbcontext = new FAXPECContext())
             {
-                ocmd.CommandText = insertEntitaStatement;
-                ocmd.BindByName = true;
-                ocmd.Parameters.AddRange(MapEntityToParams(entity, true));
 
                 try
                 {
-                    int r = ocmd.ExecuteNonQuery();
+                    var rubr = DaoSQLServerDBHelper.MapToRubrEntita(entity, true);
+                    dbcontext.RUBR_ENTITA.Add(rubr);
+                    int r = dbcontext.SaveChanges();
                     if (r == 1)
                     {
-                        entity.IdReferral = Convert.ToInt64(ocmd.Parameters["p_ID"].Value.ToString());
+                        entity.IdReferral = (long)rubr.ID_REFERRAL;
                     }
                     else
                     {
@@ -673,18 +678,26 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         public void Update(SendMail.Model.RubricaMapping.RubricaEntita entity)
         {
-            using (OracleCommand ocmd = base.CurrentConnection.CreateCommand())
+            using (var dbcontext = new FAXPECContext())
             {
-                ocmd.CommandText = updateEntitaStatement;
-                ocmd.Parameters.AddRange(MapEntityToParams(entity, false));
-                ocmd.BindByName = true;
-                try
+                var rubr = dbcontext.RUBR_ENTITA.Where(x => x.ID_REFERRAL == entity.IdReferral).First();
+                if (rubr != null)
                 {
-                    int ret = ocmd.ExecuteNonQuery();
-                }
-                catch
-                {
-                    throw;
+                    rubr.UFFICIO = entity.Ufficio;
+                    rubr.SITO_WEB = entity.SitoWeb;
+                    rubr.COGNOME = entity.Cognome;
+                    rubr.NOME = entity.Nome;
+                    rubr.NOTE = entity.Note;
+                    rubr.COD_FIS = entity.CodiceFiscale;
+                    rubr.P_IVA = entity.PartitaIVA;
+                    try
+                    {
+                        int ret = dbcontext.SaveChanges();
+                    }
+                    catch
+                    {
+                        throw;
+                    }
                 }
             }
         }

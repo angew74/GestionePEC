@@ -88,6 +88,8 @@
         <AssociationConnector Association="Com.Delta.PEC.Model.MAIL_SENDERS_TITOLI" ManuallyRouted="false" />
         <AssociationConnector Association="Com.Delta.PEC.Model.RUBR_CONTATTI_TAGS" ManuallyRouted="false" />
         <AssociationConnector Association="Com.Delta.PEC.Model.RUBR_REFERRAL_TYPE_TAGS" ManuallyRouted="false" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.FK__RUBR_CONT__REF_I__7246E95D" />
+        <AssociationConnector Association="Com.Delta.PEC.Model.FK_RUBR_CONTATTI_BACKEND_RUBR_CONTATT" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Com.Delta.PEC.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Com.Delta.PEC.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACTIONS">
           <Key>
             <PropertyRef Name="ID" />
@@ -213,7 +213,7 @@
           <Property Name="ID" Type="float" Nullable="false" />
           <Property Name="IDFOLDER" Type="numeric" Precision="18" Scale="0" Nullable="false" />
           <Property Name="IDSENDER" Type="numeric" Precision="10" Scale="0" Nullable="false" />
-          <Property Name="ROWID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SYSTEM" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <!--Errori trovati durante la generazione:
 avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'FAXPEC.FAXPEC.IPA'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
@@ -563,7 +563,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'FA
           <Property Name="MAIL" Type="nvarchar" MaxLength="256" />
           <Property Name="FAX" Type="varchar" MaxLength="50" />
           <Property Name="TELEFONO" Type="varchar" MaxLength="50" />
-          <Property Name="REF_ID_REFERRAL" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="REF_ID_REFERRAL" Type="numeric" Precision="10" Scale="0" Nullable="false" />
           <Property Name="SOURCE" Type="nvarchar" MaxLength="50" />
           <Property Name="FLG_IPA" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="IPA_DN" Type="nvarchar" MaxLength="200" />
@@ -989,9 +989,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'FA
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errori trovati durante la generazione:
-avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perché include colonne che non fanno parte della chiave della tabella sul lato principale della relazione.
-        <Association Name="COMUNICAZIONI_FLUSSO_COMU_FK2" />-->
         <Association Name="COMUNICAZIONI_FLUSSO_PROT_FK1">
           <End Role="COMUNICAZIONI" Type="Self.COMUNICAZIONI" Multiplicity="1" />
           <End Role="COMUNICAZIONI_FLUSSO_PROT" Type="Self.COMUNICAZIONI_FLUSSO_PROT" Multiplicity="*" />
@@ -1042,6 +1039,18 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__RUBR_CONT__REF_I__7246E95D">
+          <End Role="RUBR_ENTITA" Type="Self.RUBR_ENTITA" Multiplicity="1" />
+          <End Role="RUBR_CONTATTI" Type="Self.RUBR_CONTATTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RUBR_ENTITA">
+              <PropertyRef Name="ID_REFERRAL" />
+            </Principal>
+            <Dependent Role="RUBR_CONTATTI">
+              <PropertyRef Name="REF_ID_REFERRAL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_FOLDERS_SENDERS_FOLDERS">
           <End Role="FOLDERS" Type="Self.FOLDERS" Multiplicity="1" />
           <End Role="FOLDERS_SENDERS" Type="Self.FOLDERS_SENDERS" Multiplicity="*" />
@@ -1063,6 +1072,18 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
             </Principal>
             <Dependent Role="FOLDERS_SENDERS">
               <PropertyRef Name="IDSENDER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RUBR_CONTATTI_BACKEND_RUBR_CONTATT">
+          <End Role="RUBR_CONTATTI" Type="Self.RUBR_CONTATTI" Multiplicity="0..1" />
+          <End Role="RUBR_CONTATTI_BACKEND" Type="Self.RUBR_CONTATTI_BACKEND" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RUBR_CONTATTI">
+              <PropertyRef Name="ID_CONTACT" />
+            </Principal>
+            <Dependent Role="RUBR_CONTATTI_BACKEND">
+              <PropertyRef Name="REF_ID_CONTATTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1645,6 +1666,10 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
             <End Role="COMUNICAZIONI_TITOLI" EntitySet="COMUNICAZIONI_TITOLI" />
             <End Role="COMUNICAZIONI_SOTTOTITOLI" EntitySet="COMUNICAZIONI_SOTTOTITOLI" />
           </AssociationSet>
+          <AssociationSet Name="FK__RUBR_CONT__REF_I__7246E95D" Association="Self.FK__RUBR_CONT__REF_I__7246E95D">
+            <End Role="RUBR_ENTITA" EntitySet="RUBR_ENTITA" />
+            <End Role="RUBR_CONTATTI" EntitySet="RUBR_CONTATTI" />
+          </AssociationSet>
           <AssociationSet Name="FK_FOLDERS_SENDERS_FOLDERS" Association="Self.FK_FOLDERS_SENDERS_FOLDERS">
             <End Role="FOLDERS" EntitySet="FOLDERS" />
             <End Role="FOLDERS_SENDERS" EntitySet="FOLDERS_SENDERS" />
@@ -1652,6 +1677,10 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
           <AssociationSet Name="FK_FOLDERS_SENDERS_SENDERS" Association="Self.FK_FOLDERS_SENDERS_SENDERS">
             <End Role="MAIL_SENDERS" EntitySet="MAIL_SENDERS" />
             <End Role="FOLDERS_SENDERS" EntitySet="FOLDERS_SENDERS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RUBR_CONTATTI_BACKEND_RUBR_CONTATT" Association="Self.FK_RUBR_CONTATTI_BACKEND_RUBR_CONTATT">
+            <End Role="RUBR_CONTATTI" EntitySet="RUBR_CONTATTI" />
+            <End Role="RUBR_CONTATTI_BACKEND" EntitySet="RUBR_CONTATTI_BACKEND" />
           </AssociationSet>
           <AssociationSet Name="MAIL_CONTENT_COMUNICAZION_FK1" Association="Self.MAIL_CONTENT_COMUNICAZION_FK1">
             <End Role="COMUNICAZIONI" EntitySet="COMUNICAZIONI" />
@@ -1742,8 +1771,7 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
             <End Role="MAIL_USERS_SENDER_BACKEND" EntitySet="MAIL_USERS_SENDER_BACKEND" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Com.Delta.PEC.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1989,6 +2017,7 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
           <Property Name="ROWID" Type="Guid" Nullable="false" />
           <NavigationProperty Name="FOLDERS" Relationship="Self.FK_FOLDERS_SENDERS_FOLDERS" FromRole="FOLDERS_SENDERS" ToRole="FOLDERS" />
           <NavigationProperty Name="MAIL_SENDERS" Relationship="Self.FK_FOLDERS_SENDERS_SENDERS" FromRole="FOLDERS_SENDERS" ToRole="MAIL_SENDERS" />
+          <Property Name="SYSTEM" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="LOG_ACTIONS">
           <Key>
@@ -2296,7 +2325,7 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
           <Property Name="MAIL" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="FAX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TELEFONO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="REF_ID_REFERRAL" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="REF_ID_REFERRAL" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
           <Property Name="SOURCE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FLG_IPA" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IPA_DN" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -2308,6 +2337,8 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
           <Property Name="MAIL_DOMAIN" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="REF_PROT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ROWID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="RUBR_ENTITA" Relationship="Com.Delta.PEC.Model.FK__RUBR_CONT__REF_I__7246E95D" FromRole="RUBR_CONTATTI" ToRole="RUBR_ENTITA" />
+          <NavigationProperty Name="RUBR_CONTATTI_BACKEND" Relationship="Com.Delta.PEC.Model.FK_RUBR_CONTATTI_BACKEND_RUBR_CONTATT" FromRole="RUBR_CONTATTI" ToRole="RUBR_CONTATTI_BACKEND" />
         </EntityType>
         <EntityType Name="RUBR_CONTATTI_BACKEND">
           <Key>
@@ -2323,6 +2354,7 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
           <NavigationProperty Name="COMUNICAZIONI_CANALI" Relationship="Self.RUBR_CONTATTI_BACKEND_COM_FK1" FromRole="RUBR_CONTATTI_BACKEND" ToRole="COMUNICAZIONI_CANALI" />
           <NavigationProperty Name="COMUNICAZIONI_TITOLI" Relationship="Self.RUBR_CONTATTI_BACKEND_COM_FK2" FromRole="RUBR_CONTATTI_BACKEND" ToRole="COMUNICAZIONI_TITOLI" />
           <NavigationProperty Name="RUBR_BACKEND" Relationship="Self.RUBR_CONTATTI_BACKEND_RUB_FK1" FromRole="RUBR_CONTATTI_BACKEND" ToRole="RUBR_BACKEND" />
+          <NavigationProperty Name="RUBR_CONTATTI" Relationship="Com.Delta.PEC.Model.FK_RUBR_CONTATTI_BACKEND_RUBR_CONTATT" FromRole="RUBR_CONTATTI_BACKEND" ToRole="RUBR_CONTATTI" />
         </EntityType>
         <EntityType Name="RUBR_ENTITA">
           <Key>
@@ -2354,6 +2386,7 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
           <NavigationProperty Name="RUBR_ENTITA2" Relationship="Self.RUBR_ENTITA_RUBR_ENTITA_FK1" FromRole="RUBR_ENTITA1" ToRole="RUBR_ENTITA" />
           <NavigationProperty Name="RUBR_REFERRAL_TYPE" Relationship="Self.RUBR_ENTITA_RUBR_REFERRAL_FK1" FromRole="RUBR_ENTITA" ToRole="RUBR_REFERRAL_TYPE" />
           <NavigationProperty Name="RUBR_TAGS" Relationship="Self.RUBR_CONTATTI_TAGS" FromRole="RUBR_ENTITA" ToRole="RUBR_TAGS" />
+          <NavigationProperty Name="RUBR_CONTATTI" Relationship="Com.Delta.PEC.Model.FK__RUBR_CONT__REF_I__7246E95D" FromRole="RUBR_ENTITA" ToRole="RUBR_CONTATTI" />
         </EntityType>
         <EntityType Name="RUBR_ENTITA_USED">
           <Key>
@@ -3234,7 +3267,39 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
             <Parameter Name="P_CODE_COMUNE" Mode="In" Type="String" />
             <Parameter Name="P_RESPONSE" Mode="InOut" Type="String" />
           </FunctionImport>
+          <AssociationSet Name="FK__RUBR_CONT__REF_I__7246E95D" Association="Com.Delta.PEC.Model.FK__RUBR_CONT__REF_I__7246E95D">
+            <End Role="RUBR_ENTITA" EntitySet="RUBR_ENTITA" />
+            <End Role="RUBR_CONTATTI" EntitySet="RUBR_CONTATTI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RUBR_CONTATTI_BACKEND_RUBR_CONTATT" Association="Com.Delta.PEC.Model.FK_RUBR_CONTATTI_BACKEND_RUBR_CONTATT">
+            <End Role="RUBR_CONTATTI" EntitySet="RUBR_CONTATTI" />
+            <End Role="RUBR_CONTATTI_BACKEND" EntitySet="RUBR_CONTATTI_BACKEND" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK__RUBR_CONT__REF_I__7246E95D">
+          <End Type="Com.Delta.PEC.Model.RUBR_ENTITA" Role="RUBR_ENTITA" Multiplicity="1" />
+          <End Type="Com.Delta.PEC.Model.RUBR_CONTATTI" Role="RUBR_CONTATTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RUBR_ENTITA">
+              <PropertyRef Name="ID_REFERRAL" />
+            </Principal>
+            <Dependent Role="RUBR_CONTATTI">
+              <PropertyRef Name="REF_ID_REFERRAL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RUBR_CONTATTI_BACKEND_RUBR_CONTATT">
+          <End Type="Com.Delta.PEC.Model.RUBR_CONTATTI" Role="RUBR_CONTATTI" Multiplicity="0..1" />
+          <End Type="Com.Delta.PEC.Model.RUBR_CONTATTI_BACKEND" Role="RUBR_CONTATTI_BACKEND" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RUBR_CONTATTI">
+              <PropertyRef Name="ID_CONTACT" />
+            </Principal>
+            <Dependent Role="RUBR_CONTATTI_BACKEND">
+              <PropertyRef Name="REF_ID_CONTATTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3459,10 +3524,10 @@ avviso 6035: La relazione 'COMUNICAZIONI_FLUSSO_COMU_FK2' è stata esclusa perch
           <EntitySetMapping Name="FOLDERS_SENDERS">
             <EntityTypeMapping TypeName="Com.Delta.PEC.Model.FOLDERS_SENDERS">
               <MappingFragment StoreEntitySet="FOLDERS_SENDERS">
+                <ScalarProperty Name="SYSTEM" ColumnName="SYSTEM" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="IDFOLDER" ColumnName="IDFOLDER" />
                 <ScalarProperty Name="IDSENDER" ColumnName="IDSENDER" />
-                <ScalarProperty Name="ROWID" ColumnName="ROWID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

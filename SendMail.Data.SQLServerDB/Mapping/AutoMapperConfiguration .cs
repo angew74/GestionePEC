@@ -150,7 +150,95 @@ namespace SendMail.Data.SQLServerDB.Mapping
 
         }
 
-      internal  static ContactsApplicationMapping MapToContactsApplicationModel(V_MAP_APPL_CONTATTI_NEW v)
+        internal static MAILSERVERS FromMailServerToDto(MailServer r, bool isInsert)
+        {
+            MAILSERVERS m = new MAILSERVERS()
+            {
+                NOME = r.DisplayName,
+                INDIRIZZO_IN = r.IncomingServer,
+                PROTOCOLLO_IN = r.IncomingProtocol,
+                PORTA_IN = r.PortIncomingServer.ToString(),
+                SSL_IN = r.IsIncomeSecureConnection.ToString(),
+                INDIRIZZO_OUT = r.OutgoingServer,
+                PORTA_OUT = r.PortOutgoingServer.ToString(),
+                SSL_OUT = r.IsOutgoingSecureConnection.ToString(),
+                AUTH_OUT = r.IsOutgoingWithAuthentication.ToString(),
+                DOMINUS = r.Dominus
+            };
+           if (r.IsPec)
+            {
+                m.FLG_ISPEC = "1";
+            }
+            else if (!r.IsPec)
+            {
+                m.FLG_ISPEC = "0";                
+            }
+
+            if (!isInsert)
+            { m.ID_SVR = (double)r.Id; }
+            return m;
+        }
+
+        internal static COMUNICAZIONI_TITOLI MapToComunicazioniTitoli(Titolo titolo,bool isInsert)
+        {
+            COMUNICAZIONI_TITOLI t = new COMUNICAZIONI_TITOLI()
+            {
+                TITOLO = titolo.Nome,
+                APP_CODE = titolo.AppCode,
+                ACTIVE = LinqExtensions.TryParseDecimalBool(titolo.Deleted),
+                NOTE = titolo.Note,
+                PROT_CODE = titolo.CodiceProtocollo
+            };
+            if(!isInsert)
+            { t.ID_TITOLO = titolo.Id; }
+            return t;
+        }
+
+        internal static Titolo MapSottotitoliToTitoli(COMUNICAZIONI_SOTTOTITOLI s)
+        {
+            Titolo a = new Titolo();
+            a.AppCode = s.COM_CODE;
+            a.CodiceProtocollo = s.PROT_CODE;
+            a.Id = s.ID_SOTTOTITOLO;
+            a.Nome = s.SOTTOTITOLO;
+            a.Note = s.NOTE;
+            decimal temp = s.ACTIVE;
+            if (temp == 0)
+                  a.Deleted = true;
+                else a.Deleted = false;            
+            return a;
+        }
+
+        internal static RubricaContatti MapToRubrContatti(RUBR_CONTATTI r, List<decimal> ListTitoli)
+        {
+            RubricaContatti c = new RubricaContatti();
+            c.Entita = AutoMapperConfiguration.MapToRubrEntita(r.RUBR_ENTITA);
+            c.AffIPA =(short) r.AFF_IPA;
+            c.ContactRef = r.CONTACT_REF;
+            c.Fax = r.FAX;
+            c.IdContact =(long) r.ID_CONTACT;
+            c.IPAdn = r.IPA_DN;
+            c.IPAId = r.IPA_ID;
+            c.IsIPA = Convert.ToBoolean(r.FLG_IPA);
+            c.IsPec = Convert.ToBoolean(r.FLG_PEC);
+            c.Mail = r.MAIL;
+            c.Note = r.NOTE;
+            c.RefIdReferral =(long) r.REF_ID_REFERRAL;
+            c.Src = "R";
+            c.Source = null;
+            c.Telefono = r.TELEFONO;
+            c.T_Ufficio = r.RUBR_ENTITA.UFFICIO;
+            c.T_RagioneSociale = r.RUBR_ENTITA.RAGIONE_SOCIALE;
+            foreach (int i in ListTitoli)
+            {
+                if (!(c.MappedAppsId.Contains(i)))
+                { c.MappedAppsId.Add(i); }
+            }
+
+            return c;
+        }
+
+        internal  static ContactsApplicationMapping MapToContactsApplicationModel(V_MAP_APPL_CONTATTI_NEW v)
         {
             ContactsApplicationMapping m = new ContactsApplicationMapping();
             m.AppCode = v.APP_CODE;
@@ -640,7 +728,10 @@ namespace SendMail.Data.SQLServerDB.Mapping
             a.CodiceProtocollo = t.PROT_CODE;
             a.Id = t.ID_TITOLO;
             a.Nome = t.TITOLO;
-            a.Note = t.NOTE;
+            a.Note = t.NOTE;          
+            if (t.ACTIVE == 0)
+                a.Deleted = true;
+            else a.Deleted = false;
             return a;
         }
 

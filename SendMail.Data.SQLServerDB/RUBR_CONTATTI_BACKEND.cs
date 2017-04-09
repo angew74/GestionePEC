@@ -25,5 +25,6 @@ namespace SendMail.Data.SQLServerDB
         public virtual COMUNICAZIONI_CANALI COMUNICAZIONI_CANALI { get; set; }
         public virtual COMUNICAZIONI_TITOLI COMUNICAZIONI_TITOLI { get; set; }
         public virtual RUBR_BACKEND RUBR_BACKEND { get; set; }
+        public virtual RUBR_CONTATTI RUBR_CONTATTI { get; set; }
     }
 }

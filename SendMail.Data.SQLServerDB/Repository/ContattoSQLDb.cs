@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SendMail.Data.SQLServerDB.Repository
 {
-   public class ContattoSQLDb : IContattoDao
+    public class ContattoSQLDb : IContattoDao
     {
         private static ILog _log = LogManager.GetLogger("ContattoSQLDb");
         #region IContattoDao Membri di
@@ -53,9 +53,6 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 var ListTitoli = (from t in dbcontext.RUBR_CONTATTI_BACKEND
                                                   where t.REF_ID_CONTATTO == r.ID_CONTACT
                                                   select t.COMUNICAZIONI_TITOLI.ID_TITOLO).ToList();
-                                var Titoli = (from t in dbcontext.RUBR_CONTATTI_BACKEND
-                                              where t.REF_ID_CONTATTO == r.ID_CONTACT
-                                              select t.COMUNICAZIONI_TITOLI).ToList();
                                 lContatti.Add(AutoMapperConfiguration.MapToRubrContatti(r, ListTitoli));
                             }
                             else
@@ -77,19 +74,14 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         public IList<SendMail.Model.RubricaMapping.RubricaContatti> LoadContattiOrgByName(string identita, bool startFromOrg, bool includeDescendant, bool includeIPA)
         {
-            //commentata per oracle 10
-            //V_Rubr_Contatti_Obj v = new V_Rubr_Contatti_Obj(this.context);
-            //return v.ConvertToRubricaContatti(v.GetContattiOrgByName(nomeEntita));
-
             List<RubricaContatti> lCont = null;
 
             List<SendMail.Model.EntitaType> tEnt = new List<SendMail.Model.EntitaType>();
             tEnt.Add(SendMail.Model.EntitaType.ALL);
-
             try
             {
-                List<RubricaEntita> lEntita = this.Context.DaoImpl.RubricaEntitaDao.LoadEntitaByName(tEnt, identita);
-
+                RubrEntitaSQLDb sql = new RubrEntitaSQLDb();
+                List<RubricaEntita> lEntita = sql.LoadEntitaByName(tEnt, identita);               
                 if (lEntita != null && lEntita.Count != 0)
                 {
                     foreach (RubricaEntita e in lEntita)
@@ -102,8 +94,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 }
             }
             catch (Exception ex)
-            {
-                //TASK: Allineamento log - Ciro
+            {               
                 if (!ex.GetType().Equals(typeof(ManagedException)))
                 {
                     ManagedException mEx = new ManagedException(ex.Message,
@@ -118,69 +109,24 @@ namespace SendMail.Data.SQLServerDB.Repository
         }
 
         public IEnumerable<RubricaContatti> LoadContattiByTitoloAndBackendCode(string titolo, string backendCode)
-        {
-            StringBuilder sb = new StringBuilder("with t_tit(id_tit) as (")
-                .AppendLine("select id_titolo")
-                .AppendLine("from comunicazioni_titoli")
-                .AppendLine("where app_code = :p_titolo),")
-                .AppendLine("t_back(id_back) as (")
-                .AppendLine("select id_backend")
-                .AppendLine("from rubr_backend")
-                .AppendLine("where backend_code = :p_backend_code),")
-                .AppendLine("t_predef(id_cont) as (")
-                .AppendLine("select ref_id_contatto")
-                .AppendLine("from rubr_contatti_backend")
-                .AppendLine("where ref_id_titolo = (select id_tit from t_tit)")
-                .AppendLine("and ref_id_backend in (select id_back from t_back)),")
-                .AppendLine("t_ent_mapped(id_ent) as (")
-                .AppendLine("select distinct ref_id_entita")
-                .AppendLine("from rubr_contatti_backend")
-                .AppendLine("where ref_id_backend in (select id_back from t_back)")
-                .AppendLine("and ref_id_entita is not null),")
-                .AppendLine("t_ent(id_ent, id_pad) as (")
-                .AppendLine("select id_referral, id_padre")
-                .AppendLine("from rubr_entita")
-                .AppendLine("where id_referral = (select nvl(ref_org, id_referral)")
-                .AppendLine("                     from rubr_entita")
-                .AppendLine("                     where id_referral in (select id_ent")
-                .AppendLine("                                           from t_ent_mapped)")
-                .AppendLine("                    )")
-                .AppendLine("union all")
-                .AppendLine("select id_referral, id_padre")
-                .AppendLine("from rubr_entita, t_ent")
-                .AppendLine("where id_padre = id_ent)")
-                .AppendLine("select id_contact, ref_id_referral, mail,")
-                .AppendLine("case")
-                .AppendLine("  when (select count(*) from t_predef where id_cont = id_contact) != 0 then 1")
-                .AppendLine("  else 0")
-                .AppendLine("end as is_predef")
-                .AppendLine("from rubr_contatti")
-                .AppendLine("where ref_id_referral in (select id_ent")
-                .AppendLine("                          from t_ent)");
-
+        {            
             List<RubricaContatti> list = null;
-            using (OracleCommand cmd = CurrentConnection.CreateCommand())
+            using (var dbcontext = new FAXPECContext())
             {
-                cmd.CommandText = sb.ToString();
-                cmd.BindByName = true;
-                cmd.Parameters.Add("p_titolo", titolo);
-                cmd.Parameters.Add("p_backend_code", backendCode);
                 try
                 {
-                    using (var rd = cmd.ExecuteReader())
+                    var rubrcontattibackend = dbcontext.RUBR_CONTATTI_BACKEND.Where(x => x.COMUNICAZIONI_TITOLI.APP_CODE.ToUpper() == titolo.ToUpper() && x.RUBR_BACKEND.BACKEND_CODE.ToUpper() == backendCode.ToUpper()).ToList();
+                    foreach (var r in rubrcontattibackend)
                     {
-                        if (rd.HasRows)
-                            list = new List<RubricaContatti>();
-                        while (rd.Read())
+                        var contatto = r.RUBR_CONTATTI;
+                        list.Add(new RubricaContatti
                         {
-                            list.Add(new RubricaContatti
-                            {
-                                IdContact = rd.GetInt64("id_contact"),
-                                RefIdReferral = rd.GetInt64("ref_id_referral"),
-                                Mail = rd.GetString("mail"),
-                                T_isMappedAppDefault = Convert.ToBoolean(rd.GetDecimal("is_predef"))
-                            });
-                        }
+                            IdContact = (long)contatto.ID_CONTACT,
+                            RefIdReferral = (long)contatto.REF_ID_REFERRAL,
+                            Mail = contatto.MAIL,
+                            T_isMappedAppDefault = true
+                        });
+
                     }
                 }
                 catch { }
@@ -218,10 +164,10 @@ namespace SendMail.Data.SQLServerDB.Repository
 
             if (pp.Count() != 0)
             {
-                ResultList<RubricaEntita> rE =
-                    this.Context.DaoImpl.RubricaEntitaDao.LoadEntitaByParams((IList<SendMail.Model.EntitaType>)tEnt,
+                RubrEntitaSQLDb sql = new RubrEntitaSQLDb();
+                ResultList<RubricaEntita> rE = sql.LoadEntitaByParams((IList<SendMail.Model.EntitaType>)tEnt,
                     entPar, da, per);
-                lEntita = (List<RubricaEntita>)rE.List;
+                   lEntita = (List<RubricaEntita>)rE.List;
             }
 
             var cPars = from p in pars
@@ -232,56 +178,44 @@ namespace SendMail.Data.SQLServerDB.Repository
             //List<string>>>;
             if (cPars.Count() != 0)
             {
-                using (OracleCommand oCmd = base.CurrentConnection.CreateCommand())
+                using (var dbcontext = new FAXPECContext())
                 {
-                    oCmd.CommandText = "SELECT * FROM RUBR_CONTATTI WHERE";
+                    var query = dbcontext.RUBR_CONTATTI.AsQueryable();
 
-                    List<string> where = new List<string>();
+                    List<RUBR_CONTATTI> list = new List<RUBR_CONTATTI>();
                     foreach (var kvp in cPars)
                     {
+
                         switch (kvp.Key)
                         {
                             case SendMail.Model.FastIndexedAttributes.FAX:
-                                where.Add(string.Format(" FAX IN ('{0}')",
-                                    string.Join("','", kvp.Value.ToArray())));
+                                string[] faxies = kvp.Value.ToArray();
+                               list = query.Where(x => faxies.Contains(x.FAX)).ToList();
                                 break;
 
                             case SendMail.Model.FastIndexedAttributes.MAIL:
-                                where.Add(string.Format(" MAIL IN ('{0}')",
-                                    string.Join("','", kvp.Value.ToArray())));
+                                string[] mailies = kvp.Value.ToArray();
+                                list= query.Where(x => mailies.Contains(x.MAIL)).ToList();
                                 break;
 
                             case SendMail.Model.FastIndexedAttributes.TELEFONO:
-                                where.Add(string.Format(" TELEFONO IN ('{0}')",
-                                    string.Join("','", kvp.Value.ToArray())));
+                                string[] telefoni = kvp.Value.ToArray();
+                                list = query.Where(x => telefoni.Contains(x.TELEFONO)).ToList();
                                 break;
 
                             default:
                                 break;
                         }
                     }
-
-                    if (where.Count != 0)
+                    lContatti = new List<RubricaContatti>();
+                    foreach (var c in list)
                     {
-                        oCmd.CommandText += String.Join(" AND ", where.ToArray());
-                    }
+                        var ListTitoli = (from t in dbcontext.RUBR_CONTATTI_BACKEND
+                                          where t.REF_ID_CONTATTO == c.ID_CONTACT
+                                          select t.COMUNICAZIONI_TITOLI.ID_TITOLO).ToList();
 
-                    using (OracleDataReader r = oCmd.ExecuteReader())
-                    {
-                        if (r.HasRows)
-                        {
-                            lContatti = new List<RubricaContatti>();
-                            while (r.Read())
-                            {
-                                lContatti.Add(DaoOracleDbHelper.MapToRubricaContatti(r));
-                            }
-                        }
-                    }
-
-                    if (lContatti != null)
-                    {
-                        lContatti.ForEach(c => c.Entita = this.Context.DaoImpl.RubricaEntitaDao.GetById(c.RefIdReferral.Value));
-                    }
+                        lContatti.Add(AutoMapperConfiguration.MapToRubrContatti(c,ListTitoli));                        
+                    }                    
                 }
             }
 
@@ -333,224 +267,167 @@ namespace SendMail.Data.SQLServerDB.Repository
 
             ResultList<SimpleResultItem> res = new ResultList<SimpleResultItem>();
             res.Da = da;
-
-            string queryCountBase = "SELECT count(*) from ({0})";
-
-            string queryRubrica = "SELECT distinct r.RAGIONE_SOCIALE AS rag_soc"
-                                + ", r.DISAMB_PRE as prefix"
-                                + ", r.DISAMB_POST as suffix"
-                                + ", {0} as descr"
-                                + ", LISTAGG(r.ID_REFERRAL, ';') within group (order by r.ID_REFERRAL) over (partition by NVL(r.DISAMB_PRE,' ')||r.RAGIONE_SOCIALE||NVL(r.DISAMB_POST,' ')) AS ids" //(partition by {0})
-                                + ", 'R' as SRC"
-                                + ", REFERRAL_TYPE as subtype"
-                                + " FROM rubr_entita r {1}"
-                                + " WHERE {2}"
-                                + " order by 1";
-            string campi = "";
-            switch (par.Key)
+            string field = string.Empty;
+            using (var dbcontext = new FAXPECContext())
             {
-                case SendMail.Model.FastIndexedAttributes.RAGIONE_SOCIALE:
-                case SendMail.Model.FastIndexedAttributes.COGNOME:
-                case SendMail.Model.FastIndexedAttributes.FAX:
-                case SendMail.Model.FastIndexedAttributes.MAIL:
-                case SendMail.Model.FastIndexedAttributes.TELEFONO:
-                case SendMail.Model.FastIndexedAttributes.UFFICIO:
-                    campi += par.Key.ToString();
-                    break;
-                default:
-                    throw new ArgumentException("Parametro non implementato");
-            }
-
-            string innerJoin = "";
-            if (par.Key.Equals(SendMail.Model.FastIndexedAttributes.FAX) ||
-                par.Key.Equals(SendMail.Model.FastIndexedAttributes.MAIL) ||
-                par.Key.Equals(SendMail.Model.FastIndexedAttributes.TELEFONO))
-            {
-                innerJoin = "INNER JOIN rubr_contatti c ON c.REF_ID_REFERRAL = r.id_referral";
-            }
-
-            string whereConds = null;
-
-            if (!tEnt.Contains(SendMail.Model.EntitaType.ALL) && !tEnt.Contains(SendMail.Model.EntitaType.UNKNOWN))
-            {
-                whereConds += "REFERRAL_TYPE in (";
-                whereConds += String.Join(", ", tEnt.Select(t => String.Format("'{0}'", t.ToString())).ToArray());
-                whereConds += ") and ";
-            }
-
-            whereConds += "length(" + par.Key.ToString() + ") >= " + par.Value.Length + " and ";
-
-            switch (par.Key)
-            {
-                case SendMail.Model.FastIndexedAttributes.COGNOME:
-                case SendMail.Model.FastIndexedAttributes.MAIL:
-                case SendMail.Model.FastIndexedAttributes.UFFICIO:
-                case SendMail.Model.FastIndexedAttributes.RAGIONE_SOCIALE:
-                    whereConds += "lower(" + par.Key.ToString() + ") like '%" + par.Value.ToLower() + "%'";
-                    break;
-                case SendMail.Model.FastIndexedAttributes.FAX:
-                case SendMail.Model.FastIndexedAttributes.TELEFONO:
-                    whereConds += par.Key.ToString() + " like '%" + par.Value.ToLower() + "%'";
-                    break;
-                default:
-                    throw new ArgumentException("Parametro non implementato");
-            }
-
-
-            string query = string.Format(queryRubrica, campi, innerJoin, whereConds);
-            string queryCount = String.Format(queryCountBase, query);
-
-            using (OracleCommand oCmd = base.CurrentConnection.CreateCommand())
-            {
-                //count
-                int tot = 0;
-                oCmd.CommandText = queryCount;
+                var querable = dbcontext.RUBR_ENTITA.AsQueryable();
+                switch (par.Key)
+                {
+                    case SendMail.Model.FastIndexedAttributes.RAGIONE_SOCIALE:
+                        field = "RAGIONE_SOCIALE";
+                        querable = dbcontext.RUBR_ENTITA.Where(x => x.RAGIONE_SOCIALE.ToUpper().Contains(par.Value));
+                        break;
+                    case SendMail.Model.FastIndexedAttributes.COGNOME:
+                        field = "COGNOME";
+                        querable = dbcontext.RUBR_ENTITA.Where(x => x.COGNOME.ToUpper().Contains(par.Value));
+                        break;
+                    case SendMail.Model.FastIndexedAttributes.FAX:
+                        field = "FAX";
+                        querable = dbcontext.RUBR_CONTATTI.Where(x => x.FAX.ToUpper().Contains(par.Value)).Select(z=>z.RUBR_ENTITA);
+                        break;
+                    case SendMail.Model.FastIndexedAttributes.MAIL:
+                        field = "MAIL";
+                        querable = dbcontext.RUBR_CONTATTI.Where(x => x.MAIL.ToUpper().Contains(par.Value)).Select(z=>z.RUBR_ENTITA);
+                        break;
+                    case SendMail.Model.FastIndexedAttributes.TELEFONO:
+                        field = "TELEFONO";
+                        querable = dbcontext.RUBR_CONTATTI.Where(x => x.TELEFONO.ToUpper().Contains(par.Value)).Select(z=>z.RUBR_ENTITA);
+                        break;
+                    case SendMail.Model.FastIndexedAttributes.UFFICIO:
+                        querable = dbcontext.RUBR_ENTITA.Where(x => x.UFFICIO.ToUpper().Contains(par.Value));
+                        break;
+                    default:
+                        throw new ArgumentException("Parametro non implementato");
+                }
+                if (!tEnt.Contains(SendMail.Model.EntitaType.ALL) && !tEnt.Contains(SendMail.Model.EntitaType.UNKNOWN))
+                {
+                    var referrals = tEnt.Select(t => t.ToString()).ToArray();
+                    querable = dbcontext.RUBR_ENTITA.Where(x => referrals.Contains(x.REFERRAL_TYPE));
+                }
                 try
                 {
-                    tot = Convert.ToInt32(oCmd.ExecuteScalar());
+                    int tot = querable.Count();
                     res.Per = (tot > per) ? per : tot;
                     res.Totale = tot;
+                    List<RUBR_ENTITA> list = querable.Skip(res.Da).Take(res.Per).ToList();
+                    foreach (RUBR_ENTITA r in list)
+                    {
+                        res.List.Add(
+                                         new SimpleResultItem(
+                                           //  r.GetValue("descr").ToString(),
+                                           r.RAGIONE_SOCIALE,
+                                           r.ID_REFERRAL.ToString(),
+                                             String.Format("{0} {1} {2}", r.DISAMB_PRE, r.RAGIONE_SOCIALE, r.DISAMB_POST),
+                                           r.REFERRAL_TYPE,
+                                           "R" ,
+                                             100));
+                    }
                 }
                 catch
                 {
-                    tot = 0;
+                    int tot = 0;
                     res.List = null;
                 }
 
-                if (tot > 0)
-                {
-                    if (per > 0) { oCmd.CommandText = OrderedTOracleDB.GetOrderedQuery(query, da, per); }
-                    else { oCmd.CommandText = query; }
-                    try
-                    {
-                        using (OracleDataReader r = oCmd.ExecuteReader())
-                        {
-                            if (r.HasRows)
-                            {
-                                res.List = new List<SimpleResultItem>();
-                                while (r.Read())
-                                {
-                                    res.List.Add(
-                                        new SimpleResultItem(
-                                            r.GetValue("descr").ToString(),
-                                            r.GetValue("ids").ToString(),
-                                            String.Format("{0} {1} {2}", r.GetValue("prefix"), r.GetValue("rag_soc"), r.GetValue("suffix")),
-                                            r.GetValue("subtype").ToString(),
-                                            r.GetValue("SRC").ToString(),
-                                            100));
 
-                                }
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        res.List = null;
-                    }
-                }
-                else if ((par.Key != SendMail.Model.FastIndexedAttributes.FAX) &&
-                    (par.Key != SendMail.Model.FastIndexedAttributes.TELEFONO))
-                {
-                    res = LoadSimilarityFieldsByParams(ctg, tEnt, par, 1, per);
-                }
-            }
-
+            }      
             return res;
         }
 
         public ResultList<SimpleResultItem> LoadSimilarityFieldsByParams(SendMail.Model.IndexedCatalogs ctg, IList<SendMail.Model.EntitaType> tEnt, KeyValuePair<SendMail.Model.FastIndexedAttributes, string> par, int da, int per)
         {
-            if (String.IsNullOrEmpty(par.Value)) return null;
-            if (tEnt == null) { tEnt = new List<SendMail.Model.EntitaType>(); }
-            if (tEnt.Count == 0) { tEnt.Add(SendMail.Model.EntitaType.ALL); }
+            throw new NotImplementedException();
+            //if (String.IsNullOrEmpty(par.Value)) return null;
+            //if (tEnt == null) { tEnt = new List<SendMail.Model.EntitaType>(); }
+            //if (tEnt.Count == 0) { tEnt.Add(SendMail.Model.EntitaType.ALL); }
 
-            ResultList<SimpleResultItem> res = new ResultList<SimpleResultItem>();
-            res.Da = da;
-            res.Per = per;
-            res.Totale = per;
+            //ResultList<SimpleResultItem> res = new ResultList<SimpleResultItem>();
+            //res.Da = da;
+            //res.Per = per;
+            //res.Totale = per;
 
-            string queryRubrica = "SELECT distinct r.RAGIONE_SOCIALE AS rag_soc"
-                                + ", {0} as descr"
-                                + ", r.DISAMB_PRE as prefix"
-                                + ", r.DISAMB_POST as suffix"
-                                + ", id_referral AS ids"
-                                + ", 'R' as SRC"
-                                + ", REFERRAL_TYPE as subtype"
-                                + ", utl_match.edit_distance_similarity('{1}', lower({0})) AS sim"
-                                + " FROM rubr_entita r {2}"
-                                + " WHERE {3}"
-                                + " order by 8 desc, 1";
-            string campi = "";
-            switch (par.Key)
-            {
-                case SendMail.Model.FastIndexedAttributes.RAGIONE_SOCIALE:
-                case SendMail.Model.FastIndexedAttributes.COGNOME:
-                case SendMail.Model.FastIndexedAttributes.FAX:
-                case SendMail.Model.FastIndexedAttributes.MAIL:
-                case SendMail.Model.FastIndexedAttributes.TELEFONO:
-                case SendMail.Model.FastIndexedAttributes.UFFICIO:
-                    campi += par.Key.ToString();
-                    break;
-                default:
-                    throw new ArgumentException("Parametro non implementato");
-            }
+            //string queryRubrica = "SELECT distinct r.RAGIONE_SOCIALE AS rag_soc"
+            //                    + ", {0} as descr"
+            //                    + ", r.DISAMB_PRE as prefix"
+            //                    + ", r.DISAMB_POST as suffix"
+            //                    + ", id_referral AS ids"
+            //                    + ", 'R' as SRC"
+            //                    + ", REFERRAL_TYPE as subtype"
+            //                    + ", utl_match.edit_distance_similarity('{1}', lower({0})) AS sim"
+            //                    + " FROM rubr_entita r {2}"
+            //                    + " WHERE {3}"
+            //                    + " order by 8 desc, 1";
+            //string campi = "";
+            //switch (par.Key)
+            //{
+            //    case SendMail.Model.FastIndexedAttributes.RAGIONE_SOCIALE:
+            //    case SendMail.Model.FastIndexedAttributes.COGNOME:
+            //    case SendMail.Model.FastIndexedAttributes.FAX:
+            //    case SendMail.Model.FastIndexedAttributes.MAIL:
+            //    case SendMail.Model.FastIndexedAttributes.TELEFONO:
+            //    case SendMail.Model.FastIndexedAttributes.UFFICIO:
+            //        campi += par.Key.ToString();
+            //        break;
+            //    default:
+            //        throw new ArgumentException("Parametro non implementato");
+            //}
 
-            string innerJoin = "";
-            if (par.Key.Equals(SendMail.Model.FastIndexedAttributes.FAX) ||
-                par.Key.Equals(SendMail.Model.FastIndexedAttributes.MAIL) ||
-                par.Key.Equals(SendMail.Model.FastIndexedAttributes.TELEFONO))
-            {
-                innerJoin = "INNER JOIN rubr_contatti c ON c.REF_ID_REFERRAL = r.id_referral";
-            }
+            //string innerJoin = "";
+            //if (par.Key.Equals(SendMail.Model.FastIndexedAttributes.FAX) ||
+            //    par.Key.Equals(SendMail.Model.FastIndexedAttributes.MAIL) ||
+            //    par.Key.Equals(SendMail.Model.FastIndexedAttributes.TELEFONO))
+            //{
+            //    innerJoin = "INNER JOIN rubr_contatti c ON c.REF_ID_REFERRAL = r.id_referral";
+            //}
 
-            string whereConds = null;
+            //string whereConds = null;
 
-            if (!tEnt.Contains(SendMail.Model.EntitaType.ALL) && !tEnt.Contains(SendMail.Model.EntitaType.UNKNOWN))
-            {
-                whereConds += "REFERRAL_TYPE in (";
-                whereConds += String.Join(", ", tEnt.Select(t => String.Format("'{0}'", t.ToString())).ToArray());
-                whereConds += ") and ";
-            }
+            //if (!tEnt.Contains(SendMail.Model.EntitaType.ALL) && !tEnt.Contains(SendMail.Model.EntitaType.UNKNOWN))
+            //{
+            //    whereConds += "REFERRAL_TYPE in (";
+            //    whereConds += String.Join(", ", tEnt.Select(t => String.Format("'{0}'", t.ToString())).ToArray());
+            //    whereConds += ") and ";
+            //}
 
-            whereConds += "length(" + par.Key.ToString() + ") >= " + par.Value.Length;
+            //whereConds += "length(" + par.Key.ToString() + ") >= " + par.Value.Length;
 
-            string query = string.Format(queryRubrica, campi, par.Value, innerJoin, whereConds);
+            //string query = string.Format(queryRubrica, campi, par.Value, innerJoin, whereConds);
 
-            using (OracleCommand oCmd = base.CurrentConnection.CreateCommand())
-            {
-                if (per > 0) { oCmd.CommandText = OrderedTOracleDB.GetOrderedQuery(query, da, per); }
-                else { oCmd.CommandText = query; }
+            //using (OracleCommand oCmd = base.CurrentConnection.CreateCommand())
+            //{
+            //    if (per > 0) { oCmd.CommandText = OrderedTOracleDB.GetOrderedQuery(query, da, per); }
+            //    else { oCmd.CommandText = query; }
 
-                try
-                {
-                    using (OracleDataReader r = oCmd.ExecuteReader())
-                    {
-                        if (r.HasRows)
-                        {
-                            res.List = new List<SimpleResultItem>();
-                            while (r.Read())
-                            {
-                                res.List.Add(
-                                    new SimpleResultItem(
-                                        r.GetValue("descr").ToString(),
-                                        r.GetValue("ids").ToString(),
-                                        String.Format("{0} {1} {2}", r.GetValue("prefix"), r.GetValue("rag_soc"), r.GetValue("suffix")),
-                                        r.GetValue("subtype").ToString(),
-                                        r.GetValue("SRC").ToString(),
-                                        Convert.ToInt64(r.GetValue("sim"))));
+            //    try
+            //    {
+            //        using (OracleDataReader r = oCmd.ExecuteReader())
+            //        {
+            //            if (r.HasRows)
+            //            {
+            //                res.List = new List<SimpleResultItem>();
+            //                while (r.Read())
+            //                {
+            //                    res.List.Add(
+            //                        new SimpleResultItem(
+            //                            r.GetValue("descr").ToString(),
+            //                            r.GetValue("ids").ToString(),
+            //                            String.Format("{0} {1} {2}", r.GetValue("prefix"), r.GetValue("rag_soc"), r.GetValue("suffix")),
+            //                            r.GetValue("subtype").ToString(),
+            //                            r.GetValue("SRC").ToString(),
+            //                            Convert.ToInt64(r.GetValue("sim"))));
 
-                            }
-                        }
-                    }
-                }
-                catch
-                {
-                    res.List = null;
-                }
+            //                }
+            //            }
+            //        }
+            //    }
+            //    catch
+            //    {
+            //        res.List = null;
+            //    }
 
-            }
+            //}
 
-            return res;
+            //return res;
         }
 
         #endregion
@@ -562,79 +439,91 @@ namespace SendMail.Data.SQLServerDB.Repository
             throw new NotImplementedException();
         }
 
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
         public SendMail.Model.RubricaMapping.RubricaContatti GetById(long id)
         {
-            V_Rubr_Contatti_Obj rubrObj = new V_Rubr_Contatti_Obj(context);
-            return (RubricaContatti)rubrObj.GetContattiById(id);
+            RubricaContatti c = null;
+            using (var dbcontext = new FAXPECContext())
+            {
+                try
+                {
+                    RUBR_CONTATTI v = dbcontext.RUBR_CONTATTI.Where(x => x.ID_CONTACT == id).First();
+                    var ListTitoli = (from t in dbcontext.RUBR_CONTATTI_BACKEND
+                                      where t.REF_ID_CONTATTO == v.ID_CONTACT
+                                      select t.COMUNICAZIONI_TITOLI.ID_TITOLO).ToList();
+                    c = AutoMapperConfiguration.MapToRubrContatti(v, ListTitoli);
+                } catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+            return c;
+
         }
 
         public void Insert(SendMail.Model.RubricaMapping.RubricaContatti entity)
         {
-            using (OracleCommand ocmd = base.CurrentConnection.CreateCommand())
+            using (var dbcontext = new FAXPECContext())
             {
-                base.Context.StartTransaction(this.GetType());
-
-                if (entity.Entita != null)
+                using (var dbContextTransaction = dbcontext.Database.BeginTransaction())
                 {
-                    try
+                    if (entity.Entita != null)
                     {
-                        this.Context.DaoImpl.RubricaEntitaDao.Insert(entity.Entita);
-                        entity.RefIdReferral = entity.Entita.IdReferral;
-                    }
-                    catch
-                    {
-                        base.Context.RollBackTransaction(this.GetType());
-                        throw;
+                        try
+                        {
+                            RUBR_ENTITA e = DaoSQLServerDBHelper.MapToRubrEntita(entity.Entita, true);
+                            dbcontext.RUBR_ENTITA.Add(e);
+                            entity.Entita.IdReferral = (long)e.ID_REFERRAL;
+                            entity.RefIdReferral = (long)e.ID_REFERRAL;
+                            RUBR_CONTATTI c = DaoSQLServerDBHelper.MapToRubrContatti(entity,true);
+                            entity.IdContact = (long)c.ID_CONTACT;
+                            dbcontext.RUBR_CONTATTI.Add(c);
+                            dbcontext.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbContextTransaction.Rollback();
+                            if (!ex.GetType().Equals(typeof(ManagedException)))
+                            {
+                                ManagedException mEx = new ManagedException(ex.Message,
+                                    "ORA_ERR012", string.Empty, string.Empty, ex);
+                                ErrorLogInfo err = new ErrorLogInfo(mEx);
+                                _log.Error(err);
+                                throw mEx;
+                            }
+                            else throw ex;
+                        }
+
+
+                        dbContextTransaction.Commit();
                     }
                 }
-
-                ocmd.CommandText = insertStatement;
-                ocmd.BindByName = true;
-                ocmd.Parameters.Clear();
-                ocmd.Parameters.AddRange(MapObjectToParams(entity, true));
-
-                try
-                {
-                    int ret = ocmd.ExecuteNonQuery();
-                    entity.IdContact = long.Parse(ocmd.Parameters["pIDCONTACT"].Value.ToString());
-                }
-                catch (Exception ex)
-                {
-                    base.Context.RollBackTransaction(this.GetType());
-                    //TASK: Allineamento log - Ciro
-                    if (!ex.GetType().Equals(typeof(ManagedException)))
-                    {
-                        ManagedException mEx = new ManagedException(ex.Message,
-                            "ORA_ERR012", string.Empty, string.Empty, ex);
-                        ErrorLogInfo err = new ErrorLogInfo(mEx);
-                        _log.Error(err);
-                        throw mEx;
-                    }
-                    else throw ex;
-                }
-
-                base.Context.EndTransaction(this.GetType());
             }
-        }
+        } 
 
         public void Update(SendMail.Model.RubricaMapping.RubricaContatti entity)
         {
-            using (OracleCommand ocmd = base.CurrentConnection.CreateCommand())
+            using (var dbcontext = new FAXPECContext())
             {
-                ocmd.CommandText = updateStatement;
-                ocmd.Parameters.AddRange(MapObjectToParams(entity, false));
-                ocmd.BindByName = true;
-                ocmd.Connection = base.CurrentConnection;
+                using (var transaction = dbcontext.Database.Connection.BeginTransaction())
                 try
                 {
-                    int ret = ocmd.ExecuteNonQuery();
+                    var rubrOld = dbcontext.RUBR_CONTATTI.Where(x => x.ID_CONTACT == entity.IdContact).First();
+                    var rubrNew = DaoSQLServerDBHelper.MapToRubrContatti(entity, false);
+                    dbcontext.RUBR_CONTATTI.Remove(rubrOld);
+                    dbcontext.RUBR_CONTATTI.Add(rubrNew);
+                    int res = dbcontext.SaveChanges();
                 }
                 catch
                 {
+                        transaction.Rollback();
                     //todo
                     throw;
                 }
-            }
+            }           
         }
 
         public void Delete(long id)

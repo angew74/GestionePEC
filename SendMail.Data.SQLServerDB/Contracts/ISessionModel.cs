@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SendMail.Model;
-using SendMailApp.OracleCore.Contracts;
-using SendMail.Data.Contracts.Mail;
+﻿using SendMail.Data.Contracts.Mail;
 using SendMail.Data.Contracts;
 
 namespace SendMail.Data.SQLServerDB

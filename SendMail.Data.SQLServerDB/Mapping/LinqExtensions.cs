@@ -224,12 +224,27 @@ namespace SendMail.Data.SQLServerDB.Mapping
 
         internal static long? TryParseLongNullable(decimal? iD_REFERRAL)
         {
-            throw new NotImplementedException();
+            long val = 0;
+           if(iD_REFERRAL != null)
+            { val = long.Parse(iD_REFERRAL.ToString()); }
+            return val;
         }
 
         internal static bool TryParseBoolDecimal(decimal? sOTTOTITOLO_ACTIVE)
         {
-            throw new NotImplementedException();
+            bool val = false;
+           if(sOTTOTITOLO_ACTIVE == 0)
+            { val = false; }
+           else { val = true; }
+            return val;
+        }
+
+        internal static decimal? TryParseDecimalBool(bool deleted)
+        {
+            int val = 0;
+            if (deleted)
+            { val = 1; }
+            return val;
         }
     }
 }

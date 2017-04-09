@@ -20,6 +20,7 @@ namespace SendMail.Data.SQLServerDB
             this.COMUNICAZIONI_DESTINATARI = new HashSet<COMUNICAZIONI_DESTINATARI>();
             this.RUBR_ENTITA1 = new HashSet<RUBR_ENTITA>();
             this.RUBR_TAGS = new HashSet<RUBR_TAGS>();
+            this.RUBR_CONTATTI = new HashSet<RUBR_CONTATTI>();
         }
     
         public decimal ID_REFERRAL { get; set; }
@@ -52,5 +53,7 @@ namespace SendMail.Data.SQLServerDB
         public virtual RUBR_REFERRAL_TYPE RUBR_REFERRAL_TYPE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RUBR_TAGS> RUBR_TAGS { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RUBR_CONTATTI> RUBR_CONTATTI { get; set; }
     }
 }

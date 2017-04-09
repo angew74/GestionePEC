@@ -11,7 +11,7 @@ namespace SendMail.Data.SQLServerDB
 {
     public interface IContattoDao : IDao<RubricaContatti, Int64>
     {
-        IList<RubricaContatti> LoadContattiOrgByOrgId(long identita, bool startFromOrg, bool includeDescendant, bool includeIPA, bool includeAppMappings);
+        List<RubricaContatti> LoadContattiOrgByOrgId(long identita, bool startFromOrg, bool includeDescendant, bool includeIPA, bool includeAppMappings);
         IList<RubricaContatti> LoadContattiOrgByName(string identita, bool startFromOrg, bool includeDescendant, bool includeIPA);
         IEnumerable<RubricaContatti> LoadContattiByTitoloAndBackendCode(string titolo, string backendCode);
 

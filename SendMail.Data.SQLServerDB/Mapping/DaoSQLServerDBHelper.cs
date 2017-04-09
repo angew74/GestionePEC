@@ -9,6 +9,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SendMail.Model.RubricaMapping;
+using System.Data.Common;
 
 namespace SendMail.Data.SQLServerDB.Mapping
 {
@@ -59,6 +61,42 @@ namespace SendMail.Data.SQLServerDB.Mapping
                     break;
             }
             return op;
+        }
+
+        internal static SottoTitolo MapToSottotitolo(COMUNICAZIONI_SOTTOTITOLI s)
+        {
+            SottoTitolo st = new SottoTitolo();
+            st.Id = (Int32)s.ID_SOTTOTITOLO;
+            st.Titolo.Id = (Int32)s.REF_ID_TITOLO;
+                st.Nome = s.SOTTOTITOLO;
+            st.ComCode =s.COM_CODE;
+            st.Note = s.NOTE;
+            if (s.ACTIVE != 1)
+                st.Deleted = false;
+            else
+                st.Deleted = !Convert.ToBoolean(s.ACTIVE);
+            st.ProtocolloCode = s.PROT_CODE;
+            if (s.PROT_LOAD_ALLEGATI == 0)
+                st.ProtocolloLoadAllegati = false;
+            else
+                st.ProtocolloLoadAllegati = Convert.ToBoolean(s.PROT_LOAD_ALLEGATI);
+            st.ProtocolloPassword = s.PROT_PWD;
+            st.ProtocolloSubCode =s.PROT_SUBCODE;
+            st.TipiProcollo = null;
+            if (!String.IsNullOrEmpty(s.PROT_TIPI_AMMESSI))
+            {
+                st.TipiProcollo = (from t in  s.PROT_TIPI_AMMESSI.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                   let exist = Enum.GetNames(typeof(ProtocolloTypes)).Contains(t)
+                                   select ((exist) ? (ProtocolloTypes)Enum.Parse(typeof(ProtocolloTypes), t) : ProtocolloTypes.UNKNOWN)).ToList();
+
+            }
+            if (s.PROT_MANAGED == 0)
+                st.UsaProtocollo = false;
+            else
+                st.UsaProtocollo =Convert.ToBoolean(s.PROT_MANAGED);
+             
+            return st;
+
         }
 
         internal static Model.ContactsApplicationMapping MapToContactsApplication(System.Data.Common.DbDataReader dr)
@@ -116,6 +154,27 @@ namespace SendMail.Data.SQLServerDB.Mapping
             return inbox;
         }
 
+        internal static COMUNICAZIONI_SOTTOTITOLI MapToComunicazioniSottotitolo(SottoTitolo sottoTitolo,bool isInsert)
+        {
+            COMUNICAZIONI_SOTTOTITOLI s = new COMUNICAZIONI_SOTTOTITOLI()
+            {
+                REF_ID_TITOLO = sottoTitolo.RefIdTitolo,
+                ACTIVE = Convert.ToDecimal(!sottoTitolo.Deleted),
+                COM_CODE = sottoTitolo.ComCode,
+                NOTE = sottoTitolo.Note,
+                PROT_CODE = sottoTitolo.ProtocolloCode,
+                PROT_MANAGED = Convert.ToDecimal(sottoTitolo.UsaProtocollo),
+                PROT_PWD = sottoTitolo.ProtocolloPassword,
+                PROT_SUBCODE = sottoTitolo.ProtocolloSubCode,
+                SOTTOTITOLO = sottoTitolo.Nome,
+                PROT_TIPI_AMMESSI = String.Join(";", sottoTitolo.TipiProcollo.Cast<string>().ToArray()),
+                PROT_LOAD_ALLEGATI = Convert.ToDecimal(sottoTitolo.ProtocolloLoadAllegati)
+            };
+            if(!isInsert)
+            { s.ID_SOTTOTITOLO = sottoTitolo.Id; }
+            return s;           
+        }
+
         internal static RUBR_CONTATTI_BACKEND MapToRubrContattiBackend(Model.ContactApplicationMapping.ContactsBackendMap entity)
         {
 
@@ -128,6 +187,21 @@ namespace SendMail.Data.SQLServerDB.Mapping
             };
             return m;
 
+        }
+
+        internal static SendersFolders MapToSendersFolders(DbDataReader dr)
+        {
+            SendersFolders sFold = new SendersFolders();
+
+            sFold.IdSender = Convert.ToInt32(dr.GetValue("ID_SENDER"));
+            //sFold.IdFolder = Convert.ToInt32(dr.GetValue("ID"));
+            sFold.Nome = (string)dr.GetValue("NOME");
+            sFold.Mail = (string)dr.GetValue("MAIL");
+            sFold.IdNome = Convert.ToInt16(dr.GetValue("IDNOME"));
+            //sFold.Tipo = (string)dr.GetValue("TIPO");
+            sFold.System = Convert.ToInt16(dr.GetValue("SYSTEM"));
+
+            return sFold;
         }
 
         internal static MailUser MapToMailUser(MAIL_SENDERS dr, MailServer s, List<Folder> l)
@@ -236,6 +310,62 @@ namespace SendMail.Data.SQLServerDB.Mapping
             me.NomeFolder = dr.GetString("NOME");
             return me;
         }
+
+        internal static RUBR_CONTATTI MapToRubrContatti(RubricaContatti entity,bool isInsert)
+        {
+            RUBR_CONTATTI oparams = new RUBR_CONTATTI
+            {
+                MAIL = entity.Mail,
+                TELEFONO = entity.Telefono,
+                FAX = entity.Fax,
+                FLG_PEC = Convert.ToInt64(entity.IsPec),
+                SOURCE = entity.Source,
+                NOTE = entity.Note,
+                CONTACT_REF = entity.ContactRef,
+                REF_ID_REFERRAL = (decimal) entity.RefIdReferral
+            };
+            if (!isInsert)
+            {
+                oparams.ID_CONTACT =(decimal) entity.IdContact;
+            }
+
+            return oparams;
+        }
+
+        internal static RUBR_ENTITA MapToRubrEntita(RubricaEntita e,bool isInsert)
+        {
+            RUBR_ENTITA r = new RUBR_ENTITA();
+            r.AFF_IPA = e.AffIPA;
+            r.COD_FIS = e.CodiceFiscale;
+            r.COGNOME = e.Cognome;
+            r.DISAMB_POST = e.DisambPost;
+            r.DISAMB_PRE = e.DisambPre;
+            r.FLG_IPA = e.IsIPA.ToString();
+            r.NOTE = e.Note;
+            r.NOME = e.Nome;
+            r.P_IVA = e.PartitaIVA;
+            r.SITO_WEB = e.SitoWeb;        
+            if (!isInsert)
+               r.ID_REFERRAL =(decimal) e.IdReferral;
+            else
+            {
+              r.ID_PADRE = e.IdPadre;
+              r.REFERRAL_TYPE = e.ReferralType.ToString();
+              r.RAGIONE_SOCIALE = e.RagioneSociale;
+              r.REF_ID_ADDRESS = e.RefIdAddress;
+              r.FLG_IPA = Convert.ToInt16(e.IsIPA).ToString();
+              r.IPA_DN = e.IPAdn;
+              r.IPA_ID = e.IPAId;
+                r.DISAMB_PRE = e.DisambPre;
+                r.DISAMB_POST = e.DisambPost;
+               r.REF_ORG = e.RefOrg;
+                r.AFF_IPA = e.AffIPA;
+              
+            }
+            return r;
+        }       
+        
+        
     }
 
 }

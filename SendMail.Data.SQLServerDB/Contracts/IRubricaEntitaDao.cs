@@ -13,7 +13,7 @@ namespace SendMail.Data.SQLServerDB
     public interface IRubricaEntitaDao:IDao<RubricaEntita, Int64>
     {
         ResultList<RubricaEntita> LoadEntitaByParams(IList<SendMail.Model.EntitaType> tEnt, IDictionary<SendMail.Model.FastIndexedAttributes, IList<string>> pars, int da, int per);
-        ResultList<RubricaEntita> LoadSimilarityEntitaByParams(IList<SendMail.Model.EntitaType> tEnt, IDictionary<SendMail.Model.FastIndexedAttributes, IList<string>> pars, int da, int per);
+       // ResultList<RubricaEntita> LoadSimilarityEntitaByParams(IList<SendMail.Model.EntitaType> tEnt, IDictionary<SendMail.Model.FastIndexedAttributes, IList<string>> pars, int da, int per);
         RubricaEntita LoadEntitaCompleteById(long idEntita);
 
         List<RubricaEntita> LoadEntitaByName(IList<EntitaType> tEnt, string name);

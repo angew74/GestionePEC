@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace SendMail.Data.SQLServerDB.Repository
 {
-    class ContactsApplicationMappingSQLDb : IContactsApplicationMappingDao
+  public class ContactsApplicationMappingSQLDb : IContactsApplicationMappingDao
     {
         private static ILog _log = LogManager.GetLogger(typeof(ContactsApplicationMappingSQLDb));
         #region "Private Fields"
