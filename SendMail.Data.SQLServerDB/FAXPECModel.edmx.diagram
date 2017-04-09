@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6bbaa79384f448fbb562ef56225d3c32" Name="Diagram1">
+        <EntityTypeShape EntityType="FAXPECModel.ACTIONS" Width="1.5" PointX="6" PointY="48.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.ACTIONS_FOLDERS" Width="1.5" PointX="8.25" PointY="34.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.COMUNICAZIONI" Width="1.5" PointX="3" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.COMUNICAZIONI_ALLEGATI" Width="1.5" PointX="5.25" PointY="25.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.COMUNICAZIONI_CANALI" Width="1.5" PointX="5.25" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.COMUNICAZIONI_DESTINATARI" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.COMUNICAZIONI_ENTITA_USED" Width="1.5" PointX="7.5" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.COMUNICAZIONI_FLUSSO" Width="1.5" PointX="3" PointY="30.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.COMUNICAZIONI_FLUSSO_PROT" Width="1.5" PointX="5.25" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.COMUNICAZIONI_PROTOCOLLO" Width="1.5" PointX="5.25" PointY="32.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.COMUNICAZIONI_SOTTOTITOLI" Width="1.5" PointX="0.75" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.COMUNICAZIONI_TITOLI" Width="1.5" PointX="1.5" PointY="22" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.FOLDERS" Width="1.5" PointX="3" PointY="34.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.FOLDERS_SENDERS" Width="1.5" PointX="8.25" PointY="30.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.MAIL_CONTENT" Width="1.5" PointX="5.25" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.MAIL_INBOX" Width="1.5" PointX="5.25" PointY="41.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.MAIL_INBOX_FLUSSO" Width="1.5" PointX="9.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.MAIL_REFS_NEW" Width="1.5" PointX="7.5" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.MAIL_SENDERS" Width="1.5" PointX="1.5" PointY="26" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.MAIL_USERS_ADMIN_BACKEND" Width="1.5" PointX="9.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.MAIL_USERS_BACKEND" Width="1.5" PointX="5.5" PointY="37" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.MAIL_USERS_SENDER_BACKEND" Width="1.5" PointX="7.75" PointY="26.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.MAILSERVERS" Width="1.5" PointX="9.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.RUBR_ADDRESS" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.RUBR_BACKEND" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.RUBR_CONTATTI" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.RUBR_CONTATTI_BACKEND" Width="1.5" PointX="7.5" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.RUBR_ENTITA" Width="1.5" PointX="3" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.RUBR_ENTITA_USED" Width="1.5" PointX="11.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.RUBR_MAPPING_PROTOCOLLO" Width="1.5" PointX="0.75" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.RUBR_REFERRAL_TYPE" Width="1.5" PointX="0.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.RUBR_TAGS" Width="1.5" PointX="10.25" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.V_MAP_APPL_CONTATTI_NEW" Width="1.5" PointX="11.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FAXPECModel.V_RUBR_CONTATTI" Width="1.5" PointX="13.75" PointY="2.25" IsExpanded="true" />
+        <AssociationConnector Association="FAXPECModel.ACTIONS_FOLDERS_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.FK__ACTIONS_FOLDERS_ACTIONS" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.COMUNICAZIONI_ALLEGATI_CO_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.COMUNICAZIONI_COMUNICAZIO_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.COMUNICAZIONI_ENTITA_USED_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.COMUNICAZIONI_FLUSSO_COMU_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.COMUNICAZIONI_FLUSSO_PROT_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.COMUNICAZIONI_PROTOCOLLO__FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.MAIL_CONTENT_COMUNICAZION_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.RUBR_CONTATTI_BACKEND_COM_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.COMUNICAZIONI_DESTINATARI_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.COMUNICAZIONI_ENTITA_USED_FK2" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.MAIL_REFS_NEW_COM_DEST_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.MAIL_CONTENT_FLUSSI_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.MAIL_CONTENT_FLUSSI_FK2" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.COMUNICAZIONI_SOTTOTITOLI_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.RUBR_CONTATTI_BACKEND_COM_FK2" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.FK__MAIL_CONT__FOLDE__12B3B8EF" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.FK__MAIL_INBO__FOLDE__13A7DD28" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.FK_FOLDERS_SENDERS_FOLDERS" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.MAIL_INBOX_COMUNICAZIONI_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.FK_FOLDERS_SENDERS_SENDERS" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.MAIL_REFS_NEW_MAIL_CONTEN_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.USERS_SENDER_BACKEND_MAIL_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.USERS_SENDER_BACKEND_USER_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.RUBR_ENTITA_RUBR_ADDRESS_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.RUBR_CONTATTI_BACKEND_RUB_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.FK__RUBR_CONT__REF_I__7246E95D" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.FK_RUBR_CONTATTI_BACKEND_RUBR_CONTATT" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.RUBR_ENTITA_RUBR_ENTITA_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.RUBR_ENTITA_RUBR_REFERRAL_FK1" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.MAIL_SENDERS_TITOLI" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.RUBR_CONTATTI_TAGS" ManuallyRouted="false" />
+        <AssociationConnector Association="FAXPECModel.RUBR_REFERRAL_TYPE_TAGS" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

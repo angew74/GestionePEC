@@ -17,7 +17,6 @@ namespace SendMail.Data.SQLServerDB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAIL_CONTENT()
         {
-            this.MAIL_REFS = new HashSet<MAIL_REFS>();
             this.MAIL_REFS_NEW = new HashSet<MAIL_REFS_NEW>();
         }
     
@@ -29,18 +28,16 @@ namespace SendMail.Data.SQLServerDB
         public string FLG_ANNULLAMENTO { get; set; }
         public string FLG_CUSTOM_REFS { get; set; }
         public Nullable<decimal> FOLLOWS { get; set; }
-        public Nullable<double> FOLDERID { get; set; }
+        public decimal FOLDERID { get; set; }
         public string FOLDERTIPO { get; set; }
         public Nullable<decimal> REF_ID_SENDER { get; set; }
         public Nullable<double> REF_ID_FLUSSO_ATTUALE { get; set; }
         public Nullable<double> REF_ID_FLUSSO_INSERIMENTO { get; set; }
-        public System.Guid ROWID { get; set; }
     
         public virtual COMUNICAZIONI COMUNICAZIONI { get; set; }
         public virtual COMUNICAZIONI_FLUSSO COMUNICAZIONI_FLUSSO { get; set; }
         public virtual COMUNICAZIONI_FLUSSO COMUNICAZIONI_FLUSSO1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAIL_REFS> MAIL_REFS { get; set; }
+        public virtual FOLDERS FOLDERS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAIL_REFS_NEW> MAIL_REFS_NEW { get; set; }
     }

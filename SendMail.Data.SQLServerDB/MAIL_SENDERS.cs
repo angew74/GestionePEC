@@ -29,7 +29,6 @@ namespace SendMail.Data.SQLServerDB
         public string PASSWORD { get; set; }
         public Nullable<decimal> ID_RESPONSABILE { get; set; }
         public string FLG_MANAGED { get; set; }
-        public System.Guid ROWID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FOLDERS_SENDERS> FOLDERS_SENDERS { get; set; }

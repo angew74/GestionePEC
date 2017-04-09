@@ -69,46 +69,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ACTIONS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ACTIONS_FOLDERS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="COMUNICAZIONI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="COMUNICAZIONI_ALLEGATI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="COMUNICAZIONI_CANALI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="COMUNICAZIONI_DESTINATARI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="COMUNICAZIONI_DESTINATARI_PROT.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="COMUNICAZIONI_ENTITA_USED.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="COMUNICAZIONI_FLUSSO.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="COMUNICAZIONI_FLUSSO_PROT.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="COMUNICAZIONI_PROTOCOLLO.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="COMUNICAZIONI_PROTOCOLLO_XML.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="COMUNICAZIONI_SOTTOTITOLI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="COMUNICAZIONI_TITOLI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Contracts\CachedDao\IReferralTypeDao.cs" />
     <Compile Include="Contracts\ExeptionMessages.cs" />
@@ -133,85 +127,58 @@
     <Compile Include="Contracts\Mail\IMailHeaderDao.cs" />
     <Compile Include="Contracts\Mail\IMailMessageDao.cs" />
     <Compile Include="Contracts\Mail\IMailServerDao.cs" />
-    <Compile Include="FAXPECEntity.Context.cs">
+    <Compile Include="FAXPECModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FAXPECEntity.Context.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="FAXPECEntity.cs">
+    <Compile Include="FAXPECModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="FAXPECEntity.Designer.cs">
+    <Compile Include="FAXPECModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FAXPECEntity.edmx</DependentUpon>
+      <DependentUpon>FAXPECModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="FOLDERS.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FOLDERS_SENDERS.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAILSERVERS.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_CONTENT.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_INBOX.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_INBOX_FLUSSO.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_REFS_NEW.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_SENDERS.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_USERS_ADMIN_BACKEND.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_USERS_BACKEND.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAIL_USERS_SENDER_BACKEND.cs">
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Mapping\AutoMapperConfiguration .cs" />
     <Compile Include="Mapping\DaoSQLServerDBHelper.cs" />
     <Compile Include="Mapping\LinqExtensions.cs" />
     <Compile Include="PECSQLContext.cs" />
-    <Compile Include="FOLDERS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="FOLDERS_SENDERS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="IPA.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LOG_ACTIONS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LOG_APP_CODES.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LOG_APP_ERRORS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LOG_ERRORS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LOG_LOG_CODES.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAILSERVERS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_CONTENT.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_INBOX.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_INBOX_FLUSSO.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_LIST.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_LIST_STORICO.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_REFS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_REFS_NEW.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_SENDERS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_USERS_ADMIN_BACKEND.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_USERS_BACKEND.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAIL_USERS_SENDER_BACKEND.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BackEndCodeSQLDb.cs" />
     <Compile Include="Repository\BackEndUserSQLDb.cs" />
@@ -231,79 +198,61 @@
     <Compile Include="Repository\SendersFoldersSQLDb.cs" />
     <Compile Include="Repository\SottoTitoloSQLDb.cs" />
     <Compile Include="Repository\TitoloSQLDb.cs" />
-    <Compile Include="ROLES.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
     <Compile Include="RUBR_ADDRESS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RUBR_BACKEND.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RUBR_CONTATTI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RUBR_CONTATTI_BACKEND.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RUBR_ENTITA.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RUBR_ENTITA_USED.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RUBR_MAPPING_PROTOCOLLO.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RUBR_REFERRAL_TYPE.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RUBR_STATI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RUBR_TAGS.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TERRIT_COMUNI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TERRIT_NAZIONI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="V_COMUNICAZIONI_COMPLETE.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="V_CONTATTI_RUBR_AND_IPA.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_MAP_APPL_CONTATTI_NEW.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_RUBR_CONTATTI.cs">
-      <DependentUpon>FAXPECEntity.tt</DependentUpon>
+      <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="FAXPECEntity.edmx">
+    <EntityDeploy Include="FAXPECModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>FAXPECEntity.Designer.cs</LastGenOutput>
+      <LastGenOutput>FAXPECModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="FAXPECEntity.edmx.diagram">
-      <DependentUpon>FAXPECEntity.edmx</DependentUpon>
+    <None Include="FAXPECModel.edmx.diagram">
+      <DependentUpon>FAXPECModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FAXPECEntity.Context.tt">
+    <Content Include="FAXPECModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FAXPECEntity.edmx</DependentUpon>
-      <LastGenOutput>FAXPECEntity.Context.cs</LastGenOutput>
+      <DependentUpon>FAXPECModel.edmx</DependentUpon>
+      <LastGenOutput>FAXPECModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="FAXPECEntity.tt">
+    <Content Include="FAXPECModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FAXPECEntity.edmx</DependentUpon>
-      <LastGenOutput>FAXPECEntity.cs</LastGenOutput>
+      <DependentUpon>FAXPECModel.edmx</DependentUpon>
+      <LastGenOutput>FAXPECModel.cs</LastGenOutput>
     </Content>
     <Content Include="Lib\System.Tuples.dll" />
   </ItemGroup>

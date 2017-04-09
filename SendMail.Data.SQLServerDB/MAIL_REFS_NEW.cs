@@ -19,7 +19,6 @@ namespace SendMail.Data.SQLServerDB
         public string MAIL_DESTINATARIO { get; set; }
         public string TIPO_REF { get; set; }
         public Nullable<decimal> REF_ID_COM_DEST { get; set; }
-        public System.Guid ROWID { get; set; }
     
         public virtual COMUNICAZIONI_DESTINATARI COMUNICAZIONI_DESTINATARI { get; set; }
         public virtual MAIL_CONTENT MAIL_CONTENT { get; set; }

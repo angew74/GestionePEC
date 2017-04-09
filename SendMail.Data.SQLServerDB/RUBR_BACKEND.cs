@@ -25,7 +25,6 @@ namespace SendMail.Data.SQLServerDB
         public string BACKEND_DESCR { get; set; }
         public string CATEGORY { get; set; }
         public string DESCR_PLUS { get; set; }
-        public System.Guid ROWID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RUBR_CONTATTI_BACKEND> RUBR_CONTATTI_BACKEND { get; set; }

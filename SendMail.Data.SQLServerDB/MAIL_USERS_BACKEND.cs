@@ -29,7 +29,6 @@ namespace SendMail.Data.SQLServerDB
         public string NOME { get; set; }
         public string ROLE { get; set; }
         public string CODICE_FISCALE { get; set; }
-        public System.Guid ROWID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAIL_USERS_SENDER_BACKEND> MAIL_USERS_SENDER_BACKEND { get; set; }

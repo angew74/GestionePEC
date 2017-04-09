@@ -35,11 +35,11 @@ namespace SendMail.Data.SQLServerDB
         public string MAIL_FOLDER { get; set; }
         public Nullable<decimal> FOLLOWS { get; set; }
         public Nullable<decimal> MSG_LENGTH { get; set; }
-        public Nullable<double> FOLDERID { get; set; }
+        public decimal FOLDERID { get; set; }
         public string FOLDERTIPO { get; set; }
         public Nullable<double> REF_ID_SENDER { get; set; }
-        public System.Guid ROWID { get; set; }
     
-        public virtual COMUNICAZIONI COMUNICAZIONI { get; set; }
+        public virtual FOLDERS FOLDERS { get; set; }
+        public virtual FOLDERS FOLDERS1 { get; set; }
     }
 }

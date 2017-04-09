@@ -20,7 +20,6 @@ namespace SendMail.Data.SQLServerDB
         public Nullable<decimal> REF_ID_CONTATTO { get; set; }
         public Nullable<decimal> REF_ID_TITOLO { get; set; }
         public Nullable<decimal> REF_ID_ENTITA { get; set; }
-        public System.Guid ROWID { get; set; }
     
         public virtual COMUNICAZIONI_CANALI COMUNICAZIONI_CANALI { get; set; }
         public virtual COMUNICAZIONI_TITOLI COMUNICAZIONI_TITOLI { get; set; }

@@ -28,7 +28,6 @@ namespace SendMail.Data.SQLServerDB
         public string UTE_OPE { get; set; }
         public string CANALE { get; set; }
         public double ID_FLUSSO { get; set; }
-        public System.Guid ROWID { get; set; }
     
         public virtual COMUNICAZIONI COMUNICAZIONI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

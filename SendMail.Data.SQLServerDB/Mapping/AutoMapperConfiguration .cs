@@ -40,11 +40,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 .ForMember(d => d.MAIL_SENDER, opt => opt.MapFrom(c => c.MailSender))
                 .ForMember(d => d.MAIL_SUBJECT, opt => opt.MapFrom(c => c.MailSubject))
                 .ForMember(d => d.MAIL_TEXT, opt => opt.MapFrom(c => c.MailText))
-                .ForMember(d => d.REF_ID_COM, opt => opt.MapFrom(c => c.RefIdComunicazione)));
-            Mapper.Initialize(cfg => cfg.CreateMap<SendMail.Model.ComunicazioniMapping.MailRefs, MAIL_REFS>().ForMember(d => d.MAIL_DESTINATARIO, opt => opt.MapFrom(c => c.MailDestinatario))
-               .ForMember(d => d.TIPO_REF, opt => opt.MapFrom(c => c.TipoRef)));
-            Mapper.Initialize(cfg => cfg.CreateMap<SendMail.Model.MailRefs, MAIL_REFS>().ForMember(d => d.REF_ID_MAIL, opt => opt.MapFrom(c => c.RefIdMail))
-           .ForMember(d => d.ID_REF, opt => opt.MapFrom(c => c.IdRef)));
+                .ForMember(d => d.REF_ID_COM, opt => opt.MapFrom(c => c.RefIdComunicazione)));          
             Mapper.Initialize(cfg => cfg.CreateMap<ComFlusso, COMUNICAZIONI_FLUSSO>().ForMember(d => d.CANALE, opt => opt.MapFrom(c => c.Canale))
               .ForMember(d => d.DATA_OPERAZIONE, opt => opt.MapFrom(c => c.DataOperazione))
               .ForMember(d => d.ID_FLUSSO, opt => opt.MapFrom(c => c.IdFlusso))
@@ -105,10 +101,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 .ForMember(d => d.MailSubject, opt => opt.MapFrom(c => c.MAIL_SUBJECT))
                 .ForMember(d => d.MailText, opt => opt.MapFrom(c => c.MAIL_TEXT))
                 .ForMember(d => d.RefIdComunicazione, opt => opt.MapFrom(c => c.REF_ID_COM)));
-            Mapper.Initialize(cfg => cfg.CreateMap<SendMail.Model.ComunicazioniMapping.MailRefs, MAIL_REFS>().ForMember(d => d.MAIL_DESTINATARIO, opt => opt.MapFrom(c => c.MailDestinatario))
-               .ForMember(d => d.TIPO_REF, opt => opt.MapFrom(c => c.TipoRef)));
-            Mapper.Initialize(cfg => cfg.CreateMap<SendMail.Model.MailRefs, MAIL_REFS>().ForMember(d => d.REF_ID_MAIL, opt => opt.MapFrom(c => c.RefIdMail))
-           .ForMember(d => d.ID_REF, opt => opt.MapFrom(c => c.IdRef)));
+                  
             Mapper.Initialize(cfg => cfg.CreateMap<ComFlusso, COMUNICAZIONI_FLUSSO>().ForMember(d => d.CANALE, opt => opt.MapFrom(c => c.Canale))
               .ForMember(d => d.DATA_OPERAZIONE, opt => opt.MapFrom(c => c.DataOperazione))
               .ForMember(d => d.ID_FLUSSO, opt => opt.MapFrom(c => c.IdFlusso))
@@ -498,7 +491,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 AppCode = content.COMUNICAZIONI.COMUNICAZIONI_SOTTOTITOLI.COMUNICAZIONI_TITOLI.APP_CODE,
                 CodAppInserimento = content.COMUNICAZIONI.COD_APP_INS,
                 ComCode = content.COMUNICAZIONI.COMUNICAZIONI_SOTTOTITOLI.COM_CODE,
-                FolderId = LinqExtensions.TryParseIntFromDouble(content.FOLDERID),
+                FolderId = (int) content.FOLDERID,
                 FolderTipo = content.FOLDERTIPO,
                 IdComunicazione = LinqExtensions.TryParseLong(content.REF_ID_COM),
                 MailNotifica = content.COMUNICAZIONI.MAIL_NOTIFICA,
@@ -571,7 +564,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
             return comunicazione;
         }
 
-        internal static MAIL_INBOX_FLUSSO MapToMailInboxFlussoDto(int id, string oldStatus, string newStatus, DateTime? data, string ute)
+        internal static MAIL_INBOX_FLUSSO MapToMailInboxFlussoDto(decimal id, string oldStatus, string newStatus, DateTime? data, string ute)
         {
 
             MAIL_INBOX_FLUSSO inboxFlusso = new MAIL_INBOX_FLUSSO()
@@ -597,6 +590,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 MAIL_CC = String.Join(";", m.Cc.Select(cc => cc.Email).ToArray()),
                 MAIL_CCN = String.Join(";", m.Bcc.Select(bcc => bcc.Email).ToArray()),
                 MAIL_SUBJECT = m.Subject,
+                MAIL_FOLDER = String.IsNullOrEmpty(m.HeaderFields["X-Ricevuta"]) ? "1" : "2",
                 MAIL_TEXT = LinqExtensions.TryParseBody(m.BodyText),
                 DATA_INVIO = m.ReceivedDate.ToLocalTime(),
                 STATUS_SERVER = (String.IsNullOrEmpty(m.MessageId)) ? ((int)MailStatusServer.DA_NON_CANCELLARE).ToString() : ((int)MailStatusServer.PRESENTE).ToString(),
@@ -607,7 +601,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 FOLDERID = String.IsNullOrEmpty(m.HeaderFields["X-Ricevuta"]) ? 1 : 3,
                 FOLDERTIPO = "I",
                 FOLLOWS = LinqExtensions.TryParseFollows(m.HeaderFields),
-                MSG_LENGTH = m.OriginalData.Length
+                MSG_LENGTH = m.OriginalData.Length               
             };
             return inbox;
         }

@@ -32,7 +32,6 @@ namespace SendMail.Data.SQLServerDB
         public string PROT_TIPI_AMMESSI { get; set; }
         public decimal PROT_LOAD_ALLEGATI { get; set; }
         public string PROT_CODE { get; set; }
-        public System.Guid ROWID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COMUNICAZIONI> COMUNICAZIONI { get; set; }

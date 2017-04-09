@@ -12,8 +12,6 @@ namespace SendMail.Data.SQLServerDB
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Data.Entity.Core.Objects;
-    using System.Linq;
     
     public partial class FAXPECContext : DbContext
     {
@@ -33,33 +31,23 @@ namespace SendMail.Data.SQLServerDB
         public virtual DbSet<COMUNICAZIONI_ALLEGATI> COMUNICAZIONI_ALLEGATI { get; set; }
         public virtual DbSet<COMUNICAZIONI_CANALI> COMUNICAZIONI_CANALI { get; set; }
         public virtual DbSet<COMUNICAZIONI_DESTINATARI> COMUNICAZIONI_DESTINATARI { get; set; }
-        public virtual DbSet<COMUNICAZIONI_DESTINATARI_PROT> COMUNICAZIONI_DESTINATARI_PROT { get; set; }
         public virtual DbSet<COMUNICAZIONI_ENTITA_USED> COMUNICAZIONI_ENTITA_USED { get; set; }
         public virtual DbSet<COMUNICAZIONI_FLUSSO> COMUNICAZIONI_FLUSSO { get; set; }
         public virtual DbSet<COMUNICAZIONI_FLUSSO_PROT> COMUNICAZIONI_FLUSSO_PROT { get; set; }
         public virtual DbSet<COMUNICAZIONI_PROTOCOLLO> COMUNICAZIONI_PROTOCOLLO { get; set; }
-        public virtual DbSet<COMUNICAZIONI_PROTOCOLLO_XML> COMUNICAZIONI_PROTOCOLLO_XML { get; set; }
         public virtual DbSet<COMUNICAZIONI_SOTTOTITOLI> COMUNICAZIONI_SOTTOTITOLI { get; set; }
         public virtual DbSet<COMUNICAZIONI_TITOLI> COMUNICAZIONI_TITOLI { get; set; }
         public virtual DbSet<FOLDERS> FOLDERS { get; set; }
         public virtual DbSet<FOLDERS_SENDERS> FOLDERS_SENDERS { get; set; }
-        public virtual DbSet<LOG_ACTIONS> LOG_ACTIONS { get; set; }
-        public virtual DbSet<LOG_APP_CODES> LOG_APP_CODES { get; set; }
-        public virtual DbSet<LOG_APP_ERRORS> LOG_APP_ERRORS { get; set; }
-        public virtual DbSet<LOG_ERRORS> LOG_ERRORS { get; set; }
-        public virtual DbSet<LOG_LOG_CODES> LOG_LOG_CODES { get; set; }
         public virtual DbSet<MAIL_CONTENT> MAIL_CONTENT { get; set; }
         public virtual DbSet<MAIL_INBOX> MAIL_INBOX { get; set; }
-        public virtual DbSet<MAIL_LIST> MAIL_LIST { get; set; }
-        public virtual DbSet<MAIL_LIST_STORICO> MAIL_LIST_STORICO { get; set; }
-        public virtual DbSet<MAIL_REFS> MAIL_REFS { get; set; }
+        public virtual DbSet<MAIL_INBOX_FLUSSO> MAIL_INBOX_FLUSSO { get; set; }
         public virtual DbSet<MAIL_REFS_NEW> MAIL_REFS_NEW { get; set; }
         public virtual DbSet<MAIL_SENDERS> MAIL_SENDERS { get; set; }
         public virtual DbSet<MAIL_USERS_ADMIN_BACKEND> MAIL_USERS_ADMIN_BACKEND { get; set; }
         public virtual DbSet<MAIL_USERS_BACKEND> MAIL_USERS_BACKEND { get; set; }
         public virtual DbSet<MAIL_USERS_SENDER_BACKEND> MAIL_USERS_SENDER_BACKEND { get; set; }
         public virtual DbSet<MAILSERVERS> MAILSERVERS { get; set; }
-        public virtual DbSet<ROLES> ROLES { get; set; }
         public virtual DbSet<RUBR_ADDRESS> RUBR_ADDRESS { get; set; }
         public virtual DbSet<RUBR_BACKEND> RUBR_BACKEND { get; set; }
         public virtual DbSet<RUBR_CONTATTI> RUBR_CONTATTI { get; set; }
@@ -68,28 +56,8 @@ namespace SendMail.Data.SQLServerDB
         public virtual DbSet<RUBR_ENTITA_USED> RUBR_ENTITA_USED { get; set; }
         public virtual DbSet<RUBR_MAPPING_PROTOCOLLO> RUBR_MAPPING_PROTOCOLLO { get; set; }
         public virtual DbSet<RUBR_REFERRAL_TYPE> RUBR_REFERRAL_TYPE { get; set; }
-        public virtual DbSet<RUBR_STATI> RUBR_STATI { get; set; }
         public virtual DbSet<RUBR_TAGS> RUBR_TAGS { get; set; }
-        public virtual DbSet<TERRIT_COMUNI> TERRIT_COMUNI { get; set; }
-        public virtual DbSet<TERRIT_NAZIONI> TERRIT_NAZIONI { get; set; }
-        public virtual DbSet<IPA> IPA { get; set; }
-        public virtual DbSet<MAIL_INBOX_FLUSSO> MAIL_INBOX_FLUSSO { get; set; }
-        public virtual DbSet<V_COMUNICAZIONI_COMPLETE> V_COMUNICAZIONI_COMPLETE { get; set; }
-        public virtual DbSet<V_CONTATTI_RUBR_AND_IPA> V_CONTATTI_RUBR_AND_IPA { get; set; }
         public virtual DbSet<V_MAP_APPL_CONTATTI_NEW> V_MAP_APPL_CONTATTI_NEW { get; set; }
         public virtual DbSet<V_RUBR_CONTATTI> V_RUBR_CONTATTI { get; set; }
-    
-        public virtual int VERIFY_MAPPING(string p_APP_CODE, string p_CODE_COMUNE, ObjectParameter p_RESPONSE)
-        {
-            var p_APP_CODEParameter = p_APP_CODE != null ?
-                new ObjectParameter("P_APP_CODE", p_APP_CODE) :
-                new ObjectParameter("P_APP_CODE", typeof(string));
-    
-            var p_CODE_COMUNEParameter = p_CODE_COMUNE != null ?
-                new ObjectParameter("P_CODE_COMUNE", p_CODE_COMUNE) :
-                new ObjectParameter("P_CODE_COMUNE", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("VERIFY_MAPPING", p_APP_CODEParameter, p_CODE_COMUNEParameter, p_RESPONSE);
-        }
     }
 }

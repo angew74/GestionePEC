@@ -18,7 +18,6 @@ namespace SendMail.Data.SQLServerDB
         public COMUNICAZIONI_DESTINATARI()
         {
             this.COMUNICAZIONI_ENTITA_USED = new HashSet<COMUNICAZIONI_ENTITA_USED>();
-            this.MAIL_REFS = new HashSet<MAIL_REFS>();
             this.MAIL_REFS_NEW = new HashSet<MAIL_REFS_NEW>();
         }
     
@@ -42,13 +41,10 @@ namespace SendMail.Data.SQLServerDB
         public string SIGLA_PROV { get; set; }
         public string COD_ISO_STATO { get; set; }
         public Nullable<decimal> ID_REFERRAL { get; set; }
-        public System.Guid ROWID { get; set; }
     
         public virtual RUBR_ENTITA RUBR_ENTITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COMUNICAZIONI_ENTITA_USED> COMUNICAZIONI_ENTITA_USED { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAIL_REFS> MAIL_REFS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAIL_REFS_NEW> MAIL_REFS_NEW { get; set; }
     }

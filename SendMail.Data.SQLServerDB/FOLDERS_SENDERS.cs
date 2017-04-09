@@ -17,8 +17,6 @@ namespace SendMail.Data.SQLServerDB
         public double ID { get; set; }
         public decimal IDFOLDER { get; set; }
         public decimal IDSENDER { get; set; }
-        public System.Guid ROWID { get; set; }
-        public System.Guid SYSTEM { get; set; }
     
         public virtual FOLDERS FOLDERS { get; set; }
         public virtual MAIL_SENDERS MAIL_SENDERS { get; set; }

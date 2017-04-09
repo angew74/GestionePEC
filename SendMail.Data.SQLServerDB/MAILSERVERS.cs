@@ -26,6 +26,5 @@ namespace SendMail.Data.SQLServerDB
         public string AUTH_OUT { get; set; }
         public string DOMINUS { get; set; }
         public string FLG_ISPEC { get; set; }
-        public System.Guid ROWID { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SendMail.Data.SQLServerDB
 {
-    public interface IDao<T,K>: IDisposable
+    public interface IDao<T,K> :IDisposable
     {
         ICollection<T> GetAll();
         T GetById(K id);

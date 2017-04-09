@@ -4,13 +4,13 @@ using System.Linq;
 using log4net;
 using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
-using SendMail.Business.MailFacades;
-using SendMail.Business.Contracts;
-using SendMail.Locator;
 using ActiveUp.Net.Mail;
 using SendMailApp.extension;
 using System.Configuration;
 using Com.Delta.Logging.Mail;
+using SendMail.BusinessEF.MailFacedes;
+using SendMail.BusinessEF.Contracts;
+using SendMail.BusinessEF;
 
 namespace SendMailApp
 {
@@ -34,12 +34,12 @@ namespace SendMailApp
                 //listUsers = ServiceLocator.GetServiceFactory().MailAccountService.GetAllManaged();
                 List<string> mails = new List<string>();
                 mails.Add(mail);
-                listUsers = ServiceLocator.GetServiceFactory().MailAccountService.GetUsersByMails(mails);
+                MailAccountService mailaccountservice = new MailAccountService();
+                listUsers = mailaccountservice.GetUsersByMails(mails);
                 listUsers = listUsers.Where(x => x.FlgManaged != 0).ToList();
             }
             catch (Exception ex)
-            {
-                //TASK: Allineamento log - Ciro
+            {                
                 if (ex.GetType() != typeof(ManagedException))
                 {
                     ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti di posta dettagli: " + ex.Message,
@@ -49,22 +49,12 @@ namespace SendMailApp
                                 ex.InnerException);
                     ErrorLogInfo err = new ErrorLogInfo(mEx);
                     _log.Error(err); 
-                }
-
-                //ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti di posta dettagli: " + ex.Message, "RMA_001", "", "", ex);
-                //mEx.EnanchedInfos = ex.StackTrace;
-                //ErrorLog err = new ErrorLog(APP_CODE, mEx);
-                //_log.Error(err);
-                //_log.Error(ex.Message);
-                //if (ex.InnerException != null)
-                //{
-                //    _log.Error(ex.InnerException.Message);
-                //    _log.Error(ex.Source);
-                //}
+                }               
             }
 
-            IMailServerService mailService = null;
-            SendMail.Business.MailFacades.MailLocalService mailMessageService = null;
+            // IMailServerService mailService = null
+            MailServerService mailService = new MailServerService();
+            MailLocalService mailMessageService = null;
             foreach (ActiveUp.Net.Mail.DeltaExt.MailUser user in listUsers)
             {
                 _log.Info(new MailLogInfo(APP_CODE, "", user.DisplayName,
@@ -401,7 +391,8 @@ namespace SendMailApp
                                 Int64 idOld = -1;
                                 if (idOldStr.Length > 0 && Int64.TryParse(idOldStr[0], out idOld))
                                 {
-                                    IComunicazioniService comS = ServiceLocator.GetServiceFactory().ComunicazioniService;
+                                        //IComunicazioniService comS = ServiceLocator.GetServiceFactory().ComunicazioniService;
+                                        ComunicazioniService comS = new ComunicazioniService();
                                     SendMail.Model.ComunicazioniMapping.Comunicazioni com = comS.LoadComunicazioneByIdMail(idOld);
                                     if (com != null)
                                     {

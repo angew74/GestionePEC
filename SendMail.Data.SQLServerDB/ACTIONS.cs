@@ -27,7 +27,6 @@ namespace SendMail.Data.SQLServerDB
         public string TIPO_AZIONE { get; set; }
         public string NUOVO_STATUS { get; set; }
         public Nullable<double> ID_FOLDER_DESTINAZIONE { get; set; }
-        public System.Guid ROWID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIONS_FOLDERS> ACTIONS_FOLDERS { get; set; }

@@ -23,7 +23,6 @@ namespace SendMail.Data.SQLServerDB
     
         public decimal ID_TAG { get; set; }
         public string TAG { get; set; }
-        public System.Guid ROWID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RUBR_ENTITA> RUBR_ENTITA { get; set; }

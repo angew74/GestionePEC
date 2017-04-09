@@ -35,7 +35,6 @@ namespace SendMail.Data.SQLServerDB
         public decimal FLG_PEC { get; set; }
         public string MAIL_DOMAIN { get; set; }
         public string REF_PROT { get; set; }
-        public System.Guid ROWID { get; set; }
     
         public virtual RUBR_ENTITA RUBR_ENTITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace SendMail.Data.SQLServerDB.Repository
 {
-   public class MailMessageDaoSQLDb : IMailMessageDao
+    public class MailMessageDaoSQLDb : IMailMessageDao
     {
 
         private static readonly ILog _log = LogManager.GetLogger("MailMessageDaoSQLDb");
@@ -83,19 +83,26 @@ namespace SendMail.Data.SQLServerDB.Repository
                     int rows = 0;
                     try
                     {
+                        
                         dbcontext.MAIL_INBOX.Add(c);
+                        dbcontext.SaveChanges();
+                        var mailinboxnew = dbcontext.MAIL_INBOX.Where(z => z.MAIL_SERVER_ID == c.MAIL_SERVER_ID).First();
+                        int newid =(int) mailinboxnew.ID_MAIL;
                         MailStatus newStatus = MailStatus.SCARICATA;
                         MailStatus oldStatus = MailStatus.UNKNOWN;
                         if (String.IsNullOrEmpty(m.MessageId))
                         { newStatus = MailStatus.SCARICATA_INCOMPLETA; }
                         string os = ((int)oldStatus).ToString();
                         string ns = ((int)newStatus).ToString();
-                        MAIL_INBOX_FLUSSO f = AutoMapperConfiguration.MapToMailInboxFlussoDto(m.Id, os, ns, m.ReceivedDate, "SYSTEM");
+                        MAIL_INBOX_FLUSSO f = AutoMapperConfiguration.MapToMailInboxFlussoDto(newid, os, ns, m.ReceivedDate, "SYSTEM");
                         dbcontext.MAIL_INBOX_FLUSSO.Add(f);
                         rows = dbcontext.SaveChanges();
+                        dbTransaction.Commit();
                     }
                     catch (SqlException oEx)
                     {
+                        if (dbTransaction.UnderlyingTransaction.Connection != null)
+                        { dbTransaction.Rollback(); }
                         ManagedException mEx = mEx = new ManagedException("Errore nell'inserimento su DB della mail con uid: " + m.Uid
                                 + " della casella " + user.EmailAddress,
                                 "ERR_INS_ML_001", string.Empty, string.Empty, oEx.InnerException);
@@ -115,7 +122,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                             err = new ErrorLogInfo(mEx);
                             _log.Error(err);
                         }
-                        dbTransaction.Rollback();
+                        if (dbTransaction.UnderlyingTransaction.Connection != null)
+                        { dbTransaction.Rollback(); }
                         throw mEx;
                     }
                     catch (Exception ex)
@@ -128,7 +136,8 @@ namespace SendMail.Data.SQLServerDB.Repository
 
                             _log.Error(err);
                         }
-                        dbTransaction.Rollback();
+                        if (dbTransaction.UnderlyingTransaction.Connection != null)
+                        { dbTransaction.Rollback(); }
                         throw;
                     }
                 }
@@ -309,11 +318,13 @@ namespace SendMail.Data.SQLServerDB.Repository
                         result = dbcontext.SaveChanges();
                         if (result != 1)
                         {
-                            dbTransaction.Rollback();
+                            if (dbTransaction.UnderlyingTransaction.Connection != null)
+                            { dbTransaction.Rollback(); }
                         }
                         else
                         {
-                            dbTransaction.Commit();
+                            if (dbTransaction.UnderlyingTransaction.Connection != null)
+                            { dbTransaction.Commit(); }
                         }
                     }
                     catch (Exception e)
@@ -335,26 +346,29 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
 
             int rows = 0;
-            try
+
+            using (var dbcontext = new FAXPECContext())
             {
-                using (var dbcontext = new FAXPECContext())
+                using (var dbTransaction = dbcontext.Database.BeginTransaction())
                 {
-                    using (var dbTransaction = dbcontext.Database.BeginTransaction())
+                    try
                     {
                         MAIL_INBOX inbox = dbcontext.MAIL_INBOX.Where(x => x.MAIL_SERVER_ID == mailUid && x.MAIL_ACCOUNT.ToUpper() == account.ToUpper()).First();
                         inbox.STATUS_SERVER = ((int)status).ToString();
                         rows = dbcontext.SaveChanges();
                     }
-                }
-            }
-            catch (Exception e)
-            {
-                if (!e.GetType().Equals(typeof(ManagedException)))
-                {
-                    ManagedException mEx = new ManagedException("Errore nel metodo UpdateServerStatus(string account, string mailUid, ActiveUp.Net.Common.DeltaExt.MailStatusServer status) Dettaglio: " + e.Message,
-                        "E018", string.Empty, string.Empty, e.InnerException);
-                    ErrorLogInfo err = new ErrorLogInfo(mEx);
-                    _log.Error(err);
+                    catch (Exception e)
+                    {
+                        if (dbTransaction.UnderlyingTransaction.Connection != null)
+                        { dbTransaction.Rollback(); }
+                        if (!e.GetType().Equals(typeof(ManagedException)))
+                        {
+                            ManagedException mEx = new ManagedException("Errore nel metodo UpdateServerStatus(string account, string mailUid, ActiveUp.Net.Common.DeltaExt.MailStatusServer status) Dettaglio: " + e.Message,
+                                "E018", string.Empty, string.Empty, e.InnerException);
+                            ErrorLogInfo err = new ErrorLogInfo(mEx);
+                            _log.Error(err);
+                        }
+                    }
                 }
             }
             return rows;
@@ -427,10 +441,41 @@ namespace SendMail.Data.SQLServerDB.Repository
             throw new NotImplementedException();
         }
 
+        #region IDisposable Support
+        private bool disposedValue = false; // Per rilevare chiamate ridondanti
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: eliminare lo stato gestito (oggetti gestiti).
+                }
+
+                // TODO: liberare risorse non gestite (oggetti non gestiti) ed eseguire sotto l'override di un finalizzatore.
+                // TODO: impostare campi di grandi dimensioni su Null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: eseguire l'override di un finalizzatore solo se Dispose(bool disposing) include il codice per liberare risorse non gestite.
+        // ~MailMessageDaoSQLDb() {
+        //   // Non modificare questo codice. Inserire il codice di pulizia in Dispose(bool disposing) sopra.
+        //   Dispose(false);
+        // }
+
+        // Questo codice viene aggiunto per implementare in modo corretto il criterio Disposable.
         public void Dispose()
         {
-            throw new NotImplementedException();
+            // Non modificare questo codice. Inserire il codice di pulizia in Dispose(bool disposing) sopra.
+            Dispose(true);
+            // TODO: rimuovere il commento dalla riga seguente se è stato eseguito l'override del finalizzatore.
+            // GC.SuppressFinalize(this);
         }
+        #endregion
+
     }
 }
 

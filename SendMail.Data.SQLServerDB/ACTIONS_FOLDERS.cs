@@ -15,10 +15,10 @@ namespace SendMail.Data.SQLServerDB
     public partial class ACTIONS_FOLDERS
     {
         public double ID { get; set; }
-        public double IDFOLDER { get; set; }
+        public decimal IDFOLDER { get; set; }
         public double IDACTION { get; set; }
-        public System.Guid ROWID { get; set; }
     
         public virtual ACTIONS ACTIONS { get; set; }
+        public virtual FOLDERS FOLDERS { get; set; }
     }
 }

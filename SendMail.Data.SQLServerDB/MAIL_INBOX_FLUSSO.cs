@@ -19,6 +19,6 @@ namespace SendMail.Data.SQLServerDB
         public string STATUS_MAIL_NEW { get; set; }
         public System.DateTime DATA_OPERAZIONE { get; set; }
         public string UTE_OPE { get; set; }
-        public System.Guid ROWID { get; set; }
+        public long ID_FLUSSO { get; set; }
     }
 }

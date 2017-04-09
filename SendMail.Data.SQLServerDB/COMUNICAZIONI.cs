@@ -22,7 +22,6 @@ namespace SendMail.Data.SQLServerDB
             this.COMUNICAZIONI_FLUSSO = new HashSet<COMUNICAZIONI_FLUSSO>();
             this.COMUNICAZIONI_FLUSSO_PROT = new HashSet<COMUNICAZIONI_FLUSSO_PROT>();
             this.MAIL_CONTENT = new HashSet<MAIL_CONTENT>();
-            this.MAIL_INBOX = new HashSet<MAIL_INBOX>();
         }
     
         public decimal ID_COM { get; set; }
@@ -36,7 +35,6 @@ namespace SendMail.Data.SQLServerDB
         public decimal IN_OUT { get; set; }
         public Nullable<System.DateTime> DELAY { get; set; }
         public string UNIQUE_ID_MAPPER { get; set; }
-        public System.Guid ROWID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COMUNICAZIONI_ALLEGATI> COMUNICAZIONI_ALLEGATI { get; set; }
@@ -47,11 +45,8 @@ namespace SendMail.Data.SQLServerDB
         public virtual ICollection<COMUNICAZIONI_FLUSSO> COMUNICAZIONI_FLUSSO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COMUNICAZIONI_FLUSSO_PROT> COMUNICAZIONI_FLUSSO_PROT { get; set; }
-        public virtual COMUNICAZIONI_PROTOCOLLO_XML COMUNICAZIONI_PROTOCOLLO_XML { get; set; }
         public virtual COMUNICAZIONI_PROTOCOLLO COMUNICAZIONI_PROTOCOLLO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAIL_CONTENT> MAIL_CONTENT { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAIL_INBOX> MAIL_INBOX { get; set; }
     }
 }

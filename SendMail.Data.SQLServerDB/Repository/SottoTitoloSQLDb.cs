@@ -336,7 +336,7 @@ namespace SendMail.Data.SQLServerDB.Repository
         }
 
         // TODO: eseguire l'override di un finalizzatore solo se Dispose(bool disposing) include il codice per liberare risorse non gestite.
-        // ~SottoTitoloDaoSQLDb() {
+        // ~SottoTitoloSQLDb() {
         //   // Non modificare questo codice. Inserire il codice di pulizia in Dispose(bool disposing) sopra.
         //   Dispose(false);
         // }

@@ -81,13 +81,13 @@ namespace SendMail.Data.SQLServerDB.Repository
                         {
                             foreach (FOLDERS f in folders)
                             {
-                                Guid d = new Guid();
-                                Guid.TryParse(system.ToString(), out d);
+                                //Guid d = new Guid();
+                                //Guid.TryParse(system.ToString(), out d);
                                 FOLDERS_SENDERS s = new FOLDERS_SENDERS()
                                 {
                                     IDFOLDER = f.ID,
                                     IDSENDER = idSender,
-                                    ROWID = d
+                                   // ROWID = d
                                 };
                                 dbcontext.FOLDERS_SENDERS.Add(s);
                             }
@@ -265,6 +265,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             // GC.SuppressFinalize(this);
         }
         #endregion
+
 
         #endregion
     }

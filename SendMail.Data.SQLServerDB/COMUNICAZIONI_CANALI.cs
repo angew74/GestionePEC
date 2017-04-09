@@ -23,7 +23,6 @@ namespace SendMail.Data.SQLServerDB
         public decimal ID_CANALE { get; set; }
         public string CODICE { get; set; }
         public string PREFISSO { get; set; }
-        public System.Guid ROWID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RUBR_CONTATTI_BACKEND> RUBR_CONTATTI_BACKEND { get; set; }

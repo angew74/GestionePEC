@@ -103,19 +103,27 @@
     <Reference Include="ApacheFop.Net">
       <HintPath>..\..\..\UnisysLibrary\da_prod\ApacheFop.Net.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\..\UnisysLibrary\da_prod\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp">
       <HintPath>..\..\..\UnisysLibrary\da_prod\itextsharp.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\NEWAPP\GestionePEC\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Oracle.DataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -177,17 +185,17 @@
       <Project>{cdb0c146-9a70-4dd9-b878-29bb982157ca}</Project>
       <Name>Com.Delta.Web</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SendMail.BusinessEF\SendMail.BusinessEF.csproj">
+      <Project>{3d5bfe16-2a1a-4f08-b4b8-589ceabffb57}</Project>
+      <Name>SendMail.BusinessEF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SendMail.Data.SQLServerDB\SendMail.Data.SQLServerDB.csproj">
+      <Project>{94438def-1dc1-4240-8645-822c94b41db4}</Project>
+      <Name>SendMail.Data.SQLServerDB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SendMail.Model\SendMail.Model.csproj">
       <Project>{647c1188-a0da-412b-9640-218cf6c3e99a}</Project>
       <Name>SendMail.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SendMailBusiness\SendMail.Business.csproj">
-      <Project>{adb531c5-221b-4182-8270-799af268c75a}</Project>
-      <Name>SendMail.Business</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SendMail.Data.OracleDb\SendMail.Data.OracleDb.csproj">
-      <Project>{492c4859-0e27-4f6a-8e85-ec0b479fe035}</Project>
-      <Name>SendMail.Data.OracleDb</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -23,7 +23,6 @@ namespace SendMail.Data.SQLServerDB
         public string FLG_PROT_TO_UPL { get; set; }
         public string ALLEGATO_NAME { get; set; }
         public decimal DA_LAVORARE { get; set; }
-        public System.Guid ROWID { get; set; }
     
         public virtual COMUNICAZIONI COMUNICAZIONI { get; set; }
     }

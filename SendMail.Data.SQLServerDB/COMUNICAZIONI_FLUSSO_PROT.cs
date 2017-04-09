@@ -20,7 +20,6 @@ namespace SendMail.Data.SQLServerDB
         public System.DateTime DATA_OPERAZIONE { get; set; }
         public string UTE_OPE { get; set; }
         public decimal ID_FLUSSO { get; set; }
-        public System.Guid ROWID { get; set; }
     
         public virtual COMUNICAZIONI COMUNICAZIONI { get; set; }
     }

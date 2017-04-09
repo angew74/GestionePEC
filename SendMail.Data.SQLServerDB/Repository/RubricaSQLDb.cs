@@ -251,6 +251,7 @@ namespace SendMail.Data.SQLServerDB.Repository
         }
         #endregion
 
+
         //private string PrepareQueryStatement(string[] codici)
         //{
         //    StringBuilder query = new StringBuilder();
