@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AspNet.Identity.OracleProvider.Repositories
+namespace AspNet.Identity.SQLServerProvider.Repositories
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-    using Oracle.ManagedDataAccess.Client;
     using log4net;
     using Com.Delta.Logging.Errors;
     using Com.Delta.Logging;
+    using System.Data.SqlClient;
+    using SQLServerProvider;
 
     internal class UserRepository
     {
         private static readonly ILog _log = LogManager.GetLogger("UserRepository");
-        private readonly OracleDataContext _db;
+        private readonly SQLServerDataContext _db;
 
-        public UserRepository(OracleDataContext oracleContext)
+        public UserRepository(SQLServerDataContext sqlServerContext)
         {
-            _db = oracleContext;
+            _db = sqlServerContext;
         }
 
         public int Insert(IdentityUser user)
@@ -34,11 +35,11 @@ namespace AspNet.Identity.OracleProvider.Repositories
             try
             {
                 val = _db.ExecuteNonQuery(
-                    "INSERT INTO users (id, username, passwordhash, securitystamp) VALUES (:id, :name, :passwordhash, :securitystamp)",
-                    new OracleParameter { ParameterName = ":id", Value = user.Id, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input },
-                    new OracleParameter { ParameterName = ":name", Value = user.UserName, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input },
-                    new OracleParameter { ParameterName = ":passwordhash", Value = user.PasswordHash, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input },
-                    new OracleParameter { ParameterName = ":securitystamp", Value = user.SecurityStamp, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
+                    "INSERT INTO [FAXPEC].[FAXPEC].[USERS] ([username], [passwordhash], [securitystamp]) VALUES (@name, @passwordhash, @securitystamp)",
+                  //  new SqlParameter { ParameterName = "@id", Value = user.Id, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
+                    new SqlParameter { ParameterName = "@name", Value = user.UserName, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
+                    new SqlParameter { ParameterName = "@passwordhash", Value = user.PasswordHash, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
+                    new SqlParameter { ParameterName = "@securitystamp", Value = user.SecurityStamp, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
            
             }
             catch(Exception ex)
@@ -62,18 +63,18 @@ namespace AspNet.Identity.OracleProvider.Repositories
             }
 
             return _db.ExecuteNonQuery(
-                "UPDATE users SET username = :userName, passwordhash = :passwordhash, securitystamp = :securitystamp WHERE id = :userid",
-                new OracleParameter { ParameterName = ":username", Value = user.UserName, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input },
-                new OracleParameter { ParameterName = ":passwordhash", Value = user.PasswordHash, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input },
-                new OracleParameter { ParameterName = ":securitystamp", Value = user.SecurityStamp, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input },
-                new OracleParameter { ParameterName = ":userid", Value = user.Id, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
+                "UPDATE users SET username = @userName, passwordhash = @passwordhash, securitystamp = @securitystamp WHERE id = @userid",
+                new SqlParameter { ParameterName = "@username", Value = user.UserName, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
+                new SqlParameter { ParameterName = "@passwordhash", Value = user.PasswordHash, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
+                new SqlParameter { ParameterName = "@securitystamp", Value = user.SecurityStamp, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
+                new SqlParameter { ParameterName = "@userid", Value = user.Id, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }
 
         public int Delete(string userId)
         {
             return _db.ExecuteNonQuery(
-                "DELETE FROM users WHERE id = :userid",
-                new OracleParameter { ParameterName = ":userid", Value = userId, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
+                "DELETE FROM users WHERE id = @userid",
+                new SqlParameter { ParameterName = "@userid", Value = userId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }
 
         public int Delete(IdentityUser user)
@@ -90,21 +91,21 @@ namespace AspNet.Identity.OracleProvider.Repositories
         ////{
         ////    return _db.ExecuteScalarQuery<string>(
         ////        "SELECT name FROM users WHERE id = :id",
-        ////        new OracleParameter { ParameterName = ":id", Value = userId, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
+        ////        new SqlParameter { ParameterName = ":id", Value = userId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         ////}
 
         ////public string GetUserId(string userName)
         ////{
         ////    return _db.ExecuteScalarQuery<string>(
         ////       "SELECT id FROM users WHERE username = :name",
-        ////       new OracleParameter { ParameterName = ":name", Value = userName, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
+        ////       new SqlParameter { ParameterName = ":name", Value = userName, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         ////}
 
         public IdentityUser GetUserById(string userId)
         {
             var result = _db.ExecuteQuery(
-              "SELECT * FROM users WHERE id = :id",
-              new OracleParameter { ParameterName = ":id", Value = userId, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
+              "SELECT * FROM  [FAXPEC].[FAXPEC].[users] WHERE id = @id",
+              new SqlParameter { ParameterName = "@id", Value = userId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
 
             var row = result.Rows.Cast<DataRow>().SingleOrDefault();
 
@@ -125,8 +126,8 @@ namespace AspNet.Identity.OracleProvider.Repositories
         public ICollection<IdentityUser> GetUserByName(string userName)
         {
             var result = _db.ExecuteQuery(
-                "SELECT * FROM users WHERE username = :name",
-                new OracleParameter { ParameterName = ":name", Value = userName, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
+                "SELECT * FROM  [FAXPEC].[FAXPEC].[users] WHERE username = @name",
+                new SqlParameter { ParameterName = "@name", Value = userName, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
 
             return result.Rows.Cast<DataRow>().Select(
                 r => new IdentityUser
@@ -141,17 +142,22 @@ namespace AspNet.Identity.OracleProvider.Repositories
         public string GetPasswordHash(string userId)
         {
             var passwordHash = _db.ExecuteScalarQuery<string>(
-                "SELECT passwordhash FROM users WHERE id = :id",
-                new OracleParameter { ParameterName = ":id", Value = userId, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
+                "SELECT passwordhash FROM [FAXPEC].[FAXPEC].[users] WHERE id = @id",
+                new SqlParameter { ParameterName = "@id", Value = userId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
 
             return passwordHash.HasValue() ? passwordHash : null;
         }
-        public string GetPasswordHashByUserName(string userName)
+        public string GetPasswordHashByUserName(string userName,ref int id)
         {
-            var passwordHash = _db.ExecuteScalarQuery<string>(
-                "SELECT passwordhash FROM users WHERE username = :userName",
-                new OracleParameter { ParameterName = ":userName", Value = userName, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
-
+            var passwordHash = string.Empty;
+               var result = _db.ExecuteQuery(
+                "SELECT passwordhash,id FROM [FAXPEC].[FAXPEC].[users] WHERE username = @userName",
+                new SqlParameter { ParameterName = "@userName", Value = userName, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
+            foreach (var row in result.Rows.Cast<DataRow>())
+            {
+                passwordHash = row["passwordhash"].ToString();
+                int.TryParse(row["id"].ToString(),out id);
+            }
             return passwordHash.HasValue() ? passwordHash : null;
         }
 
@@ -160,15 +166,15 @@ namespace AspNet.Identity.OracleProvider.Repositories
         ////{
         ////    return _db.ExecuteScalarQuery<int>(
         ////        "UPDATE users SET passwordhash = :passwordhash WHERE id = :id",
-        ////        new OracleParameter { ParameterName = ":passwordhash", Value = passwordHash, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input },
-        ////        new OracleParameter { ParameterName = ":id", Value = userId, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
+        ////        new SqlParameter { ParameterName = ":passwordhash", Value = passwordHash, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
+        ////        new SqlParameter { ParameterName = ":id", Value = userId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         ////}
 
         ////public string GetSecurityStamp(string userId)
         ////{
         ////    return _db.ExecuteScalarQuery<string>(
         ////        "SELECT securitystamp FROM users WHERE id = :id",
-        ////        new OracleParameter { ParameterName = ":id", Value = userId, OracleDbType = OracleDbType.Varchar2, Direction = ParameterDirection.Input });
+        ////        new SqlParameter { ParameterName = ":id", Value = userId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         ////}
     }
 }

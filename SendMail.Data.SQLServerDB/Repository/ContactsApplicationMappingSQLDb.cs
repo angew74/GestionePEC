@@ -1,7 +1,7 @@
-﻿using Com.Delta.Data.QueryModel;
-using Com.Delta.Logging;
+﻿using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
 using log4net;
+using SendMail.Business.Data.QueryModel;
 using SendMail.Data.SQLServerDB.Mapping;
 using SendMail.Model;
 using System;
@@ -9,12 +9,10 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SendMail.Data.SQLServerDB.Repository
 {
-  public class ContactsApplicationMappingSQLDb : IContactsApplicationMappingDao
+    public class ContactsApplicationMappingSQLDb : IContactsApplicationMappingDao
     {
         private static ILog _log = LogManager.GetLogger(typeof(ContactsApplicationMappingSQLDb));
         #region "Private Fields"
@@ -30,7 +28,7 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         #region IContactsApplicationMappingDao Membri di
 
-        public ICollection<ContactsApplicationMapping> GetContactsByCriteria(QueryCmp query)
+        public ICollection<ContactsApplicationMapping> GetContactsByCriteria(QueryCmpNew query)
         {
             List<ContactsApplicationMapping> listContacts = null;
             using (var dbcontext = new FAXPECContext())
@@ -297,7 +295,7 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         #region "Private methods"
 
-        private string TranslateQuery(QueryCmp q, DbCommand oCmd)
+        private string TranslateQuery(QueryCmpNew q, DbCommand oCmd)
         {
             string cmdText = String.Empty;
 

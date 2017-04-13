@@ -1,4 +1,4 @@
-﻿using AspNet.Identity.OracleProvider;
+﻿using AspNet.Identity.SQLServerProvider;
 using Com.Delta.Security;
 using GestionePEC.Extensions;
 using GestionePEC.pages.Interfaces;
@@ -24,6 +24,7 @@ namespace GestionePEC.Users
             var userStore = new UserStore();          
             var user = new IdentityUser() { UserName = UserName.Text};
             user.PasswordHash = MySecurityProvider.PlainToSHA256(Password.Text);
+            user.SecurityStamp = System.DateTime.Now.Ticks.ToString();
             string result = userStore.CreateAsync(user).Result;
             if (result== "OK")
             {

@@ -286,24 +286,21 @@ namespace SendMail.Data.SQLServerDB.Mapping
         }
         internal static ActiveUp.Net.Mail.DeltaExt.MailServer FromMailServersToModel(MAILSERVERS m)
     {
-        MailServer ms = new MailServer
-        {
-            Id = (decimal)m.ID_SVR,
-            DisplayName = m.NOME,
-            Dominus = m.DOMINUS,
-            IncomingProtocol = m.PROTOCOLLO_IN,
-            IncomingServer = m.INDIRIZZO_IN,
-            IsIncomeSecureConnection = bool.Parse(m.SSL_IN),
-            IsOutgoingSecureConnection = bool.Parse(m.SSL_OUT),
-            IsPec = Convert.ToBoolean(int.Parse(m.FLG_ISPEC)),
-            OutgoingServer = m.INDIRIZZO_OUT,
-            IsOutgoingWithAuthentication = bool.Parse(m.AUTH_OUT),
-            PortIncomingChecked = !m.PORTA_IN.Equals(110),
-            PortIncomingServer = int.Parse(m.PORTA_IN),
-            PortOutgoingChecked = !m.PORTA_OUT.Equals(25),
-            PortOutgoingServer = int.Parse(m.PORTA_OUT)
-
-        };
+            MailServer ms = new MailServer();
+            ms.Id = (decimal)m.ID_SVR;
+            ms.DisplayName = m.NOME;
+            ms.Dominus = m.DOMINUS;
+            ms.IncomingProtocol = m.PROTOCOLLO_IN;
+            ms.IncomingServer = m.INDIRIZZO_IN;
+            ms.IsIncomeSecureConnection = bool.Parse(m.SSL_IN);
+            ms.IsOutgoingSecureConnection = bool.Parse(m.SSL_OUT);
+            ms.IsPec = Convert.ToBoolean(int.Parse(m.FLG_ISPEC));
+            ms.OutgoingServer = m.INDIRIZZO_OUT;
+            ms.IsOutgoingWithAuthentication = bool.Parse(m.AUTH_OUT);
+            ms.PortIncomingChecked = !m.PORTA_IN.Equals(110);
+            ms.PortIncomingServer = int.Parse(m.PORTA_IN);
+            ms.PortOutgoingChecked = !m.PORTA_OUT.Equals(25);
+            ms.PortOutgoingServer = int.Parse(m.PORTA_OUT);      
         return ms;
     }
 

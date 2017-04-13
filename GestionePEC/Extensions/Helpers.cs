@@ -2,15 +2,14 @@
 using System.Linq;
 using System.Collections.Generic;
 using Com.Delta.Web.Cache;
-using SendMail.Locator;
 using ActiveUp.Net.Common.DeltaExt;
 using iTextSharp.text;
 using ActiveUp.Net.Mail.DeltaExt;
 using System.IO;
 using iTextSharp.text.pdf;
-using Com.Delta.Web;
 using System.Configuration;
 using SendMail.Model.Wrappers;
+using SendMail.BusinessEF.MailFacedes;
 
 namespace GestionePEC.Extensions
 {
@@ -256,11 +255,12 @@ namespace GestionePEC.Extensions
         public static string GetTipo(string folderid)
         {
             string tipo = string.Empty;
+            MailLocalService mailLocalService = new MailLocalService();
             string azione = string.Empty;
             List<Folder> getFolders = CacheManager<List<Folder>>.get(CacheKeys.FOLDERS, VincoloType.NONE);
             if (getFolders == null)
             {
-                getFolders = ServiceLocator.GetServiceFactory().MailLocalService.getAllFolders();
+                getFolders = mailLocalService.getAllFolders();
             }
             int id = 0;
             int.TryParse(folderid, out id);
@@ -279,7 +279,8 @@ namespace GestionePEC.Extensions
         public static string GetAzione(string ActionId)
         {
             string azione = string.Empty;
-            List<ActiveUp.Net.Common.DeltaExt.Action> getActions = ServiceLocator.GetServiceFactory().MailLocalService.GetFolderDestinationForAction();
+            MailLocalService localService = new MailLocalService();
+            List<ActiveUp.Net.Common.DeltaExt.Action> getActions = localService.GetFolderDestinationForAction();
             int id = 0;
             int.TryParse(ActionId, out id);
             var t = (from a in getActions

@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Routing;
 using System.Web.Security;
-using System.Web.SessionState;
 using System.Web.Http;
 using Com.Delta.Web.Cache;
-using SendMail.Locator;
 using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
 using GestionePEC.Routing;
 using log4net;
 using Com.Delta.Security;
+using SendMail.BusinessEF.MailFacedes;
 
 namespace GestionePEC
 {
@@ -25,12 +23,11 @@ namespace GestionePEC
             // Codice eseguito all'avvio dell'applicazione
             GlobalConfiguration.Configure(WebApiConfig.Register);
             //inizializza log4net
-            log4net.Config.XmlConfigurator.Configure();
-            //inizializza il singleton dei service
-            SendMail.Locator.ServiceLocator.GetServiceFactory();
+            log4net.Config.XmlConfigurator.Configure();    
             //inizializza il routing
-            RegisterRoutes(RouteTable.Routes);           
-            CacheManager<List<ActiveUp.Net.Common.DeltaExt.Action>>.set(CacheKeys.FOLDERS_ACTIONS, ServiceLocator.GetServiceFactory().MailLocalService.GetFolderDestinationForAction());
+            RegisterRoutes(RouteTable.Routes);
+            MailLocalService mailLocalService = new MailLocalService();
+            CacheManager<List<ActiveUp.Net.Common.DeltaExt.Action>>.set(CacheKeys.FOLDERS_ACTIONS, mailLocalService.GetFolderDestinationForAction());
             // per test crabmail
             //HelperTestCrabMail.SetInCache();
         }
@@ -40,8 +37,7 @@ namespace GestionePEC
             Exception ex = null;
             if (Server.GetLastError() != null)
                 ex = Server.GetLastError();
-
-            //Allineamento log - Ciro
+                     
             if (ex != null)
             {
                 if (ex.GetType() != typeof(ManagedException))
@@ -65,7 +61,7 @@ namespace GestionePEC
             var virtualPath = RouteTable.Routes.GetVirtualPath(new RequestContext(contextWrapper, new RouteData()),
                 "ErrorPage", null);
             if (!Response.IsRequestBeingRedirected)
-            { Response.Redirect("~/pages/common/ErrorPage.aspx"); }
+            { Response.Redirect("~/pages/pubblica/ErrorPage.aspx"); }
             Context.Response.End();
         }
 
@@ -190,7 +186,7 @@ namespace GestionePEC
             );
             routes.Add("ErrorPage",
                 new Route("error",
-                    new WebFormRouteHandler("~/pages/common/ErrorPage.aspx")
+                    new WebFormRouteHandler("~/pages/pubblica/ErrorPage.aspx")
                 )
             );
             routes.Add("MaintenancePage",

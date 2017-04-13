@@ -40,7 +40,6 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oracle.DataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=AMD64" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -58,9 +57,7 @@
     <Compile Include="ConversionUtils.cs" />
     <Compile Include="Errors\ErrorLog.cs" />
     <Compile Include="Errors\ErrorLogInfo.cs" />
-    <Compile Include="log4netExtensions\Appender\AsyncOracleAppender.cs" />
     <Compile Include="log4netExtensions\Appender\AsyncSQLServerAppender.cs" />
-    <Compile Include="log4netExtensions\Appender\OracleAppender.cs" />
     <Compile Include="log4netExtensions\Appender\SQLServerAppender.cs" />
     <Compile Include="log4netExtensions\CustomLayout.cs" />
     <Compile Include="log4netExtensions\ErrorPatternConverters.cs" />

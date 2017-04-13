@@ -5,9 +5,9 @@ using System.Linq;
 using SendMail.BusinessEF.Base;
 using SendMail.BusinessEF.Contracts;
 using SendMail.Model;
-using Com.Delta.Data.QueryModel;
 using System.Reflection;
 using SendMail.Data.SQLServerDB.Repository;
+using SendMail.Business.Data.QueryModel;
 
 namespace SendMail.BusinessEF
 {
@@ -67,9 +67,9 @@ namespace SendMail.BusinessEF
         #endregion
 
         #region Private methods
-        private QueryCmp BuildQueryByData(ContactsApplicationMapping contact)
+        private QueryCmpNew BuildQueryByData(ContactsApplicationMapping contact)
         {
-            QueryCmp q = new QueryCmp();
+            QueryCmpNew q = new QueryCmpNew();
             //prendo tutte le properties mappate su database
             IEnumerable<PropertyInfo> pi = contact.GetType()
                 .GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public)

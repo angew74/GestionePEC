@@ -1,4 +1,4 @@
-﻿using AspNet.Identity.OracleProvider;
+﻿using AspNet.Identity.SQLServerProvider;
 using Com.Delta.Security.Interfaces;
 using System;
 using System.Collections.Generic;

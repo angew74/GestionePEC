@@ -1,13 +1,11 @@
 ﻿using GestionePEC.Controls;
 using GestionePEC.Extensions;
-using SendMail.Locator;
+using SendMail.BusinessEF;
 using SendMail.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace GestionePEC.pages.Rubrica
@@ -24,7 +22,7 @@ namespace GestionePEC.pages.Rubrica
         public ICollection<BackEndRefCode> idA = null;
         public BackEndRefCode entity = null;
         public SendMail.Model.BackEndRefCode t = null;
-        public SendMail.Business.Contracts.IBackEndDictionaryService s = null;
+        public SendMail.BusinessEF.BackEndDictionaryService s = null;
         public BackEndRefCode sF = null;
         public List<BackEndRefCode> bk = new List<BackEndRefCode>();
         public string descBeck;
@@ -68,7 +66,7 @@ namespace GestionePEC.pages.Rubrica
         //funzione per visualizzare i dati dell'ente ricercato
         private void GetGridResult()
         {
-
+            BackEndDictionaryService s = new BackEndDictionaryService();
             if ((codiceback.Text.Length == 0) && (descrizioneback.Text.Length == 0))
             {
                 this.info.AddMessage("Attenzione: Immettere Codice Backend o la Descrizione", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
@@ -93,14 +91,9 @@ namespace GestionePEC.pages.Rubrica
 
             if (codiceback.Text.Length > 0)
             {
-
                 AccessoView.Visible = false;
                 //  Session["Accessopag"] = null; 
-
-                s = ServiceLocator.GetServiceFactory().BackEndDictionaryService;
-
                 codeBk = new List<BackEndRefCode>();
-
                 appoggio = s.GetByCode(codiceback.Text);
                 if (appoggio == null)
                 {
@@ -110,11 +103,9 @@ namespace GestionePEC.pages.Rubrica
                     AccessoView.Visible = false;
                     return;
                 }
-
                 codeBk.Add(appoggio);
                 griBackend.Visible = true;
                 griBackend.DataSource = codeBk;
-
                 Session["Accesso"] = codeBk;
                 griBackend.DataBind();
                 griBackend.Visible = true;
@@ -127,10 +118,7 @@ namespace GestionePEC.pages.Rubrica
             if (descrizioneback.Text.Length > 0)
             {
                 AccessoView.Visible = false;
-
-                s = ServiceLocator.GetServiceFactory().BackEndDictionaryService;
                 listadescr = s.GetByDescr(descrizioneback.Text);
-
                 if (listadescr == null)
                 {
                     this.info.AddMessage("Attenzione: Descrizione non presente", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
@@ -141,19 +129,13 @@ namespace GestionePEC.pages.Rubrica
                 }
 
                 griBackend.DataSource = listadescr;
-
                 Session["Accesso"] = listadescr;
-
                 griBackend.DataBind();
                 griBackend.Visible = true;
-
                 OnAccessoPagerIndexChanged("", 0);
-
                 if (listadescr.Count <= PagerSize)
                     griBackend.BottomPagerRow.Visible = false;
-
                 //  Session["Accessopag"] = null;
-
             }
             else if (codiceback.Text.Length == 0)
             {
@@ -243,9 +225,8 @@ namespace GestionePEC.pages.Rubrica
             }
             else
             {
-
-                s = ServiceLocator.GetServiceFactory().BackEndDictionaryService;
-                listadescr = s.GetByDescr(descrizioneback.Text);
+                BackEndDictionaryService bes = new BackEndDictionaryService();              
+                listadescr = bes.GetByDescr(descrizioneback.Text);
 
                 if (listadescr == null)
                 {
@@ -270,13 +251,13 @@ namespace GestionePEC.pages.Rubrica
             if (e.CommandName.Equals("Insert"))
             {
                 BackEndRefCode entity = new BackEndRefCode();
+                BackEndDictionaryService s = new BackEndDictionaryService();
                 try
                 {                   
 
                     if ((((TextBox)AccessoView.FindControl("TextCode")).Text != null) && (((TextBox)AccessoView.FindControl("TextCode")).Text != ""))
                     {
-
-                        s = ServiceLocator.GetServiceFactory().BackEndDictionaryService;
+                     
                         codInser = s.GetByCode(((TextBox)AccessoView.FindControl("TextCode")).Text);
                         if (codInser != null)
                         {
@@ -316,18 +297,12 @@ namespace GestionePEC.pages.Rubrica
                 try
                 {
 
-                    ServiceLocator.GetServiceFactory().BackEndDictionaryService.Insert(entity);
-
+                    s.Insert(entity);
                     if (descrizioneback.Text.Length > 0)
-                    {
-                        s = ServiceLocator.GetServiceFactory().BackEndDictionaryService;
+                    {                       
                         listadescr = s.GetByDescr(descrizioneback.Text);
-
                         if (listadescr != null)
                         {
-
-                            //griBackend.DataSource = listadescr;
-
                             Session["Accesso"] = listadescr;
                             if (listadescr.Count > 0)
                             {
@@ -381,8 +356,7 @@ namespace GestionePEC.pages.Rubrica
 
                             //((TextBox)AccessoView.FindControl("TextCode")); 
                             if ((((TextBox)AccessoView.FindControl("TextCode")).Text != null) && (((TextBox)AccessoView.FindControl("TextCode")).Text != ""))
-                            {
-                                s = ServiceLocator.GetServiceFactory().BackEndDictionaryService;
+                            {                               
                                 codInser = s.GetByCode(((TextBox)AccessoView.FindControl("TextCode")).Text);
                                 if ((codInser != null) && (entity.Id != codInser.Id))
                                 {
@@ -423,20 +397,12 @@ namespace GestionePEC.pages.Rubrica
                         try
                         {
                             //metodo per l'update
-                            ServiceLocator.GetServiceFactory().BackEndDictionaryService.Delete(idCnt);
-                            // List<BackEndRefCode> bkEnt = (List<BackEndRefCode>)Session["Accesso"];
-                            // int index = bkEnt.IndexOf(bkEnt.First(x => x.Id != idCnt));
-                            // OnAccessoPagerIndexChanged("", index / PagerSize);
+                            s.Delete(idCnt);                          
                             if (descrizioneback.Text.Length > 0)
-                            {
-                                s = ServiceLocator.GetServiceFactory().BackEndDictionaryService;
+                            {                               
                                 listadescr = s.GetByDescr(descrizioneback.Text);
-
                                 if (listadescr != null)
                                 {
-
-                                    //griBackend.DataSource = listadescr;
-
                                     Session["Accesso"] = listadescr;
                                     OnAccessoPagerIndexChanged("", 0);
                                     if (listadescr.Count <= PagerSize)
@@ -448,9 +414,6 @@ namespace GestionePEC.pages.Rubrica
                                 griBackend.Visible = false;
                                 pnlGrid.Visible = false;
                             }
-
-                            // if (bkEnt.Count <= PagerSize)
-                            //     griBackend.BottomPagerRow.Visible = false;
                         }
                         catch (Exception)
                         {
@@ -478,7 +441,7 @@ namespace GestionePEC.pages.Rubrica
                     try
                     {
                         //metodo per l'update
-                        ServiceLocator.GetServiceFactory().BackEndDictionaryService.Update(entity);
+                        s.Update(entity);
                     }
                     catch (Exception)
                     {

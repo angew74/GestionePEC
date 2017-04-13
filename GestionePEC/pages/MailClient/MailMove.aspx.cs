@@ -4,14 +4,9 @@ using ActiveUp.Net.Mail.DeltaExt;
 using Com.Delta.Mail.MailMessage;
 using GestionePEC.Controls;
 using GestionePEC.Extensions;
-using SendMail.Locator;
+using SendMail.BusinessEF.MailFacedes;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using static GestionePEC.Controls.RicercaMail;
 
 namespace GestionePEC.pages.MailClient
@@ -34,9 +29,9 @@ namespace GestionePEC.pages.MailClient
             {
                 if (!(WebMailClientManager.CurrentMailExist() && e.UId.Trim() == WebMailClientManager.CurrentMailGet().Uid))
                 {
-
-                    MailUser account = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetUserByUserId(decimal.Parse(e.CurrentAccount));
-                    ServiceLocator.GetServiceFactory().getMailServerFacade(account);
+                    MailServerConfigFacade configFacade = MailServerConfigFacade.GetInstance();
+                    MailUser account = configFacade.GetUserByUserId(decimal.Parse(e.CurrentAccount));
+                     MailServerFacade facade = MailServerFacade.GetInstance(account);
                     account.Validated = true;
                     WebMailClientManager.SetAccount(account);
                     int idim = 0;

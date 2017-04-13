@@ -1,7 +1,4 @@
-﻿using FaxPec.Model;
-using SendMail.Business;
-using SendMail.Business.Contracts;
-using SendMail.Locator;
+﻿using SendMail.BusinessEF;
 using SendMail.Model;
 using SendMail.Model.ContactApplicationMapping;
 using System;
@@ -172,7 +169,7 @@ namespace GestionePEC.api
     public class EntiMappingController : ApiController
     {
 
-        IContactsBackendService s = ServiceLocator.GetServiceFactory().ContactsBackendService;
+        ContactsBackendService s = new ContactsBackendService();
 
        
 
@@ -256,7 +253,7 @@ namespace GestionePEC.api
             if (start == 0) start++;
             if (!long.TryParse(idEntita, out idEnt))
                 return null;
-            IContattoService cs = ServiceLocator.GetServiceFactory().ContattoService;
+            ContattoService cs = new ContattoService();
             var cont = cs.GetContattiByIdEntita(idEnt, true, true, false, false);
             contatto = new Response<Contatto>
             {
@@ -282,8 +279,8 @@ namespace GestionePEC.api
         public HttpResponseMessage GetAllTitoli()
         {
             List<Titolo> risp = new List<Titolo>();
-            ITitolarioService<SendMail.Model.Titolo> ts = ServiceLocator.GetServiceFactory().TitolarioService<SendMail.Model.Titolo>();
-            IList<SendMail.Model.Titolo> titoli = ts.GetAll(null);
+            TitolarioService<SendMail.Model.Titolo> titoloservice = new TitolarioService<SendMail.Model.Titolo>();         
+            IList<SendMail.Model.Titolo> titoli = titoloservice.GetAll(null);
             risp = null;
             if (titoli != null)
             {

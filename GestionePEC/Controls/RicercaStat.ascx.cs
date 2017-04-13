@@ -2,14 +2,14 @@
 using Com.Delta.Security;
 using Com.Delta.Web.Session;
 using GestionePEC.Extensions;
-using SendMail.Locator;
+using SendMail.BusinessEF;
+using SendMail.BusinessEF.MailFacedes;
 using SendMail.Model;
 using SendMail.Model.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -50,7 +50,8 @@ namespace GestionePEC.Controls
         {
             string account = ddlManagedAccounts.SelectedItem.Text;
             string utente = ddlUtente.SelectedItem.Text;
-            List<UserResultItem> list = ServiceLocator.GetServiceFactory().BackendUserService.GetStatsInBox(account, utente, dtInizio.DateString(), dtFine.DateString());
+            BackendUserService bus = new BackendUserService();
+            List<UserResultItem> list = bus.GetStatsInBox(account, utente, dtInizio.DateString(), dtFine.DateString());
             DataTable xlWorkSheet = Helpers.StampaStatisticaExcel(list, account, dtInizio.DateString(), dtFine.DateString());
             Response.ClearContent();
             Response.Buffer = true;
@@ -86,13 +87,14 @@ namespace GestionePEC.Controls
             try
             {
                 string account = ddlManagedAccounts.SelectedItem.Text;
+                BackendUserService bus = new BackendUserService();
                 string utente = ddlUtente.SelectedItem.Text;
-                List<UserResultItem> list = ServiceLocator.GetServiceFactory().BackendUserService.GetStatsInBox(account, utente, dtInizio.DateString(), dtFine.DateString());
+                List<UserResultItem> list = bus.GetStatsInBox(account, utente, dtInizio.DateString(), dtFine.DateString());
                 gridStat.DataSource = list;
                 gridStat.DataBind();
                 btnStampaStatistica.Visible = true;
                 PanelTotale.Visible = true;
-                string tot = ServiceLocator.GetServiceFactory().BackendUserService.GetTotalePeriodoAccount(account, dtInizio.DateString(), dtFine.DateString());
+                string tot = bus.GetTotalePeriodoAccount(account, dtInizio.DateString(), dtFine.DateString());
                 totPeriodo.Text = "Totale email ricevute nel periodo per casella : " + tot;
 
             }
@@ -113,7 +115,8 @@ namespace GestionePEC.Controls
             List<MailUser> l = SessionManager<List<MailUser>>.get(SessionKeys.ACCOUNTS_LIST);
             if (!(l != null && l.Count != 0))
             {
-                l = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetManagedAccountByUser(username).ToList();
+                MailServerConfigFacade serverFacade = MailServerConfigFacade.GetInstance();
+                l = serverFacade.GetManagedAccountByUser(username).ToList();
                 if (l == null) l = new List<MailUser>();
                 if (l.Where(x => x.UserId.Equals(-1)).Count() == 0)
                     l.Insert(0, new MailUser() { UserId = -1, EmailAddress = "" });
@@ -161,8 +164,8 @@ namespace GestionePEC.Controls
         {
             if (ddlManagedAccounts.SelectedValue != null && ddlManagedAccounts.SelectedValue != string.Empty && ddlManagedAccounts.SelectedValue != "-1")
             {
-
-                List<BackendUser> listaDipendentiAbilitati = ServiceLocator.GetServiceFactory().BackendUserService.GetDipendentiDipartimentoAbilitati(decimal.Parse(ddlManagedAccounts.SelectedValue));
+                BackendUserService bus = new BackendUserService();
+                List<BackendUser> listaDipendentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(decimal.Parse(ddlManagedAccounts.SelectedValue));
                 if (listaDipendentiAbilitati != null)
                 {
                     ddlUtente.DataValueField = "UserId";
@@ -180,127 +183,7 @@ namespace GestionePEC.Controls
         }
 
         #endregion
-
-        #region Script
-
-        //private string GetCreateTabsScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append("Ext.onReady(function(){");
-        //    sb.Append("var ResearchTabs = new Ext.TabPanel({");
-        //    sb.Append(string.Format("renderTo: '{0}',", pnlTabContainer.ClientID));
-        //    sb.Append(string.Format("activeTab: {0},", hdTabIndex.Value.ToString()));
-        //    sb.Append("plain:true,");
-        //    sb.Append("defaults:{autoHeight: true, autoWidth: true, autoScroll: true},");
-        //    sb.Append("items:[");
-        //    sb.Append("{contentEl:'" + pnlStatistica.ClientID + "', title: 'Statistica Lavorazioni', listeners: {activate: RIAhandleActivate}}");
-        //    sb.Append("],");
-        //    sb.Append("listeners: {'tabchange': RIAactiveTabChanged}");
-        //    sb.Append("});");
-        //    sb.Append("ResearchTabs.render();");
-        //    sb.Append("});");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetActivateTabScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append("function RIAhandleActivate(tab)");
-        //    sb.Append("{");
-        //    sb.Append(" var pnl = document.getElementById(tab.contentEl);");
-        //    sb.Append(" if (pnl != null)");
-        //    sb.Append(" {");
-        //    sb.Append("     pnl.style.display = 'block';");
-        //    sb.Append(" }");
-        //    sb.Append("}");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetActivateTabChangedScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append("function RIAactiveTabChanged(tab, tabPanel)");
-        //    sb.Append("{");
-        //    /*[LBONI]: 
-        //     * azzera il riferimento al controllo non valido sul quale settare il focus
-        //     * in quanto l'utente si è spostato di tab.
-        //     * evita la comparsa di un errore js per control.focus() 
-        //     * su di un controllo non accessibile.
-        //    */
-        //    sb.Append(" Page_InvalidControlToBeFocused = null;");
-        //    sb.Append(" var index = 0;");
-        //    sb.Append(" switch (tabPanel.title)");
-        //    sb.Append(" {");
-        //    sb.Append("     case 'Statistica Lavorazioni':");
-        //    sb.Append("         RIAValidationGroup = 'vgTabStatistica';");
-        //    sb.Append("         index = 0;");
-        //    sb.Append("         break;");
-        //    sb.Append(" }");
-        //    sb.Append(" var tabIndex = document.getElementById(hdTabIndexID);");
-        //    sb.Append(" if (tabIndex != null)");
-        //    sb.Append("     tabIndex.value = index;");
-        //    sb.Append("}");
-
-        //    return sb.ToString();
-        //}
-
-        //private string GetCurrentValidationGroup()
-        //{
-        //    string sResult = "vgTabStatistica";
-        //    int i = 0;
-        //    int.TryParse(hdTabIndex.Value.ToString(), out i);
-        //    switch (i)
-        //    {
-        //        case 0:
-        //            sResult = "vgTabStatistica";
-        //            break;
-        //    }
-
-        //    return sResult;
-        //}
-
-        //private string GetValidatePageScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    //sb.Append("var RIAValidationGroup = 'vgTabCodiceIndiv';");
-        //    sb.Append(string.Format("var RIAValidationGroup = '{0}';", GetCurrentValidationGroup()));
-
-        //    sb.Append("function RIAValidatePage(sender, event)");
-        //    sb.Append("{");
-        //    sb.Append(" var fResult = false;");
-        //    sb.Append(" if (RIAValidationGroup != '')");
-        //    sb.Append(" {");
-        //    sb.Append("     Page_ClientValidate(RIAValidationGroup);");
-        //    sb.Append("     fResult = Page_IsValid;");
-        //    sb.Append("     if (!fResult)");
-        //    sb.Append("         Page_BlockSubmit = false;");
-        //    sb.Append(" }");
-        //    sb.Append(" return fResult;");
-        //    sb.Append("}");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetTabIndexIDScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append(string.Format("var hdTabIndexID ='{0}';", hdTabIndex.ClientID));
-
-        //    return sb.ToString();
-        //}
-
-
-        #endregion
+            
 
     }
 }

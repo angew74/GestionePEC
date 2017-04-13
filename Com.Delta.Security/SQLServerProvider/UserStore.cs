@@ -4,12 +4,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using AspNet.Identity.OracleProvider.Repositories;
+using AspNet.Identity.SQLServerProvider.Repositories;
 using log4net;
 using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
+using AspNet.Identity.SQLServerProvider;
 
-namespace AspNet.Identity.OracleProvider
+namespace AspNet.Identity.SQLServerProvider
 {
    
 
@@ -29,11 +30,11 @@ namespace AspNet.Identity.OracleProvider
         private readonly UserRolesRepository _userRolesRepository;
 
         public UserStore()
-            : this(new OracleDataContext())
+            : this(new SQLServerDataContext())
         {
         }
 
-        public UserStore(OracleDataContext database)
+        public UserStore(SQLServerDataContext database)
         {
             // TODO: Compare with EntityFramework provider.
             Database = database;
@@ -45,7 +46,7 @@ namespace AspNet.Identity.OracleProvider
             _userLoginsRepository = new UserLoginsRepository(database);
         }
 
-        public OracleDataContext Database { get; private set; }
+        public SQLServerDataContext Database { get; private set; }
 
         public Task<string> CreateAsync(IdentityUser user)
         {
@@ -325,14 +326,14 @@ namespace AspNet.Identity.OracleProvider
             return Task.FromResult(passwordHash);
         }
 
-        public Task<string> GetPasswordHashAsync(string UserName)
+        public Task<string> GetPasswordHashAsync(string UserName,ref int id)
         {
             if (UserName == null)
             {
                 throw new ArgumentNullException("user");
             }
 
-            var passwordHash = _userRepository.GetPasswordHashByUserName(UserName);
+            var passwordHash = _userRepository.GetPasswordHashByUserName(UserName,ref id);
 
             return Task.FromResult(passwordHash);
         }

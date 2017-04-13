@@ -10,7 +10,8 @@ using GestionePEC.Extensions;
 using HtmlAgilityPack;
 using iTextSharp.text;
 using log4net;
-using SendMail.Locator;
+using SendMail.BusinessEF;
+using SendMail.BusinessEF.MailFacedes;
 using SendMail.Model.ComunicazioniMapping;
 using System;
 using System.Collections;
@@ -19,7 +20,6 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
@@ -166,8 +166,7 @@ namespace GestionePEC.Controls
                 if (!String.IsNullOrEmpty(currRating))
                     this.rating.Style[HtmlTextWriterStyle.Width] = (int.Parse(currRating) * 20) + "px";
                 SetHeaderButtonsVisibility(folder, parentFolder);
-
-                IMailServerFacade f = ServiceLocator.GetServiceFactory().getMailServerFacade(mailUser);
+                MailServerFacade f = MailServerFacade.GetInstance(mailUser);              
                 switch (parentFolder)
                 {
                     case "I":
@@ -195,6 +194,7 @@ namespace GestionePEC.Controls
         public void Initialize()
         {
             System.Tuples.Tuple<Message, string, int, string> tuple;
+            MailLocalService mailLocalService = new MailLocalService();
             string idMail = hfIdMail.Value;
             if (WebMailClientManager.AccountIsValid() == false)
             {
@@ -213,7 +213,7 @@ namespace GestionePEC.Controls
                     return;
                 }
 
-                tuple = ServiceLocator.GetServiceFactory().MailLocalService.GetMessageById(id.ToString());
+                tuple = mailLocalService.GetMessageById(id.ToString());
                 this.Visible = (tuple != null && tuple.Element1 != null);
                 if (tuple == null || tuple.Element1 == null)
                 {
@@ -427,7 +427,7 @@ namespace GestionePEC.Controls
         protected void lbDownload_Click(object sender, EventArgs e)
         {
             //  Message message = WebMailClientManager.CurrentMailGet();
-            IMailServerFacade facade = ServiceLocator.GetServiceFactory().getMailServerFacade(WebMailClientManager.getAccount());
+            MailServerFacade facade = MailServerFacade.GetInstance(WebMailClientManager.getAccount());           
             Message message = facade.getMessage(hfUIDMail.Value, false);
             if (message == null)
             {
@@ -452,6 +452,7 @@ namespace GestionePEC.Controls
         protected void Repeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             MimePart attach = e.Item.DataItem as MimePart;
+            ComunicazioniService comService = new ComunicazioniService();
             if (attach.BinaryContent == null || attach.BinaryContent.Length == 0 && !String.IsNullOrEmpty(attach.Filename))
             {
                 if (attach.ContentId != null)
@@ -460,7 +461,7 @@ namespace GestionePEC.Controls
                     long idAtt = -1;
                     if (long.TryParse(idAttach, out idAtt))
                     {
-                        ComAllegato all = ServiceLocator.GetServiceFactory().ComunicazioniService
+                        ComAllegato all = comService
                                     .LoadAllegatoComunicazioneById(long.Parse(idAttach));
                         attach.BinaryContent = all.AllegatoFile;
                     }
@@ -471,6 +472,7 @@ namespace GestionePEC.Controls
         protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             string fileName = (string)e.CommandArgument;
+            ComunicazioniService comService = new ComunicazioniService();
             Response.Clear();
             Message msg = WebMailClientManager.CurrentMailGet();
             for (int i = 0; i < msg.Attachments.Count; i++)
@@ -498,12 +500,12 @@ namespace GestionePEC.Controls
                     else
                     {
                         string idAttach = msg.Attachments[i].ContentId.Trim(new char[] { '<', '>' });
-                        ComAllegato all = ServiceLocator.GetServiceFactory().ComunicazioniService
+                        ComAllegato all = comService
                             .LoadAllegatoComunicazioneById(long.Parse(idAttach));
 
                         if (all.AllegatoExt.Equals("TPU", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            byte[] pdf = global::SendMail.Locator.ServiceLocator.GetServiceFactory().ComunicazioniService
+                            byte[] pdf = comService
                                 .GetPdfTpuStampeBUS(all.AllegatoTpu, all.AllegatoFile, "");
                             if (Response.IsClientConnected)
                                 Response.BinaryWrite(pdf);
@@ -1031,12 +1033,7 @@ namespace GestionePEC.Controls
                         ErrorLogInfo er = new ErrorLogInfo(mEx);
                         _log.Error(er);
                     }
-
-                    //ErrorLogInfo error = new ErrorLogInfo();
-                    //error.freeTextDetails = " Errore nel caricamento dell'email : " + ex.Message + " + " + ex.InnerException;
-                    //error.logCode = "ERR977";
-                    //error.loggingAppCode = "CRAB";
-                    //_log.Error(error);
+                 
                     (this.Page as BasePage).info.AddMessage("Impossibile elaborare la email riprovare in un secondo momento", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                     return;
                 }

@@ -9,7 +9,7 @@ using SendMail.Data.SQLServerDB.Repository;
 
 namespace SendMail.BusinessEF
 {
-    class BackendUserService : BaseSingletonService<BackendUserService>, IBackendUserService
+   public class BackendUserService : BaseSingletonService<BackendUserService>, IBackendUserService
     {
         public BackendUser GetByUserName(String UserName)
         {

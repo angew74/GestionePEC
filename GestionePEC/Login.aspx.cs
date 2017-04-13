@@ -1,4 +1,4 @@
-﻿using AspNet.Identity.OracleProvider;
+﻿using AspNet.Identity.SQLServerProvider;
 using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
 using Com.Delta.Logging.Mail;

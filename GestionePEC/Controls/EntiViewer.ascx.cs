@@ -1,14 +1,12 @@
 ﻿using Com.Delta.Web;
 using GestionePEC.Extensions;
-using SendMail.Business.Contracts;
-using SendMail.Locator;
+using SendMail.BusinessEF;
 using SendMail.Model;
 using SendMail.Model.RubricaMapping;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -101,7 +99,7 @@ namespace GestionePEC.Controls
 
             if (EntFormViewDataSource.RefOrg.HasValue)
             {
-                IRubricaEntitaService S = ServiceLocator.GetServiceFactory().RubricaEntitaService;
+                RubricaEntitaService S = new RubricaEntitaService();
                 RubricaEntita DataOrg = S.GetRubricaEntitaCompleteById(EntFormViewDataSource.RefOrg.Value);
                 OrgDen = DataOrg.RagioneSociale;
             }
@@ -295,8 +293,9 @@ namespace GestionePEC.Controls
         {
             RubricaEntita rubEnt = e.InputParameters[0] as RubricaEntita;
             //metodo per l'update
-            ServiceLocator.GetServiceFactory().RubricaEntitaService.Update(rubEnt);
-            EntFormViewDataSource = ServiceLocator.GetServiceFactory().RubricaEntitaService.GetRubricaEntitaCompleteById(rubEnt.IdReferral.Value);
+            RubricaEntitaService s = new RubricaEntitaService();
+            s.Update(rubEnt);
+            EntFormViewDataSource = s.GetRubricaEntitaCompleteById(rubEnt.IdReferral.Value);
             ((BasePage)this.Page).info.AddMessage("Ente modificato", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);
         }
 
@@ -329,6 +328,7 @@ namespace GestionePEC.Controls
         {
             RubricaEntita rubEnt = Session["EntSession"] as RubricaEntita;
             RubricaContatti contact = new RubricaContatti();
+            RubricaEntitaService rubrService = new RubricaEntitaService();
 
 
             #region "Gestione Inseret/update contatto"
@@ -413,7 +413,8 @@ namespace GestionePEC.Controls
                     try
                     {
                         //metodo per l'update
-                        ServiceLocator.GetServiceFactory().ContattoService.UpdateRubrContatti(contact, false);
+                        ContattoService contattoService = new ContattoService();
+                        contattoService.UpdateRubrContatti(contact, false);
                     }
                     catch (Exception)
                     {
@@ -427,7 +428,8 @@ namespace GestionePEC.Controls
                     try
                     {
                         //metodo per l'insert
-                        ServiceLocator.GetServiceFactory().ContattoService.InsertRubrContatti(contact, false);
+                        ContattoService contattoService = new ContattoService();
+                        contattoService.InsertRubrContatti(contact, false);
                     }
                     catch (Exception)
                     {
@@ -447,8 +449,7 @@ namespace GestionePEC.Controls
 
             if ((e.CommandName.Equals("Insert") && hidInsertType.Value.Equals("Insert_u")))
             {
-                RubricaEntita newEnt = new RubricaEntita();
-
+                RubricaEntita newEnt = new RubricaEntita();               
                 newEnt.Ufficio = ((TextBox)ContactsFormView.FindControl("TextUfficio")).Text;
                 newEnt.IdPadre = rubEnt.IdReferral;
                 newEnt.RefOrg = (rubEnt.RefOrg == null ? rubEnt.IdReferral : rubEnt.RefOrg);
@@ -458,8 +459,8 @@ namespace GestionePEC.Controls
                     newEnt.ReferralType = EntitaType.AZ_UFF;
                 try
                 {
-                    //metodo per l'insert
-                    ServiceLocator.GetServiceFactory().RubricaEntitaService.Insert(newEnt);
+                    //metodo per l'insert                   
+                    rubrService.Insert(newEnt);
                 }
                 catch (Exception e0)
                 {
@@ -483,7 +484,7 @@ namespace GestionePEC.Controls
                 try
                 {
                     //metodo per l'insert
-                    ServiceLocator.GetServiceFactory().RubricaEntitaService.Insert(newEnt);
+                   rubrService.Insert(newEnt);
                 }
                 catch (Exception e1)
                 {
@@ -498,7 +499,7 @@ namespace GestionePEC.Controls
             #endregion
             hfCurrentID = contact.IdContact ?? -1;
             long idEntita = long.Parse((EntFormView.FindControl("hfIdEntita") as HiddenField).Value);
-            EntFormViewDataSource = ServiceLocator.GetServiceFactory().RubricaEntitaService.GetRubricaEntitaCompleteById(idEntita);
+            EntFormViewDataSource = rubrService.GetRubricaEntitaCompleteById(idEntita);
             rubEnt = EntFormViewDataSource;
             switch (rubEnt.Contatti.Count)
             {

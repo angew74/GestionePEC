@@ -3,14 +3,13 @@ using ActiveUp.Net.Mail.DeltaExt;
 using Com.Delta.Security;
 using Com.Delta.Web.Session;
 using GestionePEC.Extensions;
-using SendMail.Locator;
+using SendMail.BusinessEF;
+using SendMail.BusinessEF.MailFacedes;
 using SendMail.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Routing;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using static GestionePEC.Controls.RicercaMail;
 
@@ -96,9 +95,11 @@ namespace GestionePEC.Controls
         {
             string username = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
             List<MailUser> l = SessionManager<List<MailUser>>.get(SessionKeys.ACCOUNTS_LIST);
+            MailServerConfigFacade mscf = MailServerConfigFacade.GetInstance();
             if (!(l != null && l.Count != 0))
             {
-                l = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetManagedAccountByUser(username).ToList();
+
+                l = mscf.GetManagedAccountByUser(username).ToList();
                 if (l == null) l = new List<MailUser>();
                 if (l.Where(x => x.UserId.Equals(-1)).Count() == 0)
                     l.Insert(0, new MailUser() { UserId = -1, EmailAddress = "" });
@@ -162,6 +163,7 @@ namespace GestionePEC.Controls
 
         private void UtentiAccess()
         {
+            BackendUserService buservice = new BackendUserService();
             if (ddlManagedAccounts.SelectedValue != null && ddlManagedAccounts.SelectedValue != string.Empty && ddlManagedAccounts.SelectedValue != "-1")
             {
                 List<BackendUser> listaDipendentiAbilitati = null;
@@ -171,7 +173,7 @@ namespace GestionePEC.Controls
                 }
                 else
                 {
-                    listaDipendentiAbilitati = ServiceLocator.GetServiceFactory().BackendUserService.GetDipendentiDipartimentoAbilitati(decimal.Parse(ddlManagedAccounts.SelectedValue));
+                    listaDipendentiAbilitati = buservice.GetDipendentiDipartimentoAbilitati(decimal.Parse(ddlManagedAccounts.SelectedValue));
                 }
                 if (listaDipendentiAbilitati != null)
                 {
@@ -191,6 +193,7 @@ namespace GestionePEC.Controls
 
         private void CartellaAccess()
         {
+            MailLocalService mailLocalService = new MailLocalService();
             if (ddlManagedAccounts.SelectedValue != null && ddlManagedAccounts.SelectedValue != string.Empty && ddlManagedAccounts.SelectedValue != "-1")
             {
 
@@ -240,7 +243,7 @@ namespace GestionePEC.Controls
                 }
                 else
                 {
-                    list = ServiceLocator.GetServiceFactory().MailLocalService.getFoldersByAccount(decimal.Parse(ddlManagedAccounts.SelectedValue)).Where(x => x.TipoFolder == f || x.TipoFolder == m).ToList();
+                    list = mailLocalService.getFoldersByAccount(decimal.Parse(ddlManagedAccounts.SelectedValue)).Where(x => x.TipoFolder == f || x.TipoFolder == m).ToList();
                 }
                 if (f == "C" && m == "I")
                 { list = list.Where(x => x.TipoFolder == f && (x.IdNome == "1" || x.IdNome == "3")).ToList(); }
@@ -309,11 +312,12 @@ namespace GestionePEC.Controls
 
         protected void OnPagerIndexChanged(string sPaginaRichiesta, int pag)
         {
+            MailLocalService mailLocalService = new MailLocalService();
             int da = (pag * int.Parse(Properties.Settings.Default.ListaRisultatiPerPagina)) + 1;
             int per = int.Parse(Properties.Settings.Default.ListaRisultatiPerPagina);
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
             idx = getDictionaryChoice();
-            ResultList<MailHeaderExtended> result = ServiceLocator.GetServiceFactory().MailLocalService.GetMailsMoveGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, chkUfficio.Checked, da, per);
+            ResultList<MailHeaderExtended> result = mailLocalService.GetMailsMoveGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, chkUfficio.Checked, da, per);
             gridBox.DataSource = result.List;
             gridBox.DataBind();
             gridBox.BottomPagerRow.Visible = true;
@@ -322,9 +326,10 @@ namespace GestionePEC.Controls
 
         protected void btnStampa_Click(object sender, EventArgs e)
         {
+            MailLocalService mailLocalService = new MailLocalService();
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
             idx = getDictionaryChoice();
-            ResultList<MailHeaderExtended> result = ServiceLocator.GetServiceFactory().MailLocalService.GetMailsMoveGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, chkUfficio.Checked, 1, 1000);
+            ResultList<MailHeaderExtended> result = mailLocalService.GetMailsMoveGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, chkUfficio.Checked, 1, 1000);
             byte[] b = Helpers.StampaEmailAttoITEXT(result.List.ToList(), ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedItem.Text, dtInizio.DateString(), dtFine.DateString(), rblIOBox.SelectedValue, ddlManagedAccounts.SelectedValue);
             Response.ContentType = "application/pdf";
             Response.AppendHeader("Content-Disposition", "attachment; filename=DistintaMail_" + ddlManagedAccounts.SelectedItem.Text + ".pdf");
@@ -335,11 +340,12 @@ namespace GestionePEC.Controls
 
         protected void btnLetta_Click(object sender, EventArgs e)
         {
+            MailLocalService mailLocalService = new MailLocalService();
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
             idx = getDictionaryChoice();
             try
             {
-                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.UpdateAllMails(MailStatus.LETTA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, idx);
+                bool ok = mailLocalService.UpdateAllMails(MailStatus.LETTA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, idx);
                 if (ok == true)
                 {
                     (this.Page as BasePage).info.AddMessage("Aggiornamento effettuato", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);
@@ -354,10 +360,11 @@ namespace GestionePEC.Controls
         protected void btnUnLetta_Click(object sender, EventArgs e)
         {
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
+            MailLocalService mailLocalService = new MailLocalService();
             idx = getDictionaryChoice();
             try
             {
-                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.UpdateAllMails(MailStatus.SCARICATA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, idx);
+                bool ok = mailLocalService.UpdateAllMails(MailStatus.SCARICATA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, idx);
                 if (ok == true)
                 {
                     (this.Page as BasePage).info.AddMessage("Aggiornamento effettuato", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);
@@ -388,11 +395,12 @@ namespace GestionePEC.Controls
         protected void btnOk_Click(object sender, EventArgs e)
         {
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
+            MailLocalService mailLocalService = new MailLocalService();
             idx = getDictionaryChoice();
             try
             {
                 decimal idaccount = decimal.Parse(ddlManagedAccounts.SelectedValue);
-                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.MoveAllMails(ddlManagedAccounts.SelectedItem.Text, idaccount, ddlCartellaSposta.SelectedValue, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, rblIOBox.SelectedValue, idx);
+                bool ok = mailLocalService.MoveAllMails(ddlManagedAccounts.SelectedItem.Text, idaccount, ddlCartellaSposta.SelectedValue, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, rblIOBox.SelectedValue, idx);
                 if (ok == true)
                 {
                     (this.Page as BasePage).info.AddMessage("Spostamento effettuato", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);
@@ -409,18 +417,7 @@ namespace GestionePEC.Controls
 
         #region Private
 
-        //private string BuildScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.Append(GetTabIndexIDScript());
-        //    sb.Append(GetActivateTabScript());
-        //    sb.Append(GetActivateTabChangedScript());
-        //    sb.Append(GetCreateTabsScript());
-        //    sb.Append(GetValidatePageScript());
-        //    return sb.ToString();
-        //}
-
-
+        
         private void Search(string APageIndex)
         {
             int index = int.Parse(hdTabIndex.Value.ToString());
@@ -434,6 +431,7 @@ namespace GestionePEC.Controls
 
         private void SearchByParams(string APageIndex)
         {
+            MailLocalService mailLocalService = new MailLocalService();
             btnStampaDistinta.Visible = false;
             ddlCartellaSposta.Visible = false;
             pnlSposta.Visible = btnSposta.Visible = false;
@@ -447,7 +445,7 @@ namespace GestionePEC.Controls
             {
                 int da = (0 * int.Parse(Properties.Settings.Default.ListaRisultatiPerPagina)) + 1;
                 int per = int.Parse(Properties.Settings.Default.ListaRisultatiPerPagina);
-                ResultList<MailHeaderExtended> result = ServiceLocator.GetServiceFactory().MailLocalService.GetMailsMoveGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, chkUfficio.Checked, da, 6);
+                ResultList<MailHeaderExtended> result = mailLocalService.GetMailsMoveGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, chkUfficio.Checked, da, 6);
                 gridBox.DataSource = result.List;
                 gridBox.DataBind();
                 if (result.List.Count > 0)
@@ -473,21 +471,7 @@ namespace GestionePEC.Controls
             else { (this.Page as BasePage).info.AddMessage("Selezionare tutti i campi obbligatori", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO); }
         }
 
-
-        //private string GetCurrentValidationGroup()
-        //{
-        //    string sResult = "vgTabCasella";
-        //    int i = 0;
-        //    int.TryParse(hdTabIndex.Value.ToString(), out i);
-        //    switch (i)
-        //    {
-        //        case 0:
-        //            sResult = "vgTabCasella";
-        //            break;
-        //    }
-
-        //    return sResult;
-        //}
+              
 
         #endregion
 
@@ -557,111 +541,6 @@ namespace GestionePEC.Controls
 
         #endregion
 
-        #region Script
-
-        //private string GetCreateTabsScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append("Ext.onReady(function(){");
-        //    sb.Append("var ResearchTabs = new Ext.TabPanel({");
-        //    sb.Append(string.Format("renderTo: '{0}',", pnlTabContainer.ClientID));
-        //    sb.Append(string.Format("activeTab: {0},", hdTabIndex.Value.ToString()));
-        //    sb.Append("plain:true,");
-        //    sb.Append("defaults:{autoHeight: true, autoWidth: true, autoScroll: true},");
-        //    sb.Append("items:[");
-        //    sb.Append("{contentEl:'" + pnlCasella.ClientID + "', title: 'Casella Mail', listeners: {activate: RIAhandleActivate}}");
-        //    sb.Append("],");
-        //    sb.Append("listeners: {'tabchange': RIAactiveTabChanged}");
-        //    sb.Append("});");
-        //    sb.Append("ResearchTabs.render();");
-        //    sb.Append("});");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetActivateTabScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append("function RIAhandleActivate(tab)");
-        //    sb.Append("{");
-        //    sb.Append(" var pnl = document.getElementById(tab.contentEl);");
-        //    sb.Append(" if (pnl != null)");
-        //    sb.Append(" {");
-        //    sb.Append("     pnl.style.display = 'block';");
-        //    sb.Append(" }");
-        //    sb.Append("}");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetActivateTabChangedScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append("function RIAactiveTabChanged(tab, tabPanel)");
-        //    sb.Append("{");
-        //    /*[LBONI]: 
-        //     * azzera il riferimento al controllo non valido sul quale settare il focus
-        //     * in quanto l'utente si è spostato di tab.
-        //     * evita la comparsa di un errore js per control.focus() 
-        //     * su di un controllo non accessibile.
-        //    */
-        //    sb.Append(" Page_InvalidControlToBeFocused = null;");
-        //    sb.Append(" var index = 0;");
-        //    sb.Append(" switch (tabPanel.title)");
-        //    sb.Append(" {");
-        //    sb.Append("     case 'Casella Mail':");
-        //    sb.Append("         RIAValidationGroup = 'vgTabCodiceIndiv';");
-        //    sb.Append("         index = 0;");
-        //    sb.Append("         break;");
-        //    sb.Append(" }");
-        //    sb.Append(" var tabIndex = document.getElementById(hdTabIndexID);");
-        //    sb.Append(" if (tabIndex != null)");
-        //    sb.Append("     tabIndex.value = index;");
-        //    sb.Append("}");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetValidatePageScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    //sb.Append("var RIAValidationGroup = 'vgTabCodiceIndiv';");
-        //    sb.Append(string.Format("var RIAValidationGroup = '{0}';", GetCurrentValidationGroup()));
-
-        //    sb.Append("function RIAValidatePage(sender, event)");
-        //    sb.Append("{");
-        //    sb.Append(" var fResult = false;");
-        //    sb.Append(" if (RIAValidationGroup != '')");
-        //    sb.Append(" {");
-        //    sb.Append("     Page_ClientValidate(RIAValidationGroup);");
-        //    sb.Append("     fResult = Page_IsValid;");
-        //    sb.Append("     if (!fResult)");
-        //    sb.Append("         Page_BlockSubmit = false;");
-        //    sb.Append(" }");
-        //    sb.Append(" return fResult;");
-        //    sb.Append("}");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetTabIndexIDScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append(string.Format("var hdTabIndexID ='{0}';", hdTabIndex.ClientID));
-
-        //    return sb.ToString();
-        //}
-
-
-        #endregion
+     
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNet.Identity;
 
-namespace AspNet.Identity.OracleProvider
+namespace AspNet.Identity.SQLServerProvider
 {
    
     public class IdentityUser : System.Security.Principal.GenericIdentity, IUser

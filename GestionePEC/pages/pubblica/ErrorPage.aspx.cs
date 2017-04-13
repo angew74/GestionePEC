@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace GestionePEC.pages.common
+namespace GestionePEC.pages.pubblica
 {
     public partial class ErrorPage : BasePage
     {

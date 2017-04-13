@@ -6,12 +6,11 @@ using Com.Delta.Security;
 using Com.Delta.Web.Session;
 using GestionePEC.Extensions;
 using log4net;
-using SendMail.Locator;
+using SendMail.BusinessEF.MailFacedes;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -49,7 +48,8 @@ namespace GestionePEC.Controls
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            MailServer m = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().LoadServerConfigById(decimal.Parse(ddlServer.SelectedValue));
+            MailServerConfigFacade mailServerConfigFacade = MailServerConfigFacade.GetInstance();
+            MailServer m = mailServerConfigFacade.LoadServerConfigById(decimal.Parse(ddlServer.SelectedValue));
             MailUser account = new MailUser(m);
             account.Password = txtPassword.Text;
             account.LoginId = txtName.Text;
@@ -58,7 +58,7 @@ namespace GestionePEC.Controls
             account.Casella = string.Empty;
             try
             {
-                IList<MailUser> ctrlAccount = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetUserByServerAndUsername(account.Id, account.LoginId);
+                IList<MailUser> ctrlAccount = mailServerConfigFacade.GetUserByServerAndUsername(account.Id, account.LoginId);
                 if (ctrlAccount != null)
                 {
                     if (ctrlAccount.Where(acc => acc.LoginId.Equals(account.LoginId) && (acc.Id == m.Id) && acc.IsManaged).Count() != 0)
@@ -111,10 +111,12 @@ namespace GestionePEC.Controls
         protected void ddlManagedAccounts_DataBinding(object sender, EventArgs e)
         {
             string username = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
+            MailServerConfigFacade mailSCF = null;
+            mailSCF = MailServerConfigFacade.GetInstance();
             List<MailUser> l = SessionManager<List<MailUser>>.get(SessionKeys.ACCOUNTS_LIST);
             if (!(l != null && l.Count != 0))
             {
-                l = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetManagedAccountByUser(username).ToList();
+                l = mailSCF.GetManagedAccountByUser(username).ToList();
                 if (l == null) l = new List<MailUser>();
                 if (l.Where(x => x.UserId.Equals(-1)).Count() == 0)
                     l.Insert(0, new MailUser() { UserId = -1, EmailAddress = "" });
@@ -144,7 +146,7 @@ namespace GestionePEC.Controls
 
         protected void ddlServer_DataBinding(object sender, EventArgs e)
         {
-            IList<MailServer> l = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetAll();
+            IList<MailServer> l = MailServerConfigFacade.GetInstance().GetAll();
             if (l == null) l = new List<MailServer>();
             MailServer[] servers = (MailServer[])l.ToArray().Clone();
 
@@ -165,11 +167,12 @@ namespace GestionePEC.Controls
         {
             DropDownList ddl = sender as DropDownList;
             decimal userId = decimal.Parse(ddl.SelectedValue);
+            MailServerConfigFacade mailSCF = MailServerConfigFacade.GetInstance();
             if (userId != -1)
             {
                 try
                 {
-                    MailUser account = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetUserByUserId(userId);
+                    MailUser account = mailSCF.GetUserByUserId(userId);
                     SetAccount(account);
                     ddlManagedAccounts.SelectedIndex = 0;
                 }
@@ -187,7 +190,7 @@ namespace GestionePEC.Controls
 
         private static void SetAccount(MailUser account)
         {
-            ServiceLocator.GetServiceFactory().getMailServerFacade(account);
+            MailServerFacade mailSCF = MailServerFacade.GetInstance(account);           
             account.Validated = true;
             WebMailClientManager.SetAccount(account);
         }

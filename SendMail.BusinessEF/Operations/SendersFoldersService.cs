@@ -6,12 +6,12 @@ using SendMail.Data.SQLServerDB.Repository;
 
 namespace SendMail.BusinessEF
 {
-    class SendersFoldersService : BaseSingletonService<SendersFoldersService>, ISendersFoldersService
+  public  class SendersFoldersService : BaseSingletonService<SendersFoldersService>, ISendersFoldersService
     {
 
         #region ISendersFoldersService Membri di
 
-        List<SendersFolders> ISendersFoldersService.GetFoldersNONAbilitati(string mail)
+       public List<SendersFolders> GetFoldersNONAbilitati(string mail)
         {
             using (SendersFoldersSQLDb dao = new SendersFoldersSQLDb())
             {
@@ -19,7 +19,7 @@ namespace SendMail.BusinessEF
             }
         }
 
-        List<SendersFolders> ISendersFoldersService.GetFoldersAbilitati(string mail)
+       public List<SendersFolders> GetFoldersAbilitati(string mail)
         {
             using (SendersFoldersSQLDb dao = new SendersFoldersSQLDb())
             {

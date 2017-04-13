@@ -1,4 +1,4 @@
-﻿using AspNet.Identity.OracleProvider;
+﻿using AspNet.Identity.SQLServerProvider;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -35,11 +35,13 @@ namespace Com.Delta.Security
             UserStore store = new UserStore();
             MyPrincipal mp = null;
             //LoginResp r = store.Authenticate(username, dipartimento, password);
-            string passwordHash= await store.GetPasswordHashAsync(username);
+            int iduser = 0;
+            string passwordHash= await store.GetPasswordHashAsync(username,ref iduser);
              string digitPasswordSHA = MySecurityProvider.PlainToSHA256(password);
             if (digitPasswordSHA == passwordHash)
             {
                 MyIdentity id = new MyIdentity(username, dipartimento, password, type);
+                id.Id = iduser.ToString();
                 mp = new MyPrincipal(id, null);
             }
             else

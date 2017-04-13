@@ -115,6 +115,14 @@
     <Compile Include="ComunicazioniMapping\RubrEntitaUsed.cs" />
     <Compile Include="ContactApplicationMapping\ContactsApplicationMapping.cs" />
     <Compile Include="ContactApplicationMapping\ContactsBackendMap.cs" />
+    <Compile Include="QueryModel\CriteriaOperator.cs" />
+    <Compile Include="QueryModel\Criterion.cs" />
+    <Compile Include="QueryModel\ICollectionCriterionExtension.cs" />
+    <Compile Include="QueryModel\OrderClause.cs" />
+    <Compile Include="QueryModel\Pager.cs" />
+    <Compile Include="QueryModel\Query.cs" />
+    <Compile Include="QueryModel\QueryHelper.cs" />
+    <Compile Include="QueryModel\QueryOperator.cs" />
     <Compile Include="RubricaMapping\RubricaAddress.cs" />
     <Compile Include="RubricaMapping\RubricaContatti.cs" />
     <Compile Include="RubricaMapping\RubricaEntita.cs" />

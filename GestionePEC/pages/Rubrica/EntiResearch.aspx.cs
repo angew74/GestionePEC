@@ -1,15 +1,13 @@
 ﻿using Com.Delta.Security;
 using FaxPec.Model;
 using GestionePEC.Extensions;
-using SendMail.Locator;
+using SendMail.BusinessEF;
 using SendMail.Model.RubricaMapping;
 using SendMail.Model.WebserviceMappings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace GestionePEC.pages.Rubrica
 {
@@ -97,7 +95,8 @@ namespace GestionePEC.pages.Rubrica
             if (long.TryParse(nodeId, out id))
             {
                 pnlDettagli.Visible = true;
-                RubricaEntita r = ServiceLocator.GetServiceFactory().RubricaEntitaService.GetRubricaEntitaCompleteById(id);               
+                RubricaEntitaService rus = new RubricaEntitaService();
+                RubricaEntita r = rus.GetRubricaEntitaCompleteById(id);               
                 UCEntiViewer.EntFormViewDataSource = r;
                 pnlDownPage.Update();
             }
@@ -115,7 +114,8 @@ namespace GestionePEC.pages.Rubrica
             {
                 try
                 {
-                    RubricaEntita r = ServiceLocator.GetServiceFactory().RubricaEntitaService.GetRubricaEntitaCompleteById(id);                  
+                    RubricaEntitaService rus = new RubricaEntitaService();
+                    RubricaEntita r = rus.GetRubricaEntitaCompleteById(id);                  
                     UCEntiViewer.EntFormViewDataSource = r;
                 }
                 catch

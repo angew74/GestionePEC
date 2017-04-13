@@ -50,15 +50,6 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oracle.DataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86" />
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.12.1.2400\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -75,17 +66,17 @@
     <Compile Include="MyIdentity.cs" />
     <Compile Include="MyPrincipal.cs" />
     <Compile Include="MySecurityProvider.cs" />
-    <Compile Include="OracleProvider\Extensions.cs" />
-    <Compile Include="OracleProvider\IdentityRole.cs" />
-    <Compile Include="OracleProvider\IdentityUser.cs" />
-    <Compile Include="OracleProvider\OracleDataContext.cs" />
-    <Compile Include="OracleProvider\Repositories\RoleRepository.cs" />
-    <Compile Include="OracleProvider\Repositories\UserClaimsRepository.cs" />
-    <Compile Include="OracleProvider\Repositories\UserLoginsRepository.cs" />
-    <Compile Include="OracleProvider\Repositories\UserRepository.cs" />
-    <Compile Include="OracleProvider\Repositories\UserRoleRepository.cs" />
-    <Compile Include="OracleProvider\RoleStore.cs" />
-    <Compile Include="OracleProvider\UserStore.cs" />
+    <Compile Include="SQLServerProvider\Extensions.cs" />
+    <Compile Include="SQLServerProvider\IdentityRole.cs" />
+    <Compile Include="SQLServerProvider\IdentityUser.cs" />
+    <Compile Include="SQLServerProvider\SQLServerDataContext.cs" />
+    <Compile Include="SQLServerProvider\Repositories\RoleRepository.cs" />
+    <Compile Include="SQLServerProvider\Repositories\UserClaimsRepository.cs" />
+    <Compile Include="SQLServerProvider\Repositories\UserLoginsRepository.cs" />
+    <Compile Include="SQLServerProvider\Repositories\UserRepository.cs" />
+    <Compile Include="SQLServerProvider\Repositories\UserRoleRepository.cs" />
+    <Compile Include="SQLServerProvider\RoleStore.cs" />
+    <Compile Include="SQLServerProvider\UserStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

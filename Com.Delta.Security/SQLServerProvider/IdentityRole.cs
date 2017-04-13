@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AspNet.Identity.OracleProvider
+namespace AspNet.Identity.SQLServerProvider
 {
     public class IdentityRole : IRole
     {

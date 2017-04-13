@@ -1,5 +1,5 @@
 ﻿using ActiveUp.Net.Mail.DeltaExt;
-using SendMail.Locator;
+using SendMail.BusinessEF;
 using SendMail.Model;
 using SendMail.Model.WebserviceMappings;
 using SendMail.Model.Wrappers;
@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.Serialization;
 using System.Web.Http;
 
 namespace GestionePEC.api
@@ -63,7 +62,8 @@ namespace GestionePEC.api
             ResultList<SimpleResultItem> res = null;
             try
             {
-                res = ServiceLocator.GetServiceFactory().ContattoService.GetFieldsByParams(catalogo, filtro, matchingString, start, limit);
+                ContattoService service = new ContattoService();
+                res = service.GetFieldsByParams(catalogo, filtro, matchingString, start, limit);
                 if (res == null || res.List.Count == 0)
                 {
                     response.message = "la ricerca non ha prodotto risultati";

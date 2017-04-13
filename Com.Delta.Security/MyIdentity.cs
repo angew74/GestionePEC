@@ -1,4 +1,4 @@
-﻿using AspNet.Identity.OracleProvider;
+﻿using AspNet.Identity.SQLServerProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;

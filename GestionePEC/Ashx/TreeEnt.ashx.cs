@@ -1,5 +1,5 @@
 ﻿using Delta.Utilities.LinqExtensions;
-using SendMail.Locator;
+using SendMail.BusinessEF;
 using SendMail.Model.Wrappers;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,6 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
 using System.Web.Services;
-using System.Xml.Linq;
 
 namespace GestionePEC.Ashx
 {
@@ -120,7 +119,8 @@ namespace GestionePEC.Ashx
                     }
                     else
                     {
-                        List<SimpleTreeItem> tree = (List<SimpleTreeItem>)ServiceLocator.GetServiceFactory().RubricaEntitaService.GetRubricaEntitaTreeByIdPadre(node.nodeId);
+                        RubricaEntitaService rubrentitaService = new RubricaEntitaService();
+                        List<SimpleTreeItem> tree = (List<SimpleTreeItem>)rubrentitaService.GetRubricaEntitaTreeByIdPadre(node.nodeId);
                         if (tree != null && tree.Count > 0)
                         {
                             AppendChildren(tree);
@@ -198,7 +198,8 @@ namespace GestionePEC.Ashx
             }
             else
             {
-                indice = (List<SimpleTreeItem>)ServiceLocator.GetServiceFactory().RubricaEntitaService.GetRubricaEntitaTree(long.Parse(idNode));
+                RubricaEntitaService rubrEntitaService = new RubricaEntitaService();
+                indice = (List<SimpleTreeItem>)rubrEntitaService.GetRubricaEntitaTree(long.Parse(idNode));
             }
             // get the current httpContext
             HttpContext context = HttpContext.Current;

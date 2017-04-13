@@ -225,6 +225,7 @@
     <Compile Include="RUBR_TAGS.cs">
       <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utility\DataRecordHelper.cs" />
     <Compile Include="V_MAP_APPL_CONTATTI_NEW.cs">
       <DependentUpon>FAXPECModel.tt</DependentUpon>
     </Compile>
@@ -263,10 +264,6 @@
     <ProjectReference Include="..\ActiveUp.Net\ActiveUp.Net.Common\ActiveUp.Net.Common.csproj">
       <Project>{3a83ae95-c23f-48b4-9f1a-ad4b32c37b93}</Project>
       <Name>ActiveUp.Net.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Delta.Data.DeltaStub\Com.Delta.Data.DeltaStub.csproj">
-      <Project>{C67D38CA-DC29-416B-8ECA-3F9317ED0C88}</Project>
-      <Name>Com.Delta.Data.DeltaStub</Name>
     </ProjectReference>
     <ProjectReference Include="..\Com.Delta.Logging\Com.Delta.Logging.csproj">
       <Project>{A8C15D12-6E47-4AF5-BADF-B6CBC421EC40}</Project>

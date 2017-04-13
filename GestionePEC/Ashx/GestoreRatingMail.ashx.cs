@@ -2,6 +2,7 @@
 using Com.Delta.Logging.Errors;
 using Com.Delta.Mail.MailMessage;
 using log4net;
+using SendMail.BusinessEF.MailFacedes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,8 @@ namespace GestionePEC.Ashx
                 {
                     try
                     {
-                        risp = SendMail.Locator.ServiceLocator.GetServiceFactory().getMailServerFacade(WebMailClientManager.getAccount()).AssignMessageRating(idMail, rating);
+                        MailServerFacade mailserverFacade = MailServerFacade.GetInstance((WebMailClientManager.getAccount()));
+                        risp = mailserverFacade.AssignMessageRating(idMail, rating);
                     }
                     catch (Exception e)
                     {

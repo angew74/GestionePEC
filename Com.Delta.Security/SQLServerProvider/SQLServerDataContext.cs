@@ -1,62 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace AspNet.Identity.OracleProvider
+﻿namespace AspNet.Identity.SQLServerProvider
 {
     using System;
     using System.Configuration;
     using System.Data;
+    using System.Data.SqlClient;
     using System.Diagnostics.CodeAnalysis;
-    using Oracle.ManagedDataAccess.Client;
-    
 
-    public class OracleDataContext : IDisposable
+
+    public class SQLServerDataContext : IDisposable
     {
-        public OracleDataContext()
+        public SQLServerDataContext()
             : this("DefaultConnection")
         {
         }
 
-        public OracleDataContext(string connectionStringName)
+        public SQLServerDataContext(string connectionStringName)
         {
             var connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
 
-            Connection = new OracleConnection(connectionString);
+            Connection = new SqlConnection(connectionString);
         }
 
-        public OracleDataContext(OracleConnection connection)
+        public SQLServerDataContext(SqlConnection connection)
         {
             Connection = connection;
         }
 
-        ~OracleDataContext()
+        ~SQLServerDataContext()
         {
             Dispose(false);
         }
 
-        public OracleConnection Connection { get; private set; }
+        public SqlConnection Connection { get; private set; }
 
         [SuppressMessage("Microsoft.Globalization", "CA1306:SetLocaleForDataTypes", Justification = "Review.")]
         [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "It actually is a parameterized SQL query.")]
-        public DataTable ExecuteQuery(string query, params OracleParameter[] parameters)
+        public DataTable ExecuteQuery(string query, params SqlParameter[] parameters)
         {
             OpenClosedConnection();
 
             var resultTable = new DataTable();
             var transaction = Connection.BeginTransaction(IsolationLevel.ReadCommitted);
-            var command = new OracleCommand(query, Connection) { CommandType = CommandType.Text };
+            var command = new SqlCommand(query, Connection,transaction) { CommandType = CommandType.Text };
 
             command.Parameters.AddRange(parameters);
 
-            var dataAdapter = new OracleDataAdapter(command);
+            var dataAdapter = new SqlDataAdapter(command);
 
             try
             {
                 dataAdapter.Fill(resultTable);
             }
-            catch (OracleException ex)
+            catch (SqlException ex)
             {
                 // Repeating OracleCommand because the procedure has been invalidated.
                 if (ex.Number == 4068)
@@ -75,13 +70,13 @@ namespace AspNet.Identity.OracleProvider
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "It actually is a parameterized SQL query.")]
-        public object ExecuteScalarQuery(string query, params OracleParameter[] parameters)
+        public object ExecuteScalarQuery(string query, params SqlParameter[] parameters)
         {
             OpenClosedConnection();
 
             object result;
             var transaction = Connection.BeginTransaction(IsolationLevel.ReadCommitted);
-            var command = new OracleCommand(query, Connection) { CommandType = CommandType.Text };
+            var command = new SqlCommand(query, Connection,transaction) { CommandType = CommandType.Text };
 
             command.Parameters.AddRange(parameters);
 
@@ -89,7 +84,7 @@ namespace AspNet.Identity.OracleProvider
             {
                 result = command.ExecuteScalar();
             }
-            catch (OracleException ex)
+            catch (SqlException ex)
             {
                 // Repeating OracleCommand because the procedure has been invalidated.
                 if (ex.Number == 4068)
@@ -107,19 +102,19 @@ namespace AspNet.Identity.OracleProvider
             return result;
         }
 
-        public T ExecuteScalarQuery<T>(string query, params OracleParameter[] parameters)
+        public T ExecuteScalarQuery<T>(string query, params SqlParameter[] parameters)
         {
             return (T)ExecuteScalarQuery(query, parameters);
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "It actually is a parameterized SQL query.")]
-        public int ExecuteNonQuery(string query, params OracleParameter[] parameters)
+        public int ExecuteNonQuery(string query, params SqlParameter[] parameters)
         {
             OpenClosedConnection();
 
             int result;
             var transaction = Connection.BeginTransaction(IsolationLevel.ReadCommitted);
-            var command = new OracleCommand(query, Connection) { CommandType = CommandType.Text };
+            var command = new SqlCommand(query, Connection,transaction) { CommandType = CommandType.Text };
 
             command.Parameters.AddRange(parameters);
 
@@ -127,7 +122,7 @@ namespace AspNet.Identity.OracleProvider
             {
                 result = command.ExecuteNonQuery();
             }
-            catch (OracleException ex)
+            catch (SqlException ex)
             {
                 // Repeating OracleCommand because the procedure has been invalidated.
                 if (ex.Number == 4068)

@@ -7,7 +7,7 @@
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace GestionePEC.pages.common {
+namespace GestionePEC.pages.pubblica {
     
     
     public partial class ErrorPage {

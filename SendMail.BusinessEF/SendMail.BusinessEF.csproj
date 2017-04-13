@@ -88,10 +88,6 @@
       <Project>{3a83ae95-c23f-48b4-9f1a-ad4b32c37b93}</Project>
       <Name>ActiveUp.Net.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Com.Delta.Data.DeltaStub\Com.Delta.Data.DeltaStub.csproj">
-      <Project>{c67d38ca-dc29-416b-8eca-3f9317ed0c88}</Project>
-      <Name>Com.Delta.Data.DeltaStub</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Com.Delta.Logging\Com.Delta.Logging.csproj">
       <Project>{a8c15d12-6e47-4af5-badf-b6cbc421ec40}</Project>
       <Name>Com.Delta.Logging</Name>

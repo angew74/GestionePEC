@@ -3,12 +3,13 @@ using ActiveUp.Net.Common.DeltaExt;
 using ActiveUp.Net.Mail.DeltaExt;
 using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
+using Com.Delta.Mail.Facades;
 using Com.Delta.Mail.MailMessage;
 using Com.Delta.Security;
 using Delta.Utilities.LinqExtensions;
 using GestionePEC.Extensions;
 using log4net;
-using SendMail.Locator;
+using SendMail.BusinessEF.MailFacedes;
 using SendMail.Model;
 using SendMail.Model.Wrappers;
 using System;
@@ -213,10 +214,8 @@ namespace GestionePEC.Api
             }
             //throw new InvalidOperationException("Non esiste un account loggato");
 
-            List<SimpleTreeItem> result = ServiceLocator.GetServiceFactory().MailLocalService.LoadMailTree(us.EmailAddress,
-                idMail)
-                as List<SimpleTreeItem>;
-
+            MailLocalService mailService = new MailLocalService();
+            List<SimpleTreeItem> result = mailService.LoadMailTree(us.EmailAddress, idMail) as List<SimpleTreeItem>;
             Func<List<SimpleTreeItem>, SimpleTreeItem> getRoot = l => l.FirstOrDefault(x => !l.Select(y => y.Value).Contains(x.Padre));
             IEnumerable<HierarchyNode<SimpleTreeItem>> hl = result.AsHierarchy(
                 e => e.Value,
@@ -279,9 +278,8 @@ namespace GestionePEC.Api
                 {
                     sValues.Add(filtro.status.tipo, filtro.status.values.Select(e => ((int)e).ToString()).ToList());
                 }
-
-                ResultList<MailHeaderExtended> rl = ServiceLocator.GetServiceFactory().MailLocalService.GetMailsByParams(
-                    acc.EmailAddress, folder, parFolder, sValues, start, limit);
+                MailLocalService mailService = new MailLocalService();
+                ResultList<MailHeaderExtended> rl =  mailService.GetMailsByParams(acc.EmailAddress, folder, parFolder, sValues, start, limit);
 
                 m.Per = rl.Per;
                 m.List = (rl.List == null) ? null : rl.List.Cast<MailHeader>().ToList() as ICollection<MailHeader>;
@@ -289,8 +287,8 @@ namespace GestionePEC.Api
             }
             else
             {
-                m = ServiceLocator.GetServiceFactory().getMailServerFacade(acc)
-                                                      .MailHeader_ResultList_Fetch(folder, parFolder, start, limit);
+                MailServerFacade mailServerFacade = MailServerFacade.GetInstance(acc);
+                m = mailServerFacade.MailHeader_ResultList_Fetch(folder, parFolder, start, limit);                
             }
 
             if (m != null && m.List != null)
@@ -463,9 +461,7 @@ namespace GestionePEC.Api
             { folderMezzo = 1; }
             if (Helpers.CanDo(parentFolder, mailAction.ToString(), idMail))
             {
-                Com.Delta.Mail.Facades.IMailServerFacade fac =
-                    ServiceLocator.GetServiceFactory()
-                    .getMailServerFacade(acc);
+                MailServerFacade fac = MailServerFacade.GetInstance(acc);               
                 int resp = 0;
                 string azione = Helpers.GetAzione(mailAction.ToString());
                 try
@@ -503,13 +499,10 @@ namespace GestionePEC.Api
             }
             else if (((parentFolder == "O") || (parentFolder == "D") || (parentFolder == "AO")) && (mailIds.Length > 0) && (mailIds[0] != string.Empty))
             {
-                Com.Delta.Mail.Facades.IMailServerFacade fac =
-                    ServiceLocator.GetServiceFactory()
-                    .getMailServerFacade(acc);
+                MailServerFacade fac = MailServerFacade.GetInstance(acc);
                 int resp = 0;
                 try
                 {
-
                     resp = fac.MailArchivia(idMail, utente, mailAction.ToString(), parentFolder);
                     if (resp != idMail.Count)
                         message = "Errore nell'azione specificata";

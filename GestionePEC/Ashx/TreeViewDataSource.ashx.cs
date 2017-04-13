@@ -1,4 +1,4 @@
-﻿using SendMail.Locator;
+﻿using SendMail.BusinessEF;
 using SendMail.Model;
 using SendMail.Model.Wrappers;
 using System;
@@ -73,7 +73,8 @@ namespace GestionePEC.Ashx
                 //se non trova figli prova a caricarli dalla banca dati
                 if (ll.Count() == 0)
                 {
-                    Dictionary<string, SimpleTreeItem> newChildren = (Dictionary<string, SimpleTreeItem>)ServiceLocator.GetServiceFactory().ContattoService.LoadRubricaIndex(nodeId.Value, (IndexedCatalogs)Enum.Parse(typeof(IndexedCatalogs), catalog), 2);
+                    ContattoService contattoService = new ContattoService();
+                    Dictionary<string, SimpleTreeItem> newChildren = (Dictionary<string, SimpleTreeItem>)contattoService.LoadRubricaIndex(nodeId.Value, (IndexedCatalogs)Enum.Parse(typeof(IndexedCatalogs), catalog), 2);
                     if (newChildren != null && newChildren.Count > 1)
                     {
                         AppendChildren(newChildren);
@@ -165,7 +166,8 @@ namespace GestionePEC.Ashx
 
         public static void InitializeTreeStore()
         {
-            Dictionary<string, SimpleTreeItem> indice = (Dictionary<string, SimpleTreeItem>)ServiceLocator.GetServiceFactory().ContattoService.LoadRubricaIndex(IndexedCatalogs.ALL, 1);
+            ContattoService contattoService = new ContattoService();
+            Dictionary<string, SimpleTreeItem> indice = (Dictionary<string, SimpleTreeItem>)contattoService.LoadRubricaIndex(IndexedCatalogs.ALL, 1);
             // get the current httpContext
             HttpContext context = HttpContext.Current;
             // get the current application object

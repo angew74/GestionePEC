@@ -8,7 +8,8 @@ using FaxPec.Model;
 using GestionePEC.Extensions;
 using HtmlAgilityPack;
 using log4net;
-using SendMail.Locator;
+using SendMail.BusinessEF;
+using SendMail.BusinessEF.MailFacedes;
 using SendMail.Model.ComunicazioniMapping;
 using System;
 using System.Collections.Generic;
@@ -620,6 +621,7 @@ namespace GestionePEC.Controls
             try
             {
                 Message msg;
+                ComunicazioniService comunicazioniService = new ComunicazioniService();
                 if (MailMessageComposer.CurrentSendMailExist())
                     msg = MailMessageComposer.CurrentSendMailGet();
                 else
@@ -703,7 +705,7 @@ namespace GestionePEC.Controls
                             long idAtt = -1;
                             if (long.TryParse(idAttach, out idAtt))
                             {
-                                ComAllegato all = ServiceLocator.GetServiceFactory().ComunicazioniService
+                                ComAllegato all = comunicazioniService
                                             .LoadAllegatoComunicazioneById(long.Parse(idAttach));
                                 mm.BinaryContent = all.AllegatoFile;
                             }
@@ -728,7 +730,7 @@ namespace GestionePEC.Controls
 
                 if (mailUser != null)
                 {
-                    IMailServerFacade f = SendMail.Locator.ServiceLocator.GetServiceFactory().getMailServerFacade(mailUser);
+                    MailServerFacade f = MailServerFacade.GetInstance(mailUser);
 
                     if (mailUser.IsManaged)
                     {
@@ -750,7 +752,7 @@ namespace GestionePEC.Controls
                                                        }).ToList();
                             }
 
-                            SendMail.Locator.ServiceLocator.GetServiceFactory().ComunicazioniService.InsertComunicazione(c);
+                            comunicazioniService.InsertComunicazione(c);
                         }
                         catch (Exception ex)
                         {

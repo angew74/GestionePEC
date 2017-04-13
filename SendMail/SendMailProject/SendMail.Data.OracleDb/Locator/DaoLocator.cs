@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using SendMail.DataContracts.Interfaces;
 using System.Configuration;
 using System.Reflection;
 using Com.Delta.Data;
-
-using SendMail.Data.OracleDb;
 
 namespace SendMail.DataContracts
 {

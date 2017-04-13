@@ -3,17 +3,14 @@ using ActiveUp.Net.Mail.DeltaExt;
 using Com.Delta.Security;
 using Com.Delta.Web.Session;
 using GestionePEC.Extensions;
-using SendMail.Business;
-using SendMail.Locator;
+using SendMail.BusinessEF;
+using SendMail.BusinessEF.MailFacedes;
 using SendMail.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.util;
-using System.Web;
 using System.Web.Routing;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace GestionePEC.Controls
@@ -121,7 +118,8 @@ namespace GestionePEC.Controls
             List<MailUser> l = SessionManager<List<MailUser>>.get(SessionKeys.ACCOUNTS_LIST);
             if (!(l != null && l.Count != 0))
             {
-                l = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetManagedAccountByUser(username).ToList();
+                MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
+                l = facade.GetManagedAccountByUser(username).ToList();
                 if (l == null) l = new List<MailUser>();
                 if (l.Where(x => x.UserId.Equals(-1)).Count() == 0)
                     l.Insert(0, new MailUser() { UserId = -1, EmailAddress = "" });
@@ -169,10 +167,10 @@ namespace GestionePEC.Controls
 
         private void LoadTitoli()
         {
-            ITitolarioService<SendMail.Model.Titolo> ts = null;
+            TitolarioService<SendMail.Model.Titolo> ts = null;
             if (SessionManager<ITitolarioService<SendMail.Model.Titolo>>.exist(SessionKeys.TITOLARIO))
-            { ts = SessionManager<ITitolarioService<Titolo>>.get(SessionKeys.TITOLARIO); }
-            else { ts = ServiceLocator.GetServiceFactory().TitolarioService<SendMail.Model.Titolo>(); }
+            { ts = SessionManager<TitolarioService<Titolo>>.get(SessionKeys.TITOLARIO); }
+            else { ts = new TitolarioService<SendMail.Model.Titolo>(); }
             IList<SendMail.Model.Titolo> titoli = null;
             if (SessionManager<List<BackendUser>>.exist(SessionKeys.TITOLI))
             {
@@ -235,7 +233,7 @@ namespace GestionePEC.Controls
 
         protected void OnChangeIndex_ddlTitolo(object sender, EventArgs e)
         {
-            ITitolarioService<SendMail.Model.SottoTitolo> ts = ServiceLocator.GetServiceFactory().TitolarioService<SendMail.Model.SottoTitolo>();
+            TitolarioService<SendMail.Model.SottoTitolo> ts = new TitolarioService<SendMail.Model.SottoTitolo>();
             if (ddlTitolo.SelectedItem.Value != "-- Selezionare un titolo --" && ddlTitolo.SelectedItem.Value != string.Empty)
             {
                 IList<SendMail.Model.SottoTitolo> sottotitoli = ts.FindByTitolo(int.Parse(ddlTitolo.SelectedItem.Value));
@@ -256,6 +254,7 @@ namespace GestionePEC.Controls
 
         private void UtentiAccess()
         {
+            BackendUserService buService = new BackendUserService();
             if (ddlManagedAccounts.SelectedValue != null && ddlManagedAccounts.SelectedValue != string.Empty && ddlManagedAccounts.SelectedValue != "-1")
             {
 
@@ -266,7 +265,7 @@ namespace GestionePEC.Controls
                 }
                 else
                 {
-                    listaDipendentiAbilitati = ServiceLocator.GetServiceFactory().BackendUserService.GetDipendentiDipartimentoAbilitati(decimal.Parse(ddlManagedAccounts.SelectedValue));
+                    listaDipendentiAbilitati = buService.GetDipendentiDipartimentoAbilitati(decimal.Parse(ddlManagedAccounts.SelectedValue));
                 }
                 if (listaDipendentiAbilitati != null)
                 {
@@ -287,6 +286,7 @@ namespace GestionePEC.Controls
         private void CartellaAccess()
         {
             List<Folder> list = new List<Folder>();
+            MailLocalService mailLocalService = new MailLocalService();
             if (ddlManagedAccounts.SelectedValue != null && ddlManagedAccounts.SelectedValue != string.Empty && ddlManagedAccounts.SelectedValue != "-1")
             {
 
@@ -332,7 +332,7 @@ namespace GestionePEC.Controls
                 }
                 if (SessionManager<List<Folder>>.exist(SessionKeys.FOLDERS))
                 { list = SessionManager<List<Folder>>.get(SessionKeys.FOLDERS); }
-                else { list = ServiceLocator.GetServiceFactory().MailLocalService.getFoldersByAccount(decimal.Parse(ddlManagedAccounts.SelectedValue)).Where(x => x.TipoFolder == f || x.TipoFolder == m).ToList(); }
+                else { list = mailLocalService.getFoldersByAccount(decimal.Parse(ddlManagedAccounts.SelectedValue)).Where(x => x.TipoFolder == f || x.TipoFolder == m).ToList(); }
                 if (f == "C" && m == "I")
                 { list = list.Where(x => x.TipoFolder == f && (x.IdNome == "1" || x.IdNome == "3")).ToList(); }
                 if (f == "C" && m == "O")
@@ -406,11 +406,12 @@ namespace GestionePEC.Controls
 
         protected void OnPagerIndexChanged(string sPaginaRichiesta, int pag)
         {
+            MailLocalService mailLocalService = new MailLocalService();
             int da = (pag * int.Parse(Properties.Settings.Default.ListaRisultatiPerPagina)) + 1;
             int per = int.Parse(Properties.Settings.Default.ListaRisultatiPerPagina);
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
             idx = getDictionaryChoice();
-            ResultList<MailHeaderExtended> result = ServiceLocator.GetServiceFactory().MailLocalService.GetMailsGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, da, per);
+            ResultList<MailHeaderExtended> result = mailLocalService.GetMailsGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, da, per);
             gridBox.DataSource = result.List;
             gridBox.DataBind();
             gridBox.BottomPagerRow.Visible = true;
@@ -420,8 +421,9 @@ namespace GestionePEC.Controls
         protected void btnStampa_Click(object sender, EventArgs e)
         {
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
+            MailLocalService mailLocalService = new MailLocalService();
             idx = getDictionaryChoice();
-            ResultList<MailHeaderExtended> result = ServiceLocator.GetServiceFactory().MailLocalService.GetMailsGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, 1, 1000);
+            ResultList<MailHeaderExtended> result = mailLocalService.GetMailsGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, 1, 1000);
             byte[] b = Helpers.StampaEmailAttoITEXT(result.List.ToList(), ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedItem.Text, dtInizio.DateString(), dtFine.DateString(), rblIOBox.SelectedValue, ddlManagedAccounts.SelectedValue);
             Response.ContentType = "application/pdf";
             Response.AppendHeader("Content-Disposition", "attachment; filename=DistintaMail_" + ddlManagedAccounts.SelectedItem.Text + ".pdf");
@@ -456,10 +458,11 @@ namespace GestionePEC.Controls
         protected void btnLetta_Click(object sender, EventArgs e)
         {
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
+            MailLocalService mailLocalService = new MailLocalService();
             idx = getDictionaryChoice();
             try
             {
-                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.UpdateAllMails(MailStatus.LETTA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, idx);
+                bool ok = mailLocalService.UpdateAllMails(MailStatus.LETTA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, idx);
                 if (ok == true)
                 {
                     (this.Page as BasePage).info.AddMessage("Aggiornamento effettuato", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);
@@ -474,10 +477,11 @@ namespace GestionePEC.Controls
         protected void btnUnLetta_Click(object sender, EventArgs e)
         {
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
+            MailLocalService mailLocalService = new MailLocalService();
             idx = getDictionaryChoice();
             try
             {
-                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.UpdateAllMails(MailStatus.SCARICATA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, idx);
+                bool ok = mailLocalService.UpdateAllMails(MailStatus.SCARICATA, ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, idx);
                 if (ok == true)
                 {
                     (this.Page as BasePage).info.AddMessage("Aggiornamento effettuato", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);
@@ -497,11 +501,12 @@ namespace GestionePEC.Controls
         protected void btnOk_Click(object sender, EventArgs e)
         {
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
+            MailLocalService mailLocalService = new MailLocalService();
             idx = getDictionaryChoice();
             try
             {
                 decimal idaccount = decimal.Parse(ddlManagedAccounts.SelectedValue);
-                bool ok = ServiceLocator.GetServiceFactory().MailLocalService.MoveAllMails(ddlManagedAccounts.SelectedItem.Text, idaccount, ddlCartellaSposta.SelectedValue, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, rblIOBox.SelectedValue, idx);
+                bool ok = mailLocalService.MoveAllMails(ddlManagedAccounts.SelectedItem.Text, idaccount, ddlCartellaSposta.SelectedValue, ddlCartella.SelectedValue, MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, rblIOBox.SelectedValue, idx);
                 if (ok == true)
                 {
                     (this.Page as BasePage).info.AddMessage("Spostamento effettuato", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);
@@ -518,18 +523,7 @@ namespace GestionePEC.Controls
 
         #region Private
 
-        private string BuildScript()
-        {
-            StringBuilder sb = new StringBuilder();
-           // sb.Append(GetTabIndexIDScript());
-           // sb.Append(GetActivateTabScript());
-           // sb.Append(GetActivateTabChangedScript());
-           // sb.Append(GetCreateTabsScript());
-           // sb.Append(GetValidatePageScript());
-            return sb.ToString();
-        }
-
-
+       
         private void Search(string APageIndex)
         {
             int index = int.Parse(hdTabIndex.Value.ToString());
@@ -554,8 +548,8 @@ namespace GestionePEC.Controls
             if (ddlManagedAccounts.SelectedItem.Text != string.Empty && ddlCartella.SelectedValue != string.Empty &&
                 rblIOBox.SelectedValue != string.Empty && rblTipoFolder.SelectedValue != string.Empty)
             {
-
-                ResultList<MailHeaderExtended> result = ServiceLocator.GetServiceFactory().MailLocalService.GetMailsGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, 1, 5);
+                MailLocalService mailLocalService = new MailLocalService();
+                ResultList<MailHeaderExtended> result = mailLocalService.GetMailsGridByParams(ddlManagedAccounts.SelectedItem.Text, ddlCartella.SelectedValue, rblIOBox.SelectedValue, rblTipoFolder.SelectedValue, idx, 1, 5);
                 gridBox.DataSource = result.List;
                 gridBox.DataBind();
                 if (result.List.Count > 0)
@@ -679,111 +673,6 @@ namespace GestionePEC.Controls
 
         #endregion
 
-        #region Script
-
-        //private string GetCreateTabsScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append("Ext.onReady(function(){");
-        //    sb.Append("var ResearchTabs = new Ext.TabPanel({");
-        //    sb.Append(string.Format("renderTo: '{0}',", pnlTabContainer.ClientID));
-        //    sb.Append(string.Format("activeTab: {0},", hdTabIndex.Value.ToString()));
-        //    sb.Append("plain:true,");
-        //    sb.Append("defaults:{autoHeight: true, autoWidth: true, autoScroll: true},");
-        //    sb.Append("items:[");
-        //    sb.Append("{contentEl:'" + pnlCasella.ClientID + "', title: 'Casella Mail', listeners: {activate: RIAhandleActivate}}");
-        //    sb.Append("],");
-        //    sb.Append("listeners: {'tabchange': RIAactiveTabChanged}");
-        //    sb.Append("});");
-        //    sb.Append("ResearchTabs.render();");
-        //    sb.Append("});");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetActivateTabScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append("function RIAhandleActivate(tab)");
-        //    sb.Append("{");
-        //    sb.Append(" var pnl = document.getElementById(tab.contentEl);");
-        //    sb.Append(" if (pnl != null)");
-        //    sb.Append(" {");
-        //    sb.Append("     pnl.style.display = 'block';");
-        //    sb.Append(" }");
-        //    sb.Append("}");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetActivateTabChangedScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append("function RIAactiveTabChanged(tab, tabPanel)");
-        //    sb.Append("{");
-        //    /*[LBONI]: 
-        //     * azzera il riferimento al controllo non valido sul quale settare il focus
-        //     * in quanto l'utente si è spostato di tab.
-        //     * evita la comparsa di un errore js per control.focus() 
-        //     * su di un controllo non accessibile.
-        //    */
-        //    sb.Append(" Page_InvalidControlToBeFocused = null;");
-        //    sb.Append(" var index = 0;");
-        //    sb.Append(" switch (tabPanel.title)");
-        //    sb.Append(" {");
-        //    sb.Append("     case 'Casella Mail':");
-        //    sb.Append("         RIAValidationGroup = 'vgTabCodiceIndiv';");
-        //    sb.Append("         index = 0;");
-        //    sb.Append("         break;");
-        //    sb.Append(" }");
-        //    sb.Append(" var tabIndex = document.getElementById(hdTabIndexID);");
-        //    sb.Append(" if (tabIndex != null)");
-        //    sb.Append("     tabIndex.value = index;");
-        //    sb.Append("}");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetValidatePageScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    //sb.Append("var RIAValidationGroup = 'vgTabCodiceIndiv';");
-        //    sb.Append(string.Format("var RIAValidationGroup = '{0}';", GetCurrentValidationGroup()));
-
-        //    sb.Append("function RIAValidatePage(sender, event)");
-        //    sb.Append("{");
-        //    sb.Append(" var fResult = false;");
-        //    sb.Append(" if (RIAValidationGroup != '')");
-        //    sb.Append(" {");
-        //    sb.Append("     Page_ClientValidate(RIAValidationGroup);");
-        //    sb.Append("     fResult = Page_IsValid;");
-        //    sb.Append("     if (!fResult)");
-        //    sb.Append("         Page_BlockSubmit = false;");
-        //    sb.Append(" }");
-        //    sb.Append(" return fResult;");
-        //    sb.Append("}");
-
-        //    return sb.ToString();
-        //}
-
-
-        //private string GetTabIndexIDScript()
-        //{
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.Append(string.Format("var hdTabIndexID ='{0}';", hdTabIndex.ClientID));
-
-        //    return sb.ToString();
-        //}
-
-
-        #endregion
+     
     }
 }

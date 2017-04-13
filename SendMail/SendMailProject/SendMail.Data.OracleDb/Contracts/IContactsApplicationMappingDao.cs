@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using SendMail.Model;
+using SendMail.Business.Data.QueryModel;
 using Com.Delta.Data.QueryModel;
-using SendMail.Model.ContactApplicationMapping;
 
 namespace SendMail.DataContracts.Interfaces
 {

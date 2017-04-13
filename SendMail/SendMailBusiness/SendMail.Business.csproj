@@ -186,10 +186,6 @@
       <Project>{647c1188-a0da-412b-9640-218cf6c3e99a}</Project>
       <Name>SendMail.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SendMailProject\SendMail.Data.OracleDb\SendMail.Data.OracleDb.csproj">
-      <Project>{492C4859-0E27-4F6A-8E85-EC0B479FE035}</Project>
-      <Name>SendMail.Data.OracleDb</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\System.Threading.dll" />

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Gestione Errore" Language="C#" MasterPageFile="~/Master/Mail.Master" Theme="Delta" AutoEventWireup="true" CodeBehind="ErrorPage.aspx.cs" Inherits="GestionePEC.pages.common.ErrorPage" %>
+﻿<%@ Page Title="Gestione Errore" Language="C#" MasterPageFile="~/Master/Mail.Master" Theme="Delta" AutoEventWireup="true" CodeBehind="ErrorPage.aspx.cs" Inherits="GestionePEC.pages.pubblica.ErrorPage" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="WestContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">

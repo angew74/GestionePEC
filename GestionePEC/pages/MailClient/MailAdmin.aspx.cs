@@ -6,15 +6,15 @@ using Com.Delta.Security;
 using Com.Delta.Web.Session;
 using GestionePEC.Extensions;
 using log4net;
-using SendMail.Locator;
+using SendMail.BusinessEF;
+using SendMail.BusinessEF.Contracts;
+using SendMail.BusinessEF.MailFacedes;
 using SendMail.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace GestionePEC.pages.MailClient
@@ -97,7 +97,8 @@ namespace GestionePEC.pages.MailClient
                 List<MailServer> s = new List<MailServer>();
                 try
                 {
-                    s = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetAll()
+                    MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
+                    s = facade.GetAll()
                         as List<MailServer>;
                 }
                 catch { }
@@ -130,7 +131,8 @@ namespace GestionePEC.pages.MailClient
             {
                 if (!(SessionManager<BackendUser>.exist(SessionKeys.BACKEND_USER)))
                 {
-                    _bUser = (BackendUser)ServiceLocator.GetServiceFactory().BackendUserService.GetByUserName(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
+                    BackendUserService buservice = new BackendUserService();
+                    _bUser = (BackendUser)buservice.GetByUserName(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
                     SessionManager<BackendUser>.set(SessionKeys.BACKEND_USER, _bUser);
                 }
                 else { _bUser = SessionManager<BackendUser>.get(SessionKeys.BACKEND_USER); }
@@ -139,21 +141,13 @@ namespace GestionePEC.pages.MailClient
             {
                 if (ex.GetType() != typeof(ManagedException))
                 {
-                    //TASK: Allineamento log - Ciro
+                   
                     ManagedException mEx = new ManagedException("Errore nel caricamento dei dati utente", "CM001",
                         string.Empty, string.Empty, ex.InnerException);
                     ErrorLogInfo err = new ErrorLogInfo(mEx);
                     err.loggingAppCode = "WEB_MAIL";
-                    err.objectID = this.Context.Session.SessionID;
-                    //if (MySecurityProvider.CurrentPrincipal != null && MySecurityProvider.CurrentPrincipal.Identity != null)
-                    //    err.userID = MySecurityProvider.CurrentPrincipal.Identity.Name;
-                    log.Error(err);
-                    //ManagedException mEx = new ManagedException(
-                    //    "Errore nel caricamento dei dati utente",
-                    //    "001", "", "", ex);
-                    //Com.Delta.Logging.Errors.ErrorLog err = new Com.Delta.Logging.Errors.ErrorLog("CM", mEx);
-                    //log.Error(err);
-
+                    err.objectID = this.Context.Session.SessionID;                    
+                    log.Error(err);         
                     info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                 }
                 else
@@ -184,12 +178,13 @@ namespace GestionePEC.pages.MailClient
         private void PopolaDDLDipartimenti()
         {
             List<BackendUser> deps = new List<BackendUser>();
+            BackendUserService bus = new BackendUserService();
             try
             {
-                deps = (List<BackendUser>)ServiceLocator.GetServiceFactory().BackendUserService.GetDipartimentiByAdmin(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
+                deps = (List<BackendUser>)bus.GetDipartimentiByAdmin(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
                 if (deps == null || deps.Count == 0)
                 {
-                    deps = (List<BackendUser>)ServiceLocator.GetServiceFactory().BackendUserService.GetAllDipartimentiByMailAdmin(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
+                    deps = (List<BackendUser>)bus.GetAllDipartimentiByMailAdmin(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
                 }
                 ddlListaDipartimenti.DataSource = deps;
                 ddlListaDipartimenti.DataBind();
@@ -197,23 +192,13 @@ namespace GestionePEC.pages.MailClient
             catch (Exception ex)
             {
                 if (ex.GetType() != typeof(ManagedException))
-                {
-                    //TASK: Allineamento log - Ciro
+                {                 
                     ManagedException mEx = new ManagedException("Errore nel caricamento dei dipatimenti", "CM002",
                         string.Empty, string.Empty, ex.InnerException);
                     ErrorLogInfo err = new ErrorLogInfo(mEx);
                     err.loggingAppCode = "WEB_MAIL";
-                    err.objectID = this.Context.Session.SessionID;
-                    //if (MySecurityProvider.CurrentPrincipal != null && MySecurityProvider.CurrentPrincipal.Identity != null)
-                    //    err.userID = MySecurityProvider.CurrentPrincipal.Identity.Name;
+                    err.objectID = this.Context.Session.SessionID;                 
                     log.Error(err);
-
-                    //ManagedException mEx = new ManagedException(
-                    //    "Errore nel caricamento dei dipartimenti",
-                    //    "002", "", "", ex);
-                    //Com.Delta.Logging.Errors.ErrorLog err = new Com.Delta.Logging.Errors.ErrorLog("CM", mEx);
-                    //log.Error(err);
-
                     throw mEx;
                 }
                 else
@@ -229,7 +214,8 @@ namespace GestionePEC.pages.MailClient
             {
                 try
                 {
-                    List<BackendUser> listaDipendentiNONAbilitati = ServiceLocator.GetServiceFactory().BackendUserService.GetDipendentiDipartimentoNONAbilitati(this.Dipartimento_ViewState, this.IdSender_ViewState);
+                    BackendUserService bus = new BackendUserService();
+                    List<BackendUser> listaDipendentiNONAbilitati = bus.GetDipendentiDipartimentoNONAbilitati(this.Dipartimento_ViewState, this.IdSender_ViewState);
                     pnlElencoUtenti.Visible = true;
 
                     if (listaDipendentiNONAbilitati != null)
@@ -243,22 +229,13 @@ namespace GestionePEC.pages.MailClient
                 catch (Exception ex)
                 {
                     if (ex.GetType() != typeof(ManagedException))
-                    {
-                        //TASK: Allineamento log - Ciro
+                    {                       
                         ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti non abilitati", "CM003",
                             string.Empty, string.Empty, ex.InnerException);
                         ErrorLogInfo err = new ErrorLogInfo(mEx);
                         err.loggingAppCode = "WEB_MAIL";
-                        err.objectID = this.Context.Session.SessionID;
-                        //if (MySecurityProvider.CurrentPrincipal != null && MySecurityProvider.CurrentPrincipal.Identity != null)
-                        //    err.userID = MySecurityProvider.CurrentPrincipal.Identity.Name;
+                        err.objectID = this.Context.Session.SessionID;                      
                         log.Error(err);
-                        //ManagedException mEx = new ManagedException(
-                        //    "Errore nel caricamento degli utenti non abilitati",
-                        //    "003", "", "", ex);
-                        //Com.Delta.Logging.Errors.ErrorLog err = new Com.Delta.Logging.Errors.ErrorLog("CM", mEx);
-                        //log.Error(err);
-
                         throw mEx;
                     }
                     else
@@ -275,7 +252,8 @@ namespace GestionePEC.pages.MailClient
             {
                 try
                 {
-                    List<BackendUser> listaDipendentiAbilitati = ServiceLocator.GetServiceFactory().BackendUserService.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
+                    BackendUserService bus = new BackendUserService();
+                    List<BackendUser> listaDipendentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
                     if (listaDipendentiAbilitati != null)
                     {
                         lvDipendentiAbilitati.DataSource = listaDipendentiAbilitati.OrderBy(x => x.UserName);
@@ -285,22 +263,14 @@ namespace GestionePEC.pages.MailClient
                 catch (Exception ex)
                 {
                     if (ex.GetType() != typeof(ManagedException))
-                    {
-                        //TASK: Allineamento log - Ciro
+                    {                     
                         ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti abilitati", "CM0014",
                             string.Empty, string.Empty, ex.InnerException);
                         ErrorLogInfo err = new ErrorLogInfo(mEx);
                         err.loggingAppCode = "WEB_MAIL";
-                        err.objectID = this.Context.Session.SessionID;
-                        //if (MySecurityProvider.CurrentPrincipal != null && MySecurityProvider.CurrentPrincipal.Identity != null)
-                        //    err.userID = MySecurityProvider.CurrentPrincipal.Identity.Name;
+                        err.objectID = this.Context.Session.SessionID;                       
                         log.Error(err);
-                        //ManagedException mEx = new ManagedException(
-                        //    "Errore nel caricamento degli utenti abilitati",
-                        //    "014", "", "", ex);
-                        //Com.Delta.Logging.Errors.ErrorLog err = new Com.Delta.Logging.Errors.ErrorLog("CM", mEx);
-                        //log.Error(err);
-
+                       
                         throw mEx;
                     }
                     else
@@ -317,7 +287,8 @@ namespace GestionePEC.pages.MailClient
             {
                 try
                 {
-                    List<BackendUser> listaDipendentiAbilitati = ServiceLocator.GetServiceFactory().BackendUserService.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
+                    BackendUserService bus = new BackendUserService();
+                    List<BackendUser> listaDipendentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
                     if (listaDipendentiAbilitati != null)
                     {
                         lvUtentiAdmin.DataSource = listaDipendentiAbilitati.Where(x => x.RoleMail == 1);
@@ -327,8 +298,7 @@ namespace GestionePEC.pages.MailClient
                 catch (Exception ex)
                 {
                     if (ex.GetType() != typeof(ManagedException))
-                    {
-                        //TASK: Allineamento log - Ciro
+                    {                       
                         ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti abilitati", "CM015",
                             string.Empty, string.Empty, ex.InnerException);
                         ErrorLogInfo err = new ErrorLogInfo(mEx);
@@ -351,7 +321,8 @@ namespace GestionePEC.pages.MailClient
             {
                 try
                 {
-                    List<BackendUser> listaDipendentiAbilitati = ServiceLocator.GetServiceFactory().BackendUserService.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
+                    BackendUserService bus = new BackendUserService();
+                    List<BackendUser> listaDipendentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
                     if (listaDipendentiAbilitati != null)
                     {
                         lvUtenti.DataSource = listaDipendentiAbilitati.Where(x => x.RoleMail == 0);
@@ -368,13 +339,7 @@ namespace GestionePEC.pages.MailClient
                         ErrorLogInfo err = new ErrorLogInfo(mEx);
                         err.loggingAppCode = "WEB_MAIL";
                         err.objectID = this.Context.Session.SessionID;                       
-                        log.Error(err);
-                        //ManagedException mEx = new ManagedException(
-                        //    "Errore nel caricamento degli utenti abilitati",
-                        //    "004", "", "", ex);
-                        //Com.Delta.Logging.Errors.ErrorLog err = new Com.Delta.Logging.Errors.ErrorLog("CM", mEx);
-                        //log.Error(err);
-
+                        log.Error(err);     
                         throw mEx;
                     }
                     else
@@ -632,7 +597,8 @@ namespace GestionePEC.pages.MailClient
             if (this.IdSender_ViewState != decimal.MinusOne)
                 try
                 {
-                    e.ObjectInstance = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetUserByUserId(this.IdSender_ViewState);
+                    MailServerConfigFacade serverFacade = MailServerConfigFacade.GetInstance();
+                    e.ObjectInstance = serverFacade.GetUserByUserId(this.IdSender_ViewState);
                 }
                 catch (Exception ex)
                 {
@@ -661,6 +627,7 @@ namespace GestionePEC.pages.MailClient
         {
             try
             {
+                MailAccountService mailAccountService = new MailAccountService();
                 MailUser mu = e.InputParameters[0] as MailUser;
                 if (!IsValidEmailDesc(mu.EmailAddress))
                 {
@@ -668,14 +635,13 @@ namespace GestionePEC.pages.MailClient
                     info.AddMessage("Errore nel formato della mail", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                     return;
                 }
-                ServiceLocator.GetServiceFactory().MailAccountService.Update(mu);
+                mailAccountService.Update(mu);
                 info.AddMessage("Operazione effettauata", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.OK);
             }
             catch (Exception ex)
             {
                 if (ex.GetType() != typeof(ManagedException))
-                {
-                    //TASK: Allineamento log - Ciro
+                {                 
                     ManagedException mEx = new ManagedException("Errore nel caricamento della configurazione della mail", "CM008",
                         string.Empty, string.Empty, ex.InnerException);
                     ErrorLogInfo err = new ErrorLogInfo(mEx);
@@ -696,7 +662,7 @@ namespace GestionePEC.pages.MailClient
         protected void odsMailConfig_Inserting(object sender, ObjectDataSourceMethodEventArgs e)
         {
             MailUser mu = e.InputParameters[0] as MailUser;
-
+            MailAccountService mailAccountService = new MailAccountService();
             if (!IsValidEmailDesc(mu.EmailAddress))
             {
                 e.Cancel = true;
@@ -705,9 +671,10 @@ namespace GestionePEC.pages.MailClient
             }
             try
             {
-                ServiceLocator.GetServiceFactory().MailAccountService.Insert(mu);
+                mailAccountService.Insert(mu);
                 this.IdSender_ViewState = mu.UserId;
-                _bUser = (BackendUser)ServiceLocator.GetServiceFactory().BackendUserService.GetByUserName(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
+                BackendUserService buservice = new BackendUserService();
+                _bUser = (BackendUser)buservice.GetByUserName(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
                 popolaGridElencoEmailsShared();
                 info.AddMessage("Operazione effettuata", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.OK);
             }
@@ -786,7 +753,8 @@ namespace GestionePEC.pages.MailClient
             {
                 try
                 {
-                    e.ObjectInstance = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().LoadServerConfigById(this.IdServer_ViewState);
+                    MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
+                    e.ObjectInstance = facade.LoadServerConfigById(this.IdServer_ViewState);
                 }
                 catch (Exception ex)
                 {
@@ -817,7 +785,8 @@ namespace GestionePEC.pages.MailClient
             MailServer ms = e.InputParameters[0] as MailServer;
             try
             {
-                ServiceLocator.GetServiceFactory().getMailServerConfigFacade().updateServerConfig(ms);
+                MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
+                facade.updateServerConfig(ms);
                 info.AddMessage("Operazione effettuata", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.OK);
             }
             catch (ManagedException mEx)
@@ -845,7 +814,8 @@ namespace GestionePEC.pages.MailClient
             MailServer ms = e.InputParameters[0] as MailServer;
             try
             {
-                ServiceLocator.GetServiceFactory().getMailServerConfigFacade().insertServerConfig(ms);
+                MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
+                facade.insertServerConfig(ms);
                 this.IdServer_ViewState = ms.Id;
                 info.AddMessage("Operazione effettuata", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.OK);
             }
@@ -930,7 +900,8 @@ namespace GestionePEC.pages.MailClient
                     {
                         isItemChecked = true;
                         decimal userId = Decimal.Parse((lvi.FindControl("lb_ID_UTENTE") as HiddenField).Value);
-                        ServiceLocator.GetServiceFactory().BackendUserService.InsertAbilitazioneEmail(userId, this.IdSender_ViewState, 0);
+                        BackendUserService buservice = new BackendUserService();
+                        buservice.InsertAbilitazioneEmail(userId, this.IdSender_ViewState, 0);
                     }
                 }
 
@@ -943,8 +914,7 @@ namespace GestionePEC.pages.MailClient
             catch (Exception ex)
             {
                 if (ex.GetType() != typeof(ManagedException))
-                {
-                    //TASK: Allineamento log - Ciro
+                {                   
                     ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM023",
                         string.Empty, string.Empty, ex.InnerException);
                     ErrorLogInfo err = new ErrorLogInfo(mEx);
@@ -977,7 +947,8 @@ namespace GestionePEC.pages.MailClient
 
                         if (userId != this.UserIdBackendUser_ViewState && role <= this.RoleBackendUser_ViewState)
                         {
-                            ServiceLocator.GetServiceFactory().BackendUserService.RemoveAbilitazioneEmail(userId, this.IdSender_ViewState);
+                            BackendUserService buservice = new BackendUserService();
+                            buservice.RemoveAbilitazioneEmail(userId, this.IdSender_ViewState);
                         }
                     }
                 }
@@ -1028,7 +999,8 @@ namespace GestionePEC.pages.MailClient
                     {
                         isItemChecked = true;
                         decimal userId = Decimal.Parse((lvi.FindControl("lb_ID_UTENTE_ADMIN") as HiddenField).Value);
-                        ServiceLocator.GetServiceFactory().BackendUserService.UpdateAbilitazioneEmail(userId, this.IdSender_ViewState, 1);
+                        BackendUserService buservice = new BackendUserService();
+                        buservice.UpdateAbilitazioneEmail(userId, this.IdSender_ViewState, 1);
                     }
                 }
 
@@ -1074,7 +1046,8 @@ namespace GestionePEC.pages.MailClient
 
                         if (userId != this.UserIdBackendUser_ViewState && role <= this.RoleBackendUser_ViewState)
                         {
-                            ServiceLocator.GetServiceFactory().BackendUserService.UpdateAbilitazioneEmail(userId, this.IdSender_ViewState, 0);
+                            BackendUserService buservice = new BackendUserService();
+                            buservice.UpdateAbilitazioneEmail(userId, this.IdSender_ViewState, 0);
                         }
                     }
                 }
@@ -1121,19 +1094,21 @@ namespace GestionePEC.pages.MailClient
 
             try
             {
-                foreach (ListViewItem lvi in lvCartelleNonAbilitate.Items)
+                foreach (ListViewItem lvi in lvCartelleNonAbilitate.Items) 
                 {
                     if ((lvi.FindControl("checkBoxCartelleNonAbilitate") as CheckBox).Checked)
                     {
                         isItemChecked = true;
                         string[] listaIdStr = (lvi.FindControl("lb_NOME_CARTELLA") as HiddenField).Value.Split(';');
-                        ServiceLocator.GetServiceFactory().SendersFoldersService.InsertAbilitazioneFolder(Convert.ToInt32(listaIdStr[0]), Convert.ToInt32(listaIdStr[1]), Convert.ToInt32(listaIdStr[2]));
+                        SendersFoldersService sfs = new SendersFoldersService();
+                        sfs.InsertAbilitazioneFolder(Convert.ToInt32(listaIdStr[0]), Convert.ToInt32(listaIdStr[1]), Convert.ToInt32(listaIdStr[2]));
                         MailUser m = WebMailClientManager.getAccount();
                         if (m != null)
                         {
                             WebMailClientManager.AccountRemove();
-                            MailUser account = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetUserByUserId(m.UserId);
-                            ServiceLocator.GetServiceFactory().getMailServerFacade(account);
+                            MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
+                            MailUser account = facade.GetUserByUserId(m.UserId);
+                            MailServerFacade serverFacade = MailServerFacade.GetInstance(account); 
                             account.Validated = true;
                             WebMailClientManager.SetAccount(account);
                         }
@@ -1178,13 +1153,15 @@ namespace GestionePEC.pages.MailClient
                     {
                         isItemChecked = true;
                         string[] listaIdStr = (lvi.FindControl("lb_NOME_CARTELLA_ABILITATA") as HiddenField).Value.Split(';');
-                        ServiceLocator.GetServiceFactory().SendersFoldersService.DeleteAbilitazioneFolder(Convert.ToInt32(listaIdStr[0]), Convert.ToInt32(listaIdStr[1]));
+                        SendersFoldersService sfs = new SendersFoldersService();
+                        sfs.DeleteAbilitazioneFolder(Convert.ToInt32(listaIdStr[0]), Convert.ToInt32(listaIdStr[1]));
                         MailUser m = WebMailClientManager.getAccount();
                         if (m != null)
                         {
                             WebMailClientManager.AccountRemove();
-                            MailUser account = ServiceLocator.GetServiceFactory().getMailServerConfigFacade().GetUserByUserId(m.UserId);
-                            ServiceLocator.GetServiceFactory().getMailServerFacade(account);
+                            MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
+                            MailUser account = facade.GetUserByUserId(m.UserId);                            
+                            MailServerFacade serverFacade = MailServerFacade.GetInstance(account);
                             account.Validated = true;
                             WebMailClientManager.SetAccount(account);
                         }
@@ -1221,7 +1198,8 @@ namespace GestionePEC.pages.MailClient
 
         public void popolaListaFoldersNonAbilitate(string eMail)
         {
-            List<SendersFolders> listaCartelleNonAbilitate = ServiceLocator.GetServiceFactory().SendersFoldersService.GetFoldersNONAbilitati(eMail);
+            SendersFoldersService sfs = new SendersFoldersService();
+            List<SendersFolders> listaCartelleNonAbilitate = sfs.GetFoldersNONAbilitati(eMail);
             lvCartelleNonAbilitate.DataSource = listaCartelleNonAbilitate;
             lvCartelleNonAbilitate.DataBind();
 
@@ -1229,7 +1207,8 @@ namespace GestionePEC.pages.MailClient
 
         public void popolaListaFoldersAbilitate(string eMail)
         {
-            List<SendersFolders> listaCartelleAbilitate = ServiceLocator.GetServiceFactory().SendersFoldersService.GetFoldersAbilitati(eMail);
+            SendersFoldersService sfs = new SendersFoldersService();
+            List<SendersFolders> listaCartelleAbilitate = sfs.GetFoldersAbilitati(eMail);
             lvCartelleAbilitate.DataSource = listaCartelleAbilitate;
             lvCartelleAbilitate.DataBind();
         }

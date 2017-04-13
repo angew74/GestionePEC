@@ -19,7 +19,7 @@ namespace SendMail.Data.SQLServerDB.Repository
         private static readonly ILog log = LogManager.GetLogger(typeof(MailServerDaoSQLDb));
         public ICollection<MailServer> GetAll()
         {
-            List<MailServer> mailservers = null;
+            List<MailServer> mailservers = new List<MailServer>();
             using (var dbcontext = new FAXPECContext())
             {
                 // preparo il command

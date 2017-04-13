@@ -3,30 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AspNet.Identity.OracleProvider
+namespace AspNet.Identity.SQLServerProvider
 {
     using System;
     using System.Threading.Tasks;
     using Microsoft.AspNet.Identity;
     using Repositories;
+    using SQLServerProvider;
 
     public class RoleStore : IRoleStore<IdentityRole>
     {
         private readonly RoleRepository _roleRepository;
 
         public RoleStore()
-            : this(new OracleDataContext())
+            : this(new SQLServerDataContext())
         {
         }
 
-        public RoleStore(OracleDataContext oracleContext)
+        public RoleStore(SQLServerDataContext oracleContext)
         {
             Database = oracleContext;
 
             _roleRepository = new RoleRepository(oracleContext);
         }
 
-        public OracleDataContext Database { get; private set; }
+        public SQLServerDataContext Database { get; private set; }
 
         public Task CreateAsync(IdentityRole role)
         {

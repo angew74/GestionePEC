@@ -8,7 +8,6 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
-using log4net.Appender;
 using System.IO;
 using log4net.Layout;
 

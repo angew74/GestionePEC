@@ -1,16 +1,14 @@
 ﻿using ActiveUp.Net.Common.DeltaExt;
 using ActiveUp.Net.Mail.DeltaExt;
-using Com.Delta.Data.QueryModel;
 using SendMail.Model;
 using SendMail.Model.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SendMail.Model.RubricaMapping;
 using System.Data.Common;
+using SendMail.Business.Data.QueryModel;
 
 namespace SendMail.Data.SQLServerDB.Mapping
 {
