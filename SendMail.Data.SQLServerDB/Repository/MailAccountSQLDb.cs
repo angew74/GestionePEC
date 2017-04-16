@@ -178,10 +178,12 @@ namespace SendMail.Data.SQLServerDB.Repository
                         //{
                         //   List<Folder> a = AutoMapperConfiguration.MapToFolderModel(f);
                         //}
-                        string queryFolder = "SELECT FOLDERS.ID, FOLDERS.NOME, TIPO,SYSTEM,IDNOME FROM FOLDERS,FOLDERS_SENDERS WHERE IDFOLDER=FOLDERS.ID AND IDSENDER=" + UserId;
+                        string queryFolder = "SELECT FOLDERS.ID, FOLDERS.NOME, TIPO,SYSTEM,IDNOME FROM [FAXPEC].[FAXPEC].[FOLDERS],[FAXPEC].[FAXPEC].[FOLDERS_SENDERS] WHERE IDFOLDER=FOLDERS.ID AND IDSENDER=" + UserId;
                         oCmd.CommandText = queryFolder;
+                        oCmd.Connection.Open();
                         using (DbDataReader r = oCmd.ExecuteReader())
                         {
+                            
                             if (r.HasRows)
                             {
                                 list = new List<Folder>();
@@ -192,6 +194,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 }
                             }
                         }
+                        oCmd.Connection.Close();
                     }
                 }
             }
@@ -220,11 +223,12 @@ namespace SendMail.Data.SQLServerDB.Repository
                     using (var oCmd = dbcontext.Database.Connection.CreateCommand())
                     {
                         string queryActions = " SELECT ACTIONS.ID, ACTIONS.NOME_AZIONE,ACTIONS.ID_NOME_DESTINAZIONE,ACTIONS.TIPO_DESTINAZIONE, " +
-                        " ACTIONS.TIPO_AZIONE, ACTIONS.NUOVO_STATUS,ACTIONS_FOLDERS.IDFOLDER,ACTIONS.ID_FOLDER_DESTINAZIONE " + " FROM ACTIONS, ACTIONS_FOLDERS,FOLDERS_SENDERS,FOLDERS " +
-                         " WHERE FOLDERS.ID= " + id + " AND FOLDERS_SENDERS.IDFOLDER=FOLDERS.ID " + " AND FOLDERS_SENDERS.IDSENDER = " + id + " AND FOLDERS_SENDERS.IDFOLDER= ACTIONS_FOLDERS.IDFOLDER "
-                        + " AND ACTIONS.ID= ACTIONS_FOLDERS.IDACTION AND ((ID_FOLDER_DESTINAZIONE IN (SELECT FOLDERS_SENDERS.IDFOLDER " + " FROM FOLDERS_SENDERS WHERE IDSENDER = " + IdUser + " )) " +
+                        " ACTIONS.TIPO_AZIONE, ACTIONS.NUOVO_STATUS,ACTIONS_FOLDERS.IDFOLDER,ACTIONS.ID_FOLDER_DESTINAZIONE " + " FROM [FAXPEC].[FAXPEC].ACTIONS, [FAXPEC].[FAXPEC].ACTIONS_FOLDERS,[FAXPEC].[FAXPEC].FOLDERS_SENDERS,[FAXPEC].[FAXPEC].FOLDERS " +
+                         " WHERE FOLDERS.ID= " + id + " AND FOLDERS_SENDERS.IDFOLDER=FOLDERS.ID " + " AND FOLDERS_SENDERS.IDSENDER = " + IdUser + " AND FOLDERS_SENDERS.IDFOLDER= ACTIONS_FOLDERS.IDFOLDER "
+                        + " AND ACTIONS.ID= ACTIONS_FOLDERS.IDACTION AND ((ID_FOLDER_DESTINAZIONE IN (SELECT FOLDERS_SENDERS.IDFOLDER " + " FROM [FAXPEC].[FAXPEC].FOLDERS_SENDERS WHERE IDSENDER = " + IdUser + " )) " +
                          "OR (ID_FOLDER_DESTINAZIONE IS NULL AND FOLDERS.TIPO IN ('I','E')))";
                         oCmd.CommandText = queryActions;
+                        oCmd.Connection.Open();
                         using (var r = oCmd.ExecuteReader())
                         {
                             if (r.HasRows)
@@ -236,6 +240,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 }
                             }
                         }
+                        oCmd.Connection.Close();
                     }
                 }
             }
@@ -273,7 +278,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     int idmailserver = (int)mailsender.ID_MAILSERVER;
                     MAILSERVERS ms = dbcontext.MAILSERVERS.Where(x => x.ID_SVR == idmailserver).FirstOrDefault();
                     MailServer s = AutoMapperConfiguration.FromMailServersToModel(ms);
-                    int idmailuser = (int)mailsender.ID_SENDER;
+                    int idmailuser = (int)mailsender.ID_SENDER;                
                     List<Folder> list = GetMailFolders(idmailuser);
                     user = DaoSQLServerDBHelper.MapToMailUser(mailsender, s, list);
                 }

@@ -68,9 +68,9 @@ namespace SendMail.Data.SQLServerDB.Repository
                     sb.Append("SELECT USER_MAIL AS ACCOUNT, UPPER(USER_ID) AS UTE,")
                     .Append(" COUNT(*) AS TOT  FROM ")
                     .Append(" LOG_ACTIONS WHERE ")
-                    .Append(" TRUNC(LOG_DATE,'DD')")
-                    .Append("  BETWEEN TO_DATE(" + datainizio + "','DD/MM/YYYY') ")
-                    .Append("  AND TO_DATE('" + datainizio + "','DD/MM/YYYY')  ")
+                    .Append(" convert(nvarchar(10),LOG_DATE,103)")
+                    .Append("  BETWEEN '" + datainizio + "' ")
+                    .Append("  AND '" + datainizio + "'  ")
                     .Append("  AND (UPPER(USER_MAIL)= '" + account.ToUpper() + "') ")
                     .Append(" AND LOG_CODE IN ('CRB_MOV','CRB_DEL','CRB_ARK','CRB_RIPK','CRB_RIPC')");
                     if (utente.ToUpper().Trim() != "TUTTI")
@@ -276,10 +276,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                                          "MAIL_USERS_BACKEND.DOMAIN, " +
                                          "0 as  ROLE_USER, " +
                                          "0 AS ROLE_MAIL" +
-                                         " FROM MAIL_USERS_BACKEND " +
-                                         " LEFT OUTER JOIN MAIL_USERS_SENDER_BACKEND ON ID_USER=REF_ID_USER " +
+                                         " FROM  [FAXPEC].[FAXPEC].[MAIL_USERS_BACKEND] " +
+                                         " LEFT OUTER JOIN  [FAXPEC].[FAXPEC].[MAIL_USERS_SENDER_BACKEND] ON ID_USER=REF_ID_USER " +
                                          " WHERE MAIL_USERS_BACKEND.ID_USER NOT IN " +
-                                         " (SELECT MAIL_USERS_SENDER_BACKEND.REF_ID_USER FROM MAIL_USERS_SENDER_BACKEND " +
+                                         " (SELECT MAIL_USERS_SENDER_BACKEND.REF_ID_USER FROM  [FAXPEC].[FAXPEC].[MAIL_USERS_SENDER_BACKEND] " +
                                          "WHERE MAIL_USERS_SENDER_BACKEND.REF_ID_SENDER = " + idSender + ") " +
                                          "AND MAIL_USERS_BACKEND.DEPARTMENT = '" + dipartimento + "'";
                         using (var r = oCmd.ExecuteReader())
@@ -323,7 +323,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     using (var oCmd = dbcontext.Database.Connection.CreateCommand())
                     {
                         oCmd.CommandText = "SELECT DISTINCT MAIL_USERS_ADMIN_BACKEND.DEPARTMENT " +
-                                           "FROM MAIL_USERS_ADMIN_BACKEND, MAIL_USERS_BACKEND  " +
+                                           "FROM  [FAXPEC].[FAXPEC].[MAIL_USERS_ADMIN_BACKEND],  [FAXPEC].[FAXPEC].[MAIL_USERS_BACKEND]  " +
                                            " WHERE REF_ID_USER=ID_USER  " +
                                            " AND UPPER(MAIL_USERS_BACKEND.USER_NAME)='" + UserName.ToUpper().Trim() + "'" +
                                            " ORDER BY MAIL_USERS_ADMIN_BACKEND.DEPARTMENT";
@@ -375,7 +375,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                            "MAIL_USERS_BACKEND.ROLE ROLE_USER, " +
                                            "MAIL_USERS_SENDER_BACKEND.REF_ID_SENDER ID_SENDER, " +
                                            "MAIL_USERS_SENDER_BACKEND.ROLE AS ROLE_MAIL " +
-                                           "FROM MAIL_USERS_BACKEND, MAIL_USERS_SENDER_BACKEND " +
+                                           "FROM  [FAXPEC].[FAXPEC].[MAIL_USERS_BACKEND],  [FAXPEC].[FAXPEC].[MAIL_USERS_SENDER_BACKEND] " +
                                            "WHERE MAIL_USERS_BACKEND.ID_USER = MAIL_USERS_SENDER_BACKEND.REF_ID_USER " +
                                            "AND MAIL_USERS_SENDER_BACKEND.REF_ID_SENDER = " + idSender +
                                            " ORDER BY MAIL_USERS_SENDER_BACKEND.DATA_INSERIMENTO DESC";

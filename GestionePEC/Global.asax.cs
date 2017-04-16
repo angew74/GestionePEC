@@ -201,7 +201,7 @@ namespace GestionePEC
             //);
             routes.Add("Default",
                 new Route("",
-                    new WebFormRouteHandler("~/Default.aspx")
+                    new WebFormRouteHandler("~/pages/common/Default.aspx")
                 )
             );
         }

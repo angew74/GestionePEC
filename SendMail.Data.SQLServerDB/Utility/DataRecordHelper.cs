@@ -95,6 +95,31 @@ namespace System.Data
             return result;
         }
 
+        public static float GetFloat(this IDataRecord dr, string field)
+        {
+            float result = 0;
+            try
+            {
+                int index = dr.GetOrdinal(field);
+                if (!dr.IsDBNull(index))
+                    result = dr.GetFloat(index);
+            }
+            /*TODO: INSERIRE I LOG DELLE ECCEZIONI*/
+            catch (IndexOutOfRangeException ie)
+            {
+                //The name specified is not a valid column name. 
+                throw ie;
+            }
+            /*TODO: INSERIRE I LOG DELLE ECCEZIONI*/
+            catch (InvalidCastException ice)
+            {
+                //The specified cast is not valid. 
+                throw ice;
+            }
+            return result;
+        }
+
+
         public static string GetString(this IDataRecord dr, string field)
         {
             string result = string.Empty;

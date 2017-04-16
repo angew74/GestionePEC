@@ -1654,8 +1654,13 @@ namespace SendMail.BusinessEF.MailFacedes
                 res = new ResultList<MailHeader>();
                 res.Da = pidxStart;
                 res.Per = piCount;
-                res.Totale = aMailHeader.Length;
-                res.List = lis.Skip(pidxStart).Take(piCount).ToList();
+                if (aMailHeader == null)
+                { res.Totale = 0; }
+                else
+                {
+                    res.Totale = aMailHeader.Length;
+                    res.List = lis.Skip(pidxStart).Take(piCount).ToList();
+                }
             }
             return res;
         }

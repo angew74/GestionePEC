@@ -67,10 +67,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                 {
 
                     string sql = "SELECT count(*)"
-                               + " FROM comunicazioni_flusso cf"
+                               + " FROM  [FAXPEC].[FAXPEC].[comunicazioni_flusso] cf"
                                    + " INNER JOIN ("
                                        + " SELECT ref_id_com, MAX(data_operazione) AS dta_ope"
-                                       + " FROM comunicazioni_flusso"
+                                       + " FROM  [FAXPEC].[FAXPEC].[comunicazioni_flusso] "
                                        + " WHERE canale = '" + tipoCanale + "'"
                                        + " GROUP BY ref_id_com"
                                        + " ) gr"
@@ -439,14 +439,14 @@ namespace SendMail.Data.SQLServerDB.Repository
             string cmdComStatus = "select c.id_com as ID, c.ref_id_sottotitolo as ID_SOTTOTITOLO, " +
             "   cs.sottotitolo " +
             "   as SOTTOTITOLO,cf.data_operazione as DATA_INS, cf3.stato_comunicazione_new as " +
-            "   STATO from comunicazioni c inner join comunicazioni_sottotitoli cs on c.ref_id_sottotitolo " +
-            "    = cs.id_sottotitolo inner join comunicazioni_flusso cf on c.id_com=cf.ref_id_com inner " +
-            "   join (select ref_id_com, data_operazione ,stato_comunicazione_new from comunicazioni_flusso  " +
+            "   STATO from  [FAXPEC].[FAXPEC].[comunicazioni] c inner join  [FAXPEC].[FAXPEC].[comunicazioni_sottotitoli] cs on c.ref_id_sottotitolo " +
+            "    = cs.id_sottotitolo inner join  [FAXPEC].[FAXPEC].[comunicazioni_flusso] cf on c.id_com=cf.ref_id_com inner " +
+            "   join (select ref_id_com, data_operazione ,stato_comunicazione_new from  [FAXPEC].[FAXPEC].[comunicazioni_flusso]  " +
             "   where (ref_id_com, data_operazione) in ( select ref_id_com, max(data_operazione) from comunicazioni_flusso " +
             "   where ref_id_com in(select id_com " +
-            "   from comunicazioni where comunicazioni.orig_uid = :p_ORIG_UID)  " +
+            "   from  [FAXPEC].[FAXPEC].[comunicazioni] where comunicazioni.orig_uid = :p_ORIG_UID)  " +
             "   group by (ref_id_com)))cf3 on cf3.ref_id_com=c.id_com where cf.stato_comunicazione_old is null " +
-            "   and c.id_com in(select id_com from comunicazioni where comunicazioni.orig_uid ='" + originalUid + "')";
+            "   and c.id_com in(select id_com from  [FAXPEC].[FAXPEC].[comunicazioni] where comunicazioni.orig_uid ='" + originalUid + "')";
 
             ICollection<StatoComunicazioneItem> list = null;
             using (FAXPECContext dbcontext = new FAXPECContext())
@@ -504,13 +504,13 @@ namespace SendMail.Data.SQLServerDB.Repository
             {
                 string s = "select c.id_com as ID, c.ref_id_sottotitolo as ID_SOTTOTITOLO, cs.sottotitolo " +
                                                 " as SOTTOTITOLO,cf.data_operazione as DATA_INS, cf3.stato_comunicazione_new as STATO " +
-                                                " from comunicazioni c inner join comunicazioni_sottotitoli cs on c.ref_id_sottotitolo = cs.id_sottotitolo inner join comunicazioni_flusso cf on c.id_com=cf.ref_id_com " +
+                                                " from  [FAXPEC].[FAXPEC].[comunicazioni] c inner join  [FAXPEC].[FAXPEC].[comunicazioni_sottotitoli] cs on c.ref_id_sottotitolo = cs.id_sottotitolo inner join comunicazioni_flusso cf on c.id_com=cf.ref_id_com " +
                                                 " inner join (select ref_id_com, data_operazione ,stato_comunicazione_new from " +
-                                                " comunicazioni_flusso where (ref_id_com, data_operazione) in ( select ref_id_com, max(data_operazione) " +
-                                                " from comunicazioni_flusso where ref_id_com in (select ref_id_com from comunicazioni_protocollo " +
+                                                "  [FAXPEC].[FAXPEC].[comunicazioni]_flusso where (ref_id_com, data_operazione) in ( select ref_id_com, max(data_operazione) " +
+                                                " from  [FAXPEC].[FAXPEC].[comunicazioni_flusso] where ref_id_com in (select ref_id_com from  [FAXPEC].[FAXPEC].[comunicazioni_protocollo] " +
                                                 " where RESP_PROT_TIPO='" + prot.ResponseProtocolloTipo + "' AND RESP_PROT_ANNO=" + prot.ResponseProtocolloAnno + " AND RESP_PROT_NUMERO='" + prot.ResponseProtocolloNumero + "' AND PROT_IN_OUT='" + prot.ProtocolloInOut + "') " +
                                                 " group by (ref_id_com)))cf3 on cf3.ref_id_com=c.id_com where cf.stato_comunicazione_old is null and c.id_com " +
-                                                " in (select ref_id_com FROM  comunicazioni_protocollo t2 WHERE t2.RESP_PROT_TIPO='" + prot.ResponseProtocolloTipo +
+                                                " in (select ref_id_com FROM   [FAXPEC].[FAXPEC].[comunicazioni_protocollo] t2 WHERE t2.RESP_PROT_TIPO='" + prot.ResponseProtocolloTipo +
                                                 "' AND T2.RESP_PROT_ANNO=" + prot.ResponseProtocolloAnno + " AND T2.RESP_PROT_NUMERO='" + prot.ResponseProtocolloNumero + "' AND PROT_IN_OUT='" + prot.ProtocolloInOut + "')";
 
                 var oCmd = dbcontext.Database.Connection.CreateCommand();

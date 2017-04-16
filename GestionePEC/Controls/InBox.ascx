@@ -376,7 +376,7 @@ Ext.onReady(function () {
                 specialKey: stopSpecialKey.bind(this),
                 expand: function (c) {
                     // Ext.getCmp('ActionStore').getProxy().url 
-                    c.getStore().getProxy().url = '<%= Page.ResolveClientUrl("~/api/FolderController/GetActions")%>?idfolder' + Ext.getCmp('folders').getValue();
+                    c.getStore().getProxy().url = '<%= Page.ResolveClientUrl("~/api/FolderController/GetActions")%>?idfolder=' + Ext.getCmp('folders').getValue();
                     //  actionStore.proxy.conn.url =
                     // c.store = actionStore.get;
                     c.getStore().load();

@@ -82,7 +82,7 @@ namespace ActiveUp.Net.Mail.DeltaExt
         }
 
         public bool IsManaged
-        {
+        {         
             get { return flgManaged.HasValue; }
         }
 

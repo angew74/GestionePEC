@@ -246,6 +246,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
             { val = 1; }
             return val;
         }
+     
     }
 }
 

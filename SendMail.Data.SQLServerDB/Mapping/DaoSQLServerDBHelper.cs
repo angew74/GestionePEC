@@ -214,12 +214,10 @@ namespace SendMail.Data.SQLServerDB.Mapping
             u.Dominus = (s == null) ? "" : s.Dominus;
             u.EmailAddress = dr.MAIL;
             u.LoginId = dr.USERNAME;
-            u.Password = dr.PASSWORD;
-            u.FlgManaged = null;
+            u.Password = dr.PASSWORD;                
             u.Folders = l;
-            if (!(dr.FLG_MANAGED != null))
-                u.FlgManaged = int.Parse(dr.FLG_MANAGED);
-            //u.IsManaged = Convert.ToBoolean(int.Parse(dr.GetString("FLG_MANAGED")));
+            if (dr.FLG_MANAGED != null)
+            {u.FlgManaged = int.Parse(dr.FLG_MANAGED);}
             return u;
         }
 
@@ -247,15 +245,15 @@ namespace SendMail.Data.SQLServerDB.Mapping
         internal static ActiveUp.Net.Common.DeltaExt.Action MapToAction(IDataRecord dr)
         {
             ActiveUp.Net.Common.DeltaExt.Action a = new ActiveUp.Net.Common.DeltaExt.Action();
-            a.Id = dr.GetDecimal("ID");
+            a.Id =(decimal) dr.GetDouble("ID");
             a.NomeAzione = dr.GetString("NOME_AZIONE");
-            a.IdDestinazione = dr.GetDecimal("ID_NOME_DESTINAZIONE");
+            a.IdDestinazione = (decimal)dr.GetDouble("ID_NOME_DESTINAZIONE");
             a.NuovoStatus = dr.GetString("NUOVO_STATUS");
             a.TipoAzione = dr.GetString("TIPO_AZIONE");
             a.TipoDestinazione = dr.GetString("TIPO_DESTINAZIONE");
             if (dr.FieldCount > 7)
             { a.IdComp = dr.GetDecimal("IDFOLDER").ToString(); }
-            a.IdFolderDestinazione = int.Parse(dr.GetDecimal("ID_FOLDER_DESTINAZIONE").ToString());
+            a.IdFolderDestinazione = int.Parse(dr.GetDouble("ID_FOLDER_DESTINAZIONE").ToString());
             return a;
         }
 
@@ -266,7 +264,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
             f.Nome = dr.GetString("NOME");
             f.Abilitata = dr.GetString("SYSTEM");
             f.TipoFolder = dr.GetString("TIPO");
-            f.IdNome = dr.GetDecimal("IDNOME").ToString();
+            f.IdNome = dr.GetDouble("IDNOME").ToString();
             if (l != null)
             { f.Azioni = l; }
             return f;
@@ -299,7 +297,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
             me.Subject = dr.GetString("MAIL_SUBJECT");
             me.To = dr.GetString("MAIL_TO");
             me.UniqueId = dr.GetString("MAIL_ID");
-            me.MailRating = dr.GetInt32("FLG_RATING");
+            me.MailRating =(int) dr.GetDecimal("FLG_RATING");
             me.HasAttachments = Convert.ToBoolean(int.Parse(dr.GetString("FLG_ATTACHMENTS")));
             me.Utente = dr.GetString("UTENTE");
             me.FolderId = dr.GetDecimal("FOLDERID");

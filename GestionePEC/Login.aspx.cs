@@ -27,7 +27,7 @@ namespace GestionePEC
 
             if (MySecurityProvider.CurrentPrincipal != null
                     && MySecurityProvider.CurrentPrincipal.Identity.IsAuthenticated)
-                Response.Redirect("~/pages/Default.aspx");
+                Response.Redirect("~/pages/common/Default.aspx");
 
                       
         }

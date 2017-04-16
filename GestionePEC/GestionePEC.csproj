@@ -1047,7 +1047,6 @@
     <Content Include="LogOff.aspx" />
     <Content Include="LogOffFromBrowser.aspx" />
     <Content Include="pages\pubblica\ErrorPage.aspx" />
-    <Content Include="pages\Default.aspx" />
     <Content Include="pages\MailClient\MailAdmin.aspx" />
     <Content Include="pages\MailClient\MailBoxInBox.aspx" />
     <Content Include="pages\MailClient\MailBoxStat.aspx" />
@@ -1256,13 +1255,6 @@
     </Compile>
     <Compile Include="pages\pubblica\ErrorPage.aspx.designer.cs">
       <DependentUpon>ErrorPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="pages\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="pages\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="pages\Interfaces\IAccessPage.cs" />
     <Compile Include="pages\Interfaces\IHomePage.cs" />

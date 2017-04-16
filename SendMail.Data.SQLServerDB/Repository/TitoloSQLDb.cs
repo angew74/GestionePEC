@@ -21,24 +21,22 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
             Titolo titolo = null;
             using (var dbcontext = new FAXPECContext())
-            {                
-                // eseguo il command
+            {               
+                
                 try
                 {
                     var t = dbcontext.COMUNICAZIONI_TITOLI.Where(x => x.ID_TITOLO == id).First();
                     titolo = AutoMapperConfiguration.MapToTitolo(t);                 
                 }
                 catch (SqlException oex)
-                {
-                    //TASK: Allineamento log - Ciro
+                {                   
                     ManagedException mEx = new ManagedException(DalExMessages.TITOLO_NON_RECUPERATO,
                         "DAL_TIT_010", string.Empty,
                         string.Empty, oex);
                     ErrorLogInfo err = new ErrorLogInfo(mEx);
 
                     log.Error(mEx);
-                    throw mEx;
-                    //throw new ManagedException(DalExMessages.TITOLO_NON_RECUPERATO, "DAL_TIT_010", "", "", "", "", "", oex);
+                    throw mEx;                    
                 }
             }
             return titolo;
@@ -49,10 +47,10 @@ namespace SendMail.Data.SQLServerDB.Repository
             List<Titolo> titoli = null;
             using (var dbcontext = new FAXPECContext())
             {
-                // preparo il command
                 try
                 {
                     List<COMUNICAZIONI_TITOLI> l = dbcontext.COMUNICAZIONI_TITOLI.ToList();
+                    if(l.Count > 0) { titoli = new List<Titolo>(); }
                     foreach (COMUNICAZIONI_TITOLI t in l)
                     {
                         var titolo = AutoMapperConfiguration.MapToTitolo(t);
@@ -60,8 +58,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                 }
                 catch (SqlException oex)
-                {
-                    //TASK: Allineamento log - Ciro
+                {                  
                     ManagedException mEx = new ManagedException(DalExMessages.TITOLO_NON_RECUPERATO,
                         "DAL_TIT_001", string.Empty,
                         string.Empty, oex);
@@ -82,6 +79,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 try
                 {
                     var ls = dbcontext.COMUNICAZIONI_SOTTOTITOLI.Where(x => x.REF_ID_TITOLO == titoloKey).ToList();
+                    if(ls.Count > 0) { collection = new List<Titolo>(); }
                     foreach (var s in ls)
                     {
                         Titolo t = AutoMapperConfiguration.MapSottotitoliToTitoli(s);
@@ -89,8 +87,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                 }
                 catch (SqlException oex)
-                {
-                    //TASK: Allineamento log - Ciro
+                {                  
                     ManagedException mEx = new ManagedException(DalExMessages.TITOLO_NON_RECUPERATO,
                         "DAL_TIT_001", string.Empty,
                         string.Empty, oex);
@@ -119,14 +116,12 @@ namespace SendMail.Data.SQLServerDB.Repository
                     {
 
                         dbcontext.COMUNICAZIONI_TITOLI.Add(t);
-                        dbcontext.SaveChanges();
-                        //param out
+                        dbcontext.SaveChanges();                        
                         Int64 iNewID = default(Int64);
                         Int64.TryParse(t.ID_TITOLO.ToString(), out iNewID);
                         s1.RefIdTitolo = iNewID;
                         COMUNICAZIONI_SOTTOTITOLI s = DaoSQLServerDBHelper.MapToComunicazioniSottotitolo(s1, true);
-                        dbcontext.COMUNICAZIONI_SOTTOTITOLI.Add(s);
-                        //todo.. MIGLIORARE
+                        dbcontext.COMUNICAZIONI_SOTTOTITOLI.Add(s);                       
                         if (iNewID != default(int))
                         {
                             titolo.Id = iNewID;
@@ -134,38 +129,29 @@ namespace SendMail.Data.SQLServerDB.Repository
                         }
                         else
                             throw new Exception(DalExMessages.ID_NON_RESTITUITO);
-                    }
-                    /*TODO: INSERIRE I LOG DELLE ECCEZIONI*/
+                    }                 
                     catch (InvalidOperationException ioex)
-                    {
-                        //throw new DALException(DalExMessages.RUBRICA_NON_INSERITA, ioex);
-                        transaction.Rollback();
-                        //TASK: Allineamento log - Ciro
+                    {                       
+                        transaction.Rollback();                      
                         ManagedException mEx = new ManagedException(DalExMessages.RUBRICA_NON_INSERITA,
                             "DAL_RUB_002", string.Empty,
                             string.Empty, ioex);
                         ErrorLogInfo err = new ErrorLogInfo(mEx);
 
                         log.Error(mEx);
-                        throw mEx;
-
-                        //throw new ManagedException(DalExMessages.RUBRICA_NON_INSERITA, "DAL_RUB_002", "", "", "", "", "", ioex);
+                        throw mEx;                      
 
                     }
                     catch (SqlException oex)
-                    {
-                        //throw new DALException(DalExMessages.RUBRICA_NON_INSERITA, oex);
-                        transaction.Rollback();
-                        //TASK: Allineamento log - Ciro
+                    {                       
+                        transaction.Rollback();                     
                         ManagedException mEx = new ManagedException(DalExMessages.RUBRICA_NON_INSERITA,
                             "DAL_RUB_001", string.Empty,
                             string.Empty, oex);
                         ErrorLogInfo err = new ErrorLogInfo(mEx);
 
                         log.Error(mEx);
-                        throw mEx;
-
-                        //throw new ManagedException(DalExMessages.RUBRICA_NON_INSERITA, "DAL_RUB_001", "", "", "", "", "", oex);
+                        throw mEx;                     
 
                     }
                 }
@@ -185,13 +171,9 @@ namespace SendMail.Data.SQLServerDB.Repository
                         updated.NOTE = titolo.Note;
                         updated.TITOLO = titolo.Nome;
                         updated.PROT_CODE = titolo.CodiceProtocollo;
-
-                        int rowAff = dbcontext.SaveChanges();
-                        //todo.. MIGLIORARE
-                        if (rowAff != 1)
-                        //throw new DALException(DalExMessages.NESSUNA_RIGA_MODIFICATA);
-                        {
-                            //TASK: Allineamento log - Ciro
+                        int rowAff = dbcontext.SaveChanges();                    
+                        if (rowAff != 1)                     
+                        {                           
                             ManagedException mEx = new ManagedException(DalExMessages.NESSUNA_RIGA_MODIFICATA,
                                 "DAL_TIT_009", string.Empty,
                                 string.Empty, null);
@@ -199,25 +181,18 @@ namespace SendMail.Data.SQLServerDB.Repository
 
                             log.Error(mEx);
                             throw mEx;
-                        }
-                        //throw new ManagedException(DalExMessages.NESSUNA_RIGA_MODIFICATA, "DAL_TIT_009", "", "", "", "", "", null);
-
-                    }
-                    /*TODO: INSERIRE I LOG DELLE ECCEZIONI*/
+                        }                       
+                    }                   
                     catch (InvalidOperationException ex)
                     {
-
-                        //throw new DALException(DalExMessages.RUBRICA_NON_AGGIORNATA, ex);
-
-                        //TASK: Allineamento log - Ciro
+                                                
                         ManagedException mEx = new ManagedException(DalExMessages.RUBRICA_NON_AGGIORNATA,
                             "DAL_UNIQUE_CODE", string.Empty,
                             string.Empty, ex);
                         ErrorLogInfo err = new ErrorLogInfo(mEx);
 
                         log.Error(mEx);
-                        throw mEx;
-                        //throw new ManagedException(DalExMessages.RUBRICA_NON_AGGIORNATA, "DAL_UNIQUE_CODE", "", "", "", "", "", ex);
+                        throw mEx;                     
                     }
                 }
             }

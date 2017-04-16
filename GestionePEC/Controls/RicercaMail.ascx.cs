@@ -3,6 +3,7 @@ using ActiveUp.Net.Mail.DeltaExt;
 using Com.Delta.Security;
 using Com.Delta.Web.Session;
 using GestionePEC.Extensions;
+using log4net;
 using SendMail.BusinessEF;
 using SendMail.BusinessEF.MailFacedes;
 using SendMail.Model;
@@ -17,6 +18,7 @@ namespace GestionePEC.Controls
 {
     public partial class RicercaMail : System.Web.UI.UserControl
     {
+        private static readonly ILog log = LogManager.GetLogger("RicercaMail");
         public class MailSelectedEventArgs : EventArgs
         {
             public string UId { get; set; }
@@ -156,8 +158,9 @@ namespace GestionePEC.Controls
                     CartellaAccess();
                     UtentiAccess();
                 }
-                catch
+                catch(Exception ex)
                 {
+                    log.Error(ex.Message);
                     ((BasePage)this.Page).info.AddError("Connessione al mail server impossibile, controllare le credenziali");
                 }
             }

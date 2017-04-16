@@ -22,7 +22,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                      + ", ID_CONTACT, MAIL, FAX, TELEFONO, REF_ID_REFERRAL, FLG_PEC, REF_ORG, ID_CANALE"
                                      + ", CODICE, ID_BACKEND, BACKEND_CODE, BACKEND_DESCR, CATEGORY, DESCR_PLUS";
 
-        private const String cmdSelectRoot = "SELECT " + selFields + " FROM V_MAP_APPL_CONTATTI_NEW";
+        private const String cmdSelectRoot = "SELECT " + selFields + " FROM  [FAXPEC].[FAXPEC].[V_MAP_APPL_CONTATTI_NEW] ";
 
         #endregion
 

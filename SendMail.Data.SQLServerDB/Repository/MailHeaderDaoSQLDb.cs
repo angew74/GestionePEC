@@ -27,17 +27,17 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         #region Private query strings
 
-        private const string queryInboxCountBase = "SELECT count(*) AS \"TOT\" FROM MAIL_INBOX";
+        private string queryInboxCountBase = "SELECT count(*) AS \"TOT\"  FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] ";
         private const string selectInboxBase = "SELECT MAIL_SERVER_ID AS \"MAIL_ID\", MAIL_ACCOUNT, MAIL_FROM, MAIL_TO, MAIL_CC, MAIL_CCN"
                                            + ", MAIL_SUBJECT, MAIL_TEXT, DATA_INVIO, DATA_RICEZIONE, STATUS_SERVER"
                                            + ", STATUS_MAIL, FLG_RATING, FLG_ATTACHMENTS,FOLDERID,FOLDERTIPO,"
                                            + "(SELECT DISTINCT LAST_VALUE(UTE_OPE) OVER (ORDER BY DATA_OPERAZIONE"
                                                                                      + " ROWS BETWEEN UNBOUNDED PRECEDING"
                                                                                      + " AND UNBOUNDED FOLLOWING)"
-                                           + " FROM MAIL_INBOX_FLUSSO MF"
+                                           + " FROM [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] MF"
                                            + " WHERE MF.REF_ID_MAIL = MI.ID_MAIL) AS \"UTENTE\","
                                            + " msg_length"
-                                           + " FROM MAIL_INBOX MI";
+                                           + " FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] MI";
 
         private const string selectInboxBaseModificata = "SELECT MAIL_ID,MAIL_ACCOUNT,MAIL_FROM, MAIL_TO,MAIL_CC,MAIL_CCN,MAIL_SUBJECT,MAIL_TEXT, DATA_INVIO,DATA_RICEZIONE, STATUS_SERVER, STATUS_MAIL,FOLDERID,FOLDERTIPO, FLG_RATING, FLG_ATTACHMENTS,  UTENTE,MSG_LENGTH,  ROWNUM AS ROWNUMBER FROM ( " +
             "SELECT MAIL_SERVER_ID AS \"MAIL_ID\", MAIL_ACCOUNT, MAIL_FROM, MAIL_TO, MAIL_CC, MAIL_CCN"
@@ -46,9 +46,9 @@ namespace SendMail.Data.SQLServerDB.Repository
                                      + "(SELECT DISTINCT LAST_VALUE(UTE_OPE) OVER (ORDER BY DATA_RICEZIONE DESC "
                                                                                + " ROWS BETWEEN UNBOUNDED PRECEDING"
                                                                                + " AND UNBOUNDED FOLLOWING)"
-                                     + " FROM MAIL_INBOX_FLUSSO MF"
+                                     + " FROM [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] MF"
                                      + " WHERE MF.REF_ID_MAIL = MI.ID_MAIL) AS \"UTENTE\" , msg_length"
-                                     + " FROM MAIL_INBOX MI";
+                                     + " FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] MI";
 
         /// <summary>
         /// DA MODIFICARE PER REF_ID_FLUSSO
@@ -63,7 +63,7 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         // nuova da provare
         private readonly string queryOutbuxCountBaseNew = "SELECT COUNT(*) AS \"TOT\""
-                                                  + " FROM MAIL_CONTENT m"
+                                                  + " FROM  [FAXPEC].[FAXPEC].[MAIL_CONTENT] m"
                                                   + " WHERE FOLDERID={0} AND FOLDERTIPO='{1}' ";
 
         //DA MODIFICARE PER REF_ID_FLUSSO
@@ -81,16 +81,16 @@ namespace SendMail.Data.SQLServerDB.Repository
                                               + ", MC.FLG_ANNULLAMENTO AS \"STATUS_SERVER\""
                                              + ", NULL as \"FLG_RATING\""
                                              + ", DECODE((SELECT COUNT(*)"
-                                               + " FROM COMUNICAZIONI_ALLEGATI AL "
+                                               + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_ALLEGATI] AL "
                                                + " WHERE AL.REF_ID_COM = MC.REF_ID_COM), 0, '0', '1') AS \"FLG_ATTACHMENTS\""
                                              + ", (SELECT UTE_OPE"
-                                             + " FROM COMUNICAZIONI_FLUSSO FU "
+                                             + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FU "
                                             + " WHERE FU.REF_ID_COM = MC.REF_ID_COM"
                                             + " AND STATO_COMUNICAZIONE_NEW = '" + (int)MailStatus.INSERTED + "'"
                                             + ") AS \"UTENTE\" ,0 AS MSG_LENGTH "
                                            + " FROM MAIL_CONTENT MC"
-                                            + " LEFT OUTER JOIN COMUNICAZIONI_FLUSSO FL ON  MC.REF_ID_FLUSSO_ATTUALE=FL.ID_FLUSSO "
-                                             + " LEFT OUTER JOIN  COMUNICAZIONI_FLUSSO FL1 ON MC.REF_ID_FLUSSO_INSERIMENTO=FL1.ID_FLUSSO "
+                                            + " LEFT OUTER JOIN [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FL ON  MC.REF_ID_FLUSSO_ATTUALE=FL.ID_FLUSSO "
+                                             + " LEFT OUTER JOIN  [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FL1 ON MC.REF_ID_FLUSSO_INSERIMENTO=FL1.ID_FLUSSO "
                                              + " LEFT OUTER JOIN (SELECT mm.REF_ID_MAIL, \"MAIL_TO\""
                                               + " FROM"
                                                     + " (SELECT RF.REF_ID_MAIL, RF.TIPO_REF, RF.MAIL_DESTINATARIO"
@@ -152,16 +152,15 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
             ResultList<MailHeaderExtended> res = null;
             using (FAXPECContext dbcontext = new FAXPECContext())
-            {
-                var oCmd = dbcontext.Database.Connection.CreateCommand();
-                oCmd.CommandText = queryInboxCountBase + " WHERE MAIL_ACCOUNT = '" + account + "' ";
+            {                
+                queryInboxCountBase += " WHERE MAIL_ACCOUNT = '" + account + "' ";
                 if (folder != "99")
                 {
-                    oCmd.CommandText += " AND FOLDERID=" + int.Parse(folder);
+                    queryInboxCountBase += " AND FOLDERID=" + int.Parse(folder);
                 }
                 try
-                {
-                    int tot = Convert.ToInt32(oCmd.ExecuteScalar());
+                {                    
+                    int tot = Convert.ToInt32(dbcontext.Database.ExecuteSqlCommand(queryInboxCountBase));
                     res = new ResultList<MailHeaderExtended>();
                     res.Da = da;
                     res.Per = (tot > per) ? per : tot;
@@ -170,7 +169,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     {
                         res.List = null;
                         return res;
-                    }
+                    }                  
                 }
                 catch (Exception ex)
                 {
@@ -188,25 +187,29 @@ namespace SendMail.Data.SQLServerDB.Repository
                         throw ex;
                 }
 
-                string query = "WITH T AS (SELECT ID_MAIL, ROW_NUMBER() OVER (ORDER BY DATA_RICEZIONE DESC) AS RN FROM MAIL_INBOX"
+                string query = "WITH T AS (SELECT ID_MAIL, ROW_NUMBER() OVER (ORDER BY DATA_RICEZIONE DESC) AS RN FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] "
                     + " WHERE MAIL_ACCOUNT='" + account + "' "
                     + " AND FOLDERID=" + int.Parse(folder) + ") "
                     + selectInboxBase
                     + " WHERE ID_MAIL IN (SELECT ID_MAIL FROM T WHERE RN BETWEEN " + da + " AND " + (da + per - 1) + ")"
                     + " ORDER BY DATA_RICEZIONE DESC";
-                oCmd.CommandText = query;
+
                 try
                 {
                     using (var r = dbcontext.Database.Connection.CreateCommand())
                     {
+                        r.CommandText = query;
+                        r.Connection.Open();                      
                         using (var reader = r.ExecuteReader())
                         {
                             res.List = new List<MailHeaderExtended>();
-                            while (reader.HasRows)
+                            while (reader.Read())
                             {
                                 res.List.Add(DaoSQLServerDBHelper.MapToMailHeaderExtended(reader));
                             }
+
                         }
+                        r.Connection.Close();
                     }
                 }
                 catch (Exception ex)
@@ -242,6 +245,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     oCmd.CommandText = String.Format(queryOutbuxCountBaseNew, folder, 'O') + " AND m.MAIL_SENDER = '" + account + "'";
                     try
                     {
+                        oCmd.Connection.Open();
                         int tot = Convert.ToInt32(oCmd.ExecuteScalar());
                         res = new ResultList<MailHeaderExtended>();
                         res.Da = da;
@@ -252,6 +256,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             res.List = null;
                             return res;
                         }
+                        oCmd.Connection.Close();
                     }
                     catch (Exception ex)
                     {
@@ -270,7 +275,7 @@ namespace SendMail.Data.SQLServerDB.Repository
 
                     oCmd.CommandText = "WITH M_CON AS (SELECT REF_ID_COM,"
                                                           + " ROW_NUMBER() OVER (ORDER BY REF_ID_COM DESC) AS RN"
-                                                   + " FROM MAIL_CONTENT MC"
+                                                   + " FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] MC"
                                                    + " WHERE MAIL_SENDER = '" + account +
                                      "' AND FOLDERTIPO='O' AND FOLDERID=" + folder + ")"
                                     + " SELECT TO_CHAR(MC.ID_MAIL) AS \"MAIL_ID\""
@@ -294,19 +299,19 @@ namespace SendMail.Data.SQLServerDB.Repository
                                           + ", MC.FLG_ANNULLAMENTO AS \"STATUS_SERVER\""
                                           + ", NULL as \"FLG_RATING\""
                                           + ", DECODE((SELECT COUNT(*)"
-                                                   + " FROM COMUNICAZIONI_ALLEGATI al "
+                                                   + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_ALLEGATI] al "
                                                    + " WHERE al.REF_ID_COM = MC.REF_ID_COM), 0, '0', '1') AS \"FLG_ATTACHMENTS\""
                                           + ", (SELECT UTE_OPE"
-                                            + " FROM COMUNICAZIONI_FLUSSO fu "
+                                            + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] fu "
                                             + " WHERE fu.REF_ID_COM = MC.REF_ID_COM"
                                             + " AND STATO_COMUNICAZIONE_NEW = '" + (int)MailStatus.INSERTED + "'"
                                             + ") AS \"UTENTE\" ,0 AS MSG_LENGTH "
-                                    + " FROM MAIL_CONTENT MC"
-                                    + " LEFT OUTER JOIN COMUNICAZIONI_FLUSSO FL ON  MC.REF_ID_FLUSSO_ATTUALE=FL.ID_FLUSSO "
-                                    + " LEFT OUTER JOIN  COMUNICAZIONI_FLUSSO FL1 ON MC.REF_ID_FLUSSO_INSERIMENTO=FL1.ID_FLUSSO "
+                                    + " FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] MC"
+                                    + " LEFT OUTER JOIN [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FL ON  MC.REF_ID_FLUSSO_ATTUALE=FL.ID_FLUSSO "
+                                    + " LEFT OUTER JOIN [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FL1 ON MC.REF_ID_FLUSSO_INSERIMENTO=FL1.ID_FLUSSO "
                                     + " LEFT OUTER JOIN (SELECT REF_ID_MAIL, \"MAIL_TO\""
                                                      + " FROM (SELECT REF_ID_MAIL, TIPO_REF, MAIL_DESTINATARIO"
-                                                           + " FROM MAIL_REFS_NEW)"
+                                                           + " FROM [FAXPEC].[FAXPEC].[MAIL_REFS_NEW])"
                                                      + " PIVOT"
                                                      + " (LISTAGG(MAIL_DESTINATARIO, ';') within group (order by TIPO_REF)"
                                                      + " FOR TIPO_REF in"
@@ -323,6 +328,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     try
                     {
                         res.List = new List<MailHeaderExtended>();
+                        oCmd.Connection.Open();
                         using (DbDataReader r = oCmd.ExecuteReader())
                         {
                             while (r.Read())
@@ -330,6 +336,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 res.List.Add(DaoSQLServerDBHelper.MapToMailHeaderExtended(r));
                             }
                         }
+                        oCmd.Connection.Close();
                     }
                     catch (Exception ex)
                     {
@@ -377,8 +384,8 @@ namespace SendMail.Data.SQLServerDB.Repository
         public ActiveUp.Net.Mail.DeltaExt.ResultList<ActiveUp.Net.Mail.DeltaExt.MailHeaderExtended> GetAllMailsReceivedArchivedByAccount(string account, string folder, int da, int per)
         {
             ResultList<MailHeaderExtended> result = null;
-            StringBuilder sbCount = new StringBuilder("SELECT count(*) FROM ({0})");
-            StringBuilder sbInbox = new StringBuilder("SELECT id_mail FROM mail_inbox")
+            StringBuilder sbCount = new StringBuilder("SELECT count(*) FROM ({0}) as subquery ");
+            StringBuilder sbInbox = new StringBuilder("SELECT id_mail FROM [FAXPEC].[FAXPEC].[mail_inbox] ")
                 .Append(" WHERE mail_account = '" + account + "'")
                 .AppendFormat(" AND FOLDERID = '{0}'", folder)
               .Append(" AND FOLDERTIPO='A' ");
@@ -390,8 +397,9 @@ namespace SendMail.Data.SQLServerDB.Repository
 
                     using (var cmd = dbcontext.Database.Connection.CreateCommand())
                     {
+                        cmd.Connection.Open();
                         cmd.CommandText = string.Format(sbCount.ToString(), sbInbox.ToString());
-                        int count = (int)(decimal)cmd.ExecuteScalar();
+                        int count = (int)cmd.ExecuteScalar();
                         result.Da = da;
                         result.Per = (count == 0) ? 0 : ((count - da + 1) < per ? (count - da + 1) : per);
                         if (count == 0)
@@ -399,7 +407,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         result.Totale = count;
                         result.List = new List<MailHeaderExtended>(result.Per);
                         /*  PROVA */
-                        string query = "WITH T AS (SELECT ID_MAIL, ROW_NUMBER() OVER (ORDER BY DATA_RICEZIONE DESC) AS RN FROM MAIL_INBOX"
+                        string query = "WITH T AS (SELECT ID_MAIL, ROW_NUMBER() OVER (ORDER BY DATA_RICEZIONE DESC) AS RN FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] "
            + " WHERE MAIL_ACCOUNT='" + account + "' AND FOLDERTIPO='A' "
            + " AND FOLDERID=" + folder + " ) "
           + selectInboxBase
@@ -416,11 +424,12 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 }
                             }
                         }
+                        cmd.Connection.Close();
                     }
                 }
                 catch (Exception ex)
                 {
-                    result.List = null;
+                    result.List = null;                    
                     if (!ex.GetType().Equals(typeof(ManagedException)))
                     {
                         ManagedException mEx = new ManagedException("Errore nel caricamento delle email ricevute e archiviate per account " + account + " E046 Dettagli Errore: " + ex.Message,
@@ -439,8 +448,8 @@ namespace SendMail.Data.SQLServerDB.Repository
         public ActiveUp.Net.Mail.DeltaExt.ResultList<ActiveUp.Net.Mail.DeltaExt.MailHeaderExtended> GetAllMailsSentArchivedByAccount(string account, string folder, int da, int per)
         {
             ResultList<MailHeaderExtended> result = null;
-            StringBuilder sbCount = new StringBuilder("SELECT count(*) FROM ({0})");
-            StringBuilder sbFlussoOutboxNew = new StringBuilder(" SELECT ref_id_com FROM MAIL_CONTENT ")
+            StringBuilder sbCount = new StringBuilder("SELECT count(*) FROM ({0}) as subquery ");
+            StringBuilder sbFlussoOutboxNew = new StringBuilder(" SELECT ref_id_com from  [faxpec].[faxpec].MAIL_CONTENT ")
             .Append(" WHERE MAIL_SENDER = '" + account + "'")
             .Append(" AND FOLDERID = '" + folder + "'")
             .Append(" AND FOLDERTIPO = 'A' ");
@@ -452,7 +461,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                     using (var cmd = dbcontext.Database.Connection.CreateCommand())
                     {
                         cmd.CommandText = string.Format(sbCount.ToString(), sbFlussoOutboxNew.ToString());
-                        int count = (int)(decimal)cmd.ExecuteScalar();
+                        cmd.Connection.Open();
+                        int count = (int)cmd.ExecuteScalar();
                         result.Totale = count;
                         result.Da = da;
                         result.Per = (count == 0) ? 0 : ((count - da + 1) < per ? (count - da + 1) : per);
@@ -463,7 +473,7 @@ namespace SendMail.Data.SQLServerDB.Repository
 
                         cmd.CommandText = "WITH M_CON AS (SELECT REF_ID_COM,"
                                                         + " ROW_NUMBER() OVER (ORDER BY REF_ID_COM DESC) AS RN"
-                                                 + " FROM MAIL_CONTENT MC"
+                                                 + " FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] MC"
                                                  + " WHERE MAIL_SENDER = '" + account +
                                    "' AND FOLDERTIPO='A' AND FOLDERID=" + folder + ")"
                                   + " SELECT TO_CHAR(MC.ID_MAIL) AS \"MAIL_ID\""
@@ -480,26 +490,26 @@ namespace SendMail.Data.SQLServerDB.Repository
                                         + ", FL1.DATA_OPERAZIONE "
                                         + " AS \"DATA_INVIO\""
                                         + ", (SELECT MAX(DATA_OPERAZIONE)"
-                                          + " FROM COMUNICAZIONI_FLUSSO"
+                                          + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] "
                                           + " WHERE REF_ID_COM = MC.REF_ID_COM"
                                           + " AND STATO_COMUNICAZIONE_NEW IN ('" + (int)MailStatus.AVVENUTA_CONSEGNA + "', '" + (int)MailStatus.ERRORE_CONSEGNA + "')"
                                           + ") AS \"DATA_RICEZIONE\""
                                         + ", MC.FLG_ANNULLAMENTO AS \"STATUS_SERVER\""
                                         + ", NULL as \"FLG_RATING\""
                                         + ", DECODE((SELECT COUNT(*)"
-                                                 + " FROM COMUNICAZIONI_ALLEGATI"
+                                                 + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_ALLEGATI] "
                                                  + " WHERE REF_ID_COM = MC.REF_ID_COM), 0, '0', '1') AS \"FLG_ATTACHMENTS\""
                                         + ", (SELECT UTE_OPE"
-                                          + " FROM COMUNICAZIONI_FLUSSO"
+                                          + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] "
                                           + " WHERE REF_ID_COM = MC.REF_ID_COM"
                                           + " AND STATO_COMUNICAZIONE_NEW = '" + (int)MailStatus.INSERTED + "'"
                                           + ") AS \"UTENTE\" ,0 AS MSG_LENGTH "
                                   + " FROM MAIL_CONTENT MC"
-                                  + " LEFT OUTER JOIN COMUNICAZIONI_FLUSSO FL ON  MC.REF_ID_FLUSSO_ATTUALE=FL.ID_FLUSSO "
-                                  + " LEFT OUTER JOIN  COMUNICAZIONI_FLUSSO FL1 ON MC.REF_ID_FLUSSO_INSERIMENTO=FL1.ID_FLUSSO "
+                                  + " LEFT OUTER JOIN [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FL ON  MC.REF_ID_FLUSSO_ATTUALE=FL.ID_FLUSSO "
+                                  + " LEFT OUTER JOIN  [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FL1 ON MC.REF_ID_FLUSSO_INSERIMENTO=FL1.ID_FLUSSO "
                                   + " LEFT OUTER JOIN (SELECT REF_ID_MAIL, \"MAIL_TO\""
                                                    + " FROM (SELECT REF_ID_MAIL, TIPO_REF, MAIL_DESTINATARIO"
-                                                         + " FROM MAIL_REFS_NEW)"
+                                                         + " FROM [FAXPEC].[FAXPEC].[MAIL_REFS_NEW] )"
                                                    + " PIVOT"
                                                    + " (LISTAGG(MAIL_DESTINATARIO, ';') within group (order by TIPO_REF)"
                                                    + " FOR TIPO_REF in"
@@ -538,6 +548,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             else
                                 throw ex;
                         }
+                        cmd.Connection.Close();
                     }
                     return result;
                 }
@@ -591,7 +602,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                     try
                     {
-                       // ((SqlCommand)oCmd). = true;
+                        oCmd.Connection.Open();
+                        // ((SqlCommand)oCmd). = true;
                         if (!string.IsNullOrEmpty(cmdTextIn))
                         {
                             oCmd.CommandText = cmdTextIn;
@@ -606,6 +618,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             totOut += Convert.ToInt32(oCmd.ExecuteScalar());
                         }
                         int tot = totIn + totOut;
+                        oCmd.Connection.Close();
                         res = new ResultList<MailHeaderExtended>();
                         res.Da = da;
                         res.Per = (tot > per) ? per : tot;
@@ -661,6 +674,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         oCmd.Parameters.AddRange(parsIn.ToArray());
                         try
                         {
+                            oCmd.Connection.Open();
                             using (DbDataReader r = oCmd.ExecuteReader())
                             {
                                 while (r.Read())
@@ -668,6 +682,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                     res.List.Add(DaoSQLServerDBHelper.MapToMailHeaderExtended(r));
                                 }
                             }
+                            oCmd.Connection.Close();
                         }
                         catch (Exception ex)
                         {
@@ -691,6 +706,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         oCmd.Parameters.AddRange(parsOut.ToArray());
                         try
                         {
+                            oCmd.Connection.Open();
                             using (DbDataReader rd = oCmd.ExecuteReader())
                             {
                                 while (rd.Read())
@@ -698,6 +714,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                     res.List.Add(DaoSQLServerDBHelper.MapToMailHeaderExtended(rd));
                                 }
                             }
+                            oCmd.Connection.Close();
                         }
                         catch (Exception ex)
                         {
@@ -727,10 +744,10 @@ namespace SendMail.Data.SQLServerDB.Repository
             string query = "WITH T_MAIL(ID_MAIL, FOLLOWS, MAIL_SUBJECT, IND_MAIL, FOLDER) AS"
                             + " (SELECT ID_MAIL, FOLLOWS, MAIL_SUBJECT, COALESCE(MAIL_TO, MAIL_CC, MAIL_CCN), 'I'"
                              + " FROM MAIL_INBOX"
-                             + " WHERE MAIL_ACCOUNT = :p_MAIL_ACCOUNT"
+                             + " WHERE MAIL_ACCOUNT = @p_MAIL_ACCOUNT"
                              + " UNION"
                              + " SELECT ID_MAIL, FOLLOWS, TO_CHAR(MAIL_SUBJECT), COALESCE(MAIL_TO, MAIL_CC, MAIL_CCN), 'O'"
-                             + " FROM MAIL_CONTENT MC INNER JOIN ("
+                             + " FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] MC INNER JOIN ("
                                   + " SELECT *"
                                   + " FROM MAIL_REFS_NEW"
                                   + " PIVOT"
@@ -760,6 +777,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 using (var oCmd = dbcontext.Database.Connection.CreateCommand())
                 {
                     oCmd.CommandText = query;
+                    oCmd.Connection.Open();
                     using (DbDataReader r = oCmd.ExecuteReader())
                     {
                         mailTree = new List<SimpleTreeItem>();
@@ -768,6 +786,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             mailTree.Add(DaoSQLServerDBHelper.MapToSimpleTreeItem(r));
                         }
                     }
+                    oCmd.Connection.Close();
                 }
             }
 
@@ -778,20 +797,32 @@ namespace SendMail.Data.SQLServerDB.Repository
         public List<ActiveUp.Net.Common.DeltaExt.Action> GetFolderDestinationForAction()
         {
             List<ActiveUp.Net.Common.DeltaExt.Action> list = null;
-            using (FAXPECContext dbcontext = new FAXPECContext())
+            try
             {
-                using (var oCmd = dbcontext.Database.Connection.CreateCommand())
+                using (FAXPECContext dbcontext = new FAXPECContext())
                 {
-                    oCmd.CommandText = " SELECT * FROM ACTIONS ";
-                    using (DbDataReader r = oCmd.ExecuteReader())
+                    using (var oCmd = dbcontext.Database.Connection.CreateCommand())
                     {
-                        list = new List<ActiveUp.Net.Common.DeltaExt.Action>();
-                        while (r.Read())
+                        oCmd.CommandText = " SELECT * FROM [FAXPEC].[FAXPEC].[ACTIONS] ";
+                        oCmd.Connection.Open();
+                        using (DbDataReader r = oCmd.ExecuteReader())
                         {
-                            list.Add(DaoSQLServerDBHelper.MapToAction(r));
+                            list = new List<ActiveUp.Net.Common.DeltaExt.Action>();
+                            while (r.Read())
+                            {
+                                list.Add(DaoSQLServerDBHelper.MapToAction(r));
+                            }
                         }
+                        oCmd.Connection.Close();
                     }
                 }
+            }catch(Exception ex)
+            {
+                ManagedException mEx = new ManagedException("Errore nell'estrazione della cartella di destinazione E356 Dettagli Errore: " + ex.Message,
+                                   "ERR_356", string.Empty, string.Empty, ex.InnerException);
+                ErrorLogInfo err = new ErrorLogInfo(mEx);
+                log.Error(err);
+                throw mEx;
             }
             return list;
         }
@@ -808,25 +839,32 @@ namespace SendMail.Data.SQLServerDB.Repository
                     MailLogInfo info = new MailLogInfo();
                     string folder = string.Empty;
                     string logcode = string.Empty;
-                    using (var oCmd = dbcontext.Database.Connection.CreateCommand())
-                    {
-                        oCmd.CommandText = "INSERT INTO MAIL_INBOX_FLUSSO (REF_ID_MAIL, STATUS_MAIL_OLD, STATUS_MAIL_NEW, UTE_OPE)"
+                    //using (var oCmd = dbcontext.Database.Connection.CreateCommand())
+                    //{
+                        //oCmd.CommandText = "INSERT INTO [FAXPEC].[FAXPEC].[MAIL_INBOX] (REF_ID_MAIL, STATUS_MAIL_OLD, STATUS_MAIL_NEW, UTE_OPE)"
+                        //                + " SELECT ID_MAIL, STATUS_MAIL, '"
+                        //                + createStatusMail(actionid) + "', '" + (utente ?? "SYSTEM") + "'"
+                        //                + " FROM MAIL_INBOX"
+                        //                + " WHERE MAIL_SERVER_ID IN ('" + String.Join("','", idMail.ToArray()) + "')"
+                        //                + " AND MAIL_ACCOUNT = '" + account + "'";
+                        try
+                        {                                                                                           
+                            resp = dbcontext.Database.ExecuteSqlCommand("INSERT INTO [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] (REF_ID_MAIL, STATUS_MAIL_OLD, STATUS_MAIL_NEW, UTE_OPE)"
                                         + " SELECT ID_MAIL, STATUS_MAIL, '"
                                         + createStatusMail(actionid) + "', '" + (utente ?? "SYSTEM") + "'"
-                                        + " FROM MAIL_INBOX"
+                                        + " FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] "
                                         + " WHERE MAIL_SERVER_ID IN ('" + String.Join("','", idMail.ToArray()) + "')"
-                                        + " AND MAIL_ACCOUNT = '" + account + "'";
-                        try
-                        {
-                            resp = oCmd.ExecuteNonQuery();
+                                        + " AND MAIL_ACCOUNT = '" + account + "'");
+                            //ExecuteNonQuery();                         
                             if (resp != idMail.Count)
                             {
                                 throw new Exception("Errore nell'inserimento delle mail su mail_inbox_flussi");
-                            }
+                            } 
                         }
                         catch (Exception ex)
                         {
                             dbContextTransaction.Rollback();
+                         //   oCmd.Connection.Close();
                             if (!ex.GetType().Equals(typeof(ManagedException)))
                             {
                                 ManagedException mEx = new ManagedException("Errore nell'aggiornamento delle emails  per account " + account + " E056 Dettagli Errore: " + ex.Message,
@@ -840,7 +878,7 @@ namespace SendMail.Data.SQLServerDB.Repository
 
                         string upd = createUpdateFolderId(actionid, "I", true, ref folder, ref logcode);
                         StringBuilder b = new StringBuilder();
-                        b.Append("UPDATE MAIL_INBOX SET STATUS_MAIL = '" + (int)newStatus + "'");
+                        b.Append("UPDATE [FAXPEC].[FAXPEC].[MAIL_INBOX] SET STATUS_MAIL = '" + (int)newStatus + "'");
                         if (upd != string.Empty)
                         { b.Append(upd); }
                         b.Append(" WHERE MAIL_SERVER_ID IN ('" + String.Join("','", idMail.ToArray()) + "')");
@@ -854,21 +892,21 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 linfo.Add(info);
                             }
                         }
-                        oCmd.CommandText = b.ToString();
+                        // oCmd.CommandText = b.ToString();
                         try
                         {
-                            resp = oCmd.ExecuteNonQuery();
+                        resp = dbcontext.Database.ExecuteSqlCommand(b.ToString());
                             if (resp != idMail.Count)
                                 throw new Exception("Errore nell'aggiornamento delle mail su mail_inbox");
                             dbContextTransaction.Commit();
                             foreach (MailLogInfo i in linfo)
                             {
                                 log.Info(i);
-                            }
+                            }                           
                         }
                         catch (Exception ex)
                         {
-                            dbContextTransaction.Rollback();
+                            dbContextTransaction.Rollback();                          
                             if (!ex.GetType().Equals(typeof(ManagedException)))
                             {
                                 ManagedException mEx = new ManagedException("Errore nell'aggiornamento dello status emails inviate per account " + account + " E057 Dettagli Errore: " + ex.Message,
@@ -879,7 +917,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             }
                             else throw ex;
                         }
-                    }
+                   // }
                 }
             }
             return resp;
@@ -900,19 +938,20 @@ namespace SendMail.Data.SQLServerDB.Repository
                     {
                         using (var cmd = dbcontext.Database.Connection.CreateCommand())
                         {
-                            StringBuilder sb = new StringBuilder(" insert into comunicazioni_flusso ")
+                            cmd.Connection.Open();
+                            StringBuilder sb = new StringBuilder(" insert into [FAXPEC].[FAXPEC].[comunicazioni_flusso] ")
                            .Append(" (ref_id_com, stato_comunicazione_old, stato_comunicazione_new, ute_ope, canale) ")
-                           .Append("select (select ref_id_com from mail_content where id_mail = :p_id_com),")
+                           .Append("select (select ref_id_com from [FAXPEC].[FAXPEC].[mail_content] where id_mail = @p_id_com),")
                            .Append("(select cf.stato_comunicazione_new from comunicazioni_flusso cf, mail_content m where ")
-                           .Append(" m.id_mail=:p_id_com and  ")
-                           .Append(" m.ref_id_flusso_attuale=cf.id_flusso), :p_new_status, :p_ute_ope,'MAIL' from dual ");
+                           .Append(" m.id_mail=@p_id_com and  ")
+                           .Append(" m.ref_id_flusso_attuale=cf.id_flusso), @p_new_status, @p_ute_ope,'MAIL' from dual ");
                             cmd.CommandText = sb.ToString();
-                           // ((SqlCommand)cmd).BindByName = true;
+                            // ((SqlCommand)cmd).BindByName = true;
                             SqlParameter p_id_com = new SqlParameter();
                             p_id_com.ParameterName = "p_id_com";
                             p_id_com.DbType = DbType.Decimal;
                             p_id_com.Value = idMails.ToArray();
-                         //   ((SqlCommand)cmd).ArrayBindCount = idMails.Count;
+                            //   ((SqlCommand)cmd).ArrayBindCount = idMails.Count;
                             cmd.Parameters.Add(p_id_com);
                             int[] status = new int[idMails.Count];
                             string[] ute = new string[idMails.Count];
@@ -926,7 +965,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             if (newStatus != MailStatus.CANCELLATA && newStatus != MailStatus.ARCHIVIATA)
                             { resp = cmd.ExecuteNonQuery(); }
                             StringBuilder s = new StringBuilder();
-                            s.Append(" UPDATE MAIL_CONTENT SET ");
+                            s.Append(" UPDATE [FAXPEC].[FAXPEC].[MAIL_CONTENT] SET ");
                             s.Append(createUpdateFolderId(action, foldertipo, false, ref folder, ref logcode));
                             s.Append(" where ");
                             s.Append(" id_mail in (");
@@ -956,6 +995,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 log.Info(i);
                             }
 
+                            cmd.Connection.Close();
                         }
                     }
                     catch (Exception ex)
@@ -990,7 +1030,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 {
                     using (var oCmd = dbcontext.Database.Connection.CreateCommand())
                     {
-                        oCmd.CommandText = "INSERT INTO MAIL_INBOX_FLUSSO"
+                        oCmd.CommandText = "INSERT INTO [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] "
                                          + " (REF_ID_MAIL, STATUS_MAIL_OLD, STATUS_MAIL_NEW, UTE_OPE)"
                                          + " SELECT * FROM ("
                                             + " SELECT"
@@ -998,16 +1038,17 @@ namespace SendMail.Data.SQLServerDB.Repository
                                             + ", STATUS_MAIL_NEW"
                                             + ", STATUS_MAIL_OLD"
                                             + ", LAG(UTE_OPE) OVER (ORDER BY DATA_OPERAZIONE)"
-                                            + " FROM MAIL_INBOX_FLUSSO"
+                                            + " FROM [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] "
                                             + " WHERE REF_ID_MAIL IN"
                                                 + " (SELECT ID_MAIL"
-                                                + " FROM MAIL_INBOX"
+                                                + " FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] "
                                                 + " WHERE MAIL_SERVER_ID IN ('" + String.Join("','", idMails.ToArray()) + "')"
                                                 + " AND MAIL_ACCOUNT = '" + account + "')"
                                             + " ORDER BY DATA_OPERAZIONE DESC)"
                                         + " WHERE ROWNUM = 1";
                         try
                         {
+                            oCmd.Connection.Open();
                             resp = oCmd.ExecuteNonQuery();
                             if (resp != idMails.Count)
                                 throw new Exception("Errore nell'inserimento su mail_inbox_flusso");
@@ -1019,10 +1060,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 linfo.Add(info);
                             }
                             StringBuilder b = new StringBuilder();
-                            b.Append("UPDATE MAIL_INBOX MI SET STATUS_MAIL = (SELECT STATUS_MAIL_NEW");
-                            b.Append(" FROM MAIL_INBOX_FLUSSO  WHERE (REF_ID_MAIL, DATA_OPERAZIONE) =");
+                            b.Append("UPDATE [FAXPEC].[FAXPEC].[MAIL_INBOX] MI SET STATUS_MAIL = (SELECT STATUS_MAIL_NEW");
+                            b.Append(" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO]  WHERE (REF_ID_MAIL, DATA_OPERAZIONE) =");
                             b.Append(" (SELECT REF_ID_MAIL, MAX(DATA_OPERAZIONE) ");
-                            b.Append(" FROM MAIL_INBOX_FLUSSO MIF WHERE MIF.REF_ID_MAIL = MI.ID_MAIL ");
+                            b.Append(" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] MIF WHERE MIF.REF_ID_MAIL = MI.ID_MAIL ");
                             b.Append(" GROUP BY REF_ID_MAIL)) ");
                             if (upd != string.Empty)
                             { b.Append(upd); }
@@ -1037,7 +1078,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             {
                                 log.Info(i);
                             }
-
+                            oCmd.Connection.Close();
                         }
                         catch (Exception ex)
                         {
@@ -1103,6 +1144,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         " AND FOLDERID=" + idfolder;
                     try
                     {
+                        oCmd.Connection.Open();
                         int tot = Convert.ToInt32(oCmd.ExecuteScalar());
                         res = new ResultList<MailHeaderExtended>();
                         res.Da = da;
@@ -1113,6 +1155,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             res.List = null;
                             return res;
                         }
+                        oCmd.Connection.Close();
                     }
                     catch (Exception ex)
                     {
@@ -1129,7 +1172,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             throw ex;
                     }
 
-                    string query = "WITH T AS (SELECT ID_MAIL, ROW_NUMBER() OVER (ORDER BY DATA_RICEZIONE DESC) AS RN FROM MAIL_INBOX"
+                    string query = "WITH T AS (SELECT ID_MAIL, ROW_NUMBER() OVER (ORDER BY DATA_RICEZIONE DESC) AS RN FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] "
                         + " WHERE MAIL_ACCOUNT='" + account + "' AND FOLDERTIPO='C' AND FOLDERID=" + idfolder + ")"
                         + selectInboxBase
                         + " WHERE ID_MAIL IN (SELECT ID_MAIL FROM T WHERE RN BETWEEN " + da + " AND " + (da + per - 1) + ")"
@@ -1138,6 +1181,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     oCmd.CommandText = query;
                     try
                     {
+                        oCmd.Connection.Open();
                         using (DbDataReader r = oCmd.ExecuteReader())
                         {
                             res.List = new List<MailHeaderExtended>();
@@ -1146,6 +1190,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 res.List.Add(DaoSQLServerDBHelper.MapToMailHeaderExtended(r));
                             }
                         }
+                        oCmd.Connection.Close();
                     }
                     catch (Exception ex)
                     {
@@ -1169,13 +1214,13 @@ namespace SendMail.Data.SQLServerDB.Repository
         public ActiveUp.Net.Mail.DeltaExt.ResultList<ActiveUp.Net.Mail.DeltaExt.MailHeaderExtended> GetAllMailsSentCanceledByAccount(string account, string idfolder, int da, int per)
         {
             ResultList<MailHeaderExtended> result = null;
-            StringBuilder sbCount = new StringBuilder("SELECT count(*) FROM MAIL_CONTENT")
+            StringBuilder sbCount = new StringBuilder("SELECT count(*) FROM (select id_mail from [FAXPEC].[FAXPEC].[MAIL_CONTENT] ")
             .Append(" WHERE MAIL_SENDER = '" + account + "'")
-            .Append(" AND FOLDERID = " + idfolder + ")")
-            .Append(" AND FOLDERTIPO = 'C' ");
-            StringBuilder sbFlussoOutboxNew = new StringBuilder(" SELECT ref_id_com FROM MAIL_CONTENT ")
-          .Append(" WHERE MAIL_SENDER = :p_account")
-          .Append(" AND FOLDERID = :p_folderid ")
+            .Append(" AND FOLDERID = " + idfolder + "")
+            .Append(" AND FOLDERTIPO = 'C') as subquery ");
+            StringBuilder sbFlussoOutboxNew = new StringBuilder(" SELECT ref_id_com FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] ")
+          .Append(" WHERE MAIL_SENDER = @p_account")
+          .Append(" AND FOLDERID = @p_folderid ")
           .Append(" AND FOLDERTIPO = 'C' ");
             using (FAXPECContext dbcontext = new FAXPECContext())
             {
@@ -1184,8 +1229,9 @@ namespace SendMail.Data.SQLServerDB.Repository
                     result = new ResultList<MailHeaderExtended>();
                     using (var cmd = dbcontext.Database.Connection.CreateCommand())
                     {
+                        cmd.Connection.Open();
                         cmd.CommandText = string.Format(sbCount.ToString());
-                        int count = (int)(decimal)cmd.ExecuteScalar();
+                        int count = (int)cmd.ExecuteScalar();
                         result.Da = da;
                         result.Per = (count == 0) ? 0 : ((count - da + 1) < per ? (count - da + 1) : per);
                         if (count == 0)
@@ -1195,7 +1241,7 @@ namespace SendMail.Data.SQLServerDB.Repository
 
                         cmd.CommandText = "BEGIN OPEN :1 FOR " + selectOutboxBase +
                             " WHERE mc.ref_id_com IN (" + sbFlussoOutboxNew.ToString() + ");END;";
-                       // SqlParameter pRc = ((SqlCommand)cmd).Parameters.Add("1", SqlDbType., DBNull.Value, ParameterDirection.Output);
+                        // SqlParameter pRc = ((SqlCommand)cmd).Parameters.Add("1", SqlDbType., DBNull.Value, ParameterDirection.Output);
                         cmd.ExecuteNonQuery();
                         using (var rd = cmd.ExecuteReader())
                         {
@@ -1208,6 +1254,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 result.List.Add(DaoSQLServerDBHelper.MapToMailHeaderExtended(rd));
                             }
                         }
+                        cmd.Connection.Close();
                         return result;
                     }
                 }
@@ -1241,9 +1288,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                 {
                     using (var cmd = dbcontext.Database.Connection.CreateCommand())
                     {
-                        cmd.CommandText = "SELECT ID,NOME,TIPO,SYSTEM,IDNOME FROM FOLDERS";
+                        cmd.CommandText = "SELECT ID,NOME,TIPO,SYSTEM,IDNOME FROM [FAXPEC].[FAXPEC].[FOLDERS] ";
                         try
                         {
+                            cmd.Connection.Open();
                             using (DbDataReader r = cmd.ExecuteReader())
                             {
                                 while (r.Read())
@@ -1265,6 +1313,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             else
                                 throw ex;
                         }
+                        cmd.Connection.Close();
                     }
                     CacheManager<List<Folder>>.set(Com.Delta.Web.Cache.CacheKeys.FOLDERS, list);
                     return list;
@@ -1285,9 +1334,9 @@ namespace SendMail.Data.SQLServerDB.Repository
                     string logcode = string.Empty;
                     using (var oCmd = dbcontext.Database.Connection.CreateCommand())
                     {
-
+                        oCmd.Connection.Open();
                         StringBuilder b = new StringBuilder();
-                        b.Append("UPDATE MAIL_CONTENT SET FOLDERID = 2, FOLDERTIPO='O'");
+                        b.Append("UPDATE [FAXPEC].[FAXPEC].[MAIL_CONTENT] SET FOLDERID = 2, FOLDERTIPO='O'");
                         b.Append(" WHERE ID_MAIL IN ('" + String.Join("','", idMail.ToArray()) + "')");
                         b.Append(" AND MAIL_SENDER = '" + account + "'");
                         oCmd.CommandText = b.ToString();
@@ -1323,6 +1372,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             }
                             else throw ex;
                         }
+                        oCmd.Connection.Close();
                     }
                 }
             }
@@ -1353,7 +1403,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                     try
                     {
-                       // ((SqlCommand)oCmd).BindByName = true;
+                        // ((SqlCommand)oCmd).BindByName = true;
+                        oCmd.Connection.Open();
                         if (!string.IsNullOrEmpty(cmdTextIn))
                         {
                             oCmd.CommandText = cmdTextIn;
@@ -1375,8 +1426,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                         if (tot == default(int))
                         {
                             res.List = new List<MailHeaderExtended>();
+                            oCmd.Connection.Close();
                             return res;
                         }
+                        oCmd.Connection.Close();
                     }
                     catch (Exception ex)
                     {
@@ -1415,6 +1468,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         oCmd.Parameters.AddRange(parsIn.ToArray());
                         try
                         {
+                            oCmd.Connection.Open();
                             using (var r = oCmd.ExecuteReader())
                             {
                                 while (r.Read())
@@ -1422,6 +1476,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                     res.List.Add(DaoSQLServerDBHelper.MapToMailHeaderExtended(r));
                                 }
                             }
+                            oCmd.Connection.Close();
                         }
                         catch (Exception ex)
                         {
@@ -1445,6 +1500,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         oCmd.Parameters.AddRange(parsOut.ToArray());
                         try
                         {
+                            oCmd.Connection.Open();
                             using (var rd = oCmd.ExecuteReader())
                             {
                                 while (rd.Read())
@@ -1452,6 +1508,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                     res.List.Add(DaoSQLServerDBHelper.MapToMailHeaderExtended(rd));
                                 }
                             }
+                            oCmd.Connection.Close();
                         }
                         catch (Exception ex)
                         {
@@ -1482,11 +1539,12 @@ namespace SendMail.Data.SQLServerDB.Repository
                 using (var cmd = dbcontext.Database.Connection.CreateCommand())
                 {
                     StringBuilder s = new StringBuilder();
-                    s.Append("SELECT a.ID,a.NOME,a.TIPO,a.SYSTEM,a.IDNOME FROM FOLDERS a, FOLDERS_SENDERS b WHERE b.IDSENDER=" + idAccount)
+                    s.Append("SELECT a.ID,a.NOME,a.TIPO,a.SYSTEM,a.IDNOME FROM [FAXPEC].[FAXPEC].[FOLDERS] a, [FAXPEC].[FAXPEC].[FOLDERS_SENDERS] b WHERE b.IDSENDER=" + idAccount)
                       .Append(" and a.ID=b.IDFOLDER ");
                     cmd.CommandText = s.ToString();
                     try
                     {
+                        cmd.Connection.Open();
                         using (var r = cmd.ExecuteReader())
                         {
                             while (r.Read())
@@ -1494,6 +1552,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 list.Add(DaoSQLServerDBHelper.MapToFolder(r, null));
                             }
                         }
+                        cmd.Connection.Close();
                     }
                     catch (Exception ex)
                     {
@@ -1528,7 +1587,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                         {
                             cmd.CommandText = elenco;
                             cmd.Parameters.AddRange(pars.ToArray());
-                         //   ((SqlCommand)cmd).BindByName = true;
+                            cmd.Connection.Open();
+                            //   ((SqlCommand)cmd).BindByName = true;
                             var reader = cmd.ExecuteReader();
                             List<string> ids = new List<string>();
                             while (reader.Read())
@@ -1538,20 +1598,20 @@ namespace SendMail.Data.SQLServerDB.Repository
                             string listStr = string.Join(",", ids.ToArray());
                             StringBuilder s = new StringBuilder();
 
-                            s.Append(" INSERT INTO MAIL_INBOX_FLUSSO (REF_ID_MAIL,STATUS_MAIL_OLD,STATUS_MAIL_NEW,")
+                            s.Append(" INSERT INTO [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] (REF_ID_MAIL,STATUS_MAIL_OLD,STATUS_MAIL_NEW,")
                             .Append(" DATA_OPERAZIONE,UTE_OPE) SELECT ID_MAIL,NVL(STATUS_MAIL_NEW,0),")
-                            .Append(idmailstatus + ", SYSDATE,'" + utente + "' FROM MAIL_INBOX A ")
-                            .Append(" LEFT OUTER JOIN MAIL_INBOX_FLUSSO C ON A.ID_MAIL=C.REF_ID_MAIL")
+                            .Append(idmailstatus + ", SYSDATE,'" + utente + "' FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] A ")
+                            .Append(" LEFT OUTER JOIN [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] C ON A.ID_MAIL=C.REF_ID_MAIL")
                             .Append(" WHERE ID_MAIL IN (" + listStr + ") ")
                             .Append(" AND DATA_OPERAZIONE= (SELECT MAX(DATA_OPERAZIONE) ")
-                            .Append(" FROM MAIL_INBOX_FLUSSO B   ")
+                            .Append(" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] B   ")
                             .Append(" WHERE A.ID_MAIL=B.REF_ID_MAIL) ");
                             cmd.CommandText = s.ToString();
                             cmd.Parameters.Clear();
-                           // ((SqlCommand)cmd).BindByName = true;
+                            // ((SqlCommand)cmd).BindByName = true;
                             int al = cmd.ExecuteNonQuery();
                             StringBuilder sb = new StringBuilder();
-                            sb.Append(" UPDATE MAIL_INBOX SET STATUS_MAIL=" + idmailstatus + " WHERE ID_MAIL IN (" + listStr + ") ");
+                            sb.Append(" UPDATE [FAXPEC].[FAXPEC].[MAIL_INBOX] SET STATUS_MAIL=" + idmailstatus + " WHERE ID_MAIL IN (" + listStr + ") ");
                             cmd.CommandText = sb.ToString();
                             int al1 = cmd.ExecuteNonQuery();
                             if (al1 != ids.Count)
@@ -1560,6 +1620,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 throw new Exception(" Record non aggiornati ");
                             }
                             else { ok = true; }
+                            cmd.Connection.Close();
                         }
                     }
                     catch (Exception ex)
@@ -1606,24 +1667,26 @@ namespace SendMail.Data.SQLServerDB.Repository
                             string tipoFolder = list.Where(x => x.Id == idfolder).FirstOrDefault().TipoFolder;
                             cmd.CommandText = elenco;
                             cmd.Parameters.AddRange(pars.ToArray());
-                           // ((SqlCommand)cmd).BindByName = true;
+                            // ((SqlCommand)cmd).BindByName = true;
+                            cmd.Connection.Open();
                             var reader = cmd.ExecuteReader();
                             List<string> ids = new List<string>();
                             while (reader.Read())
                             {
                                 ids.Add(reader.GetDecimal(0).ToString());
                             }
+                            cmd.Connection.Close();
                             string listStr = string.Join(",", ids.ToArray());
                             StringBuilder s = new StringBuilder();
                             if (parentFolder == "I")
                             {
-                                s.Append(" UPDATE MAIL_INBOX SET FOLDERID = " + newFolder)
+                                s.Append(" UPDATE [FAXPEC].[FAXPEC].MAIL_INBOX] SET FOLDERID = " + newFolder)
                                 .Append(" , FOLDERTIPO = '" + tipoFolder + "' ")
                                 .Append(" WHERE ID_MAIL IN (" + listStr + ") ");
                             }
                             else
                             {
-                                s.Append(" UPDATE MAIL_CONTENT SET FOLDERID = " + newFolder)
+                                s.Append(" UPDATE [FAXPEC].[FAXPEC].[MAIL_CONTENT] SET FOLDERID = " + newFolder)
                                 .Append(" , FOLDERTIPO = '" + tipoFolder + "' ")
                                 .Append(" WHERE ID_MAIL IN (" + listStr + ") ");
                             }
@@ -1652,7 +1715,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 linfo.Add(info);
                             }
                             cmd.Parameters.Clear();
-                           // ((SqlCommand)cmd).BindByName = true;
+                            // ((SqlCommand)cmd).BindByName = true;
+                            cmd.Connection.Open();
                             int al = cmd.ExecuteNonQuery();
                             if (al != ids.Count)
                             {
@@ -1660,6 +1724,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 throw new Exception(" Record non aggiornati ");
                             }
                             else { ok = true; }
+                            cmd.Connection.Close();
                         }
                     }
                     catch (Exception ex)
@@ -1706,7 +1771,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                     try
                     {
-                      //  ((SqlCommand)oCmd).BindByName = true;
+                        //  ((SqlCommand)oCmd).BindByName = true;
                         if (!string.IsNullOrEmpty(cmdTextIn))
                         {
                             oCmd.CommandText = cmdTextIn;
@@ -1718,7 +1783,9 @@ namespace SendMail.Data.SQLServerDB.Repository
                             oCmd.CommandText = cmdTextOut;
                             oCmd.Parameters.Clear();
                             oCmd.Parameters.AddRange(parsOut.ToArray());
+                            oCmd.Connection.Open();
                             totOut += Convert.ToInt32(oCmd.ExecuteScalar());
+                            oCmd.Connection.Close();
                         }
                         int tot = totIn + totOut;
                         res = new ResultList<MailHeaderExtended>();
@@ -1768,6 +1835,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         oCmd.Parameters.AddRange(parsIn.ToArray());
                         try
                         {
+                            oCmd.Connection.Open();
                             using (var r = oCmd.ExecuteReader())
                             {
                                 while (r.Read())
@@ -1775,6 +1843,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                     res.List.Add(DaoSQLServerDBHelper.MapToMailHeaderExtended(r));
                                 }
                             }
+                            oCmd.Connection.Close();
                         }
                         catch (Exception ex)
                         {
@@ -1798,6 +1867,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         oCmd.Parameters.AddRange(parsOut.ToArray());
                         try
                         {
+                            oCmd.Connection.Open();
                             using (var rd = oCmd.ExecuteReader())
                             {
                                 while (rd.Read())
@@ -1805,6 +1875,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                     res.List.Add(DaoSQLServerDBHelper.MapToMailHeaderExtended(rd));
                                 }
                             }
+                            oCmd.Connection.Close();
                         }
                         catch (Exception ex)
                         {
@@ -1855,7 +1926,7 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
             throw new NotImplementedException();
         }
-               
+
 
         #endregion
 
@@ -1866,17 +1937,17 @@ namespace SendMail.Data.SQLServerDB.Repository
             parsOut = new List<SqlParameter>();
             StringBuilder sb = new StringBuilder();
             sb.Append(" (SELECT id_mail ")
-              .Append(" FROM mail_content mc")
+              .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
               .Append(" JOIN comunicazioni_flusso cf")
               .Append(" ON mc.ref_id_flusso_attuale = cf.id_flusso")
-              .Append(" JOIN comunicazioni_flusso ff ON mc.ref_id_flusso_inserimento=ff.id_flusso ")
-              .Append(" JOIN comunicazioni cm ON mc.ref_id_com=cm.id_com ")
-              .Append(" JOIN comunicazioni_sottotitoli st ON cm.ref_id_sottotitolo=st.id_sottotitolo ")
-              .Append(" JOIN mail_refs_new rf ON mc.id_mail=rf.ref_id_mail ")
+              .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni_flusso] ff ON mc.ref_id_flusso_inserimento=ff.id_flusso ")
+              .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni] cm ON mc.ref_id_com=cm.id_com ")
+              .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni_sottotitoli] st ON cm.ref_id_sottotitolo=st.id_sottotitolo ")
+              .Append(" JOIN [FAXPEC].[FAXPEC].[mail_refs_new] rf ON mc.id_mail=rf.ref_id_mail ")
               .Append(" WHERE");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mc.mail_sender = :p_ACCOUNT ");
+                sb.Append(" mc.mail_sender = @p_ACCOUNT ");
                 parsOut.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -1896,7 +1967,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Titolo:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and st.ref_id_titolo=:p_IDTITOLO");
+                            sb.Append(" and st.ref_id_titolo=@p_IDTITOLO");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -1909,7 +1980,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.SottoTitolo:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and cm.ref_id_sottotitolo=:p_IDSOTTOTITOLO");
+                            sb.Append(" and cm.ref_id_sottotitolo=@p_IDSOTTOTITOLO");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -1922,7 +1993,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Mail:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(rf.mail_destinatario) like :p_MAIL ");
+                            sb.Append(" and lower(rf.mail_destinatario) like @p_MAIL ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -1936,7 +2007,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Oggetto:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mc.mail_subject) like :p_SUBJECT ");
+                            sb.Append(" and lower(mc.mail_subject) like @p_SUBJECT ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -1958,7 +2029,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and ff.data_operazione between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                        sb.Append(" and CONVERT(VARCHAR(10),ff.data_operazione,103) between @p_DATAINIZIO and @p_DATAFINE ");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -1971,7 +2042,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")))
                         {
-                            sb.Append(" and lower(ff.ute_ope)=:p_UTENTE ");
+                            sb.Append(" and lower(ff.ute_ope)=@p_UTENTE ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -1984,7 +2055,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Status:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and cf.STATO_COMUNICAZIONE_NEW=:p_STATUS ");
+                            sb.Append(" and cf.STATO_COMUNICAZIONE_NEW=@p_STATUS ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2008,12 +2079,12 @@ namespace SendMail.Data.SQLServerDB.Repository
             //mail_content
             sb.Append("WITH t_mc(id_m, id_c, rn) AS")
                 .Append(" (SELECT id_mail, mc.ref_id_com, row_number() OVER (ORDER BY mc.ref_id_com DESC)")
-                .Append(" FROM mail_content mc")
-                .Append("  inner join LOG_ACTIONS ON to_char(mc.ID_MAIL)=LOG_ACTIONS.OBJECT_ID ")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
+                .Append("  inner join [FAXPEC].[FAXPEC].[LOG_ACTIONS] ON to_char(mc.ID_MAIL)=LOG_ACTIONS.OBJECT_ID ")
                 .Append(" WHERE");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" lower(mc.mail_sender) = :p_ACCOUNT  and lower(USER_MAIL) = :p_ACCOUNT ");
+                sb.Append(" lower(mc.mail_sender) = @p_ACCOUNT  and lower(USER_MAIL) = @p_ACCOUNT ");
                 parsOut.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2025,7 +2096,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             }
             if (folder != "0")
             {
-                sb.Append(" and LOG_DETAILS LIKE :p_FOLDER");
+                sb.Append(" and LOG_DETAILS LIKE @p_FOLDER");
                 parsOut.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2056,7 +2127,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and trunc(log_date,'DD') between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                        sb.Append(" and convert(varchar(10),log_date,103) between @p_DATAINIZIO @p_DATAFINE ");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2069,7 +2140,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")))
                         {
-                            sb.Append(" and lower(user_id)=:p_UTENTE ");
+                            sb.Append(" and lower(user_id)=@p_UTENTE ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2085,7 +2156,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             //mail_refs_new
             sb.Append("t_dest(id_m, tipo, mail_dest) AS")
                 .Append(" (SELECT ref_id_mail, tipo_ref, mail_destinatario")
-                .Append(" FROM mail_refs_new")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_refs_new] ")
                 .Append(" WHERE ref_id_mail IN (SELECT id_m")
                 .Append(" FROM t_mc where ");
             if (searchValues.Keys.Contains(MailTypeSearch.Mail))
@@ -2093,7 +2164,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 string val = searchValues[MailTypeSearch.Mail];
                 if (val != string.Empty)
                 {
-                    sb.Append(" lower(mail_destinatario) LIKE lower(:p_MAIL) and ");
+                    sb.Append(" lower(mail_destinatario) LIKE lower(@p_MAIL) and ");
                     parsOut.Add(new SqlParameter
                     {
                         Direction = ParameterDirection.Input,
@@ -2104,7 +2175,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     });
                 }
             }
-            sb.Append(" rn BETWEEN :p_DA AND :p_A)");
+            sb.Append(" rn BETWEEN @p_DA AND @p_A)");
             parsOut.Add(new SqlParameter
             {
                 Direction = ParameterDirection.Input,
@@ -2131,7 +2202,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" lg.log_date as DATA_INVIO, ")
                 .Append(" mc.flg_annullamento AS \"STATUS_SERVER\",")
                 .Append(" (SELECT DISTINCT last_value(stato_comunicazione_new) OVER ()")
-                .Append(" FROM comunicazioni_flusso cf")
+                .Append(" FROM [FAXPEC].[FAXPEC].[Comunicazioni_flusso] cf")
                 .Append(" START WITH cf.ref_id_com = mc.ref_id_com AND cf.stato_comunicazione_old IS NULL")
                 .Append(" CONNECT BY NOCYCLE PRIOR cf.ref_id_com = cf.ref_id_com")
                 .Append(" AND PRIOR cf.stato_comunicazione_new = cf.stato_comunicazione_old")
@@ -2144,8 +2215,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" lg.user_id as Utente,")
                 .Append(" f.nome,f.tipo as foldertipo")
                 .Append(" FROM mail_content mc")
-                .Append(" inner join LOG_ACTIONS lg on to_char(mc.ID_MAIL)=lg.OBJECT_ID ")
-                .Append(" JOIN FOLDERS F on to_number(trim(substr(lg.log_details, instr(lg.log_details,'/')+1,3)))=f.id")
+                .Append(" inner join [FAXPEC].[FAXPEC].[LOG_ACTIONS] lg on to_char(mc.ID_MAIL)=lg.OBJECT_ID ")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[FOLDERS] F on to_number(trim(substr(lg.log_details, instr(lg.log_details,'/')+1,3)))=f.id")
                 .Append(" LEFT OUTER JOIN (SELECT ID_M, \"MAIL_TO\", \"MAIL_CC\", \"MAIL_CCN\"")
                 .Append(" FROM (SELECT id_m, tipo, mail_dest FROM t_dest) PIVOT")
                 .Append(" (LISTAGG(mail_dest, ';') WITHIN GROUP (ORDER BY tipo)")
@@ -2156,7 +2227,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" FROM t_mc");
             if (!searchValues.Keys.Contains(MailTypeSearch.Mail))
             {
-                sb.Append(" WHERE rn BETWEEN :p_DA AND :p_A");
+                sb.Append(" WHERE rn BETWEEN @p_DA AND @p_A");
                 if (parsOut.SingleOrDefault(p => p.ParameterName == "p_DA") == null)
                 {
                     parsOut.Add(new SqlParameter
@@ -2190,11 +2261,11 @@ namespace SendMail.Data.SQLServerDB.Repository
             string utente = string.Empty;
             StringBuilder sb = new StringBuilder("WITH T AS")
                 .Append("(SELECT id_mail, row_number() OVER (ORDER BY LOG_DATE DESC) AS rn")
-                .Append(" from mail_inbox INNER JOIN LOG_ACTIONS  ")
+                .Append(" from [FAXPEC].[FAXPEC].[MAIL_INBOX] INNER JOIN [FAXPEC].[FAXPEC].[LOG_ACTIONS]  ")
                 .Append(" ON MAIL_INBOX.MAIL_SERVER_ID=LOG_ACTIONS.OBJECT_ID where ");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mail_account = :p_ACCOUNT and lower(user_mail) = :p_ACCOUNT  ");
+                sb.Append(" mail_account = @p_ACCOUNT and lower(user_mail) = @p_ACCOUNT  ");
                 parsIn.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2206,7 +2277,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             }
             if (folder != "0")
             {
-                sb.Append(" and LOG_DETAILS LIKE :p_FOLDER");
+                sb.Append(" and LOG_DETAILS LIKE @p_FOLDER");
                 parsIn.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2233,7 +2304,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Mail:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mail_from) like :p_MAIL ");
+                            sb.Append(" and lower(mail_from) like @p_MAIL ");
                             parsIn.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2255,7 +2326,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and greatest(log_date) between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                        sb.Append(" and max(convert(nvarchar(10),log_date,103)) between @p_DATAINIZIO and @p_DATAFINE ");
                         parsIn.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2268,7 +2339,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")) && chkUfficio != true)
                         {
-                            sb.Append(" AND lower(user_id)=lower(:p_UTENTE) ");
+                            sb.Append(" AND lower(user_id)=lower(@p_UTENTE) ");
                             utente = val.ToLower();
                             parsIn.Add(new SqlParameter
                             {
@@ -2288,20 +2359,20 @@ namespace SendMail.Data.SQLServerDB.Repository
                 // .Append(" to_number(trim(substr(lg.log_details, instr(lg.log_details,'/')+1,3))) as folderid, msg_length, ")
                 .Append(" folderid, msg_length, ")
                 .Append(" lg.user_id as Utente, f.nome,f.tipo as foldertipo ")
-                .Append(" FROM mail_inbox mi")
-                .Append(" inner join LOG_ACTIONS lg on mi.MAIL_SERVER_ID=lg.OBJECT_ID ")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_inbox] mi")
+                .Append(" inner join [FAXPEC].[FAXPEC].[LOG_ACTIONS] lg on mi.MAIL_SERVER_ID=lg.OBJECT_ID ")
                 //  .Append(" inner join folders f on to_number(trim(substr(lg.log_details, instr(lg.log_details,'/')+1,3)))=f.id ")
-                .Append(" inner join folders f on mi.folderid=f.id ")
+                .Append(" inner join [FAXPEC].[FAXPEC].[folders] f on mi.folderid=f.id ")
                 .Append(" WHERE id_mail IN ")
-                .Append(" (SELECT id_mail FROM T WHERE rn BETWEEN :p_DA AND :p_A) ")
-                .Append(" and greatest(log_date) between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                .Append(" (SELECT id_mail FROM T WHERE rn BETWEEN @p_DA AND @p_A) ")
+                .Append(" and max(convert(nvarchar(10),log_date,103)) between @p_DATAINIZIO and @p_DATAFINE ");
             if (folder != "0")
             {
-                sb.Append(" and LOG_DETAILS LIKE :p_FOLDER  ");
+                sb.Append(" and LOG_DETAILS LIKE @p_FOLDER  ");
             }
             if (utente != string.Empty)
             {
-                sb.Append(" AND lower(user_id)=lower(:p_UTENTE) ");
+                sb.Append(" AND lower(user_id)=lower(@p_UTENTE) ");
             }
             sb.Append(" order by lg.log_date desc ");
             parsIn.Add(new SqlParameter
@@ -2324,10 +2395,10 @@ namespace SendMail.Data.SQLServerDB.Repository
         private string UpdatesId(string account, string folder, Dictionary<MailTypeSearch, string> searchValues, out List<SqlParameter> pars)
         {
             pars = new List<SqlParameter>();
-            StringBuilder sb = new StringBuilder("SELECT ID_MAIL FROM MAIL_INBOX mi WHERE");
+            StringBuilder sb = new StringBuilder("SELECT ID_MAIL FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] mi WHERE");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mail_account = :p_ACCOUNT ");
+                sb.Append(" mail_account = @p_ACCOUNT ");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2339,7 +2410,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             }
             if (folder != "0")
             {
-                sb.Append(" and folderid = :p_FOLDER");
+                sb.Append(" and folderid = @p_FOLDER");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2356,7 +2427,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Mail:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mail_from) like :p_MAIL ");
+                            sb.Append(" and lower(mail_from) like @p_MAIL ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2370,7 +2441,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Oggetto:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mail_subject) like :p_SUBJECT ");
+                            sb.Append(" and lower(mail_subject) like @p_SUBJECT ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2392,7 +2463,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and TRUNC(data_ricezione,'DD') between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                        sb.Append(" and convert(nvarchar(10),data_ricezione,103) between @p_DATAINIZIO and @p_DATAFINE ");
                         pars.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2405,7 +2476,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")))
                         {
-                            sb.Append(" AND ID_MAIL IN (SELECT DISTINCT LAST_VALUE(REF_ID_MAIL) OVER (ORDER BY DATA_RICEZIONE DESC ROWS BETWEEN UNBOUNDED PRECEDING  AND UNBOUNDED FOLLOWING) FROM MAIL_INBOX_FLUSSO MF WHERE MF.REF_ID_MAIL = MI.ID_MAIL and lower(ute_ope)=lower(:p_UTENTE)) ");
+                            sb.Append(" AND ID_MAIL IN (SELECT DISTINCT LAST_VALUE(REF_ID_MAIL) OVER (ORDER BY DATA_RICEZIONE DESC ROWS BETWEEN UNBOUNDED PRECEDING  AND UNBOUNDED FOLLOWING) FROM MAIL_INBOX_FLUSSO MF WHERE MF.REF_ID_MAIL = MI.ID_MAIL and lower(ute_ope)=lower(@p_UTENTE)) ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2418,7 +2489,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Marcatori:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and mi.FLG_RATING=:p_FLGRATING ");
+                            sb.Append(" and mi.FLG_RATING=@p_FLGRATING ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2431,7 +2502,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.StatusInbox:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and mi.Status_Mail=:p_STATUS_INBOX ");
+                            sb.Append(" and mi.Status_Mail=@p_STATUS_INBOX ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2454,21 +2525,21 @@ namespace SendMail.Data.SQLServerDB.Repository
             //mail_content
             sb.Append("WITH t_mc(id_m, id_c, rn) AS")
                 .Append(" (SELECT id_mail, mc.ref_id_com, row_number() OVER (ORDER BY mc.ref_id_com DESC)")
-                .Append(" FROM mail_content mc")
-                .Append(" JOIN comunicazioni_flusso cf")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni_flusso] cf")
                 .Append(" ON mc.ref_id_flusso_attuale = cf.id_flusso")
-                .Append(" JOIN comunicazioni_flusso ff ON mc.ref_id_flusso_inserimento=ff.id_flusso ")
-                .Append(" JOIN comunicazioni cm ON mc.ref_id_com=cm.id_com ")
-                .Append(" JOIN comunicazioni_sottotitoli st ON cm.ref_id_sottotitolo=st.id_sottotitolo ");
+                .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni_flusso] ff ON mc.ref_id_flusso_inserimento=ff.id_flusso ")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni] cm ON mc.ref_id_com=cm.id_com ")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni_sottotitoli] st ON cm.ref_id_sottotitolo=st.id_sottotitolo ");
             if (searchValues.Keys.Contains(MailTypeSearch.Mail))
             {
                 if (searchValues[MailTypeSearch.Mail] != string.Empty)
-                { sb.Append(" JOIN mail_refs_new rf ON mc.id_mail=rf.ref_id_mail "); }
+                { sb.Append(" JOIN [FAXPEC].[FAXPEC].[mail_refs_new] rf ON mc.id_mail=rf.ref_id_mail "); }
             }
             sb.Append(" WHERE");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mc.mail_sender = :p_ACCOUNT ");
+                sb.Append(" mc.mail_sender = @p_ACCOUNT ");
                 parsOut.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2489,7 +2560,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Titolo:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and st.ref_id_titolo=:p_IDTITOLO");
+                            sb.Append(" and st.ref_id_titolo=@p_IDTITOLO");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2502,7 +2573,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.SottoTitolo:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and cm.ref_id_sottotitolo=:p_IDSOTTOTITOLO");
+                            sb.Append(" and cm.ref_id_sottotitolo=@p_IDSOTTOTITOLO");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2515,7 +2586,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Oggetto:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mail_subject) like :p_SUBJECT ");
+                            sb.Append(" and lower(mail_subject) like @p_SUBJECT ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2537,7 +2608,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and TRUNC(ff.data_operazione,'DD') between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                        sb.Append(" and convert(nvarchar(10), ff.data_operazione,103) between @p_DATAINIZIO and @p_DATAFINE");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2550,7 +2621,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")))
                         {
-                            sb.Append(" and lower(ff.ute_ope)=:p_UTENTE ");
+                            sb.Append(" and lower(ff.ute_ope)=@p_UTENTE ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2563,7 +2634,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Status:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and cf.STATO_COMUNICAZIONE_NEW=:p_STATUS ");
+                            sb.Append(" and cf.STATO_COMUNICAZIONE_NEW=@p_STATUS ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2576,7 +2647,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Mail:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mail_destinatario) LIKE lower(:p_MAIL) ");
+                            sb.Append(" and lower(mail_destinatario) LIKE lower(@p_MAIL) ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2593,7 +2664,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             //mail_refs_new
             sb.Append("t_dest(id_m, tipo, mail_dest) AS")
                 .Append(" (SELECT ref_id_mail, tipo_ref, mail_destinatario")
-                .Append(" FROM mail_refs_new")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_refs_new] ")
                 .Append(" WHERE ref_id_mail IN (SELECT id_m")
                 .Append(" FROM t_mc where ");
             if (searchValues.Keys.Contains(MailTypeSearch.Mail))
@@ -2601,7 +2672,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 string val = searchValues[MailTypeSearch.Mail];
                 if (val != string.Empty)
                 {
-                    sb.Append(" lower(mail_destinatario) LIKE lower(:p_MAIL) and ");
+                    sb.Append(" lower(mail_destinatario) LIKE lower(@p_MAIL) and ");
                     parsOut.Add(new SqlParameter
                     {
                         Direction = ParameterDirection.Input,
@@ -2612,7 +2683,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     });
                 }
             }
-            sb.Append(" rn BETWEEN :p_DA AND :p_A)");
+            sb.Append(" rn BETWEEN @p_DA AND @p_A)");
             parsOut.Add(new SqlParameter
             {
                 Direction = ParameterDirection.Input,
@@ -2650,7 +2721,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     (int)MailStatus.AVVENUTA_CONSEGNA, (int)MailStatus.ERRORE_CONSEGNA)
                 .Append(" mc.flg_annullamento AS \"STATUS_SERVER\",")
                 .Append(" (SELECT DISTINCT last_value(stato_comunicazione_new) OVER ()")
-                .Append(" FROM comunicazioni_flusso cf")
+                .Append(" FROM [FAXPEC].[FAXPEC].[comunicazioni_flusso] cf")
                 .Append(" START WITH cf.ref_id_com = mc.ref_id_com AND cf.stato_comunicazione_old IS NULL")
                 .Append(" CONNECT BY NOCYCLE PRIOR cf.ref_id_com = cf.ref_id_com")
                 .Append(" AND PRIOR cf.stato_comunicazione_new = cf.stato_comunicazione_old")
@@ -2659,10 +2730,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" NULL as \"FLG_RATING\",")
                 .Append(" DECODE((SELECT count(*) FROM comunicazioni_allegati")
                 .Append(" WHERE ref_id_com = mc.ref_id_com), 0, '0', '1') AS \"FLG_ATTACHMENTS\",")
-                .Append(" (SELECT ute_ope FROM comunicazioni_flusso WHERE ref_id_com = mc.ref_id_com")
+                .Append(" (SELECT ute_ope FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] WHERE ref_id_com = mc.ref_id_com")
                 .AppendFormat(" AND stato_comunicazione_new = '{0}') AS \"UTENTE\", 0 AS MSG_LENGTH ", (int)MailStatus.INSERTED)
-                .Append(" FROM mail_content mc")
-                .Append(" JOIN FOLDERS F on MC.FOLDERID=F.ID")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[FOLDERS] F on MC.FOLDERID=F.ID")
                 .Append(" LEFT OUTER JOIN (SELECT ID_M, \"MAIL_TO\", \"MAIL_CC\", \"MAIL_CCN\"")
                 .Append(" FROM (SELECT id_m, tipo, mail_dest FROM t_dest) PIVOT")
                 .Append(" (LISTAGG(mail_dest, ';') WITHIN GROUP (ORDER BY tipo)")
@@ -2673,7 +2744,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" FROM t_mc");
             if (!searchValues.Keys.Contains(MailTypeSearch.Mail))
             {
-                sb.Append(" WHERE rn BETWEEN :p_DA AND :p_A");
+                sb.Append(" WHERE rn BETWEEN @p_DA AND @p_A");
                 if (parsOut.SingleOrDefault(p => p.ParameterName == "p_DA") == null)
                 {
                     parsOut.Add(new SqlParameter
@@ -2705,13 +2776,13 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
             parsOut = new List<SqlParameter>();
             StringBuilder sb = new StringBuilder("SELECT COUNT(*)")
-                .Append(" FROM mail_content mc")
-                .Append(" JOIN LOG_ACTIONS ")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[LOG_ACTIONS] ")
                 .Append(" ON to_char(mc.ID_MAIL)=LOG_ACTIONS.OBJECT_ID ")
                 .Append(" WHERE ");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mc.mail_sender = :p_ACCOUNT ");
+                sb.Append(" mc.mail_sender = @p_ACCOUNT ");
                 parsOut.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2723,7 +2794,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             }
             if (folder != "0")
             {
-                sb.Append(" and LOG_DETAILS LIKE :p_FOLDER");
+                sb.Append(" and LOG_DETAILS LIKE @p_FOLDER");
                 parsOut.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2755,7 +2826,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and trunc(log_date,'DD') between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                        sb.Append(" and convert(nvarchar(10),log_date,103) between @p_DATAINIZIO and @p_DATAFINE ");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2768,7 +2839,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")))
                         {
-                            sb.Append(" and lower(user_id)=:p_UTENTE ");
+                            sb.Append(" and lower(user_id)=@p_UTENTE ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2787,10 +2858,10 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
 
             pars = new List<SqlParameter>();
-            StringBuilder sb = new StringBuilder("SELECT count(*) AS \"TOT\" FROM MAIL_INBOX mi INNER JOIN LOG_ACTIONS ON mi.MAIL_SERVER_ID=LOG_ACTIONS.OBJECT_ID WHERE");
+            StringBuilder sb = new StringBuilder("SELECT count(*) AS \"TOT\" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] mi INNER JOIN [FAXPEC].[FAXPEC].[LOG_ACTIONS] ON mi.MAIL_SERVER_ID=LOG_ACTIONS.OBJECT_ID WHERE");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mail_account = :p_ACCOUNT and lower(user_mail) = :p_ACCOUNT ");
+                sb.Append(" mail_account = @p_ACCOUNT and lower(user_mail) = @p_ACCOUNT ");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2803,7 +2874,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             if (folder != "0")
             {
 
-                sb.Append(" and LOG_DETAILS LIKE :p_FOLDER");
+                sb.Append(" and LOG_DETAILS LIKE @p_FOLDER");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -2830,7 +2901,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Mail:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mail_from) like :p_MAIL");
+                            sb.Append(" and lower(mail_from) like @p_MAIL");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2852,7 +2923,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and greatest(log_date) between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                        sb.Append(" and max(convert(nvarchar(10),log_date, 103)) between @p_DATAINIZIO and @p_DATAFINE ");
                         pars.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2865,7 +2936,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")) && ChkUfficio != true)
                         {
-                            sb.Append(" AND lower(user_id)=lower(:p_UTENTE) ");
+                            sb.Append(" AND lower(user_id)=lower(@p_UTENTE) ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2884,35 +2955,34 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
 
             pars = new List<SqlParameter>();
-            StringBuilder sb = new StringBuilder("SELECT count(*) AS \"TOT\"  FROM MAIL_INBOX mi WHERE");
+            StringBuilder sb = new StringBuilder("SELECT count(*) FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] WHERE");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mail_account = :p_ACCOUNT ");
+                sb.Append(" mail_account = @p_ACCOUNT ");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
                     SqlDbType = SqlDbType.NVarChar,
-                    ParameterName = "p_ACCOUNT",
-                    Size = 150,
+                    ParameterName = "p_ACCOUNT",                  
                     Value = account
                 });
             }
             if (folder != "0")
             {
-                sb.Append(" and folderid = :p_FOLDER");
+                sb.Append(" and folderid = @p_FOLDER");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
                     SqlDbType = SqlDbType.Decimal,
                     ParameterName = "p_FOLDER",
-                    Value = int.Parse(folder)
+                    Value = decimal.Parse(folder)
                 });
             }
             string tipo = string.Empty;
             if (box == "O")
             { tipo = "I"; }
             else { tipo = box; }
-            sb.Append(" and foldertipo = :p_TIPO");
+            sb.Append(" and foldertipo = @p_TIPO");
             pars.Add(new SqlParameter
             {
                 Direction = ParameterDirection.Input,
@@ -2928,7 +2998,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Mail:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mail_from) like :p_MAIL ");
+                            sb.Append(" and lower(mail_from) like @p_MAIL ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2942,7 +3012,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Oggetto:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mail_subject) like :p_SUBJECT ");
+                            sb.Append(" and lower(mail_subject) like @p_SUBJECT ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2964,7 +3034,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and trunc(data_ricezione,'DD') between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                        sb.Append(" and CONVERT(VARCHAR(10), data_ricezione,103) between @p_DATAINIZIO and @p_DATAFINE ");
                         pars.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2977,7 +3047,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")))
                         {
-                            sb.Append(" AND ID_MAIL IN (SELECT DISTINCT LAST_VALUE(REF_ID_MAIL) OVER (ORDER BY DATA_RICEZIONE DESC ROWS BETWEEN UNBOUNDED PRECEDING  AND UNBOUNDED FOLLOWING) FROM MAIL_INBOX_FLUSSO MF WHERE MF.REF_ID_MAIL = MI.ID_MAIL and lower(ute_ope)=lower(:p_UTENTE)) ");
+                            sb.Append(" AND ID_MAIL IN (SELECT DISTINCT LAST_VALUE(REF_ID_MAIL) OVER (ORDER BY DATA_RICEZIONE DESC ROWS BETWEEN UNBOUNDED PRECEDING  AND UNBOUNDED FOLLOWING) FROM [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] MF WHERE MF.REF_ID_MAIL = MI.ID_MAIL and lower(ute_ope)=lower(@p_UTENTE)) ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -2990,7 +3060,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Marcatori:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and mi.FLG_RATING=:p_FLGRATING ");
+                            sb.Append(" and mi.FLG_RATING=@p_FLGRATING ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3005,7 +3075,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         {
                             sb.Append(" AND (SELECT DISTINCT LAST_VALUE(MF1.STATUS_MAIL_NEW) ");
                             sb.Append("  OVER (ORDER BY MF1.DATA_OPERAZIONE ASC ROWS BETWEEN UNBOUNDED PRECEDING  AND UNBOUNDED FOLLOWING) ");
-                            sb.Append(" FROM MAIL_INBOX_FLUSSO MF1 WHERE MF1.REF_ID_MAIL = MI.ID_MAIL) = :p_STATUS_INBOX ");
+                            sb.Append(" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] MF1 WHERE MF1.REF_ID_MAIL = MI.ID_MAIL) = @p_STATUS_INBOX ");
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3016,7 +3086,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         }
                         break;
                 }
-            }
+            }          
             return sb.ToString(); ;
         }
 
@@ -3025,10 +3095,10 @@ namespace SendMail.Data.SQLServerDB.Repository
             parsIn = new List<SqlParameter>();
             StringBuilder sb = new StringBuilder("WITH T AS")
                 .Append("(SELECT id_mail, row_number() OVER (ORDER BY data_ricezione DESC) AS rn")
-                .Append(" FROM mail_inbox mi where ");
+                .Append(" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] mi where ");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mail_account = :p_ACCOUNT ");
+                sb.Append(" mail_account = @p_ACCOUNT ");
                 parsIn.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -3053,7 +3123,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Mail:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mail_from) like :p_MAIL ");
+                            sb.Append(" and lower(mail_from) like @p_MAIL ");
                             parsIn.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3067,7 +3137,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Oggetto:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mail_subject) like :p_SUBJECT ");
+                            sb.Append(" and lower(mail_subject) like @p_SUBJECT ");
                             parsIn.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3081,7 +3151,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")))
                         {
-                            sb.Append(" AND ID_MAIL IN (SELECT DISTINCT LAST_VALUE(REF_ID_MAIL) OVER (ORDER BY DATA_RICEZIONE DESC ROWS BETWEEN UNBOUNDED PRECEDING  AND UNBOUNDED FOLLOWING) FROM MAIL_INBOX_FLUSSO MF WHERE MF.REF_ID_MAIL = MI.ID_MAIL and lower(ute_ope)=lower(:p_UTENTE)) ");
+                            sb.Append(" AND ID_MAIL IN (SELECT DISTINCT LAST_VALUE(REF_ID_MAIL) OVER (ORDER BY DATA_RICEZIONE DESC ROWS BETWEEN UNBOUNDED PRECEDING  AND UNBOUNDED FOLLOWING) FROM [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] MF WHERE MF.REF_ID_MAIL = MI.ID_MAIL and lower(ute_ope)=lower(@p_UTENTE)) ");
                             parsIn.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3102,7 +3172,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and trunc(data_ricezione,'DD') between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                        sb.Append(" and convert(nvarchar(10), data_ricezione,103) between @p_DATAINIZIO and @p_DATAFINE ");
                         parsIn.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -3114,7 +3184,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Marcatori:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and mi.FLG_RATING=:p_FLGRATING ");
+                            sb.Append(" and mi.FLG_RATING=@p_FLGRATING ");
                             parsIn.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3127,7 +3197,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.StatusInbox:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and mi.Status_Mail=:p_STATUS_INBOX ");
+                            sb.Append(" and mi.Status_Mail=@p_STATUS_INBOX ");
                             parsIn.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3148,13 +3218,13 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" status_server, status_mail, flg_rating, flg_attachments, folderid,foldertipo,msg_length,")
                 .Append(" (SELECT DISTINCT LAST_VALUE(ute_ope) OVER ")
                 .Append(" (ORDER BY data_operazione ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)")
-                .Append(" FROM mail_inbox_flusso mf")
+                .Append(" FROM  [FAXPEC].[FAXPEC].[mail_inbox_flusso] mf")
                 .Append(" WHERE mf.ref_id_mail = mi.id_mail) AS \"UTENTE\",")
                 .Append(" msg_length,nome")
-                .Append(" FROM mail_inbox mi")
-                .Append(" JOIN folders on mi.FOLDERID=FOLDERS.ID")
+                .Append(" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] mi")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[folders] on mi.FOLDERID=FOLDERS.ID")
                 .Append(" WHERE id_mail IN ")
-                .Append(" (SELECT id_mail FROM T WHERE rn BETWEEN :p_DA AND :p_A)")
+                .Append(" (SELECT id_mail FROM T WHERE rn BETWEEN @p_DA AND @p_A)")
                 .Append(" ORDER BY DATA_RICEZIONE DESC");
             parsIn.Add(new SqlParameter
             {
@@ -3178,21 +3248,21 @@ namespace SendMail.Data.SQLServerDB.Repository
             parsOut = new List<SqlParameter>();
             StringBuilder sb = new StringBuilder("WITH t_mc(id_m, id_c, rn) AS")
                 .Append(" (SELECT mc.id_mail, mc.ref_id_com, row_number() OVER (ORDER BY mc.ref_id_com DESC)")
-                .Append(" FROM mail_content mc")
-                .Append(" JOIN comunicazioni_flusso cf")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni_flusso] cf")
                 .Append(" ON mc.ref_id_flusso_attuale = cf.id_flusso")
-                .Append(" JOIN comunicazioni_flusso ff ON mc.ref_id_flusso_inserimento=ff.id_flusso ")
-                .Append(" JOIN comunicazioni cm ON mc.ref_id_com=cm.id_com ")
-                .Append(" JOIN comunicazioni_sottotitoli st ON cm.ref_id_sottotitolo=st.id_sottotitolo ");
+                .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni_flusso] ff ON mc.ref_id_flusso_inserimento=ff.id_flusso ")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni] cm ON mc.ref_id_com=cm.id_com ")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni_sottotitoli] st ON cm.ref_id_sottotitolo=st.id_sottotitolo ");
             if (searchValues.Keys.Contains(MailTypeSearch.Mail))
             {
                 if (searchValues[MailTypeSearch.Mail] != string.Empty)
-                { sb.Append(" JOIN mail_refs_new rf ON mc.id_mail=rf.ref_id_mail "); }
+                { sb.Append(" JOIN [FAXPEC].[FAXPEC].[mail_refs_new] rf ON mc.id_mail=rf.ref_id_mail "); }
             }
             sb.Append(" WHERE");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mc.mail_sender = :p_ACCOUNT ");
+                sb.Append(" mc.mail_sender = @p_ACCOUNT ");
                 parsOut.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -3213,7 +3283,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Titolo:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and st.ref_id_titolo=:p_IDTITOLO");
+                            sb.Append(" and st.ref_id_titolo=@p_IDTITOLO");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3226,7 +3296,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.SottoTitolo:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and cm.ref_id_sottotitolo=:p_IDSOTTOTITOLO");
+                            sb.Append(" and cm.ref_id_sottotitolo=@p_IDSOTTOTITOLO");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3239,7 +3309,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Mail:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(rf.mail_destinatario) like :p_MAIL ");
+                            sb.Append(" and lower(rf.mail_destinatario) like @p_MAIL ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3253,7 +3323,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Oggetto:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and lower(mc.mail_subject) like :p_SUBJECT ");
+                            sb.Append(" and lower(mc.mail_subject) like @p_SUBJECT ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3275,7 +3345,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and TRUNC(ff.data_operazione,'DD') between to_date(:p_DATAINIZIO,'DD/MM/YYYY') and to_date(:p_DATAFINE,'DD/MM/YYYY')");
+                        sb.Append(" and convert(nvarchar(10),ff.data_operazione,103) between @p_DATAINIZIO and @p_DATAFINE ");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -3288,7 +3358,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")))
                         {
-                            sb.Append(" and lower(ff.ute_ope)=:p_UTENTE ");
+                            sb.Append(" and lower(ff.ute_ope)=@p_UTENTE ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3301,7 +3371,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     case MailTypeSearch.Status:
                         if (val != string.Empty)
                         {
-                            sb.Append(" and cf.STATO_COMUNICAZIONE_NEW=:p_STATUS ");
+                            sb.Append(" and cf.STATO_COMUNICAZIONE_NEW=@p_STATUS ");
                             parsOut.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3347,11 +3417,11 @@ namespace SendMail.Data.SQLServerDB.Repository
             }
 
             pars = new List<SqlParameter>();
-            StringBuilder sb = new StringBuilder("SELECT count(*) AS \"TOT\" FROM mail_inbox WHERE");
+            StringBuilder sb = new StringBuilder("SELECT count(*) AS \"TOT\" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] WHERE");
 
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mail_account = :p_ACCOUNT AND");
+                sb.Append(" mail_account = @p_ACCOUNT AND");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -3365,7 +3435,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             switch (folder)
             {
                 default:
-                    sb.Append(" folderid = :p_FOLDER");
+                    sb.Append(" folderid = @p_FOLDER");
                     pars.Add(new SqlParameter
                     {
                         Direction = ParameterDirection.Input,
@@ -3431,7 +3501,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 foreach (string st in vals)
                 {
                     int idx = vals.IndexOf(st);
-                    likeString.Add(String.Format(@" lower({0}) LIKE :p_SRH{1} ESCAPE '\'", campo, idx));
+                    likeString.Add(String.Format(@" lower({0}) LIKE @p_SRH{1} ESCAPE '\'", campo, idx));
                     pars.Add(new SqlParameter
                     {
                         Direction = ParameterDirection.Input,
@@ -3540,11 +3610,11 @@ namespace SendMail.Data.SQLServerDB.Repository
             pars = new List<SqlParameter>();
             StringBuilder sb = new StringBuilder("WITH T AS")
                 .Append("(SELECT id_mail, row_number() OVER (ORDER BY data_ricezione DESC) AS rn")
-                .Append(" FROM mail_inbox")
+                .Append(" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] ")
                 .Append(" WHERE ");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append("mail_account = :p_ACCOUNT AND");
+                sb.Append("mail_account = @p_ACCOUNT AND");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -3605,7 +3675,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 foreach (string s in vals)
                 {
                     int idx = vals.IndexOf(s);
-                    l.Add(String.Format(@" LOWER({0}) LIKE :p_SRH{1} ESCAPE '\'", campo, idx));
+                    l.Add(String.Format(@" LOWER({0}) LIKE @p_SRH{1} ESCAPE '\'", campo, idx));
                     pars.Add(new SqlParameter
                     {
                         Direction = ParameterDirection.Input,
@@ -3624,12 +3694,12 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" status_server, status_mail, flg_rating, flg_attachments, folderid,foldertipo,")
                 .Append(" (SELECT DISTINCT LAST_VALUE(ute_ope) OVER ")
                 .Append(" (ORDER BY data_operazione ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)")
-                .Append(" FROM mail_inbox_flusso mf")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_inbox_flusso] mf")
                 .Append(" WHERE mf.ref_id_mail = mi.id_mail) AS \"UTENTE\",")
                 .Append(" msg_length")
-                .Append(" FROM mail_inbox mi")
+                .Append(" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] mi")
                 .Append(" WHERE id_mail IN ")
-                .Append(" (SELECT id_mail FROM T WHERE rn BETWEEN :p_DA AND :p_A)")
+                .Append(" (SELECT id_mail FROM T WHERE rn BETWEEN @p_DA AND @p_A)")
                 .Append(" ORDER BY DATA_RICEZIONE DESC");
             pars.Add(new SqlParameter
             {
@@ -3677,13 +3747,13 @@ namespace SendMail.Data.SQLServerDB.Repository
             pars = new List<SqlParameter>();
             StringBuilder sb = new StringBuilder("WITH t_mc(id_m, id_c, rn) AS")
                 .Append(" (SELECT id_mail, mc.ref_id_com, row_number() OVER (ORDER BY mc.ref_id_com DESC)")
-                .Append(" FROM mail_content mc")
-                .Append(" JOIN comunicazioni_flusso cf")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni_flusso] cf")
                 .Append(" ON mc.ref_id_com = cf.ref_id_com")
                 .Append(" WHERE");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mc.mail_sender = :p_ACCOUNT ");
+                sb.Append(" mc.mail_sender = @p_ACCOUNT ");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -3708,11 +3778,11 @@ namespace SendMail.Data.SQLServerDB.Repository
                             int idx = searchValues[srhIdxKey].IndexOf(sub);
                             if (idx == 0)
                             {
-                                sb.AppendFormat(" AND (lower(mail_subject) LIKE :p_MS{0} ESCAPE '\\'", idx);
+                                sb.AppendFormat(" AND (lower(mail_subject) LIKE @p_MS{0} ESCAPE '\\'", idx);
                             }
                             else
                             {
-                                sb.AppendFormat(" OR lower(mail_subject) LIKE :p_MS{0} ESCAPE '\\'", idx);
+                                sb.AppendFormat(" OR lower(mail_subject) LIKE @p_MS{0} ESCAPE '\\'", idx);
                             }
                             pars.Add(new SqlParameter
                             {
@@ -3733,7 +3803,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 sb.Append(",");
                 sb.Append("t_dest(id_m, tipo, mail_dest) AS")
                     .Append(" (SELECT ref_id_mail, tipo_ref, mail_destinatario")
-                    .Append(" FROM mail_refs_new")
+                    .Append(" FROM [FAXPEC].[FAXPEC].[mail_refs_new] ")
                     .Append(" WHERE ref_id_mail IN (SELECT id_m")
                     .Append(" FROM t_mc)");
                 foreach (var mail in searchValues[MailIndexedSearch.MAIL])
@@ -3747,7 +3817,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     {
                         sb.AppendFormat(" OR");
                     }
-                    sb.AppendFormat(" mail_destinatario LIKE :p_MAIL{0} ESCAPE '\\'", idx);
+                    sb.AppendFormat(" mail_destinatario LIKE @p_MAIL{0} ESCAPE '\\'", idx);
                     pars.Add(new SqlParameter
                     {
                         Direction = ParameterDirection.Input,
@@ -3788,13 +3858,13 @@ namespace SendMail.Data.SQLServerDB.Repository
             //mail_content
             sb.Append("WITH t_mc(id_m, id_c, rn) AS")
                 .Append(" (SELECT id_mail, mc.ref_id_com, row_number() OVER (ORDER BY mc.ref_id_com DESC)")
-                .Append(" FROM mail_content mc")
-                .Append(" JOIN comunicazioni_flusso cf")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
+                .Append(" JOIN [FAXPEC].[FAXPEC].[comunicazioni_flusso] cf")
                 .Append(" ON mc.ref_id_com = cf.ref_id_com")
                 .Append(" WHERE");
             if (!string.IsNullOrEmpty(account))
             {
-                sb.Append(" mc.mail_sender = :p_ACCOUNT ");
+                sb.Append(" mc.mail_sender = @p_ACCOUNT ");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -3820,7 +3890,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             if (idx == 0)
                                 sb.Append(" AND (");
                             else sb.Append(" OR");
-                            sb.AppendFormat(" lower(mail_subject) LIKE :p_MS{0} ESCAPE '\\'", idx);
+                            sb.AppendFormat(" lower(mail_subject) LIKE @p_MS{0} ESCAPE '\\'", idx);
                             pars.Add(new SqlParameter
                             {
                                 Direction = ParameterDirection.Input,
@@ -3838,7 +3908,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             //mail_refs_new
             sb.Append("t_dest(id_m, tipo, mail_dest) AS")
                 .Append(" (SELECT ref_id_mail, tipo_ref, mail_destinatario")
-                .Append(" FROM mail_refs_new")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_refs_new] ")
                 .Append(" WHERE ref_id_mail IN (SELECT id_m")
                 .Append(" FROM t_mc");
             if (searchValues.Keys.Contains(MailIndexedSearch.MAIL))
@@ -3848,7 +3918,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 {
                     int idx = searchValues[MailIndexedSearch.MAIL].IndexOf(mail);
                     if (idx != 0) sb.Append(" OR ");
-                    sb.AppendFormat(" mail_destinatario LIKE :p_MAIL{0} ESCAPE '\\'", idx);
+                    sb.AppendFormat(" mail_destinatario LIKE @p_MAIL{0} ESCAPE '\\'", idx);
                     pars.Add(new SqlParameter
                     {
                         Direction = ParameterDirection.Input,
@@ -3862,7 +3932,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             }
             else
             {
-                sb.Append(" WHERE rn BETWEEN :p_DA AND :p_A)");
+                sb.Append(" WHERE rn BETWEEN @p_DA AND @p_A)");
                 pars.Add(new SqlParameter
                 {
                     Direction = ParameterDirection.Input,
@@ -3889,7 +3959,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" '' as \"MAIL_CCN\",")
                 .Append(" to_char(mc.mail_subject) AS \"MAIL_SUBJECT\",")
                 .Append(" to_char(substr(mc.mail_text, 1 ,150)) AS \"MAIL_TEXT\",")
-                .Append(" (SELECT MAX(data_operazione) FROM comunicazioni_flusso")
+                .Append(" (SELECT MAX(data_operazione) FROM [FAXPEC].[FAXPEC].[comunicazioni_flusso] ")
                 .Append(" WHERE ref_id_com = mc.ref_id_com")
                 .AppendFormat(" AND stato_comunicazione_new IN ('{0}', '{1}', '{2}')) AS \"DATA_INVIO\",",
                     (int)MailStatus.SENT, (int)MailStatus.ACCETTAZIONE, (int)MailStatus.NON_ACCETTAZIONE)
@@ -3899,18 +3969,18 @@ namespace SendMail.Data.SQLServerDB.Repository
                     (int)MailStatus.AVVENUTA_CONSEGNA, (int)MailStatus.ERRORE_CONSEGNA)
                 .Append(" mc.flg_annullamento AS \"STATUS_SERVER\",")
                 .Append(" (SELECT DISTINCT last_value(stato_comunicazione_new) OVER ()")
-                .Append(" FROM comunicazioni_flusso cf")
+                .Append(" FROM [FAXPEC].[FAXPEC].[comunicazioni_flusso] cf")
                 .Append(" START WITH cf.ref_id_com = mc.ref_id_com AND cf.stato_comunicazione_old IS NULL")
                 .Append(" CONNECT BY NOCYCLE PRIOR cf.ref_id_com = cf.ref_id_com")
                 .Append(" AND PRIOR cf.stato_comunicazione_new = cf.stato_comunicazione_old")
                 .AppendFormat(" and CF.STATO_COMUNICAZIONE_NEW != '{0}') AS \"STATUS_MAIL\",",
                     (int)MailStatus.CANCELLED)
                 .Append(" NULL as \"FLG_RATING\",")
-                .Append(" DECODE((SELECT count(*) FROM comunicazioni_allegati")
+                .Append(" DECODE((SELECT count(*) FROM [FAXPEC].[FAXPEC].[comunicazioni_allegati] ")
                 .Append(" WHERE ref_id_com = mc.ref_id_com), 0, '0', '1') AS \"FLG_ATTACHMENTS\",")
                 .Append(" (SELECT ute_ope FROM comunicazioni_flusso WHERE ref_id_com = mc.ref_id_com")
                 .AppendFormat(" AND stato_comunicazione_new = '{0}') AS \"UTENTE\", 0 AS MSG_LENGTH ", (int)MailStatus.INSERTED)
-                .Append(" FROM mail_content mc")
+                .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
                 .Append(" LEFT OUTER JOIN (SELECT ID_M, \"MAIL_TO\"")
                 .Append(" FROM (SELECT id_m, tipo, mail_dest FROM t_dest) PIVOT")
                 .Append(" (LISTAGG(mail_dest, ';') WITHIN GROUP (ORDER BY tipo)")
@@ -3921,7 +3991,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" FROM t_mc");
             if (!searchValues.Keys.Contains(MailIndexedSearch.MAIL))
             {
-                sb.Append(" WHERE rn BETWEEN :p_DA AND :p_A");
+                sb.Append(" WHERE rn BETWEEN @p_DA AND @p_A");
                 if (pars.SingleOrDefault(p => p.ParameterName == "p_DA") == null)
                 {
                     pars.Add(new SqlParameter

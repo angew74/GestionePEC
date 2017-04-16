@@ -44,7 +44,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             foreach (FOLDERS f in folders)
                             {
 
-                                string text = "DELETE FROM folders_senders WHERE idfolder = " + f.ID + " AND idsender = " + idSender;
+                                string text = "DELETE FROM  [FAXPEC].[FAXPEC].[folders_senders] WHERE idfolder = " + f.ID + " AND idsender = " + idSender;
                                 dbcontext.Database.ExecuteSqlCommand(text);
                             }
                         }
@@ -128,14 +128,15 @@ namespace SendMail.Data.SQLServerDB.Repository
                 {
                     var oCmd = dbcontext.Database.Connection.CreateCommand();
                         oCmd.CommandText = "SELECT DISTINCT m.ID_SENDER, f.NOME, m.MAIL, f.IDNOME, f.SYSTEM " +
-                                            "FROM MAIL_SENDERS m,folders f,folders_senders fs " +
+                                            "FROM  [FAXPEC].[FAXPEC].[MAIL_SENDERS] m,  [FAXPEC].[FAXPEC].[folders] f, [FAXPEC].[FAXPEC].[folders_senders] fs " +
                                             "WHERE m.mail = '" + mail + "' " +
                                             "MINUS " +
                                             "SELECT DISTINCT m.ID_SENDER, f.NOME, m.MAIL, f.IDNOME, f.SYSTEM " +
-                                            "FROM MAIL_SENDERS m,folders f,folders_senders fs " +
+                                            "FROM  [FAXPEC].[FAXPEC].[MAIL_SENDERS] m,  [FAXPEC].[FAXPEC].[folders] f, [FAXPEC].[FAXPEC].[folders_senders] fs " +
                                             "WHERE m.mail = '" + mail + "' "+
                                             "AND m.ID_SENDER = fs.IDSENDER " +
-                                            "AND f.ID = fs.IDFOLDER";                  
+                                            "AND f.ID = fs.IDFOLDER";
+                    oCmd.Connection.Open();       
                     using (var r = oCmd.ExecuteReader())
                     {
                         if (r.HasRows)
@@ -148,6 +149,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             }
                         }
                     }
+                    oCmd.Connection.Close();
                 }
             }
             catch (Exception ex)
@@ -179,10 +181,11 @@ namespace SendMail.Data.SQLServerDB.Repository
                 {
                     var oCmd = dbcontext.Database.Connection.CreateCommand();
                     oCmd.CommandText = "SELECT DISTINCT m.ID_SENDER, f.NOME, m.MAIL, f.IDNOME, f.SYSTEM " +
-                                            "FROM MAIL_SENDERS m,folders f,folders_senders fs " +
+                                            "FROM  [FAXPEC].[FAXPEC].[MAIL_SENDERS] m,  [FAXPEC].[FAXPEC].[folders] f, [FAXPEC].[FAXPEC].[folders_senders] fs " +
                                             "WHERE m.mail = '" +mail + "'  " +
                                             "AND m.ID_SENDER = fs.IDSENDER " +
-                                            "AND f.ID = fs.IDFOLDER";                 
+                                            "AND f.ID = fs.IDFOLDER";
+                    oCmd.Connection.Open();            
                     using (var r = oCmd.ExecuteReader())
                     {
                         if (r.HasRows)
@@ -195,6 +198,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             }
                         }
                     }
+                    oCmd.Connection.Close();
                 }
             }
             catch (Exception ex)

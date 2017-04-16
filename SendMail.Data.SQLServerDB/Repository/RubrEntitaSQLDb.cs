@@ -306,9 +306,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                 {
                     using (var oCmd = dbcontext.Database.Connection.CreateCommand())
                     {
+                        oCmd.Connection.Open();
                         string selectRubricaEntitaTree = "WITH T_TREE_C(ID_REF, REF_ORG, LIV) AS"
                                                        + " (SELECT ID_REFERRAL, REF_ORG, LEVEL"
-                                                        + " FROM RUBR_ENTITA"
+                                                        + " FROM  [FAXPEC].[FAXPEC].[RUBR_ENTITA] "
                                                         + " CONNECT BY NOCYCLE ID_REFERRAL = PRIOR ID_PADRE"
                                                         + " START WITH ID_REFERRAL = " + idEntita + "),"
                                                         + " T_TREE(ID_REF, LIV) AS"
@@ -331,7 +332,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                                       + " END AS \"RAG_SOC\","
                                                   + " 'RUBR' AS \"SRC\","
                                                   + " REFERRAL_TYPE AS \"REF_TYP\""
-                                                  + " FROM RUBR_ENTITA RE"
+                                                  + " FROM  [FAXPEC].[FAXPEC].[RUBR_ENTITA] RE"
                                                   + " WHERE ID_REFERRAL IN (SELECT ID_REF"
                                                                         + " FROM T_TREE)"
                                                       + " OR ID_PADRE IN (SELECT ID_REF"
@@ -347,6 +348,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         }
 
                         if (entitaTree.Count == 0) entitaTree = null;
+                        oCmd.Connection.Close();
                     }
                 }
             }
@@ -370,7 +372,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         string selectRubricaEntitaByPadre = "SELECT DISTINCT"
                                                                              + " ID_REFERRAL as \"ID_REF\","
                                                                              + " ID_PADRE AS \"ID_PAD\","
-                                                                             + " DECODE((SELECT COUNT(*) FROM RUBR_ENTITA WHERE ID_PADRE = RE.ID_REFERRAL), 0, 0, 1) AS \"IS_PADRE\","
+                                                                             + " DECODE((SELECT COUNT(*) FROM  [FAXPEC].[FAXPEC].[RUBR_ENTITA] WHERE ID_PADRE = RE.ID_REFERRAL), 0, 0, 1) AS \"IS_PADRE\","
                                                                              + " CASE"
                                                                                  + " WHEN REFERRAL_TYPE IN ('AZ_PF', 'AZ_UFF_PF', 'PA_PF','PA_UFF_PF', 'PF', 'PG')"
                                                                                      + " THEN COGNOME||' '||NOME"
@@ -380,10 +382,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                                                                              + " END AS \"RAG_SOC\","
                                                                              + " 'RUBR' AS \"SRC\","
                                                                              + " REFERRAL_TYPE AS \"REF_TYP\""
-                                                                             + " FROM RUBR_ENTITA RE"
+                                                                             + " FROM  [FAXPEC].[FAXPEC].[RUBR_ENTITA] RE"
                                                                              + " WHERE ID_PADRE = " + idPadre
                                                                              + " ORDER BY RAG_SOC";
-
+                        oCmd.Connection.Open();
                         using (var r = oCmd.ExecuteReader())
                         {
                             entitaTree = new List<SimpleTreeItem>();
@@ -394,6 +396,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         }
 
                         if (entitaTree.Count == 0) entitaTree = null;
+                        oCmd.Connection.Close();
                     }
                     catch (Exception excp)
                     {

@@ -148,7 +148,7 @@ namespace SendMail.Data.SQLServerDB.Repository
 
                         query.Append("'RUBR' AS SOURCE, ");
                         query.Append("ID_PADRE AS PADRE ");
-                        query.Append("from rubr_entita ");
+                        query.Append("from  [FAXPEC].[FAXPEC].[rubr_entita] ");
                         query.Append("where REFERRAL_TYPE in ('PA','PA_SUB','PA_UFF','AZ_PRI','AZ_CP','AZ_UFF','GRP') ");
                         if (levels.HasValue) query.Append("and level <=" + levels);
                         if (startNode.HasValue) query.Append("start with ID_REFERRAL = :pID ");
@@ -165,7 +165,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         query.Append("WHEN substr(DN,1,2)= 'o=' then 'PA' ");
                         query.Append("else 'PA_UFF' end AS SUBTYPE, ");
                         query.Append("ID_PADRE AS PADRE ");
-                        query.Append("from IPA ");
+                        query.Append("from  [FAXPEC].[FAXPEC].[IPA] ");
                         if (levels.HasValue) query.Append("where level <="+ levels.Value);
                         if (startNode.HasValue) query.Append("start with ID_RUB = "+ startNode.Value);
                         else query.Append("start with ID_RUB = 1 ");
@@ -179,8 +179,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                 {
                     try
                     {
-                        oCmd.CommandText = query.ToString();                      
+                        oCmd.Connection.Open();
+                        oCmd.CommandText = query.ToString();
                         using (var r = oCmd.ExecuteReader())
+                        {
                             if (r.HasRows)
                             {
                                 list = new Dictionary<string, SimpleTreeItem>();
@@ -194,6 +196,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                                     }
                                 }
                             }
+                        }
+                        oCmd.Connection.Close();
                     }
                     catch (Exception ex)
                     {
