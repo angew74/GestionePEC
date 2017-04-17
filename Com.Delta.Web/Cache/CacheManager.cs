@@ -39,6 +39,8 @@ namespace Com.Delta.Web.Cache
 
         private static readonly ILog _log = LogManager.GetLogger("CacheManager");
 
+        public static string EmptyHtml { get; set; }
+
         public delegate void RequiredBackEndDataEventHandler(RequiredBackEndDataEventArgs key);
         public static event RequiredBackEndDataEventHandler RequireDataFromBackEnd;
         protected static void RequiredBackEndData(RequiredBackEndDataEventArgs e)

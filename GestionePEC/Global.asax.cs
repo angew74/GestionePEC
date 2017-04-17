@@ -28,8 +28,6 @@ namespace GestionePEC
             RegisterRoutes(RouteTable.Routes);
             MailLocalService mailLocalService = new MailLocalService();
             CacheManager<List<ActiveUp.Net.Common.DeltaExt.Action>>.set(CacheKeys.FOLDERS_ACTIONS, mailLocalService.GetFolderDestinationForAction());
-            // per test crabmail
-            //HelperTestCrabMail.SetInCache();
         }
 
         protected void Application_Error(object sender, EventArgs e)

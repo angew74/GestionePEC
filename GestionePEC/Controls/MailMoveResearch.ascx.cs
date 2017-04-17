@@ -386,9 +386,9 @@ namespace GestionePEC.Controls
             Dictionary<MailTypeSearch, string> idx = new Dictionary<MailTypeSearch, string>();
             idx.Add(MailTypeSearch.Utente, ddlUtente.SelectedItem.Text);
             idx.Add(MailTypeSearch.TipoBox, rblIOBox.SelectedValue);
-            idx.Add(MailTypeSearch.DataInzio, dtInizio.DateString());
+            idx.Add(MailTypeSearch.DataInzio, dtInizio.ToIsoFormat());
             System.DateTime df = (System.DateTime)dtFine.Date();
-            idx.Add(MailTypeSearch.DataFine, df.AddDays(1).ToString("dd/MM/yyyy"));
+            idx.Add(MailTypeSearch.DataFine, df.AddDays(1).ToString("yyyyMMdd"));
             return idx;
         }
 

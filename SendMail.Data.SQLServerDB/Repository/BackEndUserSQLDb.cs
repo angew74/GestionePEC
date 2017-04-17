@@ -68,7 +68,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     sb.Append("SELECT USER_MAIL AS ACCOUNT, UPPER(USER_ID) AS UTE,")
                     .Append(" COUNT(*) AS TOT  FROM ")
                     .Append(" LOG_ACTIONS WHERE ")
-                    .Append(" convert(nvarchar(10),LOG_DATE,103)")
+                    .Append(" and cast(log_date as Date) ")                   
                     .Append("  BETWEEN '" + datainizio + "' ")
                     .Append("  AND '" + datainizio + "'  ")
                     .Append("  AND (UPPER(USER_MAIL)= '" + account.ToUpper() + "') ")

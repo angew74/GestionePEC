@@ -218,6 +218,12 @@ namespace GestionePEC.Controls
                 return null;
         }
 
+        public string ToIsoFormat()
+        {
+            System.DateTime d = new System.DateTime(int.Parse(tdDataY.Text), int.Parse(tdDataM.Text), int.Parse(tdDataG.Text));
+            return d.ToString("yyyyMMdd");
+        }
+
         /// <summary>
         /// 
         /// </summary>

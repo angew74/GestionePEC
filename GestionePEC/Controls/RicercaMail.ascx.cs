@@ -453,8 +453,8 @@ namespace GestionePEC.Controls
             }
             idx.Add(MailTypeSearch.Mail, tbMittente.Text);
             idx.Add(MailTypeSearch.Oggetto, tbOggetto.Text);
-            idx.Add(MailTypeSearch.DataInzio, dtInizio.DateString());
-            idx.Add(MailTypeSearch.DataFine, dtFine.DateString());
+            idx.Add(MailTypeSearch.DataInzio, dtInizio.ToIsoFormat());
+            idx.Add(MailTypeSearch.DataFine, dtFine.ToIsoFormat());
             return idx;
         }
 

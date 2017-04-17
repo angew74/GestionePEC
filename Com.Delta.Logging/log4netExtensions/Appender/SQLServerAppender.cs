@@ -279,7 +279,7 @@ namespace log4netExtensions.Appender
         override protected void SendBuffer(LoggingEvent[] events)
         {
             LogLog.Debug(typeof(SQLServerAppender), "WRITE_LOG_TO_DB_START");
-            if (m_reconnectOnError && (m_dbConnection == null || m_dbConnection.State != ConnectionState.Open))
+            if (m_reconnectOnError || (m_dbConnection == null || m_dbConnection.State != ConnectionState.Open))
             {
                 LogLog.Debug(typeof(SQLServerAppender), "SQLSERVERAppender: Attempting to reconnect to database. Current Connection State: " + ((m_dbConnection == null) ? "<null>" : m_dbConnection.State.ToString()));
                 //LogLog.Debug("SQLServerAppender: Attempting to reconnect to database. Current Connection State: " + ((m_dbConnection == null) ? "<null>" : m_dbConnection.State.ToString()));
@@ -417,9 +417,10 @@ namespace log4netExtensions.Appender
                                 value = System.DBNull.Value;
                             }
                             paramArr.Add(value);
-
+                            sqlParam.Value = value;
                         }
-                        sqlParam.Value = paramArr.ToArray();
+                        // sqlParam.Value = paramArr.ToArray();
+                       
                     }
                    // m_dbCommand..ArrayBindCount = events.Length;
                     int i = m_dbCommand.ExecuteNonQuery();

@@ -51,7 +51,7 @@ namespace GestionePEC.Controls
             string account = ddlManagedAccounts.SelectedItem.Text;
             string utente = ddlUtente.SelectedItem.Text;
             BackendUserService bus = new BackendUserService();
-            List<UserResultItem> list = bus.GetStatsInBox(account, utente, dtInizio.DateString(), dtFine.DateString());
+            List<UserResultItem> list = bus.GetStatsInBox(account, utente, dtInizio.ToIsoFormat(), dtFine.ToIsoFormat());
             DataTable xlWorkSheet = Helpers.StampaStatisticaExcel(list, account, dtInizio.DateString(), dtFine.DateString());
             Response.ClearContent();
             Response.Buffer = true;
@@ -89,7 +89,7 @@ namespace GestionePEC.Controls
                 string account = ddlManagedAccounts.SelectedItem.Text;
                 BackendUserService bus = new BackendUserService();
                 string utente = ddlUtente.SelectedItem.Text;
-                List<UserResultItem> list = bus.GetStatsInBox(account, utente, dtInizio.DateString(), dtFine.DateString());
+                List<UserResultItem> list = bus.GetStatsInBox(account, utente, dtInizio.ToIsoFormat(), dtFine.ToIsoFormat());
                 gridStat.DataSource = list;
                 gridStat.DataBind();
                 btnStampaStatistica.Visible = true;

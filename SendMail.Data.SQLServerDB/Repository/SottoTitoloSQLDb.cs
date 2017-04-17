@@ -63,6 +63,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     var l = dbcontext.COMUNICAZIONI_SOTTOTITOLI.Where(x => x.REF_ID_TITOLO == titoloKey).ToList();
                     if(l.Count > 0)
                     {
+                        sottotitoli = new List<SottoTitolo>();
                         foreach(COMUNICAZIONI_SOTTOTITOLI t in l)
                         {
                            sottotitoli.Add(DaoSQLServerDBHelper.MapToSottotitolo(t));

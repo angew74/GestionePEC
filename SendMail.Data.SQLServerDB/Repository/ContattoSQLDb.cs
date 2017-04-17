@@ -141,12 +141,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             if (tEnt.Count == 0) { tEnt.Add(SendMail.Model.EntitaType.ALL); }
             if (tEnt.Contains(SendMail.Model.EntitaType.UNKNOWN))
                 throw new ArgumentException("Tipo entità errato");
-
-            //commentato oracle 10
-            //V_Rubr_Contatti_Obj v = new V_Rubr_Contatti_Obj(this.context);
-            //ResultList<RubricaContatti> res =
-            //    v.ConvertToRubricaContatti(v.GetContattiByParams(tEnt, pars, da, per, withEntita));
-
+           
             List<RubricaContatti> lContatti = null;
             List<RubricaEntita> lEntita = null;
             ResultList<RubricaContatti> res = new ResultList<RubricaContatti>();

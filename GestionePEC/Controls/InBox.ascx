@@ -409,6 +409,7 @@ Ext.onReady(function () {
                 but.setTooltip('Clic per abilitare il filtro');
                 setDisable(Ext.getCmp('FilterAction'), true);               
                 setDisable(Ext.getCmp('StatusFilter'), true);
+                Ext.getCmp('FindText').setValue('');
                 var folderFilter = Ext.getCmp('folders').getValue();
                 if (typeof store != 'undefined') {
                    // if (store.getProxy().extraParams.filter != null) {

@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -75,10 +74,6 @@
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -1024,6 +1019,7 @@
     <Content Include="Controls\EntitaSearch.ascx" />
     <Content Include="Controls\EntiViewer.ascx" />
     <Content Include="Controls\GeneralEntiyTree.ascx" />
+    <Content Include="Controls\HeaderNewMail.ascx" />
     <Content Include="Controls\InBox.ascx" />
     <Content Include="Controls\MailBoxLogin.ascx" />
     <Content Include="Controls\MailBoxNavigator.ascx" />
@@ -1036,6 +1032,38 @@
     <Content Include="Controls\Paging.ascx" />
     <Content Include="Controls\RicercaMail.ascx" />
     <Content Include="Controls\RicercaStat.ascx" />
+    <Content Include="Controls\Comunicazione.ascx" />
+    <Content Include="ExtJS5\ux\upload\BrowseButton.js" />
+    <Content Include="ExtJS5\ux\upload\data\Connection.js" />
+    <Content Include="ExtJS5\ux\upload\Dialog.js" />
+    <Content Include="ExtJS5\ux\upload\header\AbstractFilenameEncoder.js" />
+    <Content Include="ExtJS5\ux\upload\header\Base64FilenameEncoder.js" />
+    <Content Include="ExtJS5\ux\upload\img\accept.png" />
+    <Content Include="ExtJS5\ux\upload\img\ajax-loader1.gif" />
+    <Content Include="ExtJS5\ux\upload\img\ajax-loader2.gif" />
+    <Content Include="ExtJS5\ux\upload\img\ajax-loader3.gif" />
+    <Content Include="ExtJS5\ux\upload\img\arrow_up.png" />
+    <Content Include="ExtJS5\ux\upload\img\cancel.png" />
+    <Content Include="ExtJS5\ux\upload\img\delete.png" />
+    <Content Include="ExtJS5\ux\upload\img\exclamation.png" />
+    <Content Include="ExtJS5\ux\upload\img\folder.png" />
+    <Content Include="ExtJS5\ux\upload\img\help.png" />
+    <Content Include="ExtJS5\ux\upload\img\loading.gif" />
+    <Content Include="ExtJS5\ux\upload\img\tick.png" />
+    <Content Include="ExtJS5\ux\upload\Item.js" />
+    <Content Include="ExtJS5\ux\upload\ItemGridPanel.js" />
+    <Content Include="ExtJS5\ux\upload\LegacyDialog.js" />
+    <Content Include="ExtJS5\ux\upload\Manager.js" />
+    <Content Include="ExtJS5\ux\upload\Panel.js" />
+    <Content Include="ExtJS5\ux\upload\Queue.js" />
+    <Content Include="ExtJS5\ux\upload\StatusBar.js" />
+    <Content Include="ExtJS5\ux\upload\Store.js" />
+    <Content Include="ExtJS5\ux\upload\uploader\AbstractUploader.js" />
+    <Content Include="ExtJS5\ux\upload\uploader\AbstractXhrUploader.js" />
+    <Content Include="ExtJS5\ux\upload\uploader\DummyUploader.js" />
+    <Content Include="ExtJS5\ux\upload\uploader\ExtJsUploader.js" />
+    <Content Include="ExtJS5\ux\upload\uploader\FormDataUploader.js" />
+    <Content Include="ExtJS5\ux\upload\uploader\LegacyExtJsUploader.js" />
     <Content Include="pages\common\Default.aspx" />
     <Content Include="ExtJS5\ext-all-debug.js" />
     <Content Include="ExtJS5\ext-all.js" />
@@ -1046,6 +1074,7 @@
     <Content Include="Login.aspx" />
     <Content Include="LogOff.aspx" />
     <Content Include="LogOffFromBrowser.aspx" />
+    <Content Include="pages\MailClient\NewMail.aspx" />
     <Content Include="pages\pubblica\ErrorPage.aspx" />
     <Content Include="pages\MailClient\MailAdmin.aspx" />
     <Content Include="pages\MailClient\MailBoxInBox.aspx" />
@@ -1075,6 +1104,9 @@
     <Compile Include="App_Start\SessionableControllerHandler.cs" />
     <Compile Include="App_Start\SessionStateRouteHandler.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Ashx\FileUploadHandler.ashx.cs">
+      <DependentUpon>FileUploadHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Ashx\GeneralSearcher.ashx.cs">
       <DependentUpon>GeneralSearcher.ashx</DependentUpon>
     </Compile>
@@ -1114,6 +1146,13 @@
     </Compile>
     <Compile Include="Controls\GeneralEntiyTree.ascx.designer.cs">
       <DependentUpon>GeneralEntiyTree.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HeaderNewMail.ascx.cs">
+      <DependentUpon>HeaderNewMail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\HeaderNewMail.ascx.designer.cs">
+      <DependentUpon>HeaderNewMail.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\InBox.ascx.cs">
       <DependentUpon>InBox.ascx</DependentUpon>
@@ -1198,12 +1237,20 @@
     <Compile Include="Controls\RicercaStat.ascx.designer.cs">
       <DependentUpon>RicercaStat.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Comunicazione.ascx.cs">
+      <DependentUpon>Comunicazione.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Comunicazione.ascx.designer.cs">
+      <DependentUpon>Comunicazione.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\CodFisCheck.cs" />
     <Compile Include="Extensions\CodFisProvvCheck.cs" />
     <Compile Include="Extensions\Helpers.cs" />
     <Compile Include="Extensions\InlineScript.cs" />
     <Compile Include="Extensions\LinqExtensionMethods.cs" />
     <Compile Include="Extensions\Utility.cs" />
+    <Compile Include="Models\DTOFileUploadResult.cs" />
     <Compile Include="Models\TreeModel.cs" />
     <Compile Include="pages\common\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -1249,6 +1296,13 @@
       <DependentUpon>Mail.Master</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="pages\MailClient\NewMail.aspx.cs">
+      <DependentUpon>NewMail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\MailClient\NewMail.aspx.designer.cs">
+      <DependentUpon>NewMail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="pages\pubblica\ErrorPage.aspx.cs">
       <DependentUpon>ErrorPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1357,6 +1411,7 @@
     <Content Include="Ashx\GeneralSearcher.ashx" />
     <Content Include="Ashx\TreeViewDataSource.ashx" />
     <Content Include="Ashx\TreeEnt.ashx" />
+    <Content Include="Ashx\FileUploadHandler.ashx" />
     <None Include="Properties\PublishProfiles\Delta.pubxml" />
     <None Include="Properties\PublishProfiles\Localhost.pubxml" />
     <None Include="Properties\Settings.settings">
@@ -1446,7 +1501,6 @@
       <ErrorText>Questo progetto fa riferimento a uno o più pacchetti NuGet che non sono presenti in questo computer. Usare lo strumento di ripristino dei pacchetti NuGet per scaricarli. Per altre informazioni, vedere http://go.microsoft.com/fwlink/?LinkID=322105. Il file mancante è {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

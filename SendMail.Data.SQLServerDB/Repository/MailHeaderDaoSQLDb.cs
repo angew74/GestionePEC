@@ -159,17 +159,23 @@ namespace SendMail.Data.SQLServerDB.Repository
                     queryInboxCountBase += " AND FOLDERID=" + int.Parse(folder);
                 }
                 try
-                {                    
-                    int tot = Convert.ToInt32(dbcontext.Database.ExecuteSqlCommand(queryInboxCountBase));
-                    res = new ResultList<MailHeaderExtended>();
-                    res.Da = da;
-                    res.Per = (tot > per) ? per : tot;
-                    res.Totale = (tot > per) ? tot : per;
-                    if (tot == default(int))
+                {
+                    using (var r = dbcontext.Database.Connection.CreateCommand())
                     {
-                        res.List = null;
-                        return res;
-                    }                  
+                        r.CommandText = queryInboxCountBase;
+                        r.Connection.Open();
+                        int tot = Convert.ToInt32(r.ExecuteScalar());
+                        r.Connection.Close();
+                        res = new ResultList<MailHeaderExtended>();
+                        res.Da = da;
+                        res.Per = (tot > per) ? per : tot;
+                        res.Totale = (tot > per) ? tot : per;
+                        if (tot == default(int))
+                        {
+                            res.List = null;
+                            return res;
+                        }
+                    }              
                 }
                 catch (Exception ex)
                 {
@@ -1776,7 +1782,9 @@ namespace SendMail.Data.SQLServerDB.Repository
                         {
                             oCmd.CommandText = cmdTextIn;
                             oCmd.Parameters.AddRange(parsIn.ToArray());
+                            oCmd.Connection.Open();
                             totIn += Convert.ToInt32(oCmd.ExecuteScalar());
+                            oCmd.Connection.Close();
                         }
                         if (!string.IsNullOrEmpty(cmdTextOut))
                         {
@@ -2029,7 +2037,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and CONVERT(VARCHAR(10),ff.data_operazione,103) between @p_DATAINIZIO and @p_DATAFINE ");
+                        sb.Append(" and cast(ff.data_operazione as Date) between  @p_DATAINIZIO and @p_DATAFINE ");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2127,7 +2135,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and convert(varchar(10),log_date,103) between @p_DATAINIZIO @p_DATAFINE ");
+                        sb.Append(" and cast(log_date as Date) between  @p_DATAINIZIO and @p_DATAFINE ");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2326,7 +2334,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and max(convert(nvarchar(10),log_date,103)) between @p_DATAINIZIO and @p_DATAFINE ");
+                        sb.Append(" and max(cast(log_date as Date)) between  @p_DATAINIZIO and @p_DATAFINE ");
                         parsIn.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2365,7 +2373,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" inner join [FAXPEC].[FAXPEC].[folders] f on mi.folderid=f.id ")
                 .Append(" WHERE id_mail IN ")
                 .Append(" (SELECT id_mail FROM T WHERE rn BETWEEN @p_DA AND @p_A) ")
-                .Append(" and max(convert(nvarchar(10),log_date,103)) between @p_DATAINIZIO and @p_DATAFINE ");
+                .Append(" and cast(log_date as Date) between  @p_DATAINIZIO and @p_DATAFINE "); 
             if (folder != "0")
             {
                 sb.Append(" and LOG_DETAILS LIKE @p_FOLDER  ");
@@ -2463,7 +2471,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and convert(nvarchar(10),data_ricezione,103) between @p_DATAINIZIO and @p_DATAFINE ");
+                        sb.Append(" and cast(data_ricezione as Date) between  @p_DATAINIZIO and @p_DATAFINE ");
                         pars.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2608,7 +2616,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and convert(nvarchar(10), ff.data_operazione,103) between @p_DATAINIZIO and @p_DATAFINE");
+                        sb.Append(" and cast(ff.data_operazione as Date) between  @p_DATAINIZIO and @p_DATAFINE ");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2826,7 +2834,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and convert(nvarchar(10),log_date,103) between @p_DATAINIZIO and @p_DATAFINE ");
+                        sb.Append(" and cast(log_date as Date) between  @p_DATAINIZIO and @p_DATAFINE ");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -2858,7 +2866,7 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
 
             pars = new List<SqlParameter>();
-            StringBuilder sb = new StringBuilder("SELECT count(*) AS \"TOT\" FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] mi INNER JOIN [FAXPEC].[FAXPEC].[LOG_ACTIONS] ON mi.MAIL_SERVER_ID=LOG_ACTIONS.OBJECT_ID WHERE");
+            StringBuilder sb = new StringBuilder("SELECT count(*) FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] INNER JOIN [FAXPEC].[FAXPEC].[LOG_ACTIONS] ON MAIL_SERVER_ID=LOG_ACTIONS.OBJECT_ID WHERE");
             if (!string.IsNullOrEmpty(account))
             {
                 sb.Append(" mail_account = @p_ACCOUNT and lower(user_mail) = @p_ACCOUNT ");
@@ -2923,7 +2931,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and max(convert(nvarchar(10),log_date, 103)) between @p_DATAINIZIO and @p_DATAFINE ");
+                        sb.Append(" and cast(log_date as Date) between  @p_DATAINIZIO and @p_DATAFINE ");
                         pars.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -3029,19 +3037,18 @@ namespace SendMail.Data.SQLServerDB.Repository
                             Direction = ParameterDirection.Input,
                             SqlDbType = SqlDbType.NVarChar,
                             ParameterName = "p_DATAFINE",
-                            Value = val
+                            Value =  val
 
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and CONVERT(VARCHAR(10), data_ricezione,103) between @p_DATAINIZIO and @p_DATAFINE ");
+                        sb.Append(" and cast(data_ricezione as Date) between  @p_DATAINIZIO and @p_DATAFINE ");
                         pars.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
                             SqlDbType = SqlDbType.NVarChar,
                             ParameterName = "p_DATAINIZIO",
-                            Value = val
-
+                            Value =  val 
                         });
                         break;
                     case MailTypeSearch.Utente:
@@ -3172,7 +3179,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and convert(nvarchar(10), data_ricezione,103) between @p_DATAINIZIO and @p_DATAFINE ");
+                        sb.Append(" and cast(data_ricezione as Date) between  @p_DATAINIZIO and @p_DATAFINE ");
                         parsIn.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,
@@ -3345,7 +3352,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and convert(nvarchar(10),ff.data_operazione,103) between @p_DATAINIZIO and @p_DATAFINE ");
+                        sb.Append(" and cast(ff.data_operazione as Date) between  @p_DATAINIZIO and @p_DATAFINE ");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,

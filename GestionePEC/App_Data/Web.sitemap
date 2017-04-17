@@ -5,6 +5,7 @@
    <siteMapNode url="~/pages/MailClient/MailBoxInBox.aspx" title="Inbox" roles="*" />   
     <siteMapNode url="~/pages/MailClient/MailSearch.aspx" title="Ricerca Mail" roles="*"></siteMapNode>
     <siteMapNode url="~/pages/MailClient/MailMove.aspx" title="Ricerca Storia Mail" roles="*"></siteMapNode>
+    <siteMapNode url="~/pages/MailClient/NewMail.aspx" title="Creazione Comunicazione" roles="*"></siteMapNode>
   </siteMapNode>
   <siteMapNode url="" title="Amministra Caselle" roles="*">
     <siteMapNode url="" title="Server Settings" roles="*">
