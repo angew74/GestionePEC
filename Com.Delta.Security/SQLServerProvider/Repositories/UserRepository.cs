@@ -14,6 +14,7 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
     using Com.Delta.Logging;
     using System.Data.SqlClient;
     using SQLServerProvider;
+    using System.Threading.Tasks;
 
     internal class UserRepository
     {
@@ -53,6 +54,28 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
             }
 
             return val;
+        }
+
+        internal List<IdentityUser> GetAll()
+        {
+            List<IdentityUser> listUsers = null;
+            var users = _db.ExecuteQuery(@"Select ID, USERNAME,PASSWORDHASH,SECURITYSTAMP FROM [FAXPEC].[FAXPEC].[USERS]");
+            if (users.Rows.Count > 0)
+            {
+                listUsers = new List<IdentityUser>();
+                foreach (DataRow r in users.Rows)
+                {
+                    IdentityUser user = new IdentityUser()
+                    {
+                        Id = r["ID"].ToString(),
+                        UserName = r["USERNAME"].ToString(),
+                        PasswordHash = r["PASSWORDHASH"].ToString(),
+                        SecurityStamp = r["SECURITYSTAMP"].ToString()
+                    };
+                    listUsers.Add(user);
+                }
+            }
+            return listUsers;
         }
 
         public int Update(IdentityUser user)

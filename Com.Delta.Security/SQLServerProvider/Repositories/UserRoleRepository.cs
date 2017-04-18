@@ -34,12 +34,12 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
                 new SqlParameter { ParameterName = "@roleid", Value = roleId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }
 
-        ////public int Delete(string userId)
-        ////{
-        ////    return _db.ExecuteScalarQuery<int>(
-        ////       "DELETE FROM userroles WHERE userid = :userid",
-        ////       new SqlParameter { ParameterName = ":userid", Value = userId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
-        ////}
+        //public int Delete(string userId)
+        //{
+        //    return _db.ExecuteScalarQuery<int>(
+        //       "DELETE FROM userroles WHERE userid = :userid",
+        //       new SqlParameter { ParameterName = ":userid", Value = userId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
+        //}
 
         public int Delete(string userId, string roleId)
         {

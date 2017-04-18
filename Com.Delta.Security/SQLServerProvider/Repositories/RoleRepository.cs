@@ -1,5 +1,6 @@
 ﻿using AspNet.Identity.SQLServerProvider;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -47,6 +48,26 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
             return _db.ExecuteNonQuery(
                 "DELETE FROM roles WHERE id = @id",
                 new SqlParameter { ParameterName = "@id", Value = roleId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
+        }
+
+        internal List<IdentityRole> GetAll()
+        {
+            List<IdentityRole> listRole = null;
+            var roles = _db.ExecuteQuery(@"Select ID, NAME FROM [FAXPEC].[FAXPEC].[ROLES]");
+            if (roles.Rows.Count > 0)
+            {
+                listRole = new List<IdentityRole>();
+                foreach (DataRow r in roles.Rows)
+                {
+                    IdentityRole role = new IdentityRole()
+                    {
+                        Id = r["ID"].ToString(),
+                        Name = r["NAME"].ToString()
+                    };
+                    listRole.Add(role);
+                }
+            }
+            return listRole;
         }
 
         public string GetRoleName(string roleId)

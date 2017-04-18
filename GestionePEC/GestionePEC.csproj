@@ -1083,8 +1083,11 @@
     <Content Include="pages\MailClient\MailSearch.aspx" />
     <Content Include="pages\MailClient\MailServerSettings.aspx" />
     <Content Include="pages\Mail\GestRubrica.aspx" />
+    <Content Include="pages\Roles\RegisterRole.aspx" />
     <Content Include="pages\Rubrica\AccessoMappatura.aspx" />
     <Content Include="pages\Rubrica\EntiResearch.aspx" />
+    <Content Include="pages\Users\AddUserToRole.aspx" />
+    <Content Include="pages\Users\RegisterUser.aspx" />
     <Content Include="scripts\CheckCodiceFiscale.js" />
     <Content Include="scripts\EntiResearch.js" />
     <Content Include="scripts\uty.js" />
@@ -1361,6 +1364,13 @@
     <Compile Include="pages\Mail\GestRubrica.aspx.designer.cs">
       <DependentUpon>GestRubrica.aspx</DependentUpon>
     </Compile>
+    <Compile Include="pages\Roles\RegisterRole.aspx.cs">
+      <DependentUpon>RegisterRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Roles\RegisterRole.aspx.designer.cs">
+      <DependentUpon>RegisterRole.aspx</DependentUpon>
+    </Compile>
     <Compile Include="pages\Rubrica\AccessoMappatura.aspx.cs">
       <DependentUpon>AccessoMappatura.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1374,6 +1384,20 @@
     </Compile>
     <Compile Include="pages\Rubrica\EntiResearch.aspx.designer.cs">
       <DependentUpon>EntiResearch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\Users\AddUserToRole.aspx.cs">
+      <DependentUpon>AddUserToRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Users\AddUserToRole.aspx.designer.cs">
+      <DependentUpon>AddUserToRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\Users\RegisterUser.aspx.cs">
+      <DependentUpon>RegisterUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Users\RegisterUser.aspx.designer.cs">
+      <DependentUpon>RegisterUser.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

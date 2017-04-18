@@ -25,6 +25,13 @@ namespace AspNet.Identity.SQLServerProvider
         private static readonly ILog _log = LogManager.GetLogger("UserStore");
         private readonly UserRepository _userRepository;
         private readonly UserClaimsRepository _userClaimsRepository;
+
+        public object GetAll()
+        {
+            var result = _userRepository.GetAll();
+            return Task.FromResult(result);
+        }
+
         private readonly UserLoginsRepository _userLoginsRepository;
         private readonly RoleRepository _roleRepository;
         private readonly UserRolesRepository _userRolesRepository;
@@ -262,6 +269,18 @@ namespace AspNet.Identity.SQLServerProvider
 
             return Task.FromResult<object>(null);
         }
+
+
+        public Task<int> AddToRoleAsync(IdentityUser user, int role)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+         var rest = _userRolesRepository.Insert(user, role.ToString());        
+            return Task.FromResult<int>(rest);
+        }
+
 
         public Task<IList<string>> GetRolesAsync(IdentityUser user)
         {

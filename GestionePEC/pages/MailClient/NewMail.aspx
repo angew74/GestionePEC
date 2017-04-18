@@ -124,7 +124,7 @@ function GetValuesHtml() {
                     </asp:UpdatePanel>
                     <uc4:UCHeader ID="HeaderNew" runat="server"></uc4:UCHeader>
                      <asp:Button ID="btnSend" runat="server" ToolTip="Invia la comunicazione" Text="Invia"
-                         Style="margin-left:40px"
+                         Style="margin-left:1000px"
                             OnClientClick="return GetValuesHtml();" ValidationGroup="email" OnClick="btnSend_OnClick" />
                     <div id="divTextArea" onkeyup="return GetValuesHtml();">
                     </div>

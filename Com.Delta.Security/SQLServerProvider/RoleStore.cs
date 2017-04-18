@@ -10,9 +10,13 @@ namespace AspNet.Identity.SQLServerProvider
     using Microsoft.AspNet.Identity;
     using Repositories;
     using SQLServerProvider;
+    using Com.Delta.Logging;
+    using Com.Delta.Logging.Errors;
+    using log4net;
 
     public class RoleStore : IRoleStore<IdentityRole>
     {
+        private static readonly ILog _log = LogManager.GetLogger("RoleStore");
         private readonly RoleRepository _roleRepository;
 
         public RoleStore()
@@ -29,16 +33,38 @@ namespace AspNet.Identity.SQLServerProvider
 
         public SQLServerDataContext Database { get; private set; }
 
-        public Task CreateAsync(IdentityRole role)
+        public Task<string> CreateAsync(IdentityRole role)
         {
+            int val = 0;
             if (role == null)
             {
                 throw new ArgumentNullException("role");
             }
+            try
+            {
 
-            _roleRepository.Insert(role);
+              val =_roleRepository.Insert(role);
+            }
+            catch(Exception ex)
+            {
+                if (ex.GetType() == typeof(ManagedException))
+                {
+                    throw;
+                }
+                else
+                {
+                    ManagedException m = new ManagedException("Errore nell'inserimento per ruolo - " + role.Name + " dettagli: " + ex.Message, "STO01", "CreateAsync", string.Empty, null);
+                    ErrorLogInfo error = new ErrorLogInfo(m);
+                    error.loggingTime = System.DateTime.Now;
+                    _log.Error(error);
+                    throw (m);
+                }
+            }
 
-            return Task.FromResult<object>(null);
+            if (val > 0)
+            { return Task.FromResult<string>("OK"); }
+            else
+            { return Task.FromResult<string>("KO"); }
         }
 
         public Task DeleteAsync(IdentityRole role)
@@ -67,6 +93,12 @@ namespace AspNet.Identity.SQLServerProvider
             return Task.FromResult(result);
         }
 
+        public Task<List<IdentityRole>> GetAll()
+        {
+            var result = _roleRepository.GetAll();
+            return Task.FromResult(result);
+        }
+
         public Task UpdateAsync(IdentityRole role)
         {
             if (role == null)
@@ -77,6 +109,11 @@ namespace AspNet.Identity.SQLServerProvider
             _roleRepository.Update(role);
 
             return Task.FromResult<object>(null);
+        }
+
+        Task IRoleStore<IdentityRole, string>.CreateAsync(IdentityRole user)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose()
