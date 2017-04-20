@@ -101,34 +101,26 @@ namespace SendMail.Data.SQLServerDB.Repository
         }
 
 
-        //Inserisce un nuovo titolo, automaticamente viene inserito anche il sottotiolo di default
+        //Inserisce un nuovo titolo, automaticamente viene inserito anche il sottotiolo di default se presente
         public void Insert(Titolo titolo)
         {
             using (var dbcontext = new FAXPECContext())
             {
                 using (var transaction = dbcontext.Database.BeginTransaction())
                 {
-                    SottoTitolo s1 = new SottoTitolo(titolo);
-                    s1.Id = 0;
-                    s1.RefIdTitolo = titolo.Id;
+                   
                     COMUNICAZIONI_TITOLI t = AutoMapperConfiguration.MapToComunicazioniTitoli(titolo, true);
                     try
                     {
 
                         dbcontext.COMUNICAZIONI_TITOLI.Add(t);
-                        dbcontext.SaveChanges();                        
-                        Int64 iNewID = default(Int64);
-                        Int64.TryParse(t.ID_TITOLO.ToString(), out iNewID);
-                        s1.RefIdTitolo = iNewID;
-                        COMUNICAZIONI_SOTTOTITOLI s = DaoSQLServerDBHelper.MapToComunicazioniSottotitolo(s1, true);
-                        dbcontext.COMUNICAZIONI_SOTTOTITOLI.Add(s);                       
-                        if (iNewID != default(int))
+                        int r =dbcontext.SaveChanges();                               
+                        if (r == 0)
                         {
-                            titolo.Id = iNewID;
-
-                        }
-                        else
+                            transaction.Rollback();
                             throw new Exception(DalExMessages.ID_NON_RESTITUITO);
+                        }
+                        transaction.Commit();
                     }                 
                     catch (InvalidOperationException ioex)
                     {                       

@@ -88,5 +88,42 @@ namespace GestionePEC.api
             }
             return this.Request.CreateResponse<UsersModel>(HttpStatusCode.OK, m);
         }
-    }
+
+        [HttpGet]
+        [Authorize]
+        [Route("api/UsersServiceController/RemoveRole")]
+        public HttpResponseMessage RemoveRole(string userid, string roleid)  
+        {
+            UsersModel m = new UsersModel();
+            try
+            {
+                if (!string.IsNullOrEmpty(userid) && !string.IsNullOrEmpty(roleid))
+                {
+                    UserStore userStore = new UserStore();
+                    var useri = userStore.FindByIdAsync(userid).Result;
+                    userStore.RemoveFromRoleAsync(useri, roleid);
+                    m.message = "Ruolo rimosso";
+                    m.success = "true";
+                }
+                else
+                {
+                    m.message = "utente o ruolo non presente";
+                    m.success = "false";
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogInfo error = new ErrorLogInfo();
+                error.freeTextDetails = ex.Message;
+                error.logCode = "ERR6456";
+                error.loggingAppCode = "PEC";
+                error.loggingTime = System.DateTime.Now;
+                error.uniqueLogID = System.DateTime.Now.Ticks.ToString();
+                log.Error(error);
+                m.message = ex.Message;
+                m.success = "false";
+                return this.Request.CreateResponse<UsersModel>(HttpStatusCode.InternalServerError, m);
+            }
+            return this.Request.CreateResponse<UsersModel>(HttpStatusCode.OK, m);
+        }
 }

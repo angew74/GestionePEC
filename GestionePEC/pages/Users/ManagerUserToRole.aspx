@@ -214,17 +214,19 @@
                     {
                     id: 'UserNameField',
                     text: 'UserName',
+                    width: '120',
                     dataIndex: 'UserName'                   
                 }, {
                     id: 'IdField',
                     text: 'Id',
                     dataIndex: 'Id',
+                    width: '20',
                     hidden: true
                 }, {
                     id: "RoleField",
                     text: "Ruolo",
                     dataIndex: 'Role',
-                    width: 100,
+                    width: 120,
                     align: 'center',
                     sortable: true
                 }, {
@@ -232,15 +234,16 @@
                     width: 50,
                     items: [{                       
                         tooltip: 'Rimuovi Ruolo',
-                        iconCls: function (view, rowIndex, colIndex, item, record) {
-                            return 'bSearchWhite';
-                            // Returns true if 'editable' is false (, null, or undefined)
-                            //if (record.get('StatusRichiesta') != "C")
-                            //{ return 'x-hide-display'; }
-                            //else {
-                            //    return 'ViewAttoCls';
-                            //}
-                        },
+                        iconCls:'bDelete',
+                        //iconCls: function (view, rowIndex, colIndex, item, record) {
+                        //    return 'bDelete';
+                        //    // Returns true if 'editable' is false (, null, or undefined)
+                        //    //if (record.get('StatusRichiesta') != "C")
+                        //    //{ return 'x-hide-display'; }
+                        //    //else {
+                        //    //    return 'ViewAttoCls';
+                        //    //}
+                        //},
                         handler: function (grid, rowIndex, colIndex, item, e, record) {
                             var rec = grid.getStore().getAt(rowIndex);
                             RimuoviRuolo(rec);                         

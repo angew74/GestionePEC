@@ -148,7 +148,7 @@
                                                 <div style="display: table-cell;">
                                                     <label runat="server" class="LabelBlackBold" visible='<%# bUser.UserRole != 2 %>'>
                                                         <%# Eval("EmailAddress") %></label>
-                                                    <asp:TextBox SkinID="tbbox18Char" runat="server" ID="tbDescrizioneEmail" Width="300"
+                                                    <asp:TextBox SkinID="tbLong" runat="server" ID="tbDescrizioneEmail" Width="300"
                                                         Text='<%# Bind("EmailAddress") %>' Visible='<%# bUser.UserRole == 2 %>' />
                                                     <asp:RequiredFieldValidator ID="rfvDescrizioneEmail" runat="server" ErrorMessage="Campo Obbligatorio"
                                                         ControlToValidate="tbNomeUtente" Display="None" ValidationGroup="btnSalvaEmail"

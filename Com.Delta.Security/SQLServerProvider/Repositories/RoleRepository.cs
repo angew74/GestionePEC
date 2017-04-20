@@ -73,7 +73,7 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
         internal List<string> GetRolesByUserName(string username)
         {
             List<string> listRoles = new List<string>();
-            var roles = _db.ExecuteQuery(@"Select NAME FROM [FAXPEC].[FAXPEC].[ROLES] inner join [FAXPEC].[FAXPEC].[USERROLES] ON ROLEID=ID INNER JOIN [FAXPEC].[FAXPEC].[USERS] ON USERID=ID WHERE USERNAME=@USER ",
+            var roles = _db.ExecuteQuery(@"Select NAME FROM [FAXPEC].[FAXPEC].[ROLES] inner join [FAXPEC].[FAXPEC].[USERROLES] ON ROLEID=ROLES.ID INNER JOIN [FAXPEC].[FAXPEC].[USERS] ON USERID=USERS.ID WHERE USERNAME=@USER ",
                 new SqlParameter { ParameterName = "@USER", Value = username });
             if (roles.Rows.Count > 0)
             {              

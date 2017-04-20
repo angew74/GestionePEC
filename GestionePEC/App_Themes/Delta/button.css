@@ -374,12 +374,64 @@
 	width:90px;
 }
 
+.bRefresh
+{
+	background-position:left;
+	background-image:url(images/buttons/nav_refresh.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	cursor:pointer;
+	border-width:0px;
+	vertical-align:middle;
+	text-align:right;
+	/*font-size:9pt;          commentato per compatibilità font*/
+	font-weight:bold;
+	font-family:Verdana;
+	color:#15428b;
+	width:90px;
+}
+
+.bFind
+{	
+	background-image:url(images/buttons/find.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	cursor:pointer;
+	border-width:0px;
+	vertical-align:middle;
+	text-align:right;
+	/*font-size:9pt;          commentato per compatibilità font*/
+	font-weight:bold;
+	font-family:Verdana;
+	color:#15428b;
+	width:90px;
+}
+
+
 
 
 .bDel
 {
 	background-position:left;
 	background-image:url(images/buttons/iCancella.gif);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	cursor:pointer;
+	border-width:0px;
+	vertical-align:middle;
+	text-align:left;
+	/*font-size:9pt;          commentato per compatibilità font*/
+	font-weight:bold;
+	font-family:Verdana;
+	color:#15428b;
+	width:14em;
+	background-position:right;
+}
+
+.bDelete
+{
+	
+	background-image:url(images/buttons/delete_New.png);
 	background-repeat:no-repeat;
 	background-color:Transparent;
 	cursor:pointer;

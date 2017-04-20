@@ -160,14 +160,16 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 ACTIVE = Convert.ToDecimal(!sottoTitolo.Deleted),
                 COM_CODE = sottoTitolo.ComCode,
                 NOTE = sottoTitolo.Note,
-                PROT_CODE = sottoTitolo.ProtocolloCode,
-                PROT_MANAGED = Convert.ToDecimal(sottoTitolo.UsaProtocollo),
-                PROT_PWD = sottoTitolo.ProtocolloPassword,
-                PROT_SUBCODE = sottoTitolo.ProtocolloSubCode,
-                SOTTOTITOLO = sottoTitolo.Nome,
-                PROT_TIPI_AMMESSI = String.Join(";", sottoTitolo.TipiProcollo.Cast<string>().ToArray()),
-                PROT_LOAD_ALLEGATI = Convert.ToDecimal(sottoTitolo.ProtocolloLoadAllegati)
-            };
+                PROT_CODE = sottoTitolo.ProtocolloCode
+            };            
+            s.PROT_MANAGED = Convert.ToDecimal(sottoTitolo.UsaProtocollo);
+            s.PROT_PWD = sottoTitolo.ProtocolloPassword;
+            s.PROT_SUBCODE = sottoTitolo.ProtocolloSubCode;
+            s.SOTTOTITOLO = sottoTitolo.Nome;
+            if (sottoTitolo.TipiProcollo != null)
+            { s.PROT_TIPI_AMMESSI = String.Join(";", sottoTitolo.TipiProcollo.Cast<string>().ToArray()); }
+            if (sottoTitolo.ProtocolloLoadAllegati != null)
+            { s.PROT_LOAD_ALLEGATI = Convert.ToDecimal(sottoTitolo.ProtocolloLoadAllegati); }
             if(!isInsert)
             { s.ID_SOTTOTITOLO = sottoTitolo.Id; }
             return s;           
