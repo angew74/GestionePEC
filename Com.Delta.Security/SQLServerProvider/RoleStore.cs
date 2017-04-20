@@ -67,6 +67,13 @@ namespace AspNet.Identity.SQLServerProvider
             { return Task.FromResult<string>("KO"); }
         }
 
+        public Task<List<string>> GetRolesByUserName(string username)
+        {
+            var result = _roleRepository.GetRolesByUserName(username);
+
+            return Task.FromResult(result);
+        }
+
         public Task DeleteAsync(IdentityRole role)
         {
             if (role == null)

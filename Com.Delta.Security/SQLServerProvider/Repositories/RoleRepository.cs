@@ -25,7 +25,7 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
             }
 
             return _db.ExecuteNonQuery(
-                "INSERT INTO roles (id, name) VALUES (@id, :name)",
+                "INSERT INTO [FAXPEC].[FAXPEC].[roles] (id, name) VALUES (@id, @name)",
                 new SqlParameter { ParameterName = "@id", Value = role.Id, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
                 new SqlParameter { ParameterName = "@name", Value = role.Name, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }
@@ -38,7 +38,7 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
             }
 
             return _db.ExecuteNonQuery(
-                "UPDATE roles SET name = :name WHERE id = :id",
+                "UPDATE [FAXPEC].[FAXPEC].[roles] SET name = @name WHERE id = @id",
                 new SqlParameter { ParameterName = "@name", Value = role.Name, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
                 new SqlParameter { ParameterName = "@id", Value = role.Id, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }
@@ -46,7 +46,7 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
         public int Delete(string roleId)
         {
             return _db.ExecuteNonQuery(
-                "DELETE FROM roles WHERE id = @id",
+                "DELETE FROM [FAXPEC].[FAXPEC].[roles] WHERE id = @id",
                 new SqlParameter { ParameterName = "@id", Value = roleId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }
 
@@ -70,17 +70,32 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
             return listRole;
         }
 
+        internal List<string> GetRolesByUserName(string username)
+        {
+            List<string> listRoles = new List<string>();
+            var roles = _db.ExecuteQuery(@"Select NAME FROM [FAXPEC].[FAXPEC].[ROLES] inner join [FAXPEC].[FAXPEC].[USERROLES] ON ROLEID=ID INNER JOIN [FAXPEC].[FAXPEC].[USERS] ON USERID=ID WHERE USERNAME=@USER ",
+                new SqlParameter { ParameterName = "@USER", Value = username });
+            if (roles.Rows.Count > 0)
+            {              
+                foreach (DataRow r in roles.Rows)
+                {
+                    listRoles.Add(r["NAME"].ToString());                      
+                }
+            }
+            return listRoles;
+        }
+
         public string GetRoleName(string roleId)
         {
             return _db.ExecuteScalarQuery<string>(
-                "SELECT name FROM roles WHERE id = @id",
+                "SELECT name FROM [FAXPEC].[FAXPEC].[roles] WHERE id = @id",
                 new SqlParameter { ParameterName = "@id", Value = roleId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }
 
         public string GetRoleId(string roleName)
         {
             return _db.ExecuteScalarQuery<string>(
-                "SELECT id FROM roles WHERE name = @name",
+                "SELECT id FROM [FAXPEC].[FAXPEC].[roles] WHERE name = @name",
                 new SqlParameter { ParameterName = "@name", Value = roleName, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }
 

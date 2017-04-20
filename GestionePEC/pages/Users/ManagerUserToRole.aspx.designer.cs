@@ -10,7 +10,7 @@
 namespace GestionePEC.pages.Users {
     
     
-    public partial class AddUserToRole {
+    public partial class ManagerUserToRole {
         
         /// <summary>
         /// Controllo Users.

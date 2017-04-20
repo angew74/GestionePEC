@@ -21,10 +21,10 @@
     <siteMapNode url="" title="Gestione Utenti" roles="*">
       <siteMapNode url="~/pages/Users/RegisterUser.aspx" title="Registra Utente" roles="*">
       </siteMapNode>
-      <siteMapNode url="~/pages/Users/AddUserToRole.aspx" title="Aggiungi Utente Ruolo" roles=""></siteMapNode>
+      <siteMapNode url="~/pages/Users/ManagerUserToRole.aspx" title="Gestisci Utente Ruolo" roles=""></siteMapNode>
     </siteMapNode>
     <siteMapNode url="" title="Gestione Ruoli" roles="*">
-      <siteMapNode url="~/pages/Users/RegisterRole.aspx" title="Registra Ruolo" roles="*">
+      <siteMapNode url="~/pages/Roles/RegisterRole.aspx" title="Registra Ruolo" roles="*">
       </siteMapNode>      
     </siteMapNode>
   </siteMapNode>

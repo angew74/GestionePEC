@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Mail.Master" AutoEventWireup="true" CodeBehind="RegisterUser.aspx.cs" Inherits="GestionePEC.pages.Users.RegisterUser" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Mail.Master" AutoEventWireup="true" Theme="Delta" CodeBehind="RegisterUser.aspx.cs" Inherits="GestionePEC.pages.Users.RegisterUser" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
     <div id="pnlMain" class="content-panel-borderless">
         <div class="header-panel-blue">
@@ -53,7 +53,7 @@
                           </td>
                     </tr>
                 </table>
-              <div style="text-align: left; margin: 10px 0 5px 435px;">
+              <div style="text-align: left; margin: 10px 0 5px 935px;">
                <asp:Button runat="server" OnClick="CreateUser_Click" Text="Registra" />
                 </div>
             </div>     

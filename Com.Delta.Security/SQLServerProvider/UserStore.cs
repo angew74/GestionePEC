@@ -26,7 +26,7 @@ namespace AspNet.Identity.SQLServerProvider
         private readonly UserRepository _userRepository;
         private readonly UserClaimsRepository _userClaimsRepository;
 
-        public object GetAll()
+        public Task<List<IdentityUser>> GetAll()
         {
             var result = _userRepository.GetAll();
             return Task.FromResult(result);
@@ -86,6 +86,12 @@ namespace AspNet.Identity.SQLServerProvider
             { return Task.FromResult<string>("OK"); }
             else
             {return Task.FromResult<string>("KO");}
+        }
+
+        public Task<List<IdentityUser>> FindUsersByRole(string id)
+        {
+            var result = _userRepository.FindUsersByRole(id);
+            return Task.FromResult(result);
         }
 
         public Task DeleteAsync(IdentityUser user)
@@ -381,6 +387,7 @@ namespace AspNet.Identity.SQLServerProvider
             return Task.FromResult<object>(null);
         }
 
+        
         public void Dispose()
         {
             Dispose(true);

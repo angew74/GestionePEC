@@ -56,6 +56,28 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
             return val;
         }
 
+        internal List<IdentityUser> FindUsersByRole(string role)
+        {
+            List<IdentityUser> listUsers = null;           
+            var users = _db.ExecuteQuery(@"Select ID, USERNAME,PASSWORDHASH,SECURITYSTAMP FROM [FAXPEC].[FAXPEC].[USERS], [FAXPEC].[FAXPEC].[userroles],  [FAXPEC].[FAXPEC].[roles] WHERE user.id = userroles.id AND userroles.roleid = role.id and role.name = @name ",
+                 new SqlParameter { ParameterName = "@name", Value = role.ToUpper() });
+            if (users.Rows.Count > 0)
+            {
+                listUsers = new List<IdentityUser>();
+                foreach (DataRow r in users.Rows)
+                {
+                    IdentityUser user = new IdentityUser()
+                    {
+                        Id = r["ID"].ToString(),
+                        UserName = r["USERNAME"].ToString(),
+                        PasswordHash = r["PASSWORDHASH"].ToString(),
+                        SecurityStamp = r["SECURITYSTAMP"].ToString()
+                    };
+                    listUsers.Add(user);
+                }
+            }
+            return listUsers;
+        }
         internal List<IdentityUser> GetAll()
         {
             List<IdentityUser> listUsers = null;
@@ -86,7 +108,7 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
             }
 
             return _db.ExecuteNonQuery(
-                "UPDATE users SET username = @userName, passwordhash = @passwordhash, securitystamp = @securitystamp WHERE id = @userid",
+                "UPDATE  [FAXPEC].[FAXPEC].[USERS] SET username = @userName, passwordhash = @passwordhash, securitystamp = @securitystamp WHERE id = @userid",
                 new SqlParameter { ParameterName = "@username", Value = user.UserName, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
                 new SqlParameter { ParameterName = "@passwordhash", Value = user.PasswordHash, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
                 new SqlParameter { ParameterName = "@securitystamp", Value = user.SecurityStamp, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
@@ -96,7 +118,7 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
         public int Delete(string userId)
         {
             return _db.ExecuteNonQuery(
-                "DELETE FROM users WHERE id = @userid",
+                "DELETE FROM  [FAXPEC].[FAXPEC].[USERS] WHERE id = @userid",
                 new SqlParameter { ParameterName = "@userid", Value = userId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }
 

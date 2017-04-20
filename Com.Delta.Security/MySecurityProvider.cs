@@ -33,16 +33,18 @@ namespace Com.Delta.Security
         public static async Task<MyPrincipal> BuildNewIdentity(string username, string dipartimento, string password, string type)
         {
             UserStore store = new UserStore();
+            RoleStore roleStore = new RoleStore();
             MyPrincipal mp = null;
             //LoginResp r = store.Authenticate(username, dipartimento, password);
             int iduser = 0;
             string passwordHash= await store.GetPasswordHashAsync(username,ref iduser);
-             string digitPasswordSHA = MySecurityProvider.PlainToSHA256(password);
+             string digitPasswordSHA = MySecurityProvider.PlainToSHA256(password);           
             if (digitPasswordSHA == passwordHash)
             {
                 MyIdentity id = new MyIdentity(username, dipartimento, password, type);
-                id.Id = iduser.ToString();
+                id.Id = iduser.ToString();                      
                 mp = new MyPrincipal(id, null);
+               
             }
             else
             {

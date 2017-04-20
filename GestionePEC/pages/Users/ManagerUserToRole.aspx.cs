@@ -13,9 +13,9 @@ using System.Web.UI.WebControls;
 
 namespace GestionePEC.pages.Users
 {
-    public partial class AddUserToRole : BasePage
+    public partial class ManagerUserToRole : BasePage
     {
-        private static readonly ILog log = LogManager.GetLogger("AddUserToRole");
+        private static readonly ILog log = LogManager.GetLogger("ManagerUserToRole");
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Page.IsPostBack == false)
@@ -23,12 +23,15 @@ namespace GestionePEC.pages.Users
                 var roleStore = new RoleStore();
                 Role.DataTextField = "Name";
                 Role.DataValueField = "Id";
-                Role.DataSource = roleStore.GetAll();
+                List<IdentityRole> r = null;
+                r = roleStore.GetAll().Result;
+                Role.DataSource = r;
                 Role.DataBind();
                 var userStore = new UserStore();
-                Users.DataTextField = "Name";
+                Users.DataTextField = "UserName";
                 Users.DataValueField = "Id";
-                Users.DataSource = userStore.GetAll();
+                List<IdentityUser> L = userStore.GetAll().Result;
+                Users.DataSource = L;
                 Users.DataBind();
 
             }
@@ -42,7 +45,7 @@ namespace GestionePEC.pages.Users
                 var result = userStore.AddToRoleAsync(user, int.Parse(Role.SelectedValue)).Result;
                 if (result != 0)
                 {
-                    info.AddMessage(string.Format("Utente {0} non aggiunto a ruolo {1} è stato correttamente creato!", user.UserName, Role.SelectedItem.Text), LivelloMessaggio.INFO);
+                    info.AddMessage(string.Format("Utente {0} aggiunto a ruolo {1} !", user.UserName, Role.SelectedItem.Text), LivelloMessaggio.INFO);
                 }
             }
             catch (Exception ex)
@@ -57,8 +60,18 @@ namespace GestionePEC.pages.Users
                         ex.InnerException);
                     ErrorLogInfo err = new ErrorLogInfo(mEx);
                     log.Error(err);
+                    info.AddMessage("Errore nell'associazione utente a ruolo: " + ex.Message,LivelloMessaggio.ERROR);
                 }
             }
+        }
+
+        protected void btnFindUser_OnClick(object sender, EventArgs e)
+        {
+
+        }
+        protected void btnFindRole_OnClick(object sender, EventArgs e)
+        {
+
         }
     }
 }

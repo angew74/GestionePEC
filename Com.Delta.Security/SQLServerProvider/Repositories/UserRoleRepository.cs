@@ -29,7 +29,7 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
             }
 
             return _db.ExecuteNonQuery(
-                "INSERT INTO userroles (userid, roleid) values (@userid, @roleid)",
+                "INSERT INTO [FAXPEC].[FAXPEC].[userroles] (userid, roleid) values (@userid, @roleid)",
                 new SqlParameter { ParameterName = "@userid", Value = user.Id, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
                 new SqlParameter { ParameterName = "@roleid", Value = roleId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }

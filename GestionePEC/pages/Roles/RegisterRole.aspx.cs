@@ -49,6 +49,7 @@ namespace GestionePEC.pages.Roles
                     ErrorLogInfo err = new ErrorLogInfo(mEx);
                     log.Error(err);
                 }
+                info.AddMessage("Errore nell'inserimento: " + ex.Message, LivelloMessaggio.ERROR);
             }
         }
     }
