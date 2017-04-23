@@ -61,6 +61,53 @@ namespace SendMail.Data.SQLServerDB.Mapping
             return op;
         }
 
+        internal static ACTIONS_FOLDERS MapToActionFolder(ActionFolder a, bool v)
+        {
+            ACTIONS_FOLDERS f = new ACTIONS_FOLDERS()
+            {
+                IDACTION =(double) a.idAction,
+                IDFOLDER = a.idFolder
+            };
+            if(!v)
+            { f.ID = a.iD; }
+            return f;
+        }
+
+        internal static ACTIONS MapToActionDto(ActiveUp.Net.Common.DeltaExt.Action entity,bool isInsert)
+        {
+            ACTIONS a = new ACTIONS()
+            {
+                ID_FOLDER_DESTINAZIONE = entity.IdFolderDestinazione,
+                NOME_AZIONE = entity.NomeAzione,
+                NUOVO_STATUS = entity.NuovoStatus,
+                TIPO_AZIONE = entity.TipoAzione,
+                ID_NOME_DESTINAZIONE =(double) entity.IdDestinazione,
+                TIPO_DESTINAZIONE = entity.TipoDestinazione
+            };
+            if(!isInsert)
+            {
+                a.ID =(double) entity.Id;
+            }
+            return a;
+        }
+
+        internal static FOLDERS MapToFolderDto(Folder entity, bool v)
+        {
+            FOLDERS f = new FOLDERS()
+            {
+                ID = entity.Id,
+                IDNOME =double.Parse(entity.IdNome),
+                NOME = entity.Nome,
+                SYSTEM = "0",
+                TIPO = entity.TipoFolder                
+            };
+            if (v)
+            {
+                f.ID++;
+            }
+            return f;
+        }
+
         internal static SottoTitolo MapToSottotitolo(COMUNICAZIONI_SOTTOTITOLI s)
         {
             SottoTitolo st = new SottoTitolo();

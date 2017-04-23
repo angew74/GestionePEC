@@ -151,15 +151,11 @@ namespace SendMail.Data.SQLServerDB.Repository
                 {
                     COMUNICAZIONI_SOTTOTITOLI s = DaoSQLServerDBHelper.MapToComunicazioniSottotitolo(sottoTitolo,true);
                     dbcontext.COMUNICAZIONI_SOTTOTITOLI.Add(s);
-                    dbcontext.SaveChanges();                   
-                    int iNewID = default(int);
-                    int.TryParse(s.ID_SOTTOTITOLO.ToString(), out iNewID);                 
-                    if (iNewID != default(int))
+                    var resp = dbcontext.SaveChanges();
+                    if (resp == 0)
                     {
-                        sottoTitolo.Id = iNewID;
-                    }
-                    else
                         throw new Exception(DalExMessages.ID_NON_RESTITUITO);
+                    }
                 }           
                 catch (InvalidOperationException ioex)
                 {                    

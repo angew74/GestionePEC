@@ -1,46 +1,12 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Mail.Master" Theme="Delta" AutoEventWireup="true" CodeBehind="NewMail.aspx.cs" Inherits="GestionePEC.pages.MailClient.NewMail" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Mail.Master" Theme="Delta" EnableEventValidation="false" ValidateRequest="false" AutoEventWireup="true" CodeBehind="NewMail.aspx.cs" Inherits="GestionePEC.pages.MailClient.NewMail" %>
 
 <%@ Register Src="~/Controls/MailBoxLogin.ascx" TagName="MailBoxLogin" TagPrefix="mail" %>
-<%@ Register Src="~/Controls/Comunicazione.ascx" TagName="UCComunicazione" TagPrefix="uc2" %>
 <%@ Register Src="~/Controls/HeaderNewMail.ascx" TagName="UCHeader" TagPrefix="uc4" %>
-
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
     <script type="text/javascript">
       
-        Ext.onReady(function () {
-            Ext.QuickTips.init();
-            Ext.create('Ext.form.Panel', {             
-             id: 'htmlEditor',
-             title: 'Testo Comunicazione',
-             renderTo: 'divTextArea',
-             width: 1050,
-             height: 300,
-            border:false,
-            frame: null,
-            layout: 'fit',
-            items: {
-                xtype: 'htmleditor',
-                enableColors: true,              
-                enableAlignments: true,
-                enableSourceEdit: true,
-                enableFont: true,
-                enableFontSize: true,
-                enableFormat: true,
-                padding: '0 0 0 -100',
-                enableLinks: true,
-                enableLists: true,
-                renderTo: 'divTextArea',
-                width: 350,
-                height: 290,
-                listeners: {
-                    change: function () {
-                        on_editor_blur();
-                    }
-                },
-                value: '<%= Comunicazione %>'
-            }
-        });              
-                
+           
+           
              
 
          <%--   extHtml = Ext.create('Ext.form.Panel', {
@@ -68,30 +34,10 @@
                     value: '<%= Comunicazione %>'
         }
    });--%>
-});
+
     </script>
 
-    <script type="text/javascript">
-        function on_editor_blur() {
-            var appo = Ext.getCmp('htmlEditor').items.get(0).value.replace("'", "\x27");
-            var bappo = appo.replace(/'/g, '"');
-            var myHidden = document.getElementById('<%= HidHtml.ClientID %>');
-    if (myHidden)//checking whether it is found on DOM, but not necessary
-    {
-        myHidden.value = bappo;
-    }
-}
-
-function GetValuesHtml() {
-
-    var appo = extHtml.items.get('textEditor').getValue();
-    var myHidden = document.getElementById('<%= HidHtml.ClientID %>');
-    if (myHidden)//checking whether it is found on DOM, but not necessary
-    {
-        myHidden.value = appo;
-    }
-}
-    </script>
+   
    
     <asp:HiddenField runat="server" ID="hfIdTitolo" />
     <asp:HiddenField runat="server" ID="hfIdReferral" />
@@ -129,11 +75,11 @@ function GetValuesHtml() {
                     <div id="divTextArea" onkeyup="return GetValuesHtml();">
                     </div>
                     <div id="divUpload" />                    
-                    <asp:UpdatePanel ID="pnlMainUpdate" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
-                        <ContentTemplate>
+                  <%--  <asp:UpdatePanel ID="pnlMainUpdate" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+                        <ContentTemplate>--%>
                             <asp:HiddenField ID="HidHtml" runat="server" />
-                        </ContentTemplate>
-                    </asp:UpdatePanel> 
+                   <%--     </ContentTemplate>
+                    </asp:UpdatePanel> --%>
                 </div>
             </div>
         </div>
@@ -141,15 +87,18 @@ function GetValuesHtml() {
     <script type="text/javascript">
         Ext.onReady(function () {
             Ext.Loader.setPath({
-                'Ext.ux': '../../ExtJS5/ux/'
+                'Ext.ux': '../../ExtJS5/ux'               
             });
             Ext.require([
     'Ext.ux.upload.Dialog',
     'Ext.ux.upload.Panel',
     'Ext.ux.upload.uploader.FormDataUploader',
     'Ext.ux.upload.uploader.ExtJsUploader',
-    'Ext.ux.upload.header.Base64FilenameEncoder'
+    'Ext.ux.upload.header.Base64FilenameEncoder',
+    'Ext.ux.editor.myeditor'
             ]);
+            Ext.tip.QuickTipManager.init();
+       
             var appPanel = new Ext.panel.Panel({
                 height: 250,              
                 title: 'Gestione Allegati',
@@ -205,11 +154,118 @@ function GetValuesHtml() {
                         }
                     }
                 ]
-            })
+            });
+
+              new Ext.form.Panel ({             
+             id: 'htmlEditor',
+             title: 'Testo Comunicazione',
+             renderTo: 'divTextArea',
+             width: 1050,           
+            height: 300,
+            border:false,
+                    //   frame: false,   
+            bodyStyle: {
+                padding: '5px'
+            },
+            layout: 'fit',
+            header :{
+                border:false
+            },
+            items: {
+                xtype: 'htmleditor',
+                enableColors: true,              
+                enableAlignments: true,
+                enableSourceEdit: true,
+                enableFont: true,
+                enableFontSize: true,
+                enableFormat: true,
+                frame:false,
+                id:'TextHtml',
+                width: 600,
+                maxWidth: 1030,              
+                padding: '0 0 0 -100',
+                enabled:true,
+                enableLinks: true,
+                enableLists: true,
+                enabled:true,
+                width: 600,
+              //  width: 350,
+              //  height: 290,
+                listeners: {
+                    change: function () {
+                        on_editor_blur();
+                    }
+                }
+               , value: '<%= Comunicazione %>',
+                syncValue: function () {
+                    var me = this,
+                        body, changed, html, bodyStyle, match, textElDom;
+                    if (me.initialized) {
+                        body = me.getEditorBody();
+                        html = body.innerHTML;
+                        textElDom = me.textareaEl.dom;
+                        if (Ext.isWebKit) {
+                            bodyStyle = body.getAttribute('style');
+                            if (bodyStyle !== null) { // ***** THIS IS THE FIX *****
+                                match = bodyStyle.match(me.textAlignRE);
+                                if (match && match[1]) {
+                                    html = '<div style="' + match[0] + '">' + html + '</div>';
+                                }
+                            }
+                        }
+                        html = me.cleanHtml(html);
+                        if (me.fireEvent('beforesync', me, html) !== false) {
+
+
+
+
+                            if (Ext.isGecko && textElDom.value === '' && html === '<br>') {
+                                html = '';
+                            }
+                            if (textElDom.value !== html) {
+                                textElDom.value = html;
+                                changed = true;
+                            }
+                            me.fireEvent('sync', me, html);
+                            if (changed) {
+                                me.checkChange();
+                            }
+                        }
+                    }
+                }
+            }
+        });             
+             
+
+            Ext.getCmp('TextHtml').setReadOnly(false);
         });     
 
 
     </script>
+
+     <script type="text/javascript">
+       function on_editor_blur() {
+           var appo = Ext.getCmp('TextHtml').getValue().replace("'", "\x27");
+            var bappo = appo.replace(/'/g, '"');
+            var myHidden = document.getElementById('<%= HidHtml.ClientID %>');
+    if (myHidden)//checking whether it is found on DOM, but not necessary
+    {
+        myHidden.value = bappo;
+    }
+}
+
+function GetValuesHtml() {
+
+    // var appo = extHtml.items.get('textEditor').getValue();
+    var appo = Ext.getCmp('TextHtml').getValue();
+    var myHidden = document.getElementById('<%= HidHtml.ClientID %>');
+    if (myHidden)//checking whether it is found on DOM, but not necessary
+    {
+        myHidden.value = appo;
+    }
+}
+    </script>
+
 </asp:Content>
 
 

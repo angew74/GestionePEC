@@ -246,7 +246,18 @@ namespace SendMail.Data.SQLServerDB.Mapping
             { val = 1; }
             return val;
         }
-     
+
+        internal static string TryParseNotityBool(bool v)
+        {
+           if(v)
+            {
+                return "S";
+            }
+            else
+            {
+                return "N";
+            }
+        }
     }
 }
 

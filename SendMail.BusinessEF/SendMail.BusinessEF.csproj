@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="base\BaseSingletonService.cs" />
+    <Compile Include="Contracts\IActionsFoldersService.cs" />
+    <Compile Include="Contracts\IActionsService.cs" />
     <Compile Include="Contracts\IBackEndDictionaryService.cs" />
     <Compile Include="Contracts\IBackendUserService.cs" />
     <Compile Include="Contracts\IBaseService.cs" />
@@ -57,6 +59,7 @@
     <Compile Include="Contracts\IContactsBackendService.cs" />
     <Compile Include="Contracts\IContactsMappingService.cs" />
     <Compile Include="Contracts\IContattoService.cs" />
+    <Compile Include="Contracts\IFoldersService.cs" />
     <Compile Include="Contracts\IMailAccountService.cs" />
     <Compile Include="Contracts\IMailRefsService.cs" />
     <Compile Include="Contracts\IMailServerService.cs" />
@@ -71,12 +74,15 @@
     <Compile Include="MailFacades\MailServerConfigFacade.cs" />
     <Compile Include="MailFacades\MailServerFacade.cs" />
     <Compile Include="MailFacades\MailServerService.cs" />
+    <Compile Include="Operations\ActionsFoldersService.cs" />
+    <Compile Include="Operations\ActionsService.cs" />
     <Compile Include="Operations\BackEndDictionaryService.cs" />
     <Compile Include="Operations\BackendUserService.cs" />
     <Compile Include="Operations\ComunicazioniService.cs" />
     <Compile Include="Operations\ContactsBackendService.cs" />
     <Compile Include="Operations\ContactsMappingService.cs" />
     <Compile Include="Operations\ContattoServices.cs" />
+    <Compile Include="Operations\FoldersService.cs" />
     <Compile Include="Operations\MailRefs.cs" />
     <Compile Include="Operations\RubricaEntitaService.cs" />
     <Compile Include="Operations\SendersFoldersService.cs" />

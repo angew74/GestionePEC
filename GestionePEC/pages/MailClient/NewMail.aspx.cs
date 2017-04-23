@@ -69,9 +69,10 @@ namespace GestionePEC.pages.MailClient
                     {
                     }
                     return html;
+                  
                 }
                 else
-                {
+                {                   
                     return _comunicazione;
                 }
             }
@@ -265,7 +266,7 @@ namespace GestionePEC.pages.MailClient
                         // ((baseLayoutUnisys.BasePage)this.Page).info.ClearMessage();
                         ((BasePage)this.Page).info.AddMessage("Email correttamente inviata", LivelloMessaggio.INFO);
                         btnSend.Visible = false;
-                        SessionManager<string>.del("APP_CODE");
+                        SessionManager<Dictionary<string, DTOFileUploadResult>>.del(SessionKeys.DTO_FILE);
                     }
                     catch (Exception ex)
                     {

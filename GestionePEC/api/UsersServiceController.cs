@@ -29,9 +29,9 @@ namespace GestionePEC.api
                     UserStore userStore = new UserStore();
                     var useri = userStore.FindByNameAsync(username).Result;
                     var roleStore = new RoleStore();
-                   var roles = roleStore.GetRolesByUserName(username).Result;
+                    var roles = roleStore.GetRolesByUserName(username).Result;
                     List<UserRoles> users = new List<UserRoles>();
-                    if(roles.Count > 0)
+                    if (roles.Count > 0)
                     {
                         foreach (string rolefind in roles)
                         {
@@ -92,7 +92,7 @@ namespace GestionePEC.api
         [HttpGet]
         [Authorize]
         [Route("api/UsersServiceController/RemoveRole")]
-        public HttpResponseMessage RemoveRole(string userid, string roleid)  
+        public HttpResponseMessage RemoveRole(string userid, string roleid)
         {
             UsersModel m = new UsersModel();
             try
@@ -126,4 +126,5 @@ namespace GestionePEC.api
             }
             return this.Request.CreateResponse<UsersModel>(HttpStatusCode.OK, m);
         }
+    }
 }

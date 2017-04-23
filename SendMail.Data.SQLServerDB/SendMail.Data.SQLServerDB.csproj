@@ -106,6 +106,8 @@
     </Compile>
     <Compile Include="Contracts\CachedDao\IReferralTypeDao.cs" />
     <Compile Include="Contracts\ExeptionMessages.cs" />
+    <Compile Include="Contracts\IActionsDao.cs" />
+    <Compile Include="Contracts\IActionsFoldersDao.cs" />
     <Compile Include="Contracts\IBackEndCodeDao.cs" />
     <Compile Include="Contracts\IBackendUserDao.cs" />
     <Compile Include="Contracts\IComAllegatoDao.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="Contracts\IContactsBackendDao.cs" />
     <Compile Include="Contracts\IContattoDao.cs" />
     <Compile Include="Contracts\IDao.cs" />
+    <Compile Include="Contracts\IFoldersDao.cs" />
     <Compile Include="Contracts\IMailAddresseDao.cs" />
     <Compile Include="Contracts\IMailDao.cs" />
     <Compile Include="Contracts\IMailRefsDao.cs" />
@@ -180,9 +183,12 @@
     <Compile Include="Mapping\LinqExtensions.cs" />
     <Compile Include="PECSQLContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ActionsFoldersSQLDb.cs" />
+    <Compile Include="Repository\ActionsSQLDb.cs" />
     <Compile Include="Repository\BackEndCodeSQLDb.cs" />
     <Compile Include="Repository\BackEndUserSQLDb.cs" />
     <Compile Include="Repository\ContactsApplicationMappingSQLDb.cs" />
+    <Compile Include="Repository\FolderSQLDb.cs" />
     <Compile Include="Repository\MailServerDaoSQLDb.cs" />
     <Compile Include="Repository\RubrEntitaSQLDb.cs" />
     <Compile Include="Repository\ComAllegatoSQLDb.cs" />

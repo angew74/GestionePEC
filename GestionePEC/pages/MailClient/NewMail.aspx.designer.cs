@@ -76,15 +76,6 @@ namespace GestionePEC.pages.MailClient {
         protected global::System.Web.UI.WebControls.Button btnSend;
         
         /// <summary>
-        /// Controllo pnlMainUpdate.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlMainUpdate;
-        
-        /// <summary>
         /// Controllo HidHtml.
         /// </summary>
         /// <remarks>

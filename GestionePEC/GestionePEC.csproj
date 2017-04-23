@@ -1076,6 +1076,7 @@
     <Content Include="Login.aspx" />
     <Content Include="LogOff.aspx" />
     <Content Include="LogOffFromBrowser.aspx" />
+    <Content Include="pages\Folders\RegisterFolder.aspx" />
     <Content Include="pages\MailClient\NewMail.aspx" />
     <Content Include="pages\pubblica\ErrorPage.aspx" />
     <Content Include="pages\MailClient\MailAdmin.aspx" />
@@ -1103,6 +1104,7 @@
     <Compile Include="api\EntiMappingController.cs" />
     <Compile Include="api\FolderController.cs" />
     <Compile Include="api\GeneralSearchController.cs" />
+    <Compile Include="Models\GenericResponseModel.cs" />
     <Compile Include="api\LoginServiceController.cs" />
     <Compile Include="api\PECController.cs" />
     <Compile Include="api\SessionStateRouteHandler.cs" />
@@ -1304,6 +1306,13 @@
       <DependentUpon>Mail.Master</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="pages\Folders\RegisterFolder.aspx.cs">
+      <DependentUpon>RegisterFolder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Folders\RegisterFolder.aspx.designer.cs">
+      <DependentUpon>RegisterFolder.aspx</DependentUpon>
+    </Compile>
     <Compile Include="pages\MailClient\NewMail.aspx.cs">
       <DependentUpon>NewMail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -1,4 +1,5 @@
-﻿using GestionePEC.Extensions;
+﻿using Com.Delta.Security;
+using GestionePEC.Extensions;
 using GestionePEC.pages.Interfaces;
 using log4net;
 using System;
@@ -58,7 +59,7 @@ namespace GestionePEC.Master
             {
                 if (LoginView1 != null)
                 {
-                    hfUser.Value = _user.Identity.Name;
+                    hfUser.Value = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
                     hfDipUser.Value = _user.MyIdentity.dipartimento;
                     if (LoginView1.FindControl("lblCurrentUser") != null)
                     { (LoginView1.FindControl("lblCurrentUser") as Label).Text = hfUser.Value.ToString().ToUpper(); }

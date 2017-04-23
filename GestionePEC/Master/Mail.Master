@@ -18,7 +18,9 @@
 </head>
 
 <script type="text/javascript" src='<%= this.ResolveClientUrl("~/scripts/uty.js") %>'></script>
-
+<script type="text/javascript" src='<%= this.ResolveClientUrl("~/ExtJS5/ext-all-debug.js") %>'></script>
+<script type="text/javascript" src='<%= this.ResolveClientUrl("~/ExtJS5/main.js") %>'></script>
+<script type="text/javascript" src='<%= this.ResolveClientUrl("~/ExtJS5/extcorrezioni.js") %>'></script>
 <body onmousemove="SetProgressPosition(event, 'div-update')" onunload="fnUnloadHandler()"
     onload="backButtonOverride()" style="visibility: hidden;">
     <noscript>
@@ -31,14 +33,7 @@
     <asp:HiddenField ID="hfUser" runat="server" />
     <asp:HiddenField ID="hfDipUser" runat="server" />
         <asp:ScriptManager ID="ManagerScript" runat="server" EnableScriptGlobalization="true"
-            EnablePageMethods="True" AsyncPostBackTimeout="300">
-            <compositescript>
-            <Scripts>             
-                <asp:ScriptReference Path="../ExtJS5/ext-all-debug.js" />              
-                <asp:ScriptReference Path="../ExtJS5/main.js" />         
-                <asp:ScriptReference Path="../ExtJS5/extcorrezioni.js" />   
-            </Scripts>
-        </compositescript>
+            EnablePageMethods="True" AsyncPostBackTimeout="300">           
         </asp:ScriptManager>
 
     <script type="text/javascript">

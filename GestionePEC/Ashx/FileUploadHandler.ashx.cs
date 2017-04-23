@@ -1,6 +1,7 @@
 ﻿using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
 using Com.Delta.Web.Session;
+using GestionePEC.api;
 using GestionePEC.Models;
 using log4net;
 using System;
@@ -34,9 +35,9 @@ namespace GestionePEC.Ashx
         public void ProcessRequest(HttpContext context)
         {
             DTOFileUploadResult result = new DTOFileUploadResult();
+            GenericResponseModel response = new GenericResponseModel();
             string extension = string.Empty;
-            Dictionary<string, DTOFileUploadResult> dict = new Dictionary<string, DTOFileUploadResult>();
-            SessionManager<Dictionary<string, DTOFileUploadResult>>.del(SessionKeys.DTO_FILE);
+            Dictionary<string, DTOFileUploadResult> dict = new Dictionary<string, DTOFileUploadResult>();          
             if (SessionManager<Dictionary<string, DTOFileUploadResult>>.exist(SessionKeys.DTO_FILE))
             {
                 dict = SessionManager<Dictionary<string, DTOFileUploadResult>>.get(SessionKeys.DTO_FILE);
@@ -57,9 +58,8 @@ namespace GestionePEC.Ashx
                         {
                             // salvo in sessione     
                             SessionManager<Dictionary<string, DTOFileUploadResult>>.set(SessionKeys.DTO_FILE, dict);
-                            result.FileName = file.FileName;
-                            result.success = true;
-                            result.CustomData = null;                    
+                            response.FileName = file.FileName;
+                            response.success = "true";                                                                            
                         }
                     }
                 }
@@ -84,7 +84,7 @@ namespace GestionePEC.Ashx
             }
             finally
             {
-                context.Response.Write(JsonResult(result));
+                context.Response.Write(JsonResult(response));
                 context.ApplicationInstance.CompleteRequest();
             }
         }
@@ -94,7 +94,7 @@ namespace GestionePEC.Ashx
         /// </summary>
         /// <param name="result">l'oggetto FileUploadResult da serializzare</param>
         /// <returns></returns>
-        private string JsonResult(DTOFileUploadResult result)
+        private string JsonResult(GenericResponseModel result)
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             StringBuilder sbJsonResults = new StringBuilder();

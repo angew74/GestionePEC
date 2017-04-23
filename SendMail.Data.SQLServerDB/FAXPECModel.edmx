@@ -4,12 +4,12 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FAXPECModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FAXPECModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACTIONS">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="float" Nullable="false" />
+          <Property Name="ID" Type="float" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="NOME_AZIONE" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="ID_NOME_DESTINAZIONE" Type="float" />
           <Property Name="TIPO_DESTINAZIONE" Type="varchar" MaxLength="1" />
@@ -21,7 +21,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="float" Nullable="false" />
+          <Property Name="ID" Type="float" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDFOLDER" Type="numeric" Precision="18" Scale="0" Nullable="false" />
           <Property Name="IDACTION" Type="float" Nullable="false" />
         </EntityType>
@@ -45,7 +45,7 @@
           <Key>
             <PropertyRef Name="ID_ALLEGATO" />
           </Key>
-          <Property Name="ID_ALLEGATO" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="ID_ALLEGATO" Type="numeric" Precision="10" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="REF_ID_COM" Type="numeric" Precision="10" Scale="0" Nullable="false" />
           <Property Name="ALLEGATO_TPU" Type="varchar" MaxLength="200" />
           <Property Name="ALLEGATO_FILE" Type="varbinary(max)" />
@@ -177,7 +177,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="float" Nullable="false" />
+          <Property Name="ID" Type="float" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDFOLDER" Type="numeric" Precision="18" Scale="0" Nullable="false" />
           <Property Name="IDSENDER" Type="numeric" Precision="10" Scale="0" Nullable="false" />
         </EntityType>
@@ -243,7 +243,7 @@
           <Key>
             <PropertyRef Name="ID_REF" />
           </Key>
-          <Property Name="ID_REF" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="ID_REF" Type="numeric" Precision="10" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="REF_ID_MAIL" Type="numeric" Precision="10" Scale="0" Nullable="false" />
           <Property Name="MAIL_DESTINATARIO" Type="varchar" MaxLength="256" />
           <Property Name="TIPO_REF" Type="varchar" MaxLength="5" Nullable="false" />
@@ -1257,8 +1257,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'FA
             <End Role="MAIL_USERS_SENDER_BACKEND" EntitySet="MAIL_USERS_SENDER_BACKEND" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FAXPECModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1266,7 +1265,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'FA
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Double" Nullable="false" />
+          <Property Name="ID" Type="Double" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NOME_AZIONE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ID_NOME_DESTINAZIONE" Type="Double" />
           <Property Name="TIPO_DESTINAZIONE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
@@ -1279,7 +1278,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'FA
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Double" Nullable="false" />
+          <Property Name="ID" Type="Double" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDFOLDER" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="IDACTION" Type="Double" Nullable="false" />
           <NavigationProperty Name="ACTIONS" Relationship="Self.ACTIONS_FOLDERS_FK1" FromRole="ACTIONS_FOLDERS" ToRole="ACTIONS" />
@@ -1289,7 +1288,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'FA
           <Key>
             <PropertyRef Name="ID_COM" />
           </Key>
-          <Property Name="ID_COM" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="ID_COM" Type="Decimal" Precision="10" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="REF_ID_SOTTOTITOLO" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
           <Property Name="FLG_NOTIFICA" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="MAIL_NOTIFICA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -1466,7 +1465,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'FA
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Double" Nullable="false" />
+          <Property Name="ID" Type="Double" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDFOLDER" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="IDSENDER" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
           <NavigationProperty Name="FOLDERS" Relationship="Self.FK_FOLDERS_SENDERS_FOLDERS" FromRole="FOLDERS_SENDERS" ToRole="FOLDERS" />
@@ -1541,7 +1540,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'FA
           <Key>
             <PropertyRef Name="ID_REF" />
           </Key>
-          <Property Name="ID_REF" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="ID_REF" Type="Decimal" Precision="10" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="REF_ID_MAIL" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
           <Property Name="MAIL_DESTINATARIO" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="TIPO_REF" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />

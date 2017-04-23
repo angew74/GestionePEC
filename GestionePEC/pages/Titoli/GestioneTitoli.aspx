@@ -149,7 +149,7 @@
                                     Gestione Protocollo:</label>
                             </div>
                             <div style="display: table-cell;">
-                                <asp:CheckBox runat="server" Checked="true" Text="Attivo" ID="CheckProtocolloAttivo">                                    
+                                <asp:CheckBox runat="server" Text="Attivo" ID="CheckProtocolloAttivo">                                    
                                 </asp:CheckBox>
                             </div>
                         </div>

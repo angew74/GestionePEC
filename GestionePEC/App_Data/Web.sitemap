@@ -31,6 +31,10 @@
       <siteMapNode url="~/pages/Titoli/GestioneTitoli.aspx" title="Registra Titolo" roles="*">
       </siteMapNode>      
     </siteMapNode>
+    <siteMapNode url="" title="Gestione Cartella" roles="Administrator">
+      <siteMapNode url="~/pages/Folders/RegisterFolder.aspx" title="Registra Cartella" roles="*">
+      </siteMapNode>
+    </siteMapNode>
   </siteMapNode>
   
 </siteMap>

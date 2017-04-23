@@ -585,14 +585,14 @@ namespace SendMail.Data.SQLServerDB.Repository
                     try
                     {
                         AutoMapperConfiguration.Configure();
-                        COMUNICAZIONI comunicazione = AutoMapperConfiguration.fromComunicazioniToDto(entity);
+                        COMUNICAZIONI comunicazione = AutoMapperConfiguration.fromComunicazioniToDto(entity,false,false);
                         decimal idComOld = 0;
                         string v_cod_app = string.Empty;
                         if (entity.MailComunicazione.Follows != null)
                         { idComOld = dbcontext.MAIL_CONTENT.Where(x => x.ID_MAIL == entity.MailComunicazione.Follows).First().REF_ID_COM; }
                         if (idComOld == 0)
                         {
-                            v_cod_app = dbcontext.COMUNICAZIONI_SOTTOTITOLI.Where(x => x.ID_SOTTOTITOLO == LinqExtensions.TryParseInt(entity.RefIdSottotitolo)).First().COMUNICAZIONI_TITOLI.APP_CODE;
+                            v_cod_app = dbcontext.COMUNICAZIONI_SOTTOTITOLI.Where(x => x.ID_SOTTOTITOLO == entity.RefIdSottotitolo).First().COMUNICAZIONI_TITOLI.APP_CODE;
                             entity.CodAppInserimento = v_cod_app;
                         }
                         else
@@ -600,8 +600,15 @@ namespace SendMail.Data.SQLServerDB.Repository
                             COMUNICAZIONI old_comunicazione = dbcontext.COMUNICAZIONI.Where(x => x.ID_COM == idComOld).First();
                             entity.CodAppInserimento = old_comunicazione.COD_APP_INS;
                             entity.RefIdSottotitolo =long.Parse(old_comunicazione.REF_ID_SOTTOTITOLO.ToString());
-                        }
+                        }                      
                         dbcontext.COMUNICAZIONI.Add(comunicazione);
+                        dbcontext.SaveChanges();                      
+                        decimal newid = dbcontext.COMUNICAZIONI.Select(c => c.ID_COM).DefaultIfEmpty(0).Max();
+                        entity.IdComunicazione =(long) newid;
+                        MAIL_CONTENT content = AutoMapperConfiguration.FromComunicazioniToMailContent(entity);
+                        dbcontext.MAIL_CONTENT.Add(content);
+                        dbcontext.SaveChanges();
+                        decimal newidmail = dbcontext.MAIL_CONTENT.Select(c => c.ID_MAIL).DefaultIfEmpty(0).Max();
                         // gestione rubrica
                         if (entity.RubricaEntitaUsed != null && entity.RubricaEntitaUsed.Count > 0)
                         {
@@ -648,15 +655,24 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 {
                                     MAIL_REFS_NEW mailrefsnew = new MAIL_REFS_NEW()
                                     {
-                                        REF_ID_MAIL = comunicazione.MAIL_CONTENT.First().ID_MAIL,
+                                        REF_ID_MAIL = newidmail,
                                         TIPO_REF = entitaused.TipoContatto.ToString(),
                                         MAIL_DESTINATARIO = entitaused.Mail
                                     };
                                     dbcontext.MAIL_REFS_NEW.Add(mailrefsnew);
+                                    dbcontext.SaveChanges();
                                 }
                             }
                         }
-                        // fine rubrica
+                        // fine rubrica                       
+                        //inizio allegati
+                        foreach (ComAllegato a in entity.ComAllegati)
+                        {
+                            COMUNICAZIONI_ALLEGATI all = AutoMapperConfiguration.FromComAllegatoToDto(a);
+                            all.REF_ID_COM = newid;
+                            dbcontext.COMUNICAZIONI_ALLEGATI.Add(all);
+                        }
+                        //
                         dbcontext.SaveChanges();
                         dbContextTransaction.Commit();
                     }

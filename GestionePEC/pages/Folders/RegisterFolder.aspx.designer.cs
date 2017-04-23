@@ -7,27 +7,27 @@
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace GestionePEC.Controls {
+namespace GestionePEC.pages.Folders {
     
     
-    public partial class Destinatari {
+    public partial class RegisterFolder {
         
         /// <summary>
-        /// Controllo UpdateGriglia.
+        /// Controllo NomeFolder.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdateGriglia;
+        protected global::System.Web.UI.WebControls.TextBox NomeFolder;
         
         /// <summary>
-        /// Controllo gridDett.
+        /// Controllo btnSalva.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridDett;
+        protected global::System.Web.UI.WebControls.Button btnSalva;
     }
 }

@@ -94,8 +94,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         }
                     }
                     catch (Exception ex)
-                    {
-                        //Allineamento log - Ciro
+                    {                       
                         if (ex.GetType() == typeof(ManagedException))
                         {
                             ManagedException mEx = new ManagedException(ex.Message, "SND_ORA003", string.Empty, string.Empty, ex);

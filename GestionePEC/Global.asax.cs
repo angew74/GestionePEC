@@ -11,6 +11,8 @@ using GestionePEC.Routing;
 using log4net;
 using Com.Delta.Security;
 using SendMail.BusinessEF.MailFacedes;
+using Com.Delta.Web.Session;
+using GestionePEC.Models;
 
 namespace GestionePEC
 {
@@ -54,7 +56,8 @@ namespace GestionePEC
                     log.Error(error);
                 }
             }            
-            Server.ClearError();            
+            Server.ClearError();
+            SessionManager<Dictionary<string, DTOFileUploadResult>>.del(SessionKeys.DTO_FILE);
             var contextWrapper = new HttpContextWrapper(HttpContext.Current);
             var virtualPath = RouteTable.Routes.GetVirtualPath(new RequestContext(contextWrapper, new RouteData()),
                 "ErrorPage", null);
