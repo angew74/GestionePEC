@@ -36,14 +36,25 @@
     <AssemblyOriginatorKeyFile>Delta.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Messaging" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +65,42 @@
   <ItemGroup>
     <Compile Include="ApplicationCodeConfigSection.cs" />
     <Compile Include="BaseLogInfo.cs" />
+    <Compile Include="Context\LOG_ACTIONS.cs">
+      <DependentUpon>MailLogModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\LOG_APP_CODES.cs">
+      <DependentUpon>MailLogModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\LOG_APP_ERRORS.cs">
+      <DependentUpon>MailLogModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\LOG_ERRORS.cs">
+      <DependentUpon>MailLogModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\LOG_LOG_CODES.cs">
+      <DependentUpon>MailLogModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\MailLogModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MailLogModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\MailLogModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MailLogModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\MailLogModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MailLogModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Contracts\IAppCodesRepository.cs" />
+    <Compile Include="Contracts\IErrorMailLogRepository.cs" />
+    <Compile Include="Contracts\ILogCodesRepository.cs" />
+    <Compile Include="Contracts\IMailLogRepository.cs" />
+    <Compile Include="Contracts\ILogRepository.cs" />
+    <Compile Include="Contracts\TType.cs" />
     <Compile Include="ConversionUtils.cs" />
     <Compile Include="Errors\ErrorLog.cs" />
     <Compile Include="Errors\ErrorLogInfo.cs" />
@@ -78,15 +125,42 @@
     <Compile Include="ManagedException.cs" />
     <Compile Include="MsmqAppender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AppCodesRepository.cs" />
+    <Compile Include="Repository\ErrorMailLogRepository.cs" />
+    <Compile Include="Repository\LogCodesRepository.cs" />
+    <Compile Include="Repository\MailLogRepository.cs" />
     <Compile Include="Um\UmLogInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="Context\MailLogModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MailLogModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Context\MailLogModel.edmx.diagram">
+      <DependentUpon>MailLogModel.edmx</DependentUpon>
+    </None>
     <None Include="Delta.pfx" />
     <None Include="Mail\MailDetailsLog.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Context\MailLogModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MailLogModel.edmx</DependentUpon>
+      <LastGenOutput>MailLogModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Context\MailLogModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MailLogModel.edmx</DependentUpon>
+      <LastGenOutput>MailLogModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -57,7 +57,8 @@ namespace GestionePEC
                 }
             }            
             Server.ClearError();
-            SessionManager<Dictionary<string, DTOFileUploadResult>>.del(SessionKeys.DTO_FILE);
+            if(SessionManager<Dictionary<string, DTOFileUploadResult>>.exist(SessionKeys.DTO_FILE))
+           { SessionManager<Dictionary<string, DTOFileUploadResult>>.del(SessionKeys.DTO_FILE); }
             var contextWrapper = new HttpContextWrapper(HttpContext.Current);
             var virtualPath = RouteTable.Routes.GetVirtualPath(new RequestContext(contextWrapper, new RouteData()),
                 "ErrorPage", null);

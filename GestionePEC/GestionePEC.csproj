@@ -1077,6 +1077,7 @@
     <Content Include="LogOff.aspx" />
     <Content Include="LogOffFromBrowser.aspx" />
     <Content Include="pages\Folders\RegisterFolder.aspx" />
+    <Content Include="pages\Logs\ManageLogs.aspx" />
     <Content Include="pages\MailClient\NewMail.aspx" />
     <Content Include="pages\pubblica\ErrorPage.aspx" />
     <Content Include="pages\MailClient\MailAdmin.aspx" />
@@ -1104,6 +1105,8 @@
     <Compile Include="api\EntiMappingController.cs" />
     <Compile Include="api\FolderController.cs" />
     <Compile Include="api\GeneralSearchController.cs" />
+    <Compile Include="api\LogsServiceController.cs" />
+    <Compile Include="Models\AppCodesModel.cs" />
     <Compile Include="Models\GenericResponseModel.cs" />
     <Compile Include="api\LoginServiceController.cs" />
     <Compile Include="api\PECController.cs" />
@@ -1260,6 +1263,9 @@
     <Compile Include="Extensions\LinqExtensionMethods.cs" />
     <Compile Include="Extensions\Utility.cs" />
     <Compile Include="Models\DTOFileUploadResult.cs" />
+    <Compile Include="Models\LogActionsModel.cs" />
+    <Compile Include="Models\LogCodesModel.cs" />
+    <Compile Include="Models\LogErrorsModel.cs" />
     <Compile Include="Models\TreeModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
     <Compile Include="pages\common\Default.aspx.cs">
@@ -1312,6 +1318,13 @@
     </Compile>
     <Compile Include="pages\Folders\RegisterFolder.aspx.designer.cs">
       <DependentUpon>RegisterFolder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\Logs\ManageLogs.aspx.cs">
+      <DependentUpon>ManageLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Logs\ManageLogs.aspx.designer.cs">
+      <DependentUpon>ManageLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="pages\MailClient\NewMail.aspx.cs">
       <DependentUpon>NewMail.aspx</DependentUpon>

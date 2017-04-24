@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MailModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LOG_ACTIONS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="LOG_UID" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="APP_CODE" Type="varchar" MaxLength="20" />
+          <Property Name="LOG_CODE" Type="varchar" MaxLength="20" />
+          <Property Name="USER_ID" Type="varchar" MaxLength="255" />
+          <Property Name="USER_MAIL" Type="varchar" MaxLength="255" />
+          <Property Name="LOG_DETAILS" Type="varchar(max)" />
+          <Property Name="LOG_DATE" Type="datetime2" Precision="6" />
+          <Property Name="LOG_LEVEL" Type="varchar" MaxLength="10" />
+          <Property Name="OBJECT_ID" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LOG_APP_CODES">
+          <Key>
+            <PropertyRef Name="APP_CODE" />
+          </Key>
+          <Property Name="APP_CODE" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="DESCR" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOG_APP_ERRORS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="LOG_UID" Type="varchar" MaxLength="40" />
+          <Property Name="APP_CODE" Type="varchar" MaxLength="50" />
+          <Property Name="LOG_CODE" Type="varchar" MaxLength="50" />
+          <Property Name="LOG_DATE" Type="datetime2" Precision="6" />
+          <Property Name="DETAILS" Type="varchar(max)" />
+          <Property Name="USER_ID" Type="varchar" MaxLength="255" />
+          <Property Name="USER_IP" Type="varchar" MaxLength="20" />
+          <Property Name="LOG_MESSAGE" Type="varchar" MaxLength="4000" />
+          <Property Name="OBJ_ID" Type="varchar" MaxLength="50" />
+          <Property Name="ACTION" Type="varchar" MaxLength="1000" />
+          <Property Name="FUNCTION" Type="varchar" MaxLength="200" />
+          <Property Name="MODULE" Type="varchar" MaxLength="200" />
+          <Property Name="LOG_LEVEL" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="LOG_ERRORS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="LOG_UID" Type="varchar" MaxLength="40" />
+          <Property Name="APP_CODE" Type="varchar" MaxLength="20" />
+          <Property Name="LOG_CODE" Type="varchar" MaxLength="20" />
+          <Property Name="LOG_DATE" Type="datetime2" Precision="6" />
+          <Property Name="DETAILS" Type="varchar(max)" />
+          <Property Name="USER_ID" Type="varchar" MaxLength="255" />
+          <Property Name="USER_IP" Type="varchar" MaxLength="20" />
+          <Property Name="OBJ_ID" Type="varchar" MaxLength="30" />
+          <Property Name="OBJ_GRP_ID" Type="varchar" MaxLength="20" />
+          <Property Name="OBJ_APP_ID" Type="varchar" MaxLength="20" />
+          <Property Name="OBJ_PAR_CODE" Type="varchar" MaxLength="20" />
+          <Property Name="PASS_OBJ_ID" Type="varchar" MaxLength="20" />
+          <Property Name="PASS_OBJ_GRP_ID" Type="varchar" MaxLength="20" />
+          <Property Name="PASS_OBJ_APP_ID" Type="varchar" MaxLength="20" />
+          <Property Name="PASS_OBJ_PAR_CODE" Type="varchar" MaxLength="20" />
+          <Property Name="LOG_LEVEL" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="LOG_LOG_CODES">
+          <Key>
+            <PropertyRef Name="LOG_CODE" />
+          </Key>
+          <Property Name="LOG_CODE" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="DESCR" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="MailModelStoreContainer">
+          <EntitySet Name="LOG_ACTIONS" EntityType="Self.LOG_ACTIONS" Schema="FAXPEC" store:Type="Tables" />
+          <EntitySet Name="LOG_APP_CODES" EntityType="Self.LOG_APP_CODES" Schema="FAXPEC" store:Type="Tables" />
+          <EntitySet Name="LOG_APP_ERRORS" EntityType="Self.LOG_APP_ERRORS" Schema="FAXPEC" store:Type="Tables" />
+          <EntitySet Name="LOG_ERRORS" EntityType="Self.LOG_ERRORS" Schema="FAXPEC" store:Type="Tables" />
+          <EntitySet Name="LOG_LOG_CODES" EntityType="Self.LOG_LOG_CODES" Schema="FAXPEC" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MailModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LOG_ACTIONS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="LOG_UID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="APP_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="USER_ID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="USER_MAIL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_DETAILS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_DATE" Type="DateTime" Precision="6" />
+          <Property Name="LOG_LEVEL" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="OBJECT_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LOG_APP_CODES">
+          <Key>
+            <PropertyRef Name="APP_CODE" />
+          </Key>
+          <Property Name="APP_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DESCR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOG_APP_ERRORS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="LOG_UID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="APP_CODE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_CODE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_DATE" Type="DateTime" Precision="6" />
+          <Property Name="DETAILS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="USER_ID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="USER_IP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_MESSAGE" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="OBJ_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ACTION" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="FUNCTION" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MODULE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_LEVEL" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LOG_ERRORS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="LOG_UID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="APP_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_DATE" Type="DateTime" Precision="6" />
+          <Property Name="DETAILS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="USER_ID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="USER_IP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="OBJ_ID" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="OBJ_GRP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="OBJ_APP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="OBJ_PAR_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PASS_OBJ_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PASS_OBJ_GRP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PASS_OBJ_APP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PASS_OBJ_PAR_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_LEVEL" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LOG_LOG_CODES">
+          <Key>
+            <PropertyRef Name="LOG_CODE" />
+          </Key>
+          <Property Name="LOG_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DESCR" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="MailLogEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LOG_ACTIONS" EntityType="Self.LOG_ACTIONS" />
+          <EntitySet Name="LOG_APP_CODES" EntityType="Self.LOG_APP_CODES" />
+          <EntitySet Name="LOG_APP_ERRORS" EntityType="Self.LOG_APP_ERRORS" />
+          <EntitySet Name="LOG_ERRORS" EntityType="Self.LOG_ERRORS" />
+          <EntitySet Name="LOG_LOG_CODES" EntityType="Self.LOG_LOG_CODES" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MailModelStoreContainer" CdmEntityContainer="MailLogEntities">
+          <EntitySetMapping Name="LOG_ACTIONS">
+            <EntityTypeMapping TypeName="MailModel.LOG_ACTIONS">
+              <MappingFragment StoreEntitySet="LOG_ACTIONS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LOG_UID" ColumnName="LOG_UID" />
+                <ScalarProperty Name="APP_CODE" ColumnName="APP_CODE" />
+                <ScalarProperty Name="LOG_CODE" ColumnName="LOG_CODE" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="USER_MAIL" ColumnName="USER_MAIL" />
+                <ScalarProperty Name="LOG_DETAILS" ColumnName="LOG_DETAILS" />
+                <ScalarProperty Name="LOG_DATE" ColumnName="LOG_DATE" />
+                <ScalarProperty Name="LOG_LEVEL" ColumnName="LOG_LEVEL" />
+                <ScalarProperty Name="OBJECT_ID" ColumnName="OBJECT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOG_APP_CODES">
+            <EntityTypeMapping TypeName="MailModel.LOG_APP_CODES">
+              <MappingFragment StoreEntitySet="LOG_APP_CODES">
+                <ScalarProperty Name="APP_CODE" ColumnName="APP_CODE" />
+                <ScalarProperty Name="DESCR" ColumnName="DESCR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOG_APP_ERRORS">
+            <EntityTypeMapping TypeName="MailModel.LOG_APP_ERRORS">
+              <MappingFragment StoreEntitySet="LOG_APP_ERRORS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LOG_UID" ColumnName="LOG_UID" />
+                <ScalarProperty Name="APP_CODE" ColumnName="APP_CODE" />
+                <ScalarProperty Name="LOG_CODE" ColumnName="LOG_CODE" />
+                <ScalarProperty Name="LOG_DATE" ColumnName="LOG_DATE" />
+                <ScalarProperty Name="DETAILS" ColumnName="DETAILS" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="USER_IP" ColumnName="USER_IP" />
+                <ScalarProperty Name="LOG_MESSAGE" ColumnName="LOG_MESSAGE" />
+                <ScalarProperty Name="OBJ_ID" ColumnName="OBJ_ID" />
+                <ScalarProperty Name="ACTION" ColumnName="ACTION" />
+                <ScalarProperty Name="FUNCTION" ColumnName="FUNCTION" />
+                <ScalarProperty Name="MODULE" ColumnName="MODULE" />
+                <ScalarProperty Name="LOG_LEVEL" ColumnName="LOG_LEVEL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOG_ERRORS">
+            <EntityTypeMapping TypeName="MailModel.LOG_ERRORS">
+              <MappingFragment StoreEntitySet="LOG_ERRORS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LOG_UID" ColumnName="LOG_UID" />
+                <ScalarProperty Name="APP_CODE" ColumnName="APP_CODE" />
+                <ScalarProperty Name="LOG_CODE" ColumnName="LOG_CODE" />
+                <ScalarProperty Name="LOG_DATE" ColumnName="LOG_DATE" />
+                <ScalarProperty Name="DETAILS" ColumnName="DETAILS" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="USER_IP" ColumnName="USER_IP" />
+                <ScalarProperty Name="OBJ_ID" ColumnName="OBJ_ID" />
+                <ScalarProperty Name="OBJ_GRP_ID" ColumnName="OBJ_GRP_ID" />
+                <ScalarProperty Name="OBJ_APP_ID" ColumnName="OBJ_APP_ID" />
+                <ScalarProperty Name="OBJ_PAR_CODE" ColumnName="OBJ_PAR_CODE" />
+                <ScalarProperty Name="PASS_OBJ_ID" ColumnName="PASS_OBJ_ID" />
+                <ScalarProperty Name="PASS_OBJ_GRP_ID" ColumnName="PASS_OBJ_GRP_ID" />
+                <ScalarProperty Name="PASS_OBJ_APP_ID" ColumnName="PASS_OBJ_APP_ID" />
+                <ScalarProperty Name="PASS_OBJ_PAR_CODE" ColumnName="PASS_OBJ_PAR_CODE" />
+                <ScalarProperty Name="LOG_LEVEL" ColumnName="LOG_LEVEL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOG_LOG_CODES">
+            <EntityTypeMapping TypeName="MailModel.LOG_LOG_CODES">
+              <MappingFragment StoreEntitySet="LOG_LOG_CODES">
+                <ScalarProperty Name="LOG_CODE" ColumnName="LOG_CODE" />
+                <ScalarProperty Name="DESCR" ColumnName="DESCR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Nessuno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
