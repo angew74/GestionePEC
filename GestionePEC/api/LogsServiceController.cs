@@ -1,9 +1,14 @@
-﻿using Com.Delta.Logging;
+﻿using ActiveUp.Net.Mail.DeltaExt;
+using AspNet.Identity.SQLServerProvider;
+using Com.Delta.Logging;
 using Com.Delta.Logging.Context;
 using Com.Delta.Logging.Errors;
 using Com.Delta.Logging.Repository;
+using Com.Delta.Security;
+using Com.Delta.Web.Session;
 using GestionePEC.Models;
 using log4net;
+using SendMail.BusinessEF.MailFacedes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +16,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using static GestionePEC.Models.MailModel;
 
 namespace GestionePEC.api
 {
@@ -25,8 +31,16 @@ namespace GestionePEC.api
             try
             {
                 LogCodesRepository logCon = new LogCodesRepository();
-                model.ElencoLogCodes = logCon.GetAll();
-                model.Totale = model.ElencoLogCodes.Count;
+                var logscode = logCon.GetAll();
+                if (logscode != null)
+                {
+                    model.ElencoLogCodes = logscode;
+                    model.Totale = logscode.Count.ToString();
+                }
+                else
+                {
+                    model.Totale = "0";
+                }
                 model.success = "true";
             }
             catch (Exception ex)
@@ -45,8 +59,13 @@ namespace GestionePEC.api
             try
             {
                 AppCodesRepository logApp = new AppCodesRepository();
-                model.ElencoAppCodes = logApp.GetAll();
-                model.Totale = model.ElencoAppCodes.Count;
+                var appCodes= logApp.GetAll();
+                if (appCodes != null)
+                {
+                    model.ElencoAppCodes = appCodes;
+                    model.Totale = appCodes.Count.ToString();
+                }
+                else { model.Totale = "0"; }
                 model.success = "true";
             }
             catch (Exception ex)
@@ -82,7 +101,6 @@ namespace GestionePEC.api
                  m.LogsList = list;
                 m.Totale = list.Count.ToString();
                 m.success = "true";
-
             }
             catch (Exception ex)
             {
@@ -99,6 +117,75 @@ namespace GestionePEC.api
             }
             return this.Request.CreateResponse<LogActionsModel>(HttpStatusCode.OK, m);
 
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("api/LogsServiceController/getUsers")]
+        public HttpResponseMessage getUsers()
+        {
+            List<IdentityUser> users = new List<IdentityUser>();
+            UsersModel model = new UsersModel();
+            UserStore store = new UserStore();
+            try
+            {
+                users = store.GetAll().Result;
+                if (users != null)
+                {
+                    users.Insert(0, new IdentityUser() { UserName = ""});
+                    model.ListUtenti = users;
+                    model.Totale = users.Count.ToString();
+                }
+                else
+                {
+                    model.Totale = "0";
+                }
+                model.success = "true";
+            }
+            catch (Exception ex)
+            {
+                model.success = "false";
+                model.message = "Errore: " + ex.Message;
+            }
+            return this.Request.CreateResponse<UsersModel>(HttpStatusCode.OK, model);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("api/LogsServiceController/getMails")]
+        public HttpResponseMessage getMails()
+        {           
+            MailModel model = new MailModel();            
+            try
+            {
+                string username = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
+                MailServerConfigFacade mailSCF = null;
+                mailSCF = MailServerConfigFacade.GetInstance();
+                List<CasellaMail> c = new List<CasellaMail>();
+                List<MailUser> l = SessionManager<List<MailUser>>.get(SessionKeys.ACCOUNTS_LIST);
+                if (!(l != null && l.Count != 0))
+                {
+                    l = mailSCF.GetManagedAccountByUser(username).Distinct().ToList();                  
+                   foreach (MailUser m in l)
+                    {
+                        CasellaMail casella = new CasellaMail()
+                        {
+                            emailAddress = m.Casella,
+                            idMail = m.Id.ToString()
+                        };
+                        c.Add(casella);
+                    }
+                   
+                }
+                model.ElencoMails =c;
+                model.Totale = c.Count.ToString();
+            }
+            catch (Exception ex)
+            {
+                model.success = "false";
+                model.message = "Errore: " + ex.Message;
+            }
+            return this.Request.CreateResponse<MailModel>(HttpStatusCode.OK, model);
         }
 
         [Authorize]

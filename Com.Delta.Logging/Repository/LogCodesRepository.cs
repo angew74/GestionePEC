@@ -31,7 +31,7 @@ namespace Com.Delta.Logging.Repository
             List<LOG_LOG_CODES> list = null;
             using (var dbcontext = new MailLogEntities())
             {
-                var result = dbcontext.LOG_LOG_CODES.ToList();
+                list = dbcontext.LOG_LOG_CODES.ToList();
             }
             return list;
         }

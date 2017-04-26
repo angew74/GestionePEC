@@ -12,6 +12,6 @@ namespace GestionePEC.Models
         internal string success;
 
         public List<LOG_LOG_CODES> ElencoLogCodes { get; internal set; }
-        public int Totale { get; internal set; }
+        public string Totale { get; internal set; }
     }
 }

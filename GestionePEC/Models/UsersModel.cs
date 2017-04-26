@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AspNet.Identity.SQLServerProvider;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +13,7 @@ namespace GestionePEC.Models
         public string message { get; set; }
 
         public List<UserRoles> UtentiList { get; set; }
+        public List<IdentityUser> ListUtenti { get; set; }
         public class UserRoles
         {
             public string Id { get; set; }

@@ -44,6 +44,25 @@
                 ]
             });
 
+            // Model tipo
+            Ext.define('UsersModel', {
+                extend: 'Ext.data.Model',
+                fields: [
+                    { name: 'UserName', type: 'string' },
+                    { name: 'UserName', type: 'string' }
+                ]
+            });
+
+            Ext.define('MailsModel', {
+                extend: 'Ext.data.Model',
+                fields: [
+                    { name: 'emailAddress', type: 'string' },
+                    { name: 'emailAddress', type: 'string' }
+                ]
+            });
+
+            
+
             var requiredMessage = '<div style="color:red;">Campo obbligatorio</div>';
 
             // Model tipo
@@ -65,6 +84,24 @@
                 totalProperty: 'Totale'
             });
 
+            var readerMails = new Ext.data.JsonReader({
+                idProperty: 'emailAddress',
+                model: 'MailsModel',
+                messageProperty: 'Message',
+                type: 'json',
+                rootProperty: 'ElencoMails',
+                totalProperty: 'Totale'
+            });
+
+            var readerUsers = new Ext.data.JsonReader({
+                idProperty: 'UserName',
+                model: 'UsersModel',
+                messageProperty: 'Message',
+                type: 'json',
+                rootProperty: 'ListUtenti',
+                totalProperty: 'Totale'
+            });
+
              var storeAppCode = Ext.create('Ext.data.Store', {
                 autoLoad: true,
                 storeId: 'storeAppCode',
@@ -83,6 +120,46 @@
                     exception: function () {
                     }
                 }
+             });
+
+             var storeUsers = Ext.create('Ext.data.Store', {
+                 autoLoad: true,
+                 storeId: 'storeUsers',
+                 model: 'UsersModel',
+                 reader: readerUsers,
+                 proxy:
+                    {
+                        type: 'ajax',
+                        url: '/GestionePEC/api/LogsServiceController/getUsers',
+                        reader: readerUsers
+                    },
+                 //  restful: true,
+                 listeners: {
+                     load: function (s, r, o) {
+                     },
+                     exception: function () {
+                     }
+                 }
+             });
+
+             var storeMails = Ext.create('Ext.data.Store', {
+                 autoLoad: true,
+                 storeId: 'storeMails',
+                 model: 'MailsModel',
+                 reader: readerUsers,
+                 proxy:
+                    {
+                        type: 'ajax',
+                        url: '/GestionePEC/api/LogsServiceController/getMails',
+                        reader: readerMails
+                    },
+                 //  restful: true,
+                 listeners: {
+                     load: function (s, r, o) {
+                     },
+                     exception: function () {
+                     }
+                 }
              });
 
 
@@ -143,6 +220,61 @@
                 }
             });
 
+
+            // Combo Utenti
+            var UsersCombo = Ext.create('Ext.form.field.ComboBox', {
+                fieldLabel: 'Utente',
+                emptyText: 'Selezionare un utente di messaggio',
+                //  renderTo: 'TipoCombo',
+                id: 'UsersCombo',
+                displayField: 'UserName',
+                valueField: 'UserName',
+                ctCls: 'LabelBlackBold',
+                editable: false,
+                tpl: Ext.create('Ext.XTemplate',
+              '<ul class="x-list-plain"><tpl for=".">',
+                  '<li role="option" class="x-boundlist-item">{UserName}</li>',
+              '</tpl></ul>'
+          ),
+                width: 365,
+                labelWidth: 80,
+                margin: '0 0 0 4px',
+                store: storeUsers,
+                queryMode: 'local',
+                listeners: {
+                    change: function (combo, value) {
+                        Ext.getCmp('LogsGrid').getStore().getProxy().extraParams.user = value;
+                    }
+                }
+            });
+
+            var MailsCombo = Ext.create('Ext.form.field.ComboBox', {
+                fieldLabel: 'Casella Mail',
+                emptyText: 'Selezionare una casella di posta',
+                //  renderTo: 'TipoCombo',
+                id: 'MailsCombo',
+                displayField: 'emailAddress',
+                valueField: 'emailAddress',
+                ctCls: 'LabelBlackBold',
+                editable: false,
+                tpl: Ext.create('Ext.XTemplate',
+              '<ul class="x-list-plain"><tpl for=".">',
+                  '<li role="option" class="x-boundlist-item">{emailAddress}</li>',
+              '</tpl></ul>'
+          ),
+                width: 365,
+                labelWidth: 80,
+                margin: '0 0 0 4px',
+                store: storeMails,
+                queryMode: 'local',
+                listeners: {
+                    change: function (combo, value) {
+                        Ext.getCmp('LogsGrid').getStore().getProxy().extraParams.usermail = value;
+                    }
+                }
+            });
+
+
             var AppCodeCombo = Ext.create('Ext.form.field.ComboBox', {
                 fieldLabel: 'Codice Appl.',
                 emptyText: 'Selezionare un codice applicazione',
@@ -171,40 +303,40 @@
 
 
             // cognome field
-            var userTextField = Ext.create('Ext.form.TextField', {
-                id: 'UserField',
-                fieldLabel: 'Utente',
-                // renderTo: 'CognomeDiv',
-                labelWidth: 60,
-                emptyText: 'Indicare un utente',
-                width: 350,
-                padding: '0 0 0 10',
-                listeners: {
-                    change: function (textField, value, oldvalue) {
-                        Ext.getCmp('LogsGrid').getStore().getProxy().extraParams.user = value;
-                    }
-                }
-            });      
+            //var userTextField = Ext.create('Ext.form.TextField', {
+            //    id: 'UserField',
+            //    fieldLabel: 'Utente',
+            //    // renderTo: 'CognomeDiv',
+            //    labelWidth: 60,
+            //    emptyText: 'Indicare un utente',
+            //    width: 350,
+            //    padding: '0 0 0 10',
+            //    listeners: {
+            //        change: function (textField, value, oldvalue) {
+            //            Ext.getCmp('LogsGrid').getStore().getProxy().extraParams.user = value;
+            //        }
+            //    }
+            //});      
            
 
            
 
-            var UserMailTextField = Ext.create('Ext.form.TextField', {
-                id: 'UserMailField',
-                fieldLabel: 'Casella Mail',
-                labelWidth: 80,
-                maxlength: 50,
-                enforceMaxLength: true,
-                maxLengthText: 'Massimo 50 caratteri',
-                width: 365,
-                margin: '0 0 0 4px',
-                emptyText: '',
-                listeners: {
-                    change: function (textField, value, oldvalue) {
-                        Ext.getCmp('LogsGrid').getStore().getProxy().extraParams.usermail = value;
-                    }
-                }
-            });
+            //var UserMailTextField = Ext.create('Ext.form.TextField', {
+            //    id: 'UserMailField',
+            //    fieldLabel: 'Casella Mail',
+            //    labelWidth: 80,
+            //    maxlength: 50,
+            //    enforceMaxLength: true,
+            //    maxLengthText: 'Massimo 50 caratteri',
+            //    width: 365,
+            //    margin: '0 0 0 4px',
+            //    emptyText: '',
+            //    listeners: {
+            //        change: function (textField, value, oldvalue) {
+            //            Ext.getCmp('LogsGrid').getStore().getProxy().extraParams.usermail = value;
+            //        }
+            //    }
+            //});
 
             var dataInizioTextField = Ext.create('Ext.form.DateField', {
                 id: 'DataInizioField',
@@ -245,8 +377,8 @@
                     // this button will spit out a different number every time you click it.
                     Ext.getCmp('DataInizioField').setValue('');
                     Ext.getCmp('DataFineField').setValue('');
-                    Ext.getCmp('UserMailField').setValue('');
-                    Ext.getCmp('UserField').setValue('');
+                    Ext.getCmp('MailsCombo').setValue('');
+                    Ext.getCmp('UsersCombo').setValue('');
                     Ext.getCmp('TipoCombo').setValue('');
                     Ext.getCmp('CodiceLogCombo').setValue('');
                     Ext.getCmp('CodiceAppCombo').setValue('');
@@ -261,8 +393,8 @@
                 iconCls: 'bFind',
                 handler: function () {
                     // this button will spit out a different number every time you click it.
-                    store.getProxy().setExtraParam("usermail", Ext.getCmp('UserMailField').getValue());
-                    store.getProxy().setExtraParam("user", Ext.getCmp('UserField').getValue());
+                    store.getProxy().setExtraParam("usermail", Ext.getCmp('MailsCombo').getValue());
+                    store.getProxy().setExtraParam("user", Ext.getCmp('UsersCombo').getValue());
                     store.getProxy().setExtraParam("codiceapp", Ext.getCmp('CodiceAppCombo').getValue());
                     store.getProxy().setExtraParam("codicelog", Ext.getCmp('CodiceLogCombo').getValue());                  
                     store.getProxy().setExtraParam("datainizio", Ext.getCmp('DataInizioField').getValue());
@@ -280,12 +412,12 @@
                     {
                         xtype: 'toolbar',
                         dock: 'top',
-                        items: [LogCodeCombo, AppCodeCombo, userTextField, buttonFilter, buttonReset]
+                        items: [LogCodeCombo, AppCodeCombo, UsersCombo]
                     }, {
                         xtype: 'toolbar',
                         dock: 'top',
                         items: [
-                UserMailTextField, dataInizioTextField, dataFineTextField]
+                MailsCombo, dataInizioTextField, dataFineTextField, buttonFilter, buttonReset]
                     }
                 ]
             });
@@ -510,8 +642,8 @@
             }
 
 
-            store.getProxy().setExtraParam("usermail", Ext.getCmp('UserMailField').getValue());
-            store.getProxy().setExtraParam("user", Ext.getCmp('UserField').getValue());
+            store.getProxy().setExtraParam("usermail", Ext.getCmp('MailsCombo').getValue());
+            store.getProxy().setExtraParam("user", Ext.getCmp('UsersCombo').getValue());
             store.getProxy().setExtraParam("codiceapp", Ext.getCmp('CodiceAppCombo').getValue());
             store.getProxy().setExtraParam("codicelog", Ext.getCmp('CodiceLogCombo').getValue());
             store.getProxy().setExtraParam("datainizio", Ext.getCmp('DataInizioField').getValue());
