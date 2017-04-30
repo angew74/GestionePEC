@@ -294,7 +294,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
         internal static ActiveUp.Net.Common.DeltaExt.Action MapToAction(IDataRecord dr)
         {
             ActiveUp.Net.Common.DeltaExt.Action a = new ActiveUp.Net.Common.DeltaExt.Action();
-            a.Id =(decimal) dr.GetDouble("ID");
+            a.Id =(decimal) dr.GetDecimal("ID");
             a.NomeAzione = dr.GetString("NOME_AZIONE");
             a.IdDestinazione = (decimal)dr.GetDouble("ID_NOME_DESTINAZIONE");
             a.NuovoStatus = dr.GetString("NUOVO_STATUS");

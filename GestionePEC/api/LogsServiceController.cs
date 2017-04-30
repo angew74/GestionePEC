@@ -91,15 +91,16 @@ namespace GestionePEC.api
                 int recordPagina = limit.HasValue ? Convert.ToInt32(limit) : 10;
                 DateTime d = DateTime.Now;
                 DateTime dF = DateTime.Now;
+                int tot = 0;
                 MailLogRepository mailLog = new MailLogRepository();
                 if (!string.IsNullOrEmpty(datainizio))
                  { d = DateTime.Parse(datainizio); }
                 else { d.AddMonths(-3); }
                 if (!string.IsNullOrEmpty(datafine))
-                { d = DateTime.Parse(datafine); }
-                list = mailLog.GetVariables(user,codiceapp,codicelog, usermail,d,dF, starti, recordPagina);
+                { dF = DateTime.Parse(datafine); }
+                list = mailLog.GetVariables(user,codiceapp,codicelog, usermail,d,dF, starti, recordPagina,ref tot);
                  m.LogsList = list;
-                m.Totale = list.Count.ToString();
+                m.Totale = tot.ToString();
                 m.success = "true";
             }
             catch (Exception ex)
@@ -163,7 +164,7 @@ namespace GestionePEC.api
                 mailSCF = MailServerConfigFacade.GetInstance();
                 List<CasellaMail> c = new List<CasellaMail>();
                 List<MailUser> l = SessionManager<List<MailUser>>.get(SessionKeys.ACCOUNTS_LIST);
-                if (!(l != null && l.Count != 0))
+                if (l != null && l.Count != 0)
                 {
                     l = mailSCF.GetManagedAccountByUser(username).Distinct().ToList();                  
                    foreach (MailUser m in l)
@@ -203,13 +204,14 @@ namespace GestionePEC.api
                 int recordPagina = limit.HasValue ? Convert.ToInt32(limit) : 10;
                 DateTime d = DateTime.Now;
                 DateTime dF = DateTime.Now;
+                int tot = 0;
                 ErrorMailLogRepository mailLog = new ErrorMailLogRepository();
                 if (!string.IsNullOrEmpty(datainizio))
                 { d = DateTime.Parse(datainizio); }
-                else { d.AddMonths(-3); }
+                else { dF.AddMonths(-3); }
                 if (!string.IsNullOrEmpty(datafine))
                 { d = DateTime.Parse(datafine); }
-                list = mailLog.GetVariables(user, codiceapp, codicelog, details, d, dF, starti, recordPagina);
+                list = mailLog.GetVariables(user, codiceapp, codicelog, details, d, dF, starti, recordPagina,ref tot);
                 m.ErrorLogsList = list;
                 m.Totale = list.Count.ToString();
                 m.success = "true";

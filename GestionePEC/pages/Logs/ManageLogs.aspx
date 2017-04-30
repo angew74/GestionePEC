@@ -146,7 +146,7 @@
                  autoLoad: true,
                  storeId: 'storeMails',
                  model: 'MailsModel',
-                 reader: readerUsers,
+                 reader: readerUsers,               
                  proxy:
                     {
                         type: 'ajax',
@@ -360,6 +360,8 @@
                 labelWidth: 70,
                 width: 190,
                 margin: '0 0 0 4px',
+                value: new Date(),
+                maxDate: new Date(),
                 // renderTo: 'DataFineDiv',
                 change: function (dateField, value) {
                     Ext.getCmp('LogsGrid').getStore().getProxy().extraParams.datafine = value;
@@ -598,6 +600,7 @@
                     store: store,
                     displayInfo: true,
                     autoWidth: true,
+                    pageSize:10,
                     id: 'PagingRichieste',
                     displayMsg: 'Visualizzazione righe {0} - {1} of {2}',
                     emptyMsg: "Nessun record da visualizzare",

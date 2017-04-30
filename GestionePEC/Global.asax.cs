@@ -178,7 +178,7 @@ namespace GestionePEC
            );
             routes.Add("MailAdminPage",
                 new Route("gestione-mail",
-                    new WebFormRouteHandler("~/pages/Inbox/MailAdmin.aspx")
+                    new WebFormRouteHandler("~/pages/Administration/MailAdmin.aspx")
                 )
             );
             routes.Add("EntiResearchPage",

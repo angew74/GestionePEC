@@ -473,6 +473,8 @@
 }
 
 
+
+
 .bSearchDown
 {
 	background-position:center;
@@ -485,4 +487,26 @@
 	border-width:0px;
 	vertical-align:middle;
 }
+
+.iCartella
+{
+	
+	background-image:url(images/buttons/folder.png);
+	background-color: transparent;
+}
+
+.iAdministrator
+{
+	
+	background-image:url(images/buttons/administrator.png);	
+	background-color:Transparent;	
+}
+
+.iUser
+{	
+	background-image:url(images/buttons/user.png);	
+	background-color:Transparent;	
+}
+
+
 

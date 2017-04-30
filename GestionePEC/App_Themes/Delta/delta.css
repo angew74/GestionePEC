@@ -28,7 +28,15 @@ html, body
 	font-size:85.1%;
 	/* prendo la dimensione del carattere impostata nel browser  */
 }
+body.x-border-layout-ct
+{
+    background-color: #cfcfcf; 
+}
 
+div.x-border-layout-ct
+{
+    background-color: #cfcfcf; 
+}
 
 select, input, td, th, tr, label
 {

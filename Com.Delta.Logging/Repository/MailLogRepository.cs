@@ -173,21 +173,35 @@ namespace Com.Delta.Logging
             throw new NotImplementedException();
         }
 
-        public List<LOG_ACTIONS> GetVariables(string user, string codapp, string codlog, string usermail, DateTime d, DateTime df, int da, int per)
+        public List<LOG_ACTIONS> GetVariables(string user, string codapp, string codlog, string usermail, DateTime d, DateTime df, int da, int per,ref int tot)
         {
             List<LOG_ACTIONS> list = null;
             using (var dbcontext = new MailLogEntities())
             {
                 var Querable = from e in dbcontext.LOG_ACTIONS select e;
+                var QuerableCount = from e in dbcontext.LOG_ACTIONS select e;
                 if (!string.IsNullOrEmpty(user))
-                { Querable = Querable.Where(x => x.USER_ID.ToUpper() == user.ToUpper()); }
+                {
+                    Querable = Querable.Where(x => x.USER_ID.ToUpper() == user.ToUpper());
+                    QuerableCount = QuerableCount.Where(x => x.USER_ID.ToUpper() == user.ToUpper());
+                }
                 if (!string.IsNullOrEmpty(codapp))
-                { Querable = Querable.Where(x => x.APP_CODE.ToUpper() == codapp.ToUpper()); }
+                {
+                    Querable = Querable.Where(x => x.APP_CODE.ToUpper() == codapp.ToUpper());
+                    QuerableCount = QuerableCount.Where(x => x.APP_CODE.ToUpper() == codapp.ToUpper());
+                }
                 if (!string.IsNullOrEmpty(codlog))
-                { Querable = Querable.Where(x => x.LOG_CODE.ToUpper() == codlog.ToUpper()); }
+                {
+                    Querable = Querable.Where(x => x.LOG_CODE.ToUpper() == codlog.ToUpper());
+                    QuerableCount = QuerableCount.Where(x => x.LOG_CODE.ToUpper() == codlog.ToUpper());
+                }
                 if (!string.IsNullOrEmpty(usermail))
-                { Querable = Querable.Where(x => x.USER_MAIL.ToUpper().Contains(usermail.ToUpper())); }
-                list = Querable.Where(p => p.LOG_DATE >= d && p.LOG_DATE <= df).Skip(da).Take(per).ToList();
+                {
+                    Querable = Querable.Where(x => x.USER_MAIL.ToUpper()==usermail.ToUpper());
+                    QuerableCount = QuerableCount.Where(x => x.USER_MAIL.ToUpper() == usermail.ToUpper());
+                }
+                list = Querable.Where(p => p.LOG_DATE >= d && p.LOG_DATE <= df).OrderByDescending(u=>u.LOG_DATE).Skip(da).Take(per).ToList();
+                tot = QuerableCount.Where(p => p.LOG_DATE >= d && p.LOG_DATE <= df).OrderByDescending(f => f.LOG_DATE).Count();
             }
 
             return list;

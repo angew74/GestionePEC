@@ -10,8 +10,9 @@
   <siteMapNode url="" title="Amministra Caselle" roles="*">
     <siteMapNode url="" title="Server Settings" roles="*">
     </siteMapNode>
-    <siteMapNode url="~/pages/MailClient/MailAdmin.aspx" title="Amministrazione" roles="*"></siteMapNode>
+    <siteMapNode url="~/pages/Administration/MailAdmin.aspx" title="Amministrazione" roles="*"></siteMapNode>
     <siteMapNode url="~/pages/MailClient/MailBoxStat.aspx" title="Statistiche" roles="*"></siteMapNode>
+    <siteMapNode url="~/pages/Administration/MailConfiguration.aspx" title="Configurazione" roles="*"></siteMapNode>
   </siteMapNode>
     <siteMapNode url="" title="Rubrica" roles="*">
       <siteMapNode url="~/pages/Rubrica/EntiResearch.aspx" title="Cerca Contatto" roles="*">

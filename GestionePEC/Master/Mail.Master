@@ -18,11 +18,12 @@
 </head>
 
 <script type="text/javascript" src='<%= this.ResolveClientUrl("~/scripts/uty.js") %>'></script>
-<script type="text/javascript" src='<%= this.ResolveClientUrl("~/ExtJS5/ext-all-debug.js") %>'></script>
-<script type="text/javascript" src='<%= this.ResolveClientUrl("~/ExtJS5/main.js") %>'></script>
-<script type="text/javascript" src='<%= this.ResolveClientUrl("~/ExtJS5/extcorrezioni.js") %>'></script>
+<script type="text/javascript" src='<%= this.ResolveClientUrl("~/ExtJS6/ext-all-debug.js") %>'></script>
+<script type="text/javascript" src='<%= this.ResolveClientUrl("~/ExtJS6/main.js") %>'></script>
+<script type="text/javascript" src='<%= this.ResolveClientUrl("~/ExtJS6/extcorrezioni.js") %>'></script>
+<script type="text/javascript" src='<%= this.ResolveClientUrl("~/ExtJS6/ext-locale-it.js") %>'></script>
 <body onmousemove="SetProgressPosition(event, 'div-update')" onunload="fnUnloadHandler()"
-    onload="backButtonOverride()" style="visibility: hidden;">
+    onload="backButtonOverride()" style="visibility: hidden;" class="x-border-layout-ct">
     <noscript>
         <hr style="color: Red" />
         <b>Il tuo browser ha Javascript disattivato.</b><br />
@@ -30,6 +31,7 @@
         <hr style="color: Red" />
     </noscript>
     <form id="form1" runat="server" enctype="multipart/form-data" method="post">
+   
     <asp:HiddenField ID="hfUser" runat="server" />
     <asp:HiddenField ID="hfDipUser" runat="server" />
         <asp:ScriptManager ID="ManagerScript" runat="server" EnableScriptGlobalization="true"
@@ -37,7 +39,7 @@
         </asp:ScriptManager>
 
     <script type="text/javascript">
-        Ext.BLANK_IMAGE_URL = '/GestionePEC/App_Themes/Delta/images/default/s.gif';        
+        Ext.BLANK_IMAGE_URL = '/GestionePEC/App_Themes/Delta/images/s.gif';        
     </script>
   
     <div id="north">
@@ -198,15 +200,14 @@ function findPos(obj) {
                 </Animations>
             </cc1:AnimationExtender>
         </ContentTemplate>
-    </asp:UpdatePanel>
-    <iframe id="ifrmDownload" src="" style="visibility: hidden;"></iframe>
+    </asp:UpdatePanel>      
     </form>
 </body>
 </html>
 
 <script type="text/javascript">
-    var utente = document.getElementById('<%= hfUser.ClientID %>').value; 
-    var dipartimento = document.getElementById('<%= hfDipUser.ClientID %>').value; 
+   // var utente = document.getElementById('<%= hfUser.ClientID %>').value; 
+  //  var dipartimento = document.getElementById('<%= hfDipUser.ClientID %>').value; 
     var logOffFromBrowser="/GestionePEC/LogOffFromBrowser.aspx";
  
     /* test: gestione centralizza updateProgress su pagerequest */       

@@ -17,7 +17,37 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         public ICollection<SendersFolders> GetAll()
         {
-            throw new NotImplementedException();
+            List<SendersFolders> list = new List<SendersFolders>();
+            try
+            {
+                using (var dbcontext = new FAXPECContext())
+                {
+                    var groups = dbcontext.FOLDERS.GroupBy(x => x.IDNOME).ToList();
+                    foreach (IEnumerable<FOLDERS> element in groups)
+                    {
+                        var f = element.First();
+                        SendersFolders s = new SendersFolders()
+                        {
+                            IdFolder = (int)f.ID,
+                            IdNome = (short)f.IDNOME,
+                            Tipo = f.TIPO,
+                            Nome = f.NOME
+                        };
+                        list.Add(s);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                    throw ex;
+                ManagedException mEx = new ManagedException(ex.Message, "SND_ORA006", string.Empty, string.Empty, ex);
+                ErrorLogInfo er = new ErrorLogInfo(mEx);
+                log.Error(er);
+                throw mEx;
+            }
+            return list;
         }
 
         public SendersFolders GetById(long id)
@@ -87,14 +117,14 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 {
                                     IDFOLDER = f.ID,
                                     IDSENDER = idSender,
-                                   // ROWID = d
+                                    // ROWID = d
                                 };
                                 dbcontext.FOLDERS_SENDERS.Add(s);
                             }
                         }
                     }
                     catch (Exception ex)
-                    {                       
+                    {
                         if (ex.GetType() == typeof(ManagedException))
                         {
                             ManagedException mEx = new ManagedException(ex.Message, "SND_ORA003", string.Empty, string.Empty, ex);
@@ -120,22 +150,22 @@ namespace SendMail.Data.SQLServerDB.Repository
         /// <returns></returns>
         public List<SendersFolders> GetFoldersNONAbilitati(string mail)
         {
-            List<SendersFolders> listaCartelle = null;
+            List<SendersFolders> listaCartelle = new List<SendersFolders>();
             try
             {
                 using (var dbcontext = new FAXPECContext())
                 {
                     var oCmd = dbcontext.Database.Connection.CreateCommand();
-                        oCmd.CommandText = "SELECT DISTINCT m.ID_SENDER, f.NOME, m.MAIL, f.IDNOME, f.SYSTEM " +
-                                            "FROM  [FAXPEC].[FAXPEC].[MAIL_SENDERS] m,  [FAXPEC].[FAXPEC].[folders] f, [FAXPEC].[FAXPEC].[folders_senders] fs " +
-                                            "WHERE m.mail = '" + mail + "' " +
-                                            "MINUS " +
-                                            "SELECT DISTINCT m.ID_SENDER, f.NOME, m.MAIL, f.IDNOME, f.SYSTEM " +
-                                            "FROM  [FAXPEC].[FAXPEC].[MAIL_SENDERS] m,  [FAXPEC].[FAXPEC].[folders] f, [FAXPEC].[FAXPEC].[folders_senders] fs " +
-                                            "WHERE m.mail = '" + mail + "' "+
-                                            "AND m.ID_SENDER = fs.IDSENDER " +
-                                            "AND f.ID = fs.IDFOLDER";
-                    oCmd.Connection.Open();       
+                    oCmd.CommandText = "SELECT DISTINCT m.ID_SENDER, f.NOME, m.MAIL, f.IDNOME, f.SYSTEM " +
+                                        "FROM  [FAXPEC].[FAXPEC].[MAIL_SENDERS] m,  [FAXPEC].[FAXPEC].[folders] f, [FAXPEC].[FAXPEC].[folders_senders] fs " +
+                                        "WHERE m.mail = '" + mail + "' " +
+                                        "EXCEPT " +
+                                        "SELECT DISTINCT m.ID_SENDER, f.NOME, m.MAIL, f.IDNOME, f.SYSTEM " +
+                                        "FROM  [FAXPEC].[FAXPEC].[MAIL_SENDERS] m,  [FAXPEC].[FAXPEC].[folders] f, [FAXPEC].[FAXPEC].[folders_senders] fs " +
+                                        "WHERE m.mail = '" + mail + "' " +
+                                        "AND m.ID_SENDER = fs.IDSENDER " +
+                                        "AND f.ID = fs.IDFOLDER";
+                    oCmd.Connection.Open();
                     using (var r = oCmd.ExecuteReader())
                     {
                         if (r.HasRows)
@@ -173,7 +203,7 @@ namespace SendMail.Data.SQLServerDB.Repository
         /// <returns></returns>
         public List<SendersFolders> GetFoldersAbilitati(string mail)
         {
-            List<SendersFolders> listaCartelle = null;
+            List<SendersFolders> listaCartelle = new List<SendersFolders>();
             try
             {
                 using (var dbcontext = new FAXPECContext())
@@ -181,10 +211,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                     var oCmd = dbcontext.Database.Connection.CreateCommand();
                     oCmd.CommandText = "SELECT DISTINCT m.ID_SENDER, f.NOME, m.MAIL, f.IDNOME, f.SYSTEM " +
                                             "FROM  [FAXPEC].[FAXPEC].[MAIL_SENDERS] m,  [FAXPEC].[FAXPEC].[folders] f, [FAXPEC].[FAXPEC].[folders_senders] fs " +
-                                            "WHERE m.mail = '" +mail + "'  " +
+                                            "WHERE m.mail = '" + mail + "'  " +
                                             "AND m.ID_SENDER = fs.IDSENDER " +
                                             "AND f.ID = fs.IDFOLDER";
-                    oCmd.Connection.Open();            
+                    oCmd.Connection.Open();
                     using (var r = oCmd.ExecuteReader())
                     {
                         if (r.HasRows)
@@ -202,7 +232,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             }
             catch (Exception ex)
             {
-                listaCartelle = null;                
+                listaCartelle = null;
                 if (ex.GetType() != typeof(ManagedException))
                 {
                     ManagedException mEx = new ManagedException(ex.Message, "SND_ORA005", string.Empty, string.Empty, ex);

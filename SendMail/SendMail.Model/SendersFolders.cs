@@ -39,12 +39,12 @@ namespace SendMail.Model
 
         public bool IsValid
         {
-            get { throw new NotImplementedException(); }
+            get { return true; }
         }
 
         public bool IsPersistent
         {
-            get { throw new NotImplementedException(); }
+            get { return true; }
         }
 
         #endregion

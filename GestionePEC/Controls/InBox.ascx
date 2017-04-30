@@ -244,6 +244,8 @@ Ext.onReady(function () {
                 store.getProxy().extraParams.mailIds = selectedIds;
                 store.getProxy().extraParams.parFolder = parentFolder;
                 store.getProxy().extraParams.filter = filterCustomLoad;
+                mailAction = 0;
+                selectedIds = '';
             }
         }
     });   
@@ -270,7 +272,12 @@ Ext.onReady(function () {
                 for (var i = 0; i < sel.length; i++) {
                     selectedIds += sel[i].id + ",";
                 };
-                Ext.getCmp('mailGrid').store.getProxy().extraParams.mailIds = selectedIds;
+                Ext.getCmp('mailGrid').store.getProxy().setExtraParam("mailIds", selectedIds);
+                Ext.getCmp('mailGrid').store.getProxy().setExtraParam("mailAction", mailAction);
+               // Ext.getCmp("mailGrid").store.loadPage(1);
+               // Ext.getCmp('mailGrid').store.getProxy().extraParams.mailIds = selectedIds;
+               // Ext.getCmp('mailGrid').store.getProxy().extraParams.mailAction = mailAction;
+               // Ext.getCmp('mailGrid').store.load();
                 Ext.getCmp('ToolbarGrid').doRefresh();
                 resetAction(obj);
             }
@@ -279,9 +286,7 @@ Ext.onReady(function () {
     };
     function resetAction(obj) {
         obj.reset();
-        obj.getStore().clearFilter(true);
-        mailAction = 0;
-        selectedIds = '';
+        obj.getStore().clearFilter(true);       
         if (typeof grid != 'undefined') {
             var selMod = grid.getSelectionModel();
             selMod.clearSelections(false);
@@ -435,7 +440,7 @@ Ext.onReady(function () {
                 if (typeof store != 'undefined') {
                   //  if (Ext.getCmp('mailGrid').getStore().extraParams.filter != null) {
                        // Ext.getCmp('mailGrid').geStore().filter = null;
-                        Ext.getCmp('mailGrid').geStore().load({ params: { start: 0, limit: 25, folder: currentFolder, parFolder: parentFolder,filter:null } });
+                        Ext.getCmp('mailGrid').store.load({ params: { start: 0, limit: 25, folder: currentFolder, parFolder: parentFolder,filter:null } });
                   //  }
                 }
             }
@@ -611,7 +616,7 @@ Ext.onReady(function () {
                 dock: 'top',
                 items: [{
                     xtype: 'tbtext',
-                    width: 10,
+                    width: 50,
                     text: 'Cartella:'
                 }, Folder, { xtype: 'tbseparator' },
                     {
@@ -632,6 +637,7 @@ Ext.onReady(function () {
         dock: 'top',
         items: [{
             xtype: 'tbtext',
+            width:50,
            text: 'Azioni:'
                     },
                     MailActions,
@@ -650,6 +656,7 @@ Ext.onReady(function () {
     
     var selectionModel = Ext.create('Ext.selection.CheckboxModel',{
         checkOnly: true,
+        mode:'MULTI',
         listeners: {
             select: function (t, record, index, eOpts) {
                 setDisable(Ext.getCmp('ComboActions'),false);              

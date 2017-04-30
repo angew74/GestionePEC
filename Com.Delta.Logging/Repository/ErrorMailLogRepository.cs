@@ -118,21 +118,35 @@ namespace Com.Delta.Logging.Repository
         {
             throw new NotImplementedException();
         }
-        public List<LOG_APP_ERRORS> GetVariables(string user, string codapp, string codlog, string details, DateTime d, DateTime df, int da, int per)
+        public List<LOG_APP_ERRORS> GetVariables(string user, string codapp, string codlog, string details, DateTime d, DateTime df, int da, int per,ref int tot)
         {
             List<LOG_APP_ERRORS> list = null;
             using (var dbcontext = new MailLogEntities())
             {
                 var Querable = from e in dbcontext.LOG_APP_ERRORS select e;
+                var QuerableCount = dbcontext.LOG_APP_ERRORS.Where(c => c.ID == 1);
                 if (!string.IsNullOrEmpty(user))
-                { Querable = Querable.Where(x => x.USER_ID.ToUpper() == user.ToUpper()); }
+                {
+                    Querable = Querable.Where(x => x.USER_ID.ToUpper() == user.ToUpper());
+                    QuerableCount = QuerableCount.Where(x => x.USER_ID.ToUpper() == user.ToUpper());
+                }
                 if (!string.IsNullOrEmpty(codapp))
-                { Querable = Querable.Where(x => x.APP_CODE.ToUpper() == codapp.ToUpper()); }
+                {
+                    Querable = Querable.Where(x => x.APP_CODE.ToUpper() == codapp.ToUpper());
+                    QuerableCount = QuerableCount.Where(x => x.APP_CODE.ToUpper() == codapp.ToUpper());
+                }
                 if (!string.IsNullOrEmpty(codlog))
-                { Querable = Querable.Where(x => x.LOG_CODE.ToUpper() == codlog.ToUpper()); }
+                {
+                    Querable = Querable.Where(x => x.LOG_CODE.ToUpper() == codlog.ToUpper());
+                    QuerableCount = QuerableCount.Where(x => x.LOG_CODE.ToUpper() == codlog.ToUpper());
+                }
                 if (!string.IsNullOrEmpty(details))
-                { Querable = Querable.Where(x => x.DETAILS.ToUpper().Contains(details.ToUpper())); }
-                list = Querable.Where(p => p.LOG_DATE >= d && p.LOG_DATE <= df).Skip(da).Take(per).ToList();
+                {
+                    Querable = Querable.Where(x => x.DETAILS.ToUpper().Contains(details.ToUpper()));
+                    QuerableCount = QuerableCount.Where(x => x.DETAILS.ToUpper().Contains(details.ToUpper()));
+                }
+                list = Querable.Where(p => p.LOG_DATE >= d && p.LOG_DATE <= df).OrderByDescending(f=>f.LOG_DATE).Skip(da).Take(per).ToList();
+                tot = QuerableCount.Where(p => p.LOG_DATE >= d && p.LOG_DATE <= df).OrderByDescending(f => f.LOG_DATE).Count();
             }
 
             return list;

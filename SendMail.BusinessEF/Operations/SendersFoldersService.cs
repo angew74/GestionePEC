@@ -19,7 +19,15 @@ namespace SendMail.BusinessEF
             }
         }
 
-       public List<SendersFolders> GetFoldersAbilitati(string mail)
+        public List<SendersFolders> GetAll()
+        {
+            using (SendersFoldersSQLDb dao = new SendersFoldersSQLDb())
+            {
+                return (List<SendersFolders>) dao.GetAll();
+            }
+        }
+
+        public List<SendersFolders> GetFoldersAbilitati(string mail)
         {
             using (SendersFoldersSQLDb dao = new SendersFoldersSQLDb())
             {

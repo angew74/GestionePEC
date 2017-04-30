@@ -87,7 +87,7 @@
     <script type="text/javascript">
         Ext.onReady(function () {
             Ext.Loader.setPath({
-                'Ext.ux': '../../ExtJS5/ux'               
+                'Ext.ux': '../../ExtJS6/ux'               
             });
             Ext.require([
     'Ext.ux.upload.Dialog',

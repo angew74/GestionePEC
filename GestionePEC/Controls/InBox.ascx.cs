@@ -205,6 +205,8 @@ namespace GestionePEC.Controls
                 {
                     StringBuilder stBuilder = new StringBuilder();
                     List<Folder> Folders = m.Folders;
+                if (Folders != null)
+                {
                     var CustomFolders = (from r in Folders
                                          where r.Abilitata.Contains("E")
                                          orderby r.Id
@@ -282,6 +284,7 @@ namespace GestionePEC.Controls
                     stBuilder.Append(",'Archiviata','#1A#2A#3A");
                     stBuilder.Append(AppendCustomFolders(CustomFolders, "C", "I", ""));
                     stBuilder.Append("']]");
+                }
                     return stBuilder.ToString();
                     //         fields: [{name: 'idItem', type: 'string'}, {name: 'displayText', type: 'string'}, {name: 'folder', type: 'string'}],
                     //data: [[eval('<%= (int)MailStatus.SCARICATA %>'), 'Da leggere', '#<%= (int)MailFolder.Ricevute %>#<%= (int)MailFolder.RicevutePEC %>#'],
