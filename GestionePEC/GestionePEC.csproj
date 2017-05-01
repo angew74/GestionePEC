@@ -1105,6 +1105,7 @@
     <Compile Include="Models\LogErrorsModel.cs" />
     <Compile Include="Models\MailModel.cs" />
     <Compile Include="Models\TreeModel.cs" />
+    <Compile Include="Models\UsersMailModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
     <Compile Include="pages\Administration\MailAdmin.aspx.cs">
       <DependentUpon>MailAdmin.aspx</DependentUpon>

@@ -24,7 +24,7 @@
                          <asp:Label runat="server" AssociatedControlID="UserName">UserName</asp:Label>
                             </td>
                         <td>
-                               <asp:TextBox runat="server" ID="UserName" /> 
+                               <asp:TextBox runat="server" SkinID="tb11Char" ID="UserName" /> 
                         </td>
                         </tr>
                       <tr>
@@ -32,7 +32,7 @@
                                <asp:Label runat="server" AssociatedControlID="Password">Password</asp:Label>
                           </td>
                           <td>
-                                 <asp:TextBox runat="server" ID="Password" TextMode="Password" />         
+                                 <asp:TextBox runat="server" SkinID="tb10Char" MaxLength="10" ID="Password" TextMode="Password" />         
                           </td>
                       </tr>
                     <tr>
@@ -40,7 +40,31 @@
                               <asp:Label runat="server" AssociatedControlID="ConfirmPassword">conferma password</asp:Label>
                         </td>
                     <td>
-                             <asp:TextBox runat="server" ID="ConfirmPassword" TextMode="Password" />     
+                             <asp:TextBox runat="server" ID="ConfirmPassword" MaxLength="10"  SkinID="tb10Char" TextMode="Password" />     
+                    </td>
+                    </tr>
+                       <tr>
+                        <td>
+                              <asp:Label runat="server" AssociatedControlID="Cognome">Cognome</asp:Label>
+                        </td>
+                    <td>
+                             <asp:TextBox runat="server" SkinID="tbLong" ID="Cognome"  />     
+                    </td>
+                    </tr>
+                       <tr>
+                        <td>
+                              <asp:Label runat="server" AssociatedControlID="Nome">Nome</asp:Label>
+                        </td>
+                    <td>
+                             <asp:TextBox runat="server" SkinID="tbLong" ID="Nome"  />     
+                    </td>
+                    </tr>
+                        <tr>
+                        <td>
+                              <asp:Label runat="server" AssociatedControlID="CodiceFiscale">Codice fiscale</asp:Label>
+                        </td>
+                    <td>
+                             <asp:TextBox runat="server" ID="CodiceFiscale" SkinID="tb16Char"  />     
                     </td>
                     </tr>
                     <tr>

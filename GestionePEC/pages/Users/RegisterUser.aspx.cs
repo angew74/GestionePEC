@@ -5,6 +5,8 @@ using Com.Delta.Messaging.MapperMessages;
 using Com.Delta.Security;
 using GestionePEC.Extensions;
 using log4net;
+using SendMail.BusinessEF;
+using SendMail.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +45,13 @@ namespace GestionePEC.pages.Users
                 string result = userStore.CreateAsync(user).Result;              
                 if (result == "OK")
                 {
+                    BackendUserService bus = new BackendUserService();
+                    BackendUser userBackend = new BackendUser();
+                    userBackend.Cognome = Cognome.Text.Trim().ToUpper();
+                    userBackend.Nome = Nome.Text.Trim().ToUpper();
+                    userBackend.UserName = UserName.Text.Trim().ToUpper();
+                    userBackend.CodiceFiscale = CodiceFiscale.Text.Trim().ToUpper();
+                    bus.Save(userBackend);
                     info.AddMessage(string.Format("Utente {0} è stato correttamente creato!", user.UserName), LivelloMessaggio.INFO);
                 }
                 else

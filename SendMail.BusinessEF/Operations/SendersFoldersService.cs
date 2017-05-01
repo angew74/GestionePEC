@@ -35,6 +35,14 @@ namespace SendMail.BusinessEF
             }
         }
 
+        public List<SendersFolders> GetFoldersAbilitatiByIdSender(int idsender)
+        {
+            using (SendersFoldersSQLDb dao = new SendersFoldersSQLDb())
+            {
+                return dao.GetFoldersAbilitatiByIdSender(idsender);
+            }
+        }
+
         public int InsertAbilitazioneFolder(int idNome, int idSender, int system)
         {
             using (SendersFoldersSQLDb dao = new SendersFoldersSQLDb())

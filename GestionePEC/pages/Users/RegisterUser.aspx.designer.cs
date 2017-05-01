@@ -40,6 +40,33 @@ namespace GestionePEC.pages.Users {
         protected global::System.Web.UI.WebControls.TextBox ConfirmPassword;
         
         /// <summary>
+        /// Controllo Cognome.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Cognome;
+        
+        /// <summary>
+        /// Controllo Nome.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Nome;
+        
+        /// <summary>
+        /// Controllo CodiceFiscale.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox CodiceFiscale;
+        
+        /// <summary>
         /// Controllo Role.
         /// </summary>
         /// <remarks>

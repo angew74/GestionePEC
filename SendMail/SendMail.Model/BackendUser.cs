@@ -49,6 +49,8 @@ namespace SendMail.Model
             get { return true; }
         }
 
+        public string CodiceFiscale { get; set; }
+
         #endregion
     }
 

@@ -32,10 +32,12 @@
               <div id="IdEmailField"></div>
             <div id="pnlElencoUtenti" runat="server" style="display: none">
                 <div class="body-panel">
+                    <div id="UsersManagement"></div>
                 </div>
             </div>
             <div id="pnlAdmin" runat="server" style="display: none">
                 <div class="body-panel">
+                    <div id="AdminsManagement"></div>
                 </div>
             </div>
 
@@ -130,6 +132,8 @@
                 panelsummary.hide();
             }
 
+
+            // gestione abilitazione cartelle
             Ext.define('FoldersModel', {
                 extend: 'Ext.data.Model',
                 fields: [
@@ -205,43 +209,24 @@
 
             // tool bar e docked items
 
-            function createDockedItems(fieldId) {
-                return [{
+            function createDockedItemsFolders(fieldId) {
+                return [
+                {
                     xtype: 'toolbar',
                     dock: 'top',
+                    id: 'DockedItemsFolders',
                     items: {
-                        text: 'Options',
+                        text: 'Opzioni',
                         menu: [{
-                            text: 'Get value',
+                            text: 'Cartelle di sistema',
                             handler: function () {
-                                var value = Ext.getCmp(fieldId).getValue();
-                                Ext.Msg.alert('Value is a split array', value.join(', '));
-                            }
-                        }, {
-                            text: 'Set value (2,3)',
-                            handler: function () {
-                                Ext.getCmp(fieldId).setValue(['2', '3']);
+                                Ext.getCmp(fieldId).setValue(['1','2', '3']);
                             }
                         }, {
                             text: 'Toggle enabled',
                             checked: true,
                             checkHandler: function (item, checked) {
                                 Ext.getCmp(fieldId).setDisabled(!checked);
-                            }
-                        }, {
-                            text: 'Toggle delimiter',
-                            checked: true,
-                            checkHandler: function (item, checked) {
-                                var field = Ext.getCmp(fieldId);
-                                if (checked) {
-                                    field.delimiter = ',';
-                                    Ext.Msg.alert('Delimiter Changed', 'The delimiter is now set to <b>","</b>. Click Save to ' +
-                                                  'see that values are now submitted as a single parameter separated by the delimiter.<br><br>');
-                                } else {
-                                    field.delimiter = null;
-                                    Ext.Msg.alert('Delimiter Changed', 'The delimiter is now set to <b>null</b>. Click Save to ' +
-                                                  'see that values are now submitted as separate parameters.<br><br>');
-                                }
                             }
                         }]
                     }
@@ -273,10 +258,9 @@
                             if (form.isValid()) {                                
                                 var values = form.getValues(true);
                                 Ext.Ajax.request({
-                                    url: '/GestionePEC/api/FolderController/AbilitaFolders/' +  Ext.getCmp('IdemailField').getValue(),
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    params: Ext.JSON.encode(form.getValues(true)),
+                                    url: "/GestionePEC/api/FolderController/AbilitaFolders?idemail=" + Ext.getCmp('IdemailField').getValue()+"&" +values ,
+                                    method: 'GET',
+                                    headers: { 'Content-Type': 'application/json' },  
                                     success: function (conn, response, options, eOpts) {
                                         var result = Ext.JSON.decodeJSON(conn.responseText);
                                         if (result.success) {
@@ -296,7 +280,7 @@
                 }];
             }
 
-            // Box Abilitaazione e disabilitazione
+            // Box Abilitazione e disabilitazione
 
             var isForm = Ext.widget('form', {
                 title: 'Gestione Cartelle',
@@ -311,6 +295,7 @@
                     name: 'itemselector',
                     id: 'folderselection-field',
                     anchor: '100%',
+                    delimiter: ';',
                     width:1000,
                     fieldLabel: 'Cartelle',
                     imagePath: '../../App_Themes/Delta/images/itemselector/',
@@ -336,10 +321,398 @@
                         itemclick: 'onItemsSelect'
                     }
                 }],
-                dockedItems: createDockedItems('folderselection-field')
+                dockedItems: createDockedItemsFolders('folderselection-field')
             });
 
-            // model backend user
+
+            // Gestione abilitazione utenti
+
+            Ext.define('UsersModel', {
+                extend: 'Ext.data.Model',
+                fields: [
+                    { name: 'UserId', type: 'int' },
+                    { name: 'UserName', type: 'string' }
+                ]
+            });
+
+            var readerUsers = new Ext.data.JsonReader({
+                idProperty: 'UserId',
+                model: 'UsersModel',
+                messageProperty: 'Message',
+                type: 'array',
+                rootProperty: 'UsersList',
+                totalProperty: 'Totale'
+            });
+
+            var storeUsers = Ext.create('Ext.data.ArrayStore', {
+                autoLoad: true,
+                storeId: 'storeUsers',
+                model: 'UsersModel',
+                reader: readerUsers,
+                proxy:
+                   {
+                       type: 'ajax',
+                       url: '/GestionePEC/api/UsersServiceController/GetAllUsers',
+                       reader: readerUsers
+                   },
+                //  restful: true,
+                listeners: {
+                    load: function (s, r, o) {
+                        // Ext.getCmp('folderselection-field').data = s.data.items;
+                        Ext.getCmp("userselection-field").bindStore(s.data);
+                    },
+                    exception: function () {
+                    }
+                }
+            });
+
+            var storeSelectedUsers = Ext.create('Ext.data.ArrayStore', {
+                autoLoad: false,
+                storeId: 'storeSelectedUsers',
+                model: 'UsersModel',
+                reader: readerUsers,
+                fields: [
+                    { name: 'UserId', type: 'int' },
+                    { name: 'UserName', type: 'string' }
+                ],
+                proxy:
+                   {
+                       type: 'ajax',
+                       url: '/GestionePEC/api/UsersServiceController/GetUsersAbilitati?idmail=',
+                       reader: readerUsers
+                   },
+                //  restful: true,
+                listeners: {
+                    load: function (s, r, o) {
+                        data = s.data;
+                        var a = [];
+                        if (data != null & data.length > 0) {
+                            for (var key = 0; key < data.items.length; key++) {
+                                a.push(data.items[key].data["UserId"]);
+                            }
+                            // Ext.getCmp('folderselection-field').toField.fieldDefaults = a;
+                            Ext.getCmp('userselection-field').toField.bindStore(a);
+                        }
+                        Ext.getCmp('userselection-field').setValue(a);
+                    },
+                    exception: function () {
+                    }
+                }
+            });
+
+            // tool bar e docked items
+
+            function createDockedItemsUtenti(fieldId) {
+                return [
+                {
+                    xtype: 'toolbar',
+                    dock: 'top',
+                    id: 'DockedItemsUtenti',
+                    items: {
+                        text: 'Opzioni',
+                        menu: [{
+                            text: 'Utenti di sistema',
+                            handler: function () {
+                                Ext.getCmp(fieldId).setValue(['1', '2', '3']);
+                            }
+                        }, {
+                            text: 'Toggle enabled',
+                            checked: true,
+                            checkHandler: function (item, checked) {
+                                Ext.getCmp(fieldId).setDisabled(!checked);
+                            }
+                        }]
+                    }
+                }, {
+                    xtype: 'toolbar',
+                    dock: 'bottom',
+                    ui: 'footer',
+                    defaults: {
+                        minWidth: 75
+                    },
+                    items: ['->', {
+                        text: 'Rimuovi',
+                        handler: function () {
+                            var field = Ext.getCmp(fieldId);
+                            if (!field.disabled) {
+                                field.clearValue();
+                            }
+                        }
+                    }, {
+                        text: 'Reset',
+                        handler: function () {
+                            Ext.getCmp(fieldId).up('form').getForm().reset();
+                        }
+                    }, {
+                        text: 'Salva',
+                        handler: function () {
+                            var form = Ext.getCmp(fieldId).up('form').getForm();
+                            form.getValues(true);
+                            if (form.isValid()) {
+                                var values = form.getValues(true);
+                                Ext.Ajax.request({
+                                    url: "/GestionePEC/api/UsersServiceController/AbilitaUsers?idemail=" + Ext.getCmp('IdemailField').getValue() + "&" + values,
+                                    method: 'GET',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    success: function (conn, response, options, eOpts) {
+                                        var result = Ext.JSON.decodeJSON(conn.responseText);
+                                        if (result.success) {
+                                            Ext.msg('Complimenti!', 'Utenti abilitati.');
+                                        } else {
+                                            ManageError(result.msg);
+                                        }
+                                    },
+                                    failure: function (conn, response, options, eOpts) {
+                                        // TODO get the 'msg' from the json and display it                                        
+                                        ManageError(conn.responseText);
+                                    }
+                                });
+                            }
+                        }
+                    }]
+                }];
+            }
+
+            // Box Abilitaazione e disabilitazione
+
+            var isForm = Ext.widget('form', {
+                title: 'Gestione Utenti',
+                // width:00,
+                bodyPadding: 10,
+                height: 400,
+                renderTo: 'UsersManagement',
+                layout: 'fit',
+                id: 'SelectorUtenti',
+                items: [{
+                    xtype: 'itemselector',
+                    name: 'itemselector',
+                    id: 'userselection-field',
+                    anchor: '100%',
+                    delimiter: ';',
+                    width: 1000,
+                    fieldLabel: 'Utenti',
+                    imagePath: '../../App_Themes/Delta/images/itemselector/',
+                    store: storeFolders,
+                    displayField: 'UserName',
+                    valueField: 'UserId',
+                    value: [],
+                    allowBlank: false,
+                    hidden: true,
+                    maxSelections: 10,
+                    msgTarget: 'side',
+                    fromTitle: 'Non abilitati',
+                    toTitle: 'Abilitati',
+                    selectionModel: 'multi',
+                    listeners: {
+                        show: function () {
+                            if (Ext.getCmp('IdemailField').rawValue != '') {
+                                storeSelectedUsers.getProxy().setExtraParam("idsender", Ext.getCmp('IdemailField').getValue());
+                                storeSelectedUsers.load();
+                            }
+                        },
+                        itemclick: 'onItemsSelect'
+                    }
+                }],
+                dockedItems: createDockedItemsUtenti('userselection-field')
+            });
+
+
+            // Gestione abilitazione Amministratori
+
+            Ext.define('AdminsModel', {
+                extend: 'Ext.data.Model',
+                fields: [
+                    { name: 'UserId', type: 'int' },
+                    { name: 'UserName', type: 'string' }
+                ]
+            });
+
+            var readerAdmins = new Ext.data.JsonReader({
+                idProperty: 'UserId',
+                model: 'AdminsModel',
+                messageProperty: 'Message',
+                type: 'array',
+                rootProperty: 'UsersList',
+                totalProperty: 'Totale'
+            });
+
+            var storeAdmins = Ext.create('Ext.data.ArrayStore', {
+                autoLoad: true,
+                storeId: 'storeAdmins',
+                model: 'AdminsModel',
+                reader: readerAdmins,
+                proxy:
+                   {
+                       type: 'ajax',
+                       url: '/GestionePEC/api/UsersServiceController/GetAllUsers',
+                       reader: readerUsers
+                   },
+                //  restful: true,
+                listeners: {
+                    load: function (s, r, o) {
+                        // Ext.getCmp('folderselection-field').data = s.data.items;
+                        Ext.getCmp("adminselection-field").bindStore(s.data);
+                    },
+                    exception: function () {
+                    }
+                }
+            });
+
+            var storeSelectedAdmins = Ext.create('Ext.data.ArrayStore', {
+                autoLoad: false,
+                storeId: 'storeSelectedAdmins',
+                model: 'AdminsModel',
+                reader: readerAdmins,
+                fields: [
+                    { name: 'UserId', type: 'int' },
+                    { name: 'UserName', type: 'string' }
+                ],
+                proxy:
+                   {
+                       type: 'ajax',
+                       url: '/GestionePEC/api/UsersServiceController/GetAdminsAbilitati?idmail=',
+                       reader: readerUsers
+                   },
+                //  restful: true,
+                listeners: {
+                    load: function (s, r, o) {
+                        data = s.data;
+                        var a = [];
+                        if (data != null & data.length > 0) {
+                            for (var key = 0; key < data.items.length; key++) {
+                                a.push(data.items[key].data["UserId"]);
+                            }
+                            // Ext.getCmp('folderselection-field').toField.fieldDefaults = a;
+                            Ext.getCmp('adminselection-field').toField.bindStore(a);
+                        }
+                        Ext.getCmp('adminselection-field').setValue(a);
+                    },
+                    exception: function () {
+                    }
+                }
+            });
+
+            // tool bar e docked items
+
+            function createDockedItemsAdmins(fieldId) {
+                return [
+                {
+                    xtype: 'toolbar',
+                    id:'DockedItemsAdmin',
+                    dock: 'top',
+                    items: {
+                        text: 'Opzioni',
+                        menu: [{
+                            text: 'Amministratori di sistema',
+                            handler: function () {
+                                Ext.getCmp(fieldId).setValue(['1', '2', '3']);
+                            }
+                        }, {
+                            text: 'Toggle enabled',
+                            checked: true,
+                            checkHandler: function (item, checked) {
+                                Ext.getCmp(fieldId).setDisabled(!checked);
+                            }
+                        }]
+                    }
+                }, {
+                    xtype: 'toolbar',
+                    dock: 'bottom',
+                    ui: 'footer',
+                    defaults: {
+                        minWidth: 75
+                    },
+                    items: ['->', {
+                        text: 'Rimuovi',
+                        handler: function () {
+                            var field = Ext.getCmp(fieldId);
+                            if (!field.disabled) {
+                                field.clearValue();
+                            }
+                        }
+                    }, {
+                        text: 'Reset',
+                        handler: function () {
+                            Ext.getCmp(fieldId).up('form').getForm().reset();
+                        }
+                    }, {
+                        text: 'Salva',
+                        handler: function () {
+                            var form = Ext.getCmp(fieldId).up('form').getForm();
+                            form.getValues(true);
+                            if (form.isValid()) {
+                                var values = form.getValues(true);
+                                form.submit({
+                                    url: '/GestionePEC/api/UsersServiceController/AbilitaAdmins',
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    params: { idemail: Ext.getCmp('IdemailField').getValue() },
+                                    //  data: form.getValues(true),
+                                    //  params: Ext.JSON.encode(form.getValues(true)),
+                                    success: function (conn, response, options, eOpts) {
+                                        var result = Ext.JSON.decodeJSON(conn.responseText);
+                                        if (result.success) {
+                                            Ext.msg('Complimenti!', 'Amministratori abilitati.');
+                                        } else {
+                                            ManageError(result.msg);
+                                        }
+                                    },
+                                    failure: function (conn, response, options, eOpts) {
+                                        // TODO get the 'msg' from the json and display it                                        
+                                        ManageError(conn.responseText);
+                                    }
+                                });
+                            }
+                        }
+                    }]
+                }];
+            }
+
+            // Box Abilitaazione e disabilitazione
+
+            var isForm = Ext.widget('form', {
+                title: 'Gestione Amministratori',
+                // width:00,
+                bodyPadding: 10,
+                height: 400,
+                renderTo: 'AdminsManagement',
+                layout: 'fit',
+                id: 'SelectorAdmin',
+                items: [{
+                    xtype: 'itemselector',
+                    name: 'itemselector',
+                    id: 'adminselection-field',
+                    anchor: '100%',
+                    delimiter: ';',
+                    width: 1000,
+                    fieldLabel: 'Amministratori',
+                    imagePath: '../../App_Themes/Delta/images/itemselector/',
+                    store: storeFolders,
+                    displayField: 'UserName',
+                    valueField: 'UserId',
+                    value: [],
+                    allowBlank: false,
+                    hidden: true,
+                    maxSelections: 10,
+                    msgTarget: 'side',
+                    fromTitle: 'Non abilitati',
+                    toTitle: 'Abilitati',
+                    selectionModel: 'multi',
+                    listeners: {
+                        show: function () {
+                            if (Ext.getCmp('IdemailField').rawValue != '') {
+                                storeSelectedUsers.getProxy().setExtraParam("idsender", Ext.getCmp('IdemailField').getValue());
+                                storeSelectedUsers.load();
+                            }
+                        },
+                        itemclick: 'onItemsSelect'
+                    }
+                }],
+                dockedItems: createDockedItemsAdmins('adminselection-field')
+            });
+
+
+            // model backend user gestione griglia
             Ext.define('BackendUsersModel', {
                 extend: 'Ext.data.Model',
                 fields: [

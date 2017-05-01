@@ -109,19 +109,40 @@ namespace GestionePEC.api
 
         }
 
+
+
         [Authorize]
-        [HttpPost]
-        [Route("api/FolderController/AbilitaFolders/{email}")]
-        public HttpResponseMessage AbilitaFolders(int idemail, FormDataCollection collection)
+        [HttpGet]
+        [Route("api/FolderController/AbilitaFolders")]
+        public HttpResponseMessage AbilitaFolders(string idemail, string itemselector)
         {
            
             FoldersSendersModel model = new FoldersSendersModel();
+            SendersFoldersService sfs = new SendersFoldersService();
+            if (string.IsNullOrEmpty(idemail) && string.IsNullOrEmpty(itemselector))
+            {
+                model.success = "false";
+                model.message = "Valori insufficienti nella richiesta";
+                this.Request.CreateResponse<FoldersSendersModel>(HttpStatusCode.OK, model);
+            }
             try
             {
 
                 // model.FoldersList = listaCartelleNonAbilitate.ToArray();
-                SendersFoldersService sfs = new SendersFoldersService();
-               // sfs.InsertAbilitazioneFolder(Convert.ToInt32(listaIdStr[0]), Convert.ToInt32(listaIdStr[1]), 0);
+                string[] folders = itemselector.Split(';');
+                var foldersAbilitati = sfs.GetFoldersAbilitatiByIdSender(int.Parse(idemail)).Select(z=>z.IdNome).ToArray();               
+                var ff = Array.ConvertAll(foldersAbilitati, x => x.ToString());
+                var foldersda = folders.Except(ff);
+                var foldersa = ff.Except(folders);
+                foreach (string s in foldersda)
+                {                    
+                    sfs.InsertAbilitazioneFolder(Convert.ToInt32(s), Convert.ToInt32(idemail), 0);
+                }
+                foreach(string s in foldersa)
+                {
+                    if (s != "1" && s != "2" && s != "3")
+                    { sfs.DeleteAbilitazioneFolder(Convert.ToInt32(s), Convert.ToInt32(idemail)); }
+                }
                 MailUser m = WebMailClientManager.getAccount();
                 if (m != null)
                 {

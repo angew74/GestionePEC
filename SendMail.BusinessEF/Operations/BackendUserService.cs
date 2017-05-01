@@ -83,6 +83,23 @@ namespace SendMail.BusinessEF
             }
         }
 
+        public List<BackendUser> GetAllUsers()
+        {
+            using (BackEndUserSQLDb dao = new BackEndUserSQLDb())
+            {
+               return (List<BackendUser>) dao.GetAll();
+            }
+        }
+
+
+        public int Save(BackendUser entity)
+        {
+            using (BackEndUserSQLDb dao = new BackEndUserSQLDb())
+            {
+               return dao.Save(entity);
+            }
+        }
+
         public void UpdateAbilitazioneEmail(decimal userId, decimal idsender, int level)
         {
             using (BackEndUserSQLDb dao = new BackEndUserSQLDb())

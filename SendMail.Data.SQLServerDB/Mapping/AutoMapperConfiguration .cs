@@ -740,25 +740,25 @@ namespace SendMail.Data.SQLServerDB.Mapping
         internal static BackendUser MapToBackendUser(System.Data.Common.DbDataReader r)
         {
             BackendUser bUser = new BackendUser();
-            bUser.UserId = (long)r.GetValue("ID_USER");
-            bUser.UserName = r.GetValue("USER_NAME").ToString();
-            bUser.Department = r.GetInt64("DEPARTMENT");
-            if (r.GetValue("MUNICIPIO") != null)
+            bUser.UserId =(long) r.GetDecimal("ID_USER");
+            bUser.UserName = r.GetString("USER_NAME").ToString();           
+            bUser.Department =(long) r.GetDecimal("DEPARTMENT");
+            if (r.GetString("MUNICIPIO") != null)
             {
-                bUser.Municipio = r.GetValue("MUNICIPIO").ToString();
+                bUser.Municipio = r.GetString("MUNICIPIO").ToString();
             }
             else
             {
                 bUser.Municipio = string.Empty;
             }
 
-            bUser.Domain = r.GetValue("DOMAIN").ToString();
-            bUser.Cognome = r.GetValue("COGNOME").ToString();
-            bUser.Nome = r.GetValue("NOME").ToString();
-            bUser.UserRole = int.Parse(r.GetValue("ROLE_USER").ToString());
-            if (r.GetValue("ROLE_MAIL") != null)
+            bUser.Domain = r.GetString("DOMAIN");
+            bUser.Cognome = r.GetString("COGNOME");
+            bUser.Nome = r.GetString("NOME");
+            bUser.UserRole = int.Parse(r.GetString("ROLE_USER"));
+            if (!string.IsNullOrEmpty(r.GetString("ROLE_MAIL")))
             {
-                bUser.RoleMail = int.Parse(r.GetValue("ROLE_MAIL").ToString());
+                bUser.RoleMail = int.Parse(r.GetString("ROLE_MAIL"));
             }
 
             return bUser;

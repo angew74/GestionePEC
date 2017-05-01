@@ -50,6 +50,49 @@ namespace SendMail.Data.SQLServerDB.Repository
             return list;
         }
 
+        public List<SendersFolders> GetFoldersAbilitatiByIdSender(int idsender)
+        {
+            List<SendersFolders> listaCartelle = new List<SendersFolders>();
+            try
+            {
+                using (var dbcontext = new FAXPECContext())
+                {
+                    var oCmd = dbcontext.Database.Connection.CreateCommand();
+                    oCmd.CommandText = "SELECT DISTINCT m.ID_SENDER, f.NOME, m.MAIL, f.IDNOME, f.SYSTEM " +
+                                            "FROM  [FAXPEC].[FAXPEC].[MAIL_SENDERS] m,  [FAXPEC].[FAXPEC].[folders] f, [FAXPEC].[FAXPEC].[folders_senders] fs " +
+                                            "WHERE m.ID_SENDER = " + idsender + "  " +
+                                            "AND m.ID_SENDER = fs.IDSENDER " +
+                                            "AND f.ID = fs.IDFOLDER";
+                    oCmd.Connection.Open();
+                    using (var r = oCmd.ExecuteReader())
+                    {
+                        if (r.HasRows)
+                        {
+                            listaCartelle = new List<SendersFolders>();
+                            while (r.Read())
+                            {
+                                SendersFolders sFold = DaoSQLServerDBHelper.MapToSendersFolders(r);
+                                listaCartelle.Add(sFold);
+                            }
+                        }
+                    }
+                    oCmd.Connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                listaCartelle = null;
+                if (ex.GetType() != typeof(ManagedException))
+                {
+                    ManagedException mEx = new ManagedException(ex.Message, "SND_ORA008", string.Empty, string.Empty, ex);
+                    ErrorLogInfo er = new ErrorLogInfo(mEx);
+                    log.Error(er);
+                }
+            }
+            return listaCartelle;
+
+        }
+
         public SendersFolders GetById(long id)
         {
             throw new NotImplementedException();
@@ -62,28 +105,39 @@ namespace SendMail.Data.SQLServerDB.Repository
         /// <param name="idSender"></param>
         public void DeleteAbilitazioneFolder(int idNome, int idSender)
         {
+            List<FOLDERS> folders = new List<FOLDERS>();
             try
             {
                 using (var dbcontext = new FAXPECContext())
                 {
-                    using (var t = dbcontext.Database.Connection.BeginTransaction())
+                    folders = dbcontext.FOLDERS.Where(x => x.IDNOME == idNome).ToList();
+                }
+                using (var dbcontext = new FAXPECContext())
+                {
+                    if (folders.Count > 0)
                     {
-                        List<FOLDERS> folders = dbcontext.FOLDERS.Where(x => x.IDNOME == idNome).ToList();
-                        if (folders.Count > 0)
+                       dbcontext.Database.Connection.Open();
+                        using (var t = dbcontext.Database.Connection.BeginTransaction())
                         {
                             foreach (FOLDERS f in folders)
                             {
-
-                                string text = "DELETE FROM  [FAXPEC].[FAXPEC].[folders_senders] WHERE idfolder = " + f.ID + " AND idsender = " + idSender;
-                                dbcontext.Database.ExecuteSqlCommand(text);
+                                using (var oCmd = dbcontext.Database.Connection.CreateCommand())
+                                {
+                                    string text = "DELETE FROM  [FAXPEC].[FAXPEC].[folders_senders] WHERE idfolder = " + f.ID + " AND idsender = " + idSender;
+                                    oCmd.CommandText = text;
+                                    oCmd.Transaction = t;
+                                    oCmd.ExecuteNonQuery();
+                                }
                             }
+                            dbcontext.SaveChanges();
+                            t.Commit();
                         }
+                        dbcontext.Database.Connection.Close();                    
                     }
                 }
             }
             catch (Exception ex)
-            {
-                //Allineamento log - Ciro
+            {                
                 if (ex.GetType() != typeof(ManagedException))
                     throw ex;
                 ManagedException mEx = new ManagedException(ex.Message, "SND_ORA002", string.Empty, string.Empty, ex);
@@ -102,12 +156,13 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
             using (var dbcontext = new FAXPECContext())
             {
-                using (var t = dbcontext.Database.Connection.BeginTransaction())
+                try
                 {
-                    try
+                    List<FOLDERS> folders = dbcontext.FOLDERS.Where(x => x.IDNOME == idNome).ToList();
+                    if (folders.Count > 0)
                     {
-                        List<FOLDERS> folders = dbcontext.FOLDERS.Where(x => x.IDNOME == idNome).ToList();
-                        if (folders.Count > 0)
+                        dbcontext.Database.Connection.Open();
+                        using (var t = dbcontext.Database.Connection.BeginTransaction())
                         {
                             foreach (FOLDERS f in folders)
                             {
@@ -120,23 +175,23 @@ namespace SendMail.Data.SQLServerDB.Repository
                                     // ROWID = d
                                 };
                                 dbcontext.FOLDERS_SENDERS.Add(s);
-                            }
+                            }                            
+                            t.Commit();
+                            dbcontext.SaveChanges();
                         }
+                        dbcontext.Database.Connection.Close();
                     }
-                    catch (Exception ex)
-                    {
-                        if (ex.GetType() == typeof(ManagedException))
-                        {
-                            ManagedException mEx = new ManagedException(ex.Message, "SND_ORA003", string.Empty, string.Empty, ex);
-                            ErrorLogInfo er = new ErrorLogInfo(mEx);
-                            log.Error(er);
-                        }
-                        return -1;
-                    }
-                    t.Commit();
                 }
-                dbcontext.SaveChanges();
-
+                catch (Exception ex)
+                {
+                    if (ex.GetType() == typeof(ManagedException))
+                    {
+                        ManagedException mEx = new ManagedException(ex.Message, "SND_ORA003", string.Empty, string.Empty, ex);
+                        ErrorLogInfo er = new ErrorLogInfo(mEx);
+                        log.Error(er);
+                    }
+                    return -1;
+                }               
             }
             return 0;
         }

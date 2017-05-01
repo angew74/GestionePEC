@@ -21,7 +21,62 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         public ICollection<BackendUser> GetAll()
         {
-            throw new NotImplementedException();
+            List<BackendUser> listaUtenti = new List<BackendUser>();
+
+            try
+            {
+                using (var dbcontext = new FAXPECContext())
+                {
+                    using (var oCmd = dbcontext.Database.Connection.CreateCommand())
+                    {
+                        oCmd.CommandText = "SELECT MAIL_USERS_BACKEND.ID_USER, " +
+                                           "MAIL_USERS_BACKEND.USER_NAME, " +
+                                           "MAIL_USERS_BACKEND.COGNOME, " +
+                                           "MAIL_USERS_BACKEND.NOME, " +
+                                           "MAIL_USERS_BACKEND.DEPARTMENT, " +
+                                           "MAIL_USERS_BACKEND.MUNICIPIO, " +
+                                           "MAIL_USERS_BACKEND.DOMAIN, " +
+                                           "MAIL_USERS_BACKEND.ROLE ROLE_USER " +
+                                           "FROM  [FAXPEC].[FAXPEC].[MAIL_USERS_BACKEND] ";                                        
+                        oCmd.Connection.Open();
+                        using (var r = oCmd.ExecuteReader())
+                        {
+                            if (r.HasRows)
+                            {
+                                listaUtenti = new List<BackendUser>();
+                                while (r.Read())
+                                {
+                                    BackendUser bUser = AutoMapperConfiguration.MapToBackendUser(r);
+                                    if (bUser != null && bUser.UserId >= 0)
+                                    {
+                                        BackEndUserMailUserMapping b = new BackEndUserMailUserMapping();
+                                        b.MailSenderId = 0;
+                                        b.MailAccessLevel = 0;
+                                        List<BackEndUserMailUserMapping> bList = new List<BackEndUserMailUserMapping>();
+                                        bList.Add(b);
+                                        bUser.MappedMails = bList;
+                                    }
+                                    listaUtenti.Add(bUser);
+                                }
+                            }
+                        }
+                        oCmd.Connection.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                if (!e.GetType().Equals(typeof(ManagedException)))
+                {
+                    ManagedException mEx = new ManagedException("Errore nella creazione lista utenti generale E172 Dettagli Errore: " + e.Message,
+                        "ERR_172", string.Empty, string.Empty, e.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    log.Error(err);
+                }
+                listaUtenti = null;
+            }
+
+            return listaUtenti;
         }
 
         public BackendUser GetById(long id)
@@ -357,7 +412,7 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         public List<BackendUser> GetDipendentiDipartimentoAbilitati(Decimal idSender)
         {
-            List<BackendUser> listaDipendenti = null;
+            List<BackendUser> listaDipendenti = new List<BackendUser>();
 
             try
             {
@@ -379,6 +434,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                            "WHERE MAIL_USERS_BACKEND.ID_USER = MAIL_USERS_SENDER_BACKEND.REF_ID_USER " +
                                            "AND MAIL_USERS_SENDER_BACKEND.REF_ID_SENDER = " + idSender +
                                            " ORDER BY MAIL_USERS_SENDER_BACKEND.DATA_INSERIMENTO DESC";
+                        oCmd.Connection.Open();
                         using (var r = oCmd.ExecuteReader())
                         {
                             if (r.HasRows)
@@ -391,8 +447,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                                     if (bUser != null && bUser.UserId >= 0)
                                     {
                                         BackEndUserMailUserMapping b = new BackEndUserMailUserMapping();
-                                        b.MailSenderId = (long)r.GetValue("ID_SENDER");
-                                        b.MailAccessLevel = int.Parse(r.GetValue("ROLE_MAIL").ToString());
+                                        b.MailSenderId = (long)r.GetDecimal("ID_SENDER");
+                                        b.MailAccessLevel = int.Parse(r.GetString("ROLE_MAIL"));
                                         List<BackEndUserMailUserMapping> bList = new List<BackEndUserMailUserMapping>();
                                         bList.Add(b);
                                         bUser.MappedMails = bList;
@@ -401,6 +457,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                 }
                             }
                         }
+                        oCmd.Connection.Close();
                     }
                 }
             }
@@ -527,7 +584,37 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         public int Save(BackendUser entity)
         {
-            throw new NotImplementedException();
+            int tot = 0;
+            try
+            {
+                using (var dbcontext = new FAXPECContext())
+                {
+                    MAIL_USERS_BACKEND m = new MAIL_USERS_BACKEND();
+                    m = DaoSQLServerDBHelper.MapToMailUsersBackend(entity);
+                    dbcontext.MAIL_USERS_BACKEND.Add(m);
+                    tot = dbcontext.SaveChanges();
+                }
+                if(tot != 1)
+                {
+                    throw new ManagedException("Utente non inserito","ERR_BU02",string.Empty,string.Empty,null);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!ex.GetType().Equals(typeof(ManagedException)))
+                {
+                    ManagedException mEx = new ManagedException("Errore nell'inserimento dell'utente in Users Backend Err_bu01 Dettagli Errore: " +entity.UserName+ " " + ex.Message,
+                        "ERR_BU01", string.Empty, string.Empty, ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+
+                    log.Error(err);
+
+                    throw mEx;
+                }
+                else throw;
+
+            }
+            return tot;
         }
 
         #region IDisposable Support
