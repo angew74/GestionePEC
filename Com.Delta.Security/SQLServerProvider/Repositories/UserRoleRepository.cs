@@ -44,7 +44,7 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
         public int Delete(string userId, string roleId)
         {
             return _db.ExecuteNonQuery(
-               "DELETE FROM userroles WHERE userid = @userid AND roleid = @roleid",
+               "DELETE FROM [FAXPEC].[FAXPEC].[userroles] WHERE userid = @userid AND roleid = @roleid",
                new SqlParameter { ParameterName = "@userid", Value = userId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input },
                new SqlParameter { ParameterName = "@roleid", Value = roleId, SqlDbType = SqlDbType.VarChar, Direction = ParameterDirection.Input });
         }

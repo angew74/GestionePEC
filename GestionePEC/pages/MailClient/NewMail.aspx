@@ -2,43 +2,7 @@
 
 <%@ Register Src="~/Controls/MailBoxLogin.ascx" TagName="MailBoxLogin" TagPrefix="mail" %>
 <%@ Register Src="~/Controls/HeaderNewMail.ascx" TagName="UCHeader" TagPrefix="uc4" %>
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
-    <script type="text/javascript">
-      
-           
-           
-             
-
-         <%--   extHtml = Ext.create('Ext.form.Panel', {
-                title: 'Testo Comunicazione',
-                renderTo: 'divTextArea',
-                width: 1050,
-                height: 300,
-                frame: true,
-                id: 'htmlEditor',
-                layout: 'form',
-                //  layout: 'fit',
-                items: {
-                    xtype: 'htmleditor',
-                    width: 850,
-                    height: 250,
-                    listeners: {
-                        change: function () {
-                            on_editor_blur();
-                        }
-                    },
-                    enableColors: false,
-                    enableAlignments: false,
-                    // name:'editor',
-                    //  itemId: 'textEditor',
-                    value: '<%= Comunicazione %>'
-        }
-   });--%>
-
-    </script>
-
-   
-   
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">   
     <asp:HiddenField runat="server" ID="hfIdTitolo" />
     <asp:HiddenField runat="server" ID="hfIdReferral" />
     <div id="mainDivNascita" class="content-panel-borderless">
@@ -74,12 +38,8 @@
                             OnClientClick="return GetValuesHtml();" ValidationGroup="email" OnClick="btnSend_OnClick" />
                     <div id="divTextArea" onkeyup="return GetValuesHtml();">
                     </div>
-                    <div id="divUpload" />                    
-                  <%--  <asp:UpdatePanel ID="pnlMainUpdate" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
-                        <ContentTemplate>--%>
-                            <asp:HiddenField ID="HidHtml" runat="server" />
-                   <%--     </ContentTemplate>
-                    </asp:UpdatePanel> --%>
+                    <div id="divUpload" />  
+                            <asp:HiddenField ID="HidHtml" runat="server" />                 
                 </div>
             </div>
         </div>
@@ -103,6 +63,7 @@
                 height: 250,              
                 title: 'Gestione Allegati',
                 renderTo: 'divUpload',
+                scrollable:'true',
                 width: 1050,
                 uploadComplete: function (items) {
                     var output = 'Caricamento files: <br>';

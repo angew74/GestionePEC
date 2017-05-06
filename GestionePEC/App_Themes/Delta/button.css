@@ -446,6 +446,42 @@
 	background-position:right;
 }
 
+.bRimRol
+{
+	
+	background-image:url(images/buttons/ruser.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	cursor:pointer;
+	border-width:0px;
+	vertical-align:middle;
+	text-align:left;
+	/*font-size:9pt;          commentato per compatibilità font*/
+	font-weight:bold;
+	font-family:Verdana;
+	color:#15428b;
+	width:14em;
+	background-position:right;
+}
+
+.bDelUser
+{
+	
+	background-image:url(images/buttons/duser.png);
+	background-repeat:no-repeat;
+	background-color:Transparent;
+	cursor:pointer;
+	border-width:0px;
+	vertical-align:middle;
+	text-align:left;
+	/*font-size:9pt;          commentato per compatibilità font*/
+	font-weight:bold;
+	font-family:Verdana;
+	color:#15428b;
+	width:14em;
+	background-position:right;
+}
+
 
 .bNewItemGray
 {

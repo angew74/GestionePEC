@@ -70,6 +70,26 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
             return listRole;
         }
 
+        internal List<IdentityRole> GetRolesByUserId(int id)
+        {
+            List<IdentityRole> listRoles = new List<IdentityRole>();
+            var roles = _db.ExecuteQuery(@"Select * FROM [FAXPEC].[FAXPEC].[ROLES] inner join [FAXPEC].[FAXPEC].[USERROLES] ON ROLEID=ROLES.ID INNER JOIN [FAXPEC].[FAXPEC].[USERS] ON USERID=USERS.ID WHERE USERS.ID=@IDUSER ",
+                new SqlParameter { ParameterName = "@IDUSER", Value = id });
+            if (roles.Rows.Count > 0)
+            {
+                foreach (DataRow r in roles.Rows)
+                {
+                    IdentityRole role = new IdentityRole()
+                    {
+                        Id = r["ID"].ToString(),
+                        Name = r["NAME"].ToString()
+                    };
+                    listRoles.Add(role);
+                }
+            }
+            return listRoles;
+        }
+
         internal List<string> GetRolesByUserName(string username)
         {
             List<string> listRoles = new List<string>();

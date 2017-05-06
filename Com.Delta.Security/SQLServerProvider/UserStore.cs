@@ -339,6 +339,13 @@ namespace AspNet.Identity.SQLServerProvider
             return Task.FromResult<object>(null);
         }
 
+        public Task RemoveUserIdFromRoleIdAsync(int iduser, int idrole)
+        {        
+             _userRolesRepository.Delete(iduser.ToString(), idrole.ToString());        
+
+            return Task.FromResult<object>(null);
+        }
+
         public Task<string> GetPasswordHashAsync(IdentityUser user)
         {
             if (user == null)

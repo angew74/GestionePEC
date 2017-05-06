@@ -15,6 +15,8 @@ using static GestionePEC.Models.UsersModel;
 using ActiveUp.Net.Mail.DeltaExt;
 using Com.Delta.Mail.MailMessage;
 using SendMail.BusinessEF.MailFacedes;
+using System.Net.Http.Formatting;
+using Com.Delta.Security;
 
 namespace GestionePEC.api
 {
@@ -268,25 +270,33 @@ namespace GestionePEC.api
                 if (!string.IsNullOrEmpty(role))
                 {
                     RoleStore roleStore = new RoleStore();
-                    var identityrole = roleStore.FindByNameAsync(role).Result;
-                    UserStore userStore = new UserStore();
-                    List<IdentityUser> _users = userStore.FindUsersByRole(identityrole.Id).Result;
-                    List<UserRoles> users = new List<UserRoles>();
-                    if (_users.Count > 0)
+                    var identityrole = roleStore.FindByIdAsync(role).Result;
+                    if (identityrole != null)
                     {
-                        foreach (IdentityUser s in _users)
+                        UserStore userStore = new UserStore();
+                        List<IdentityUser> _users = userStore.FindUsersByRole(identityrole.Id).Result;
+                        List<UserRoles> users = new List<UserRoles>();
+                        if (_users.Count > 0)
                         {
-                            UserRoles user = new UserRoles()
+                            foreach (IdentityUser s in _users)
                             {
-                                Id = s.Id,
-                                UserName = s.UserName,
-                                Role = role
-                            };
-                            users.Add(user);
+                                UserRoles user = new UserRoles()
+                                {
+                                    Id = s.Id,
+                                    UserName = s.UserName,
+                                    Role = identityrole.Name
+                                };
+                                users.Add(user);
+                            }
                         }
+                        m.UtentiList = users;
+                        m.Totale = users.Count.ToString();
+                        m.success = "true";
                     }
-                    m.UtentiList = users;
-                    m.Totale = users.Count.ToString();
+                }
+                else
+                {
+                    m.Totale = "0";
                     m.success = "true";
                 }
             }
@@ -309,23 +319,22 @@ namespace GestionePEC.api
         [HttpGet]
         [Authorize]
         [Route("api/UsersServiceController/RemoveRole")]
-        public HttpResponseMessage RemoveRole(string userid, string roleid)
+        public HttpResponseMessage RemoveRole(string userid, string role)
         {
             UsersModel m = new UsersModel();
             try
             {
-                if (!string.IsNullOrEmpty(userid) && !string.IsNullOrEmpty(roleid))
+                if (!string.IsNullOrEmpty(userid) && !string.IsNullOrEmpty(role))
                 {
                     UserStore userStore = new UserStore();
-                    var useri = userStore.FindByIdAsync(userid).Result;
-                    userStore.RemoveFromRoleAsync(useri, roleid);
-                    m.message = "Ruolo rimosso";
+                    var useri = userStore.FindByIdAsync(userid).Result;                  
+                    userStore.RemoveFromRoleAsync(useri, role);                   
                     m.success = "true";
                 }
                 else
                 {
                     m.message = "utente o ruolo non presente";
-                    m.success = "false";
+                    m.success = "true";
                 }
             }
             catch (Exception ex)
@@ -343,5 +352,119 @@ namespace GestionePEC.api
             }
             return this.Request.CreateResponse<UsersModel>(HttpStatusCode.OK, m);
         }
+
+        [HttpGet]
+        [Authorize]
+        [Route("api/UsersServiceController/DeleteUser")]
+        public HttpResponseMessage DeleteUser(string userid)
+        {
+            UsersModel m = new UsersModel();
+            try
+            {
+                if (!string.IsNullOrEmpty(userid))
+                {
+                    UserStore userStore = new UserStore();
+                    var useri = userStore.FindByIdAsync(userid).Result;
+                    RoleStore roleStore = new RoleStore();
+                    List<IdentityRole> roles = roleStore.GetRolesByUserId(int.Parse(useri.Id)).Result;
+                    foreach (IdentityRole r in roles)
+                    {
+                        userStore.RemoveFromRoleAsync(useri, r.Id);
+                    }
+                    m.success = "true";
+                }
+                else
+                {
+                    m.message = "utente o ruolo non presente";
+                    m.success = "true";
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogInfo error = new ErrorLogInfo();
+                error.freeTextDetails = ex.Message;
+                error.logCode = "ERR_U006";
+                error.loggingAppCode = "PEC";
+                error.loggingTime = System.DateTime.Now;
+                error.uniqueLogID = System.DateTime.Now.Ticks.ToString();
+                log.Error(error);
+                m.message = ex.Message;
+                m.success = "false";
+                return this.Request.CreateResponse<UsersModel>(HttpStatusCode.InternalServerError, m);
+            }
+            return this.Request.CreateResponse<UsersModel>(HttpStatusCode.OK, m);
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        [Route("api/UsersServiceController/RegisterUser")]
+        public HttpResponseMessage RegisterUser(FormDataCollection formsValues)
+        {
+            var userStore = new UserStore();
+            UsersModel model = new UsersModel();
+            var userName = formsValues["UserName"];
+            var password = formsValues["Password"];
+            var cognome = formsValues["Cognome"];
+            var nome = formsValues["Nome"];
+            var role = formsValues["Role"];
+            var codicefiscale = formsValues["CodiceFiscale"];
+            var user = new IdentityUser() { UserName = userName.ToUpper() };
+            user.PasswordHash = MySecurityProvider.PlainToSHA256(password);
+            user.SecurityStamp = System.DateTime.Now.Ticks.ToString();
+            try
+            {
+                string result = userStore.CreateAsync(user).Result;
+                user.Id = userStore.FindByNameAsync(userName.ToUpper()).Result.Id;
+                if (result == "OK")
+                {
+                    BackendUserService bus = new BackendUserService();
+                    BackendUser userBackend = new BackendUser();
+                    userBackend.Cognome = cognome.Trim().ToUpper();
+                    userBackend.Nome = nome.Trim().ToUpper();
+                    userBackend.UserName = userName.Trim().ToUpper();
+                    userBackend.CodiceFiscale = codicefiscale.Trim().ToUpper();
+                    userBackend.Domain = role.ToUpper();
+                    bus.Save(userBackend);
+                    model.success = "true";
+                }
+                else
+                {
+                    model.success = "false";
+                    model.message = "Utente non creato";
+                }
+                var resultRole = (userStore.AddToRoleAsync(user, int.Parse(role.ToUpper()))).Result;
+                if (resultRole != 1)
+                {
+                    model.success = "false";
+                    model.message = string.Format("Utente {0} non aggiunto a ruolo {1} è stato correttamente creato!", user.UserName, role);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                {
+                    ManagedException mEx = new ManagedException("Errore creazione utente. Dettaglio: " + ex.Message +
+                        "StackTrace: " + ((ex.StackTrace != null) ? ex.StackTrace.ToString() : " vuoto "),
+                        "ERR317",
+                        string.Empty,
+                        string.Empty,
+                        ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    log.Error(err);
+                    model.success = "false";
+                    model.message = string.Format("Utente {0} non correttamente creato", user.UserName);                   
+
+                }
+                else
+                {
+                    model.success = "false";
+                    model.message = "Utene non creato";                   
+                }
+                return this.Request.CreateResponse<UsersModel>(HttpStatusCode.OK, model);
+            }
+            return this.Request.CreateResponse<UsersModel>(HttpStatusCode.OK, model);
+        }
+
     }
 }

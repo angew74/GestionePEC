@@ -87,41 +87,135 @@
                 panelsummary.hide();
             }
 
-            var UsersTextField = Ext.create('Ext.form.TextField', {
-                id: 'UsersField',
-                fieldLabel: 'Utente',
-                labelWidth: 100,
-                enforceMaxLength: true,
-                width: 400,
-                maxlength: 20,
-                maxLengthText: 'Massimo 20 carattere',
-                margin: '0 0 0 4px',
-                emptyText: '',
-                // renderTo: 'RichiedenteDiv',
+            Ext.define('RolesModel', {
+                extend: 'Ext.data.Model',
+                fields: [
+                    { name: 'Id', type: 'string' },
+                    { name: 'Name', type: 'string' }
+                ]
+            });
+
+            var readerRoles = new Ext.data.JsonReader({
+                idProperty: 'Id',
+                model: 'RolesModel',
+                messageProperty: 'Message',
+                type: 'json',
+                rootProperty: 'RolesList',
+                totalProperty: 'Totale'
+            });
+
+            var storeRoles = Ext.create('Ext.data.Store', {
+                autoLoad: true,
+                storeId: 'storeRoles',
+                model: 'RolesModel',
+                reader: readerRoles,
+                proxy:
+                   {
+                       type: 'ajax',
+                       url: '/GestionePEC/api/RolesServiceController/GetAllRoles',
+                       reader: readerRoles
+                   },
+                //  restful: true,
                 listeners: {
-                    change: function (textField, value, oldvalue) {
-                        Ext.getCmp('UsersGrid').getStore().getProxy().extraParams.username = value;
+                    load: function (s, r, o) {
+                    },
+                    exception: function () {
                     }
                 }
             });
 
-            var RolesTextField = Ext.create('Ext.form.TextField', {
-                id: 'RolesField',
+            var RolesCombo = Ext.create('Ext.form.field.ComboBox', {
                 fieldLabel: 'Ruolo',
-                labelWidth: 100,
-                maxlength: 20,
-                enforceMaxLength: true,
-                maxLengthText: 'Massimo 20 caratteri',
-                width: 400,
-                margin: '0 0 0 4px',
-                emptyText: '',
+                emptyText: 'Selezionare un ruolo',
+                //  renderTo: 'TipoCombo',
+                id: 'RolesCombo',
+                displayField: 'Name',
+                name: 'Role',
+                valueField: 'Id',
+                ctCls: 'LabelBlackBold',
+                editable: false,
+                tpl: Ext.create('Ext.XTemplate',
+              '<ul class="x-list-plain"><tpl for=".">',
+                  '<li role="option" class="x-boundlist-item">{Name}</li>',
+              '</tpl></ul>'
+          ),
+                width: 365,
+                labelWidth: 60,
+                margin: '0 0 0 10px',
+                store: storeRoles,               
+                queryMode: 'local',
                 listeners: {
-                    change: function (textField, value, oldvalue) {
+                    change: function (field, value, oldvalue) {
                         Ext.getCmp('UsersGrid').getStore().getProxy().extraParams.role = value;
                     }
                 }
             });
 
+            Ext.define('UsersModel', {
+                extend: 'Ext.data.Model',
+                fields: [
+                    { name: 'UserName', type: 'string' },
+                    { name: 'UserName', type: 'string' }
+                ]
+            });
+
+
+            var readerUsers = new Ext.data.JsonReader({
+                idProperty: 'UserName',
+                model: 'UsersModel',
+                messageProperty: 'Message',
+                type: 'json',
+                rootProperty: 'ListUtenti',
+                totalProperty: 'Totale'
+            });
+
+            var storeUsers = Ext.create('Ext.data.Store', {
+                autoLoad: true,
+                storeId: 'storeUsers',
+                model: 'UsersModel',
+                reader: readerUsers,
+                proxy:
+                   {
+                       type: 'ajax',
+                       url: '/GestionePEC/api/LogsServiceController/getUsers',
+                       reader: readerUsers
+                   },
+                //  restful: true,
+                listeners: {
+                    load: function (s, r, o) {
+                    },
+                    exception: function () {
+                    }
+                }
+            });
+
+            var UsersCombo = Ext.create('Ext.form.field.ComboBox', {
+                fieldLabel: 'Utente',
+                emptyText: 'Selezionare un utente',
+                //  renderTo: 'TipoCombo',
+                id: 'UsersCombo',
+                displayField: 'UserName',
+                valueField: 'UserName',
+                ctCls: 'LabelBlackBold',
+                editable: false,
+                tpl: Ext.create('Ext.XTemplate',
+              '<ul class="x-list-plain"><tpl for=".">',
+                  '<li role="option" class="x-boundlist-item">{UserName}</li>',
+              '</tpl></ul>'
+          ),
+                width: 365,
+                labelWidth: 60,
+                margin: '0 0 0 4px',
+                store: storeUsers,
+                queryMode: 'local',
+                listeners: {
+                    change: function (combo, value) {
+                        Ext.getCmp('UsersGrid').getStore().getProxy().extraParams.username = value;
+                    }
+                }
+            });
+
+         
             var buttonReset = Ext.create('Ext.Button', {
                 text: 'Riazzera',
                 //  renderTo: 'divBottoni',
@@ -130,8 +224,8 @@
                 iconCls: 'bRefresh',
                 handler: function () {
                     // this button will spit out a different number every time you click it.
-                    Ext.getCmp('UsersField').setValue('');
-                    Ext.getCmp('RolesField').setValue('');                  
+                    Ext.getCmp('UsersCombo').setValue('');
+                    Ext.getCmp('RolesCombo').setValue('');
                    
                 }
             });
@@ -144,9 +238,19 @@
                 iconCls: 'bFind',
                 handler: function () {
                     // this button will spit out a different number every time you click it.
-                    store.getProxy().setExtraParam("username", Ext.getCmp('UsersField').getValue());
-                    store.getProxy().setExtraParam("role", Ext.getCmp('RolesField').getValue());
-                    Ext.getCmp("UsersGrid").store.loadPage(1);
+                    if ((Ext.getCmp('UsersCombo').getValue() != null && Ext.getCmp('UsersCombo').getValue() != '')
+                        && (Ext.getCmp('RolesCombo').getValue() != null && Ext.getCmp('RolesCombo').getValue() != '')) {
+                        Ext.Msg.alert('Attenzione', 'Scegliere utente o ruolo');
+                    }
+                    else if ((Ext.getCmp('UsersCombo').getValue() == null || Ext.getCmp('UsersCombo').getValue() == '')
+                        && (Ext.getCmp('RolesCombo').getValue() == null || Ext.getCmp('RolesCombo').getValue() == '')) {
+                        Ext.Msg.alert('Attenzione', 'Scegliere almeno un filtro');
+                    }
+                    else {
+                        store.getProxy().setExtraParam("username", Ext.getCmp('UsersCombo').getValue());
+                        store.getProxy().setExtraParam("role", Ext.getCmp('RolesCombo').getValue());
+                        Ext.getCmp("UsersGrid").store.loadPage(1);
+                    }
                 }
             });
 
@@ -159,7 +263,7 @@
                     {
                         xtype: 'toolbar',
                         dock: 'top',
-                        items: [UsersTextField, RolesTextField, buttonFilter, buttonReset]
+                        items: [UsersCombo, RolesCombo, buttonFilter, buttonReset]
                     }
                 ]
             });
@@ -170,8 +274,8 @@
                     'Id',
                     'UserName',
                      'Role'                    
-                ],
-                idProperty: 'UserName'
+                ]
+              //  ,idProperty: 'UserName'
             });
 
             var urlApiGetUtenti = '/GestionePEC/api/UsersServiceController/GetUtenti';
@@ -214,7 +318,8 @@
                     {
                     id: 'UserNameField',
                     text: 'UserName',
-                    width: '120',
+                    width: 220,
+                    flex: 1,
                     dataIndex: 'UserName'                   
                 }, {
                     id: 'IdField',
@@ -226,29 +331,32 @@
                     id: "RoleField",
                     text: "Ruolo",
                     dataIndex: 'Role',
-                    width: 120,
+                    width: 220,
+                    flex:2,
                     align: 'center',
                     sortable: true
                 }, {
                     xtype: 'actioncolumn',
                     width: 50,
-                    items: [{                       
+                    items: [{
                         tooltip: 'Rimuovi Ruolo',
-                        iconCls:'bDelete',
-                        //iconCls: function (view, rowIndex, colIndex, item, record) {
-                        //    return 'bDelete';
-                        //    // Returns true if 'editable' is false (, null, or undefined)
-                        //    //if (record.get('StatusRichiesta') != "C")
-                        //    //{ return 'x-hide-display'; }
-                        //    //else {
-                        //    //    return 'ViewAttoCls';
-                        //    //}
-                        //},
+                        iconCls: 'bRimRol',                       
                         handler: function (grid, rowIndex, colIndex, item, e, record) {
                             var rec = grid.getStore().getAt(rowIndex);
-                            RimuoviRuolo(rec);                         
+                            RimuoviRuolo(rec);
                         }
                     }]
+                },{
+                        xtype: 'actioncolumn',
+                        width: 50,
+                        items: [{                       
+                            tooltip: 'Cancella Utente',
+                            iconCls:'bDelUser',                           
+                            handler: function (grid, rowIndex, colIndex, item, e, record) {
+                                var rec = grid.getStore().getAt(rowIndex);
+                                DeleteUser(rec);                         
+                            }
+                        }]
                 }
               ],  
                 // paging bar on the bottom
@@ -284,14 +392,59 @@
 
             function RimuoviRuolo(rec){
                 Ext.Ajax.request({
-                    url: 'GestionePEC/api/UsersServiceController/RemoveRole?userid=' + rec.data["Id"] + '&roleid=' +rec.data["Role"],
+                    url: '/GestionePEC/api/UsersServiceController/RemoveRole?userid=' + rec.data["Id"] + '&role=' +rec.data["Role"],
+        //            type: 'json',
+                    method: 'GET',
+                    success: function (response, opts) {
+                        var obj = Ext.decode(response.responseText).message;
+                        if (obj != null) {
+                            var message = obj;
+                            Ext.Msg.alert('Errore nella rimozione utente', message);
+                            // ManageError("Errore nell'aggiornameto dettagli: " + message);
+                        }
+                        else {
+                            Ext.Msg.alert('Complimenti', "Utente rimosso dal ruolo con successo");
+                            Ext.getCmp("UsersGrid").store.loadPage(1);
+                        }
+                    },
+                    failure: function(response,opts)
+                    {
+                        if (Ext.decode(response.responseText) != null) {
+                            var message = Ext.decode(response.responseText).message;
+                            Ext.Msg.alert('Errore nella cancellazione utente', message);
+                        }
+                        else {
+                            Ext.Msg.alert('Errore nella cancellazione utente', "Errore di sistema");
+                        }
+                    }
+                });
+            }
+
+            function DeleteUser(rec) {
+                Ext.Ajax.request({
+                    url: '/GestionePEC/api/UsersServiceController/DeleteUser?userid=' + rec.data["Id"],
                     type: 'json',
                     method: 'GET',
                     success: function (response, opts) {
-                        var obj = response.responseText;
+                        var obj = Ext.decode(response.responseText).message;
+                        if (obj != null) {
+                            var message = obj;                         
+                            Ext.Msg.alert('Errore nella cancellazione utente', message);
+                            // ManageError("Errore nell'aggiornameto dettagli: " + message);
+                        }
+                        else {
+                            Ext.Msg.alert('Complimenti', "Utente cancellato con successo");
+                            Ext.getCmp("UsersGrid").store.loadPage(1);
+                        }
                     },
-                    failure: function(response,opts)
-                    {}
+                    failure: function (response, opts)
+                    {
+                        if(Ext.decode(response.responseText) != null)
+                        {   
+                            var message = Ext.decode(response.responseText).message;
+                            Ext.Msg.alert('Errore nella cancellazione utente', "Errore di sistema");   
+                        }
+                    }
                 });
             }
                     

@@ -56,11 +56,11 @@ namespace AspNet.Identity.SQLServerProvider.Repositories
             return val;
         }
 
-        internal List<IdentityUser> FindUsersByRole(string role)
+        internal List<IdentityUser> FindUsersByRole(string id)
         {
             List<IdentityUser> listUsers = null;           
-            var users = _db.ExecuteQuery(@"Select ID, USERNAME,PASSWORDHASH,SECURITYSTAMP FROM [FAXPEC].[FAXPEC].[USERS], [FAXPEC].[FAXPEC].[userroles],  [FAXPEC].[FAXPEC].[roles] WHERE user.id = userroles.id AND userroles.roleid = role.id and role.name = @name ",
-                 new SqlParameter { ParameterName = "@name", Value = role.ToUpper() });
+            var users = _db.ExecuteQuery(@"Select  USERS.ID, USERNAME,PASSWORDHASH,SECURITYSTAMP FROM [FAXPEC].[FAXPEC].[USERS], [FAXPEC].[FAXPEC].[userroles],  [FAXPEC].[FAXPEC].[roles] WHERE users.id = userroles.userid AND userroles.roleid = roles.id and roles.id = @id ",
+                 new SqlParameter { ParameterName = "@id", Value = id.ToUpper() });
             if (users.Rows.Count > 0)
             {
                 listUsers = new List<IdentityUser>();
