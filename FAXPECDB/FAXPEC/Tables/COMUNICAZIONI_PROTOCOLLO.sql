@@ -1,0 +1,117 @@
+﻿CREATE TABLE [FAXPEC].[COMUNICAZIONI_PROTOCOLLO] (
+    [REF_ID_COM]        NUMERIC (10)   NOT NULL,
+    [REQ_PROT_TIPO]     VARCHAR (2)    NULL,
+    [REQ_COD_DOCUMENTO] VARCHAR (20)   NULL,
+    [REQ_IS_ESISTENTE]  NUMERIC (1)    DEFAULT ((0)) NULL,
+    [REQ_IS_RISERVATO]  NUMERIC (1)    DEFAULT ((0)) NULL,
+    [REQ_SUBJECT]       VARCHAR (1000) NULL,
+    [RESP_PROT_TIPO]    VARCHAR (5)    NULL,
+    [RESP_PROT_ANNO]    NUMERIC (4)    NULL,
+    [RESP_PROT_NUMERO]  VARCHAR (20)   NULL,
+    [PROT_IN_OUT]       VARCHAR (1)    NULL,
+    CONSTRAINT [PROTOCOLLO_PK] PRIMARY KEY CLUSTERED ([REF_ID_COM] ASC),
+    CONSTRAINT [CHECK_TIPO_REQ] CHECK ([REQ_PROT_TIPO]='U' OR [REQ_PROT_TIPO]='M' OR [REQ_PROT_TIPO]='I'),
+    CONSTRAINT [SYS_C007519] CHECK ([REQ_PROT_TIPO] IS NOT NULL),
+    CONSTRAINT [SYS_C007520] CHECK ([REQ_COD_DOCUMENTO] IS NOT NULL),
+    CONSTRAINT [SYS_C007521] CHECK ([REQ_IS_ESISTENTE] IS NOT NULL),
+    CONSTRAINT [SYS_C007522] CHECK ([REQ_IS_RISERVATO] IS NOT NULL),
+    CONSTRAINT [SYS_C007523] CHECK ([REQ_SUBJECT] IS NOT NULL),
+    CONSTRAINT [COMUNICAZIONI_PROTOCOLLO__FK1] FOREIGN KEY ([REF_ID_COM]) REFERENCES [FAXPEC].[COMUNICAZIONI] ([ID_COM])
+);
+
+
+GO
+ALTER TABLE [FAXPEC].[COMUNICAZIONI_PROTOCOLLO] NOCHECK CONSTRAINT [SYS_C007519];
+
+
+GO
+ALTER TABLE [FAXPEC].[COMUNICAZIONI_PROTOCOLLO] NOCHECK CONSTRAINT [SYS_C007520];
+
+
+GO
+ALTER TABLE [FAXPEC].[COMUNICAZIONI_PROTOCOLLO] NOCHECK CONSTRAINT [SYS_C007521];
+
+
+GO
+ALTER TABLE [FAXPEC].[COMUNICAZIONI_PROTOCOLLO] NOCHECK CONSTRAINT [SYS_C007522];
+
+
+GO
+ALTER TABLE [FAXPEC].[COMUNICAZIONI_PROTOCOLLO] NOCHECK CONSTRAINT [SYS_C007523];
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.CHECK_TIPO_REQ', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'CONSTRAINT', @level2name = N'CHECK_TIPO_REQ';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.REF_ID_COM', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'COLUMN', @level2name = N'REF_ID_COM';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.REQ_PROT_TIPO', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'COLUMN', @level2name = N'REQ_PROT_TIPO';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.REQ_COD_DOCUMENTO', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'COLUMN', @level2name = N'REQ_COD_DOCUMENTO';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.REQ_IS_ESISTENTE', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'COLUMN', @level2name = N'REQ_IS_ESISTENTE';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.REQ_IS_RISERVATO', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'COLUMN', @level2name = N'REQ_IS_RISERVATO';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.REQ_SUBJECT', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'COLUMN', @level2name = N'REQ_SUBJECT';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.RESP_PROT_TIPO', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'COLUMN', @level2name = N'RESP_PROT_TIPO';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.RESP_PROT_ANNO', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'COLUMN', @level2name = N'RESP_PROT_ANNO';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.RESP_PROT_NUMERO', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'COLUMN', @level2name = N'RESP_PROT_NUMERO';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.PROT_IN_OUT', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'COLUMN', @level2name = N'PROT_IN_OUT';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.COMUNICAZIONI_PROTOCOLLO__FK1', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'CONSTRAINT', @level2name = N'COMUNICAZIONI_PROTOCOLLO__FK1';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.PROTOCOLLO_PK', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'CONSTRAINT', @level2name = N'PROTOCOLLO_PK';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.SYS_C007519', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'CONSTRAINT', @level2name = N'SYS_C007519';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.SYS_C007520', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'CONSTRAINT', @level2name = N'SYS_C007520';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.SYS_C007521', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'CONSTRAINT', @level2name = N'SYS_C007521';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.SYS_C007522', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'CONSTRAINT', @level2name = N'SYS_C007522';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_PROTOCOLLO.SYS_C007523', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'TABLE', @level1name = N'COMUNICAZIONI_PROTOCOLLO', @level2type = N'CONSTRAINT', @level2name = N'SYS_C007523';
+

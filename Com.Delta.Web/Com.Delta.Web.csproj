@@ -119,6 +119,7 @@
     <None Include="Cache\Schemes\ListaDecodificaMessaggi.xss">
       <DependentUpon>ListaDecodificaMessaggi.xsd</DependentUpon>
     </None>
+    <None Include="Com.Delta.Web.cd" />
     <None Include="Delta.pfx" />
     <None Include="packages.config" />
   </ItemGroup>

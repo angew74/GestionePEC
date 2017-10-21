@@ -1,0 +1,841 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GestionePEC.api.EmailsController" Collapsed="true">
+    <Position X="63.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>api\EmailsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.Titolo" Collapsed="true">
+    <Position X="63.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAEAQAA=</HashCode>
+      <FileName>api\EntiMappingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.Contatto" Collapsed="true">
+    <Position X="58.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>api\EntiMappingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.Backend" Collapsed="true">
+    <Position X="49.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAASAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>api\EntiMappingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.Mapping" Collapsed="true">
+    <Position X="55" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQAAAA=</HashCode>
+      <FileName>api\EntiMappingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.EnteMapping" Collapsed="true">
+    <Position X="48" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>api\EntiMappingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.EntiMappings" Collapsed="true">
+    <Position X="51.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAgAAAABAAACAAA=</HashCode>
+      <FileName>api\EntiMappingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.Response&lt;T&gt;" Collapsed="true">
+    <Position X="62" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQBAAAAAAIAAAAAA=</HashCode>
+      <FileName>api\EntiMappingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.EntiMappingController" Collapsed="true">
+    <Position X="49.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAgAAAAAAFAAAgAIAAAAAIAAACBAAAIAAGAAAAAA=</HashCode>
+      <FileName>api\EntiMappingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.FilesController" Collapsed="true">
+    <Position X="60.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAACAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>api\FilesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.FoldersResponse" Collapsed="true">
+    <Position X="48" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAEAAQAAAACA=</HashCode>
+      <FileName>api\FolderController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.FolderController" Collapsed="true">
+    <Position X="63.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAECAAAgAAAAAAAAAABAAAgAAA=</HashCode>
+      <FileName>api\FolderController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.ResponseType&lt;T&gt;" Collapsed="true">
+    <Position X="63.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAIAAEAAAAAAACA=</HashCode>
+      <FileName>api\GeneralSearchController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.GeneralSearchController" Collapsed="true">
+    <Position X="55" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>api\GeneralSearchController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.LoginServiceController" Collapsed="true">
+    <Position X="48" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAEAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>api\LoginServiceController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.LogsServiceController" Collapsed="true">
+    <Position X="49.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAACAAAAAAAAAAAAEAKIAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>api\LogsServiceController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.RolesServiceController" Collapsed="true">
+    <Position X="53.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>api\RolesServiceController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.TreeController">
+    <Position X="51.5" Y="10" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAEAgAAAAAAAQAAAAAAAAAhAAAAQAAACAAAAAAAAAA=</HashCode>
+      <FileName>api\TreeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.UsersServiceController">
+    <Position X="66.5" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAAAAACAAACAAAAEAAAACIAAAAAAAAAABAAQAAEAAAA=</HashCode>
+      <FileName>api\UsersServiceController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.api.GenericResponseModel" Collapsed="true">
+    <Position X="58.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAIAAAAAAABAAAA=</HashCode>
+      <FileName>Models\GenericResponseModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Api.PECController" Collapsed="true">
+    <Position X="60.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAABAAAAAAAgAAAACAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>api\PECController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Api.SessionStateRouteHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="58.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>api\SessionStateRouteHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.Api.SessionableControllerHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="55" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>api\SessionStateRouteHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.App_Start.SessionableControllerHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="56.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App_Start\SessionableControllerHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.App_Start.SessionStateRouteHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="60.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App_Start\SessionStateRouteHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.WebApiConfig">
+    <Position X="48" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App_Start\WebApiConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Global" Collapsed="true">
+    <Position X="63.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAACAAAAAAAAFAIAQAAAAAAAAg=</HashCode>
+      <FileName>Global.asax.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Login">
+    <Position X="17.5" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Login.aspx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GestionePEC.LogOff" Collapsed="true">
+    <Position X="23" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>LogOff.aspx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GestionePEC.LogOffFromBrowser">
+    <Position X="28.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>LogOffFromBrowser.aspx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GestionePEC.Default">
+    <Position X="34.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>pages\common\Default.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Ashx.FileUploadHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="62" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAABAAAAEAAABADAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Ashx\FileUploadHandler.ashx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.Ashx.GeneralSearcher" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="56.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Ashx\GeneralSearcher.ashx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.Ashx.ExtJSGridDataSource&lt;T&gt;" Collapsed="true">
+    <Position X="58.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAABAAAAAAIAAAAAA=</HashCode>
+      <FileName>Ashx\GeneralSearcher.ashx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Ashx.GestoreRatingMail" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="60.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAEAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Ashx\GestoreRatingMail.ashx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.Ashx.TreeEnt" BaseTypeListCollapsed="true">
+    <Position X="58.75" Y="11" Width="2.25" />
+    <NestedTypes>
+      <Class Name="GestionePEC.Ashx.TreeEnt.tNode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Ashx\TreeEnt.ashx.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="GestionePEC.Ashx.TreeEnt.JSONTreeNode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Ashx\TreeEnt.ashx.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QAABAAABBAAAAQCAABAAAAAAAAAAQAAAAAAAAAAAABA=</HashCode>
+      <FileName>Ashx\TreeEnt.ashx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.389" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.Ashx.TreeViewDataSource" BaseTypeListCollapsed="true">
+    <Position X="58.75" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAEAgAABAAAAQAAABAAAAABAAAAQAAACAAAAAAAAAA=</HashCode>
+      <FileName>Ashx\TreeViewDataSource.ashx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.Controls.Comunicazione" Collapsed="true">
+    <Position X="56.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAIAACAAAAAgAAAQAAAAABAIAAAA=</HashCode>
+      <FileName>Controls\Comunicazione.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.DateTime" Collapsed="true">
+    <Position X="60.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEJBCAQMAAhAABMIUAAAtIAAAAAABgFQACgwAYBQAA=</HashCode>
+      <FileName>Controls\DateTime.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.EntitaSearch" Collapsed="true">
+    <Position X="53.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAIEAAA=</HashCode>
+      <FileName>Controls\EntitaSearch.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.EntiViewer" Collapsed="true">
+    <Position X="55" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BIEFAAAMAEKAggAKUBCAAEAWgWAAGAABAQAQAyJgIAA=</HashCode>
+      <FileName>Controls\EntiViewer.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.GeneralEntiyTree" Collapsed="true">
+    <Position X="53.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Controls\GeneralEntiyTree.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.HeaderNewMail" Collapsed="true">
+    <Position X="48" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAJDAAQIAAIAgAAEIAALAAAAAAQAIAAAAAIAQAA=</HashCode>
+      <FileName>Controls\HeaderNewMail.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.InBox" Collapsed="true">
+    <Position X="53.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAgCAAAEAAAAYAIEBAQEQARAEAQEAAAAAQBAAMAAAA=</HashCode>
+      <FileName>Controls\InBox.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.MailBoxLogin" Collapsed="true">
+    <Position X="55" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCgQAAAAgAgAAAAEABAiKAACAAQICAAACAAwAAJAAAQ=</HashCode>
+      <FileName>Controls\MailBoxLogin.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.MailBoxNavigator" Collapsed="true">
+    <Position X="56.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAACAAAABACAAAAABAAAAQAAAAAAAAAAkA=</HashCode>
+      <FileName>Controls\MailBoxNavigator.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.MailComposer" Collapsed="true">
+    <Position X="58.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAgAhAGEAAWgUEAIgbBFVgKHBAgQFAAaAIQsAcEAnY=</HashCode>
+      <FileName>Controls\MailComposer.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.MailModal" Collapsed="true">
+    <Position X="60.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAEACgAAAgIGAQAACAAAAAQADAAUCAAAAAAAICJAAgA=</HashCode>
+      <FileName>Controls\MailModal.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.MailMoveResearch" Collapsed="true">
+    <Position X="63.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ugARoIBACYgAkQkITDEoGIBAgAUCBAEgyQAGAB4gAEI=</HashCode>
+      <FileName>Controls\MailMoveResearch.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.MailTreeViewer" Collapsed="true">
+    <Position X="49.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAEAgAAAAAAAAAAAAAAAAAAAAAAAAAIAAIA=</HashCode>
+      <FileName>Controls\MailTreeViewer.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.MailActionEventArgs" Collapsed="true">
+    <Position X="53.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Controls\MailViewer.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.MailViewer" Collapsed="true">
+    <Position X="51.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gsQAEAQQgCEYwcIEQBiQAOAIiYEgAECCQAQGhVYZDYI=</HashCode>
+      <FileName>Controls\MailViewer.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.NewMail" Collapsed="true">
+    <Position X="56.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAiAAAAAUAQAAAAAAAAAACAggBEAAACAYIAIkgiA=</HashCode>
+      <FileName>Controls\NewMail.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.Paging" Collapsed="true">
+    <Position X="58.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAEAACAAAAAYAAAAgBgAjBAAAAAAAAAIAAgA=</HashCode>
+      <FileName>Controls\Paging.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.RicercaMail">
+    <Position X="48" Y="6.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="GestionePEC.Controls.RicercaMail.MailSelectedEventArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Controls\RicercaMail.ascx.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Delegate Name="GestionePEC.Controls.RicercaMail.MailHandler" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Controls\RicercaMail.ascx.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Enum Name="GestionePEC.Controls.RicercaMail.col" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Controls\RicercaMail.ascx.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ugARqIBECYkAkQkITDGoGKBEgI0CBgEg6QAGBBYoAEo=</HashCode>
+      <FileName>Controls\RicercaMail.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Controls.RicercaStat">
+    <Position X="49.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>igAQIIAAAAgAEAAAiBAgCIAAgAACAAAgSAADQAIAAQQ=</HashCode>
+      <FileName>Controls\RicercaStat.ascx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Extensions.BasePage" Collapsed="true">
+    <Position X="23" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACQAAAABAAAABIEBAACAADAAAAAAEASAAgAgAAAEA=</HashCode>
+      <FileName>Extensions\BasePage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GestionePEC.Extensions.CodFisCheck" Collapsed="true">
+    <Position X="53.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAEACCCCAAAAAyQCAAQBAIAQAAAAAACAAJAAAAAQA=</HashCode>
+      <FileName>Extensions\CodFisCheck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Extensions.CodFisProvvCheck" Collapsed="true">
+    <Position X="55" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAABAgAAAAAAAgAAAA=</HashCode>
+      <FileName>Extensions\CodFisProvvCheck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Extensions.Estensioni" Collapsed="true">
+    <Position X="56.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAgAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAYAAA=</HashCode>
+      <FileName>Extensions\Estensioni.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Extensions.Helpers" Collapsed="true">
+    <Position X="49.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABBAAAADAAAAAAAAIAQAAkAAAAAAEIAAEIAAgAAAAQ=</HashCode>
+      <FileName>Extensions\Helpers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Extensions.InlineScript" Collapsed="true">
+    <Position X="55" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Extensions\InlineScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Extensions.Utility">
+    <Position X="68.75" Y="7.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QAgACADAAAAAAAAAIAgAGgCIAAAAIGAAQBAAAACCAEA=</HashCode>
+      <FileName>Extensions\Utility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Delta.Utilities.LinqExtensions.HierarchyNode&lt;T&gt;" Collapsed="true">
+    <Position X="51.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAgAACAAAAAAAA=</HashCode>
+      <FileName>Extensions\LinqExtensionMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Delta.Utilities.LinqExtensions.LinqExtensionMethods" Collapsed="true">
+    <Position X="56.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Extensions\LinqExtensionMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Master.Mail" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="51.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KAAABgGBgACAAEAAIAgKAAoAIEAAAIAwhASiAAoIkEA=</HashCode>
+      <FileName>Master\Mail.Master.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.Models.AppCodesModel">
+    <Position X="48" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAIAAAAAAIAAACA=</HashCode>
+      <FileName>Models\AppCodesModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.BackendUserModel" Collapsed="true">
+    <Position X="51.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAIAAAAAEAAAACA=</HashCode>
+      <FileName>Models\BackendUserModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.DTOFileUploadResult" Collapsed="true">
+    <Position X="62" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAgAAEAAAAAAAAAAAQIAAAAAAABAACA=</HashCode>
+      <FileName>Models\DTOFileUploadResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.FoldersSendersModel" Collapsed="true">
+    <Position X="49.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAQAIAAAAAAAAAACA=</HashCode>
+      <FileName>Models\FoldersSendersModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.FolderType">
+    <Position X="51.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Models\FolderType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.LogActionsModel" Collapsed="true">
+    <Position X="58.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAACA=</HashCode>
+      <FileName>Models\LogActionsModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.LogCodesModel" Collapsed="true">
+    <Position X="60.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAACA=</HashCode>
+      <FileName>Models\LogCodesModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.LogErrorsModel" Collapsed="true">
+    <Position X="62" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAwAIAAAAAAAAAACA=</HashCode>
+      <FileName>Models\LogErrorsModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.LoginModel" Collapsed="true">
+    <Position X="63.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAQAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\LoginModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.MailModel" Collapsed="true">
+    <Position X="62" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAQAIAAAAAAAAAACA=</HashCode>
+      <FileName>Models\MailModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.RolesModel">
+    <Position X="51.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAACA=</HashCode>
+      <FileName>Models\RolesModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.TreeNode">
+    <Position X="57" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAIAAAAAAAgAAA=</HashCode>
+      <FileName>Models\TreeModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.TreeModel">
+    <Position X="53.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAEAAAAAAACA=</HashCode>
+      <FileName>Models\TreeModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.UsersMailModel">
+    <Position X="62.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAICAAAAAAAAACA=</HashCode>
+      <FileName>Models\UsersMailModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.UserMail">
+    <Position X="61" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Models\UsersMailModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Models.UsersModel">
+    <Position X="64.5" Y="7.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="GestionePEC.Models.UsersModel.UserRoles" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Models\UsersModel.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAEAAAAAAAAAAAQAIAAAAAAAAAACA=</HashCode>
+      <FileName>Models\UsersModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Administration.MailAdmin">
+    <Position X="30.25" Y="2" Width="3" />
+    <TypeIdentifier>
+      <HashCode>BAAAQBBIHAEAABAgAACIC0CAgIgBBAAQJMBqACbAEAQ=</HashCode>
+      <FileName>pages\Administration\MailAdmin.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Administration.MailConfiguration">
+    <Position X="37" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAQAAAAAAAAAAAAAAIJAAAA=</HashCode>
+      <FileName>pages\Administration\MailConfiguration.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Folders.RegisterFolder">
+    <Position X="39.25" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAQAAAQAAAAAACAAAAAAAAAAAAAAAIAIAAAE=</HashCode>
+      <FileName>pages\Folders\RegisterFolder.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Logs.ManageLogs" Collapsed="true">
+    <Position X="53.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>pages\Logs\ManageLogs.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Mail.GestRubrica" Collapsed="true">
+    <Position X="62" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>pages\Mail\GestRubrica.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.MailClient.MailAdmin">
+    <Position X="7" Y="2" Width="3" />
+    <TypeIdentifier>
+      <HashCode>BAQCQBRoHhkAADQgEoCIC0yAhJiRBQAQJMDqiabBUAQ=</HashCode>
+      <FileName>pages\MailClient\MailAdmin.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.MailClient.MailBoxInBox">
+    <Position X="13" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAABAAAAAAQAAAAHAIACBAAAADABAIQAAIgBAA=</HashCode>
+      <FileName>pages\MailClient\MailBoxInBox.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.MailClient.MailBoxStat">
+    <Position X="19.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAIAAAA=</HashCode>
+      <FileName>pages\MailClient\MailBoxStat.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.MailClient.MailMove">
+    <Position X="24.75" Y="2" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAIAAlAIBABAAAADAAAIAAAIAAAA=</HashCode>
+      <FileName>pages\MailClient\MailMove.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.MailClient.MailSearch">
+    <Position X="33.5" Y="2" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAQAIAAFAIBABAAAADAAAIAAAIAAAA=</HashCode>
+      <FileName>pages\MailClient\MailSearch.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.MailClient.MailServerSettings" Collapsed="true">
+    <Position X="48" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>pages\MailClient\MailServerSettings.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.MailClient.NewMail">
+    <Position X="41.75" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQJAAAAAAEAGAAQACAAQBAAAAAJAAAAQAIIhAAA=</HashCode>
+      <FileName>pages\MailClient\NewMail.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.pubblica.ErrorPage">
+    <Position X="46" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>pages\pubblica\ErrorPage.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Roles.RegisterRole">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAACAAAAAAAAAAAAAAAEAIAAAA=</HashCode>
+      <FileName>pages\Roles\RegisterRole.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Rubrica.AccessoMappatura">
+    <Position X="2.25" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>BKGAZ3AISAACiLQAMACKAAAECAAAEARkAcwEAKMACgM=</HashCode>
+      <FileName>pages\Rubrica\AccessoMappatura.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Rubrica.EntiResearch">
+    <Position X="5" Y="2" Width="2" />
+    <NestedTypes>
+      <Class Name="GestionePEC.pages.Rubrica.EntiResearch.UserRoles" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>pages\Rubrica\EntiResearch.aspx.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <InheritanceLine Type="GestionePEC.Extensions.BasePage" FixedToPoint="true">
+      <Path>
+        <Point X="23.75" Y="1.191" />
+        <Point X="23.75" Y="1.625" />
+        <Point X="6.75" Y="1.625" />
+        <Point X="6.75" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ACAAAAkAAAAAAAAEAAAAAACJAgCIACAACAABgAIAAAA=</HashCode>
+      <FileName>pages\Rubrica\EntiResearch.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Titoli.GestioneTitoli">
+    <Position X="10.25" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAiAACFAASAAAAAAQAAAAAAEAgAAAREBAQIAAAsAAAA=</HashCode>
+      <FileName>pages\Titoli\GestioneTitoli.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Users.ManagerUserToRole">
+    <Position X="15.5" Y="2" Width="1.75" />
+    <InheritanceLine Type="GestionePEC.Extensions.BasePage" FixedToPoint="true">
+      <Path>
+        <Point X="23.75" Y="1.191" />
+        <Point X="23.75" Y="1.625" />
+        <Point X="16.75" Y="1.625" />
+        <Point X="16.75" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAACEAAAAAAAAAEAAACAAAAAAAAAAAABAAAAIAAAA=</HashCode>
+      <FileName>pages\Users\ManagerUserToRole.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.pages.Users.RegisterUser">
+    <Position X="21.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>pages\Users\RegisterUser.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Properties.Settings" Collapsed="true">
+    <Position X="62" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIgAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestionePEC.Routing.WebFormRouteHandler" BaseTypeListCollapsed="true">
+    <Position X="55" Y="11.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAgAIAA=</HashCode>
+      <FileName>Routing\WebFormRouteHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.339" Collapsed="true" />
+  </Class>
+  <Class Name="GestionePEC.Users.Register">
+    <Position X="44.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAAAAAACAQAAAIIAIAA=</HashCode>
+      <FileName>Users\Register.aspx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="GestionePEC.Master.IBaseMaster">
+    <Position X="50" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Master\IBaseMaster.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GestionePEC.pages.Interfaces.IAccessPage">
+    <Position X="48" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>pages\Interfaces\IAccessPage.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GestionePEC.pages.Interfaces.IHomePage">
+    <Position X="51.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>pages\Interfaces\IHomePage.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GestionePEC.Routing.IRoutablePage">
+    <Position X="53.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Routing\WebFormRouteHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Delegate Name="GestionePEC.Extensions.ControlEventHandler">
+    <Position X="48" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Extensions\BasePage.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1315,6 +1315,7 @@
     <Content Include="Ashx\TreeViewDataSource.ashx" />
     <Content Include="Ashx\TreeEnt.ashx" />
     <Content Include="Ashx\FileUploadHandler.ashx" />
+    <Content Include="GestionePEC.cd" />
     <None Include="Properties\PublishProfiles\Delta.pubxml" />
     <None Include="Properties\PublishProfiles\Localhost.pubxml" />
     <None Include="Properties\Settings.settings">

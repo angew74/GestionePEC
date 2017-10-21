@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Com.Delta.Web.Cache.CacheConfig">
+    <Position X="2.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Cache\CacheConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Cache.FoldersCollection">
+    <Position X="9.5" Y="0.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAACAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cache\CacheConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Cache.FolderElement">
+    <Position X="9" Y="11" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cache\CacheConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Cache.CacheManager&lt;T&gt;">
+    <Position X="4.5" Y="1.25" Width="4.75" />
+    <NestedTypes>
+      <Class Name="Com.Delta.Web.Cache.CacheManager&lt;T&gt;.RequiredBackEndDataEventArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Cache\CacheManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Delegate Name="Com.Delta.Web.Cache.CacheManager&lt;T&gt;.RequiredBackEndDataEventHandler" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Cache\CacheManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAACAQAAAAAABGAAAAQSyAAgAAgAAAAAAQAAAAAAAIA=</HashCode>
+      <FileName>Cache\CacheManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Cache.Types.TpuFile">
+    <Position X="9.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cache\ManagedTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Cache.Types.BinaryResource">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Cache\ManagedTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Cache.Types.TpuBinaryResource">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cache\ManagedTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Cache.Types.RolesFile">
+    <Position X="2.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cache\ManagedTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Cache.Schemes.ListaCodiceDescrizione">
+    <Position X="4" Y="8.25" Width="4.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="Com.Delta.Web.Cache.Schemes.ListaCodiceDescrizione.RigaRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Com.Delta.Web.Cache.Schemes.ListaCodiceDescrizione.RigaDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Com.Delta.Web.Cache.Schemes.ListaCodiceDescrizione.RigaRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Com.Delta.Web.Cache.Schemes.ListaCodiceDescrizione.RigaRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABwAAgAZABAAAQAAAAAgCQBgAAAAAAAEABBA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Cache.Schemes.ListaDecodificaMessaggi">
+    <Position X="16" Y="4.25" Width="4.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="Com.Delta.Web.Cache.Schemes.ListaDecodificaMessaggi.ErroreRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="Com.Delta.Web.Cache.Schemes.ListaDecodificaMessaggi.ErroreDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Com.Delta.Web.Cache.Schemes.ListaDecodificaMessaggi.ErroreRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="Com.Delta.Web.Cache.Schemes.ListaDecodificaMessaggi.ErroreRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAwAAAQJABAAAQAAAIAgCQBgAAAAAAAEAJBA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.MyPageEventHandler">
+    <Position X="9.75" Y="5.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAQACAA=</HashCode>
+      <FileName>MyPageEventHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.RegexUtils">
+    <Position X="11.75" Y="3.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>RegexUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Session.SessionManager">
+    <Position X="15" Y="1" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Session\SessionManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.Delta.Web.Session.SessionManager&lt;T&gt;">
+    <Position X="9" Y="8" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAQAwAAAAAAAAABAAQAAAAAAAAA=</HashCode>
+      <FileName>Session\SessionManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Com.Delta.Web.Cache.CacheKeys">
+    <Position X="0.5" Y="4.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>QEAEgAYAAgAgEMUCIBDKACIAiQCHIYEAAgCAABEEAAA=</HashCode>
+      <FileName>Cache\CacheKeys.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Com.Delta.Web.Cache.VincoloType">
+    <Position X="9.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Cache\CacheManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Com.Delta.Web.Session.SessionKeys">
+    <Position X="12.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAgAAEAACEAAAAAgAAAFIAAAAAABAAAAAQAQAAAAA=</HashCode>
+      <FileName>Session\SessionKeys.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

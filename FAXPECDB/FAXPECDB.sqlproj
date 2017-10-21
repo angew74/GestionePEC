@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>FAXPECDB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{73d16b25-be1c-4bd2-94b4-87c04c0bce8a}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>FAXPECDB</RootNamespace>
+    <AssemblyName>FAXPECDB</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="FAXPEC\" />
+    <Folder Include="FAXPEC\Tables\" />
+    <Folder Include="FAXPEC\Views\" />
+    <Folder Include="ssma_oracle\" />
+    <Folder Include="ssma_oracle\Functions\" />
+    <Folder Include="FAXPEC\Stored Procedures\" />
+    <Folder Include="Security\" />
+    <Folder Include="FAXPEC\Sequences\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="FAXPEC\Tables\FOLDERS.sql" />
+    <Build Include="FAXPEC\Tables\MAIL_CONTENT.sql" />
+    <Build Include="FAXPEC\Tables\MAIL_REFS_NEW.sql" />
+    <Build Include="FAXPEC\Tables\COMUNICAZIONI_ALLEGATI.sql" />
+    <Build Include="FAXPEC\Tables\ACTIONS.sql" />
+    <Build Include="FAXPEC\Tables\FOLDERS_SENDERS.sql" />
+    <Build Include="FAXPEC\Tables\ACTIONS_FOLDERS.sql" />
+    <Build Include="FAXPEC\Tables\COMUNICAZIONI.sql" />
+    <Build Include="FAXPEC\Tables\COMUNICAZIONI_CANALI.sql" />
+    <Build Include="FAXPEC\Tables\COMUNICAZIONI_DESTINATARI.sql" />
+    <Build Include="FAXPEC\Tables\COMUNICAZIONI_ENTITA_USED.sql" />
+    <Build Include="FAXPEC\Tables\COMUNICAZIONI_FLUSSO.sql" />
+    <Build Include="FAXPEC\Tables\COMUNICAZIONI_FLUSSO_PROT.sql" />
+    <Build Include="FAXPEC\Tables\COMUNICAZIONI_PROTOCOLLO.sql" />
+    <Build Include="FAXPEC\Tables\COMUNICAZIONI_SOTTOTITOLI.sql" />
+    <Build Include="FAXPEC\Tables\COMUNICAZIONI_TITOLI.sql" />
+    <Build Include="FAXPEC\Tables\IPA.sql" />
+    <Build Include="FAXPEC\Tables\LOG_ACTIONS.sql" />
+    <Build Include="FAXPEC\Tables\LOG_APP_CODES.sql" />
+    <Build Include="FAXPEC\Tables\LOG_APP_ERRORS.sql" />
+    <Build Include="FAXPEC\Tables\LOG_ERRORS.sql" />
+    <Build Include="FAXPEC\Tables\LOG_LOG_CODES.sql" />
+    <Build Include="FAXPEC\Tables\MAIL_INBOX.sql" />
+    <Build Include="FAXPEC\Tables\MAIL_INBOX_FLUSSO.sql" />
+    <Build Include="FAXPEC\Tables\MAIL_SENDERS.sql" />
+    <Build Include="FAXPEC\Tables\MAIL_SENDERS_TITOLI.sql" />
+    <Build Include="FAXPEC\Tables\MAIL_USERS_ADMIN_BACKEND.sql" />
+    <Build Include="FAXPEC\Tables\MAIL_USERS_BACKEND.sql" />
+    <Build Include="FAXPEC\Tables\MAIL_USERS_SENDER_BACKEND.sql" />
+    <Build Include="FAXPEC\Tables\MAILSERVERS.sql" />
+    <Build Include="FAXPEC\Tables\ROLES.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_ADDRESS.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_BACKEND.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_CONTATTI.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_CONTATTI_BACKEND.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_CONTATTI_TAGS.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_ENTITA.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_ENTITA_USED.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_MAPPING_PROTOCOLLO.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_REFERRAL_TYPE.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_REFERRAL_TYPE_TAGS.sql" />
+    <Build Include="FAXPEC\Tables\RUBR_TAGS.sql" />
+    <Build Include="FAXPEC\Tables\USERCLAIMS.sql" />
+    <Build Include="FAXPEC\Tables\USERLOGINS.sql" />
+    <Build Include="FAXPEC\Tables\USERROLES.sql" />
+    <Build Include="FAXPEC\Tables\USERS.sql" />
+    <Build Include="FAXPEC\Views\V_MAP_APPL_CONTATTI_NEW.sql" />
+    <Build Include="FAXPEC\Views\V_RUBR_CONTATTI.sql" />
+    <Build Include="FAXPEC\Views\V_COMUNICAZIONI_COMPLETE.sql" />
+    <Build Include="FAXPEC\Views\V_CONTATTI_RUBR_AND_IPA.sql" />
+    <Build Include="ssma_oracle\Functions\instr2_varchar.sql" />
+    <Build Include="ssma_oracle\Functions\get_active_spid.sql" />
+    <Build Include="ssma_oracle\Functions\get_active_login_time.sql" />
+    <Build Include="FAXPEC\Stored Procedures\VERIFY_MAPPING.sql" />
+    <Build Include="Security\FAXPEC.sql" />
+    <Build Include="Security\o2ss.sql" />
+    <Build Include="Security\ssma_oracle.sql" />
+    <Build Include="FAXPEC\Sequences\ACTIONS_FOLDERS_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\ACTIONS_FOLDERS_SEQ1.sql" />
+    <Build Include="FAXPEC\Sequences\ACTIONS_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\COM_DEST_PROT_ID_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\COM_PROT_FLUSSO_ID_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\COMUNE_ID_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\COMUNICAZIONI_ALLEGATI_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\COMUNICAZIONI_CANALI_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\COMUNICAZIONI_FLUSSO_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\COMUNICAZIONI_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\COMUNICAZIONI_SOTTOTITOLI_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\COMUNICAZIONI_TITOLI_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\FOLDERS_SENDERS_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\FOLDERS_SENDERS_SEQ1.sql" />
+    <Build Include="FAXPEC\Sequences\FOLDERS_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\FOLDERS_TIPOABILITAZIONI_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\ID_MAIL_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\LOG_ACTIONS_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\MAIL_ALLEGATI_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\MAIL_LIST_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\MAIL_REFS_NEW_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\MAIL_REFS_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\MAIL_INBOX_FLUSSO_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\MAIL_SENDERS_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\MAIL_SERVER_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\ROLES_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\RUBR_ADDRESS_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\RUBR_BACKEND_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\RUBR_CONTATTI_BACKEND_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\RUBR_CONTATTI_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\RUBR_ENTITA_USED_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\RUBR_MAPPING_PROT_ID_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\RUBR_TAGS_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\SEQ_USERCLAIMS_ID.sql" />
+    <Build Include="FAXPEC\Sequences\STATO_ID_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\TIPO_ABILITAZIONI_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\USER_BACKEND_SEQ.sql" />
+    <Build Include="FAXPEC\Sequences\USERS_SEQ.sql" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,12 @@
+﻿CREATE SEQUENCE [FAXPEC].[COMUNICAZIONI_SEQ]
+    AS NUMERIC (28)
+    START WITH 54808
+    INCREMENT BY 1
+    MINVALUE 0
+    MAXVALUE 9999999999
+    NO CACHE;
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_SSMA_SOURCE', @value = N'FAXPEC.COMUNICAZIONI_SEQ', @level0type = N'SCHEMA', @level0name = N'FAXPEC', @level1type = N'SEQUENCE', @level1name = N'COMUNICAZIONI_SEQ';
+
