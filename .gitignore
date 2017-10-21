@@ -240,3 +240,8 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/ModelingProjectPEC
+/GestionePEC/GestionePEC.cd
+/CodeMapPEC.dgml
+/Com.Delta.Web.png
+/Com.Delta.Web/Com.Delta.Web.cd

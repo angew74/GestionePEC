@@ -165,4 +165,7 @@
     <Build Include="FAXPEC\Sequences\USER_BACKEND_SEQ.sql" />
     <Build Include="FAXPEC\Sequences\USERS_SEQ.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeploymentFAXPEC.sql" />
+  </ItemGroup>
 </Project>
