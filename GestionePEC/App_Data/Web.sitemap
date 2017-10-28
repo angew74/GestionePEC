@@ -7,7 +7,7 @@
     <siteMapNode url="~/pages/MailClient/MailMove.aspx" title="Ricerca Storia Mail" roles="*"></siteMapNode>
     <siteMapNode url="~/pages/MailClient/NewMail.aspx" title="Creazione Comunicazione" roles="*"></siteMapNode>
   </siteMapNode>
-  <siteMapNode url="" title="Amministra Caselle" roles="*">
+  <siteMapNode url="" title="Amministra Caselle" roles="Administrator">
     <siteMapNode url="" title="Server Settings" roles="*">
     </siteMapNode>
     <siteMapNode url="~/pages/Administration/MailAdmin.aspx" title="Amministrazione" roles="*"></siteMapNode>
@@ -19,12 +19,12 @@
       </siteMapNode>
       <siteMapNode url="~/pages/Rubrica/AccessoMappatura.aspx" title="Accedi Mappatura" roles=""></siteMapNode>    
     </siteMapNode>
-    <siteMapNode url="" title="Gestione Utenti" roles="*">
+    <siteMapNode url="" title="Gestione Utenti" roles="Administrator">
       <siteMapNode url="~/pages/Users/RegisterUser.aspx" title="Registra Utente" roles="*">
       </siteMapNode>
       <siteMapNode url="~/pages/Users/ManagerUserToRole.aspx" title="Gestisci Utente Ruolo" roles=""></siteMapNode>
     </siteMapNode>
-    <siteMapNode url="" title="Gestione Ruoli" roles="*">
+    <siteMapNode url="" title="Gestione Ruoli" roles="Administrator">
       <siteMapNode url="~/pages/Roles/RegisterRole.aspx" title="Registra Ruolo" roles="*">
       </siteMapNode>      
     </siteMapNode>

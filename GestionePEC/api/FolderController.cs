@@ -3,10 +3,13 @@ using ActiveUp.Net.Mail.DeltaExt;
 using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
 using Com.Delta.Mail.MailMessage;
+using Com.Delta.Web.Cache;
+using GestionePEC.Extensions;
 using GestionePEC.Models;
 using log4net;
 using SendMail.BusinessEF;
 using SendMail.BusinessEF.MailFacedes;
+using SendMail.BusinessEF.Operations;
 using SendMail.Model;
 using System;
 using System.Collections.Generic;
@@ -109,7 +112,50 @@ namespace GestionePEC.api
 
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("api/FolderController/RegisterFolder")]
+        public HttpResponseMessage RegisterFolder(FormDataCollection formsValues)
+        {
 
+            FolderModel model = new FolderModel();
+            string NomeFolder = formsValues["NomeFolder"].Trim().ToUpper();
+            try
+            {
+                if (!(string.IsNullOrEmpty(NomeFolder)))
+                {
+                    FoldersService foldersservice = new FoldersService();
+                    Folder f = foldersservice.GetByName(NomeFolder);
+                    if (f != null && f.Id != 0)
+                    {
+                        model.message = "Folder già presente in archivio";
+                        model.success = "false";
+                        return this.Request.CreateResponse<FolderModel>(HttpStatusCode.OK, model);
+
+                    }
+                    List<decimal> ids = Helpers.CreateFolders(NomeFolder);
+                    Helpers.CreateActionsForFolders(ids[0], ids[1], ids[2], ids[3], NomeFolder, ids[4].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!ex.GetType().Equals(typeof(ManagedException)))
+                {
+                    ManagedException mEx = new ManagedException("Eccezione nella registrazione della cartella " + NomeFolder, "ERR_F016", string.Empty, ex.Message, null);
+                    ErrorLogInfo er = new ErrorLogInfo(mEx);
+                    er.objectID = null;
+                    log.Error(er);
+                    model.success = "false";
+                    model.message = mEx.Message;
+                }
+                else
+                {
+                    model.success = "false";
+                    model.message = ex.Message;
+                }
+            }
+            return this.Request.CreateResponse<FolderModel>(HttpStatusCode.OK, model);
+        }
 
         [Authorize]
         [HttpGet]
@@ -154,6 +200,8 @@ namespace GestionePEC.api
                     WebMailClientManager.SetAccount(account);
                 }
                 model.success = "true";
+                MailLocalService mailLocalService = new MailLocalService();
+                CacheManager<List<ActiveUp.Net.Common.DeltaExt.Action>>.set(CacheKeys.FOLDERS_ACTIONS, mailLocalService.GetFolderDestinationForAction());
             }
             catch (Exception ex)
             {

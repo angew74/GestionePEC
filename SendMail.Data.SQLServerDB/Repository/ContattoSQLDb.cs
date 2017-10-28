@@ -64,9 +64,15 @@ namespace SendMail.Data.SQLServerDB.Repository
 
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                throw;
+
+                ManagedException mEx = new ManagedException("Errore nella ricerca in rubrica dei contatti per organizzazione  Data Layer E077 Dettagli Errore: " + ex.Message,
+                            "ERR_077", string.Empty, string.Empty, ex.InnerException);
+                ErrorLogInfo err = new ErrorLogInfo(mEx);
+
+                _log.Error(err);
+                throw mEx;
             }
 
             return lContatti;
@@ -270,11 +276,11 @@ namespace SendMail.Data.SQLServerDB.Repository
                 {
                     case SendMail.Model.FastIndexedAttributes.RAGIONE_SOCIALE:
                         field = "RAGIONE_SOCIALE";
-                        querable = dbcontext.RUBR_ENTITA.Where(x => x.RAGIONE_SOCIALE.ToUpper().Contains(par.Value));
+                        querable = dbcontext.RUBR_ENTITA.Where(x => x.RAGIONE_SOCIALE.ToUpper().Contains(par.Value.ToUpper()));
                         break;
                     case SendMail.Model.FastIndexedAttributes.COGNOME:
                         field = "COGNOME";
-                        querable = dbcontext.RUBR_ENTITA.Where(x => x.COGNOME.ToUpper().Contains(par.Value));
+                        querable = dbcontext.RUBR_ENTITA.Where(x => x.COGNOME.ToUpper().Contains(par.Value.ToUpper()));
                         break;
                     case SendMail.Model.FastIndexedAttributes.FAX:
                         field = "FAX";
@@ -297,14 +303,14 @@ namespace SendMail.Data.SQLServerDB.Repository
                 if (!tEnt.Contains(SendMail.Model.EntitaType.ALL) && !tEnt.Contains(SendMail.Model.EntitaType.UNKNOWN))
                 {
                     var referrals = tEnt.Select(t => t.ToString()).ToArray();
-                    querable = dbcontext.RUBR_ENTITA.Where(x => referrals.Contains(x.REFERRAL_TYPE));
+                    querable = querable.Where(x => referrals.Contains(x.REFERRAL_TYPE));
                 }
                 try
                 {
                     int tot = querable.Count();
                     res.Per = (tot > per) ? per : tot;
                     res.Totale = tot;
-                    List<RUBR_ENTITA> list = querable.Skip(res.Da).Take(res.Per).ToList();
+                    List<RUBR_ENTITA> list = querable.OrderBy(f=>f.ID_REFERRAL).Skip(res.Da).Take(res.Per).ToList();
                     foreach (RUBR_ENTITA r in list)
                     {
                         res.List.Add(
@@ -318,10 +324,17 @@ namespace SendMail.Data.SQLServerDB.Repository
                                              100));
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
+                    ManagedException mEx = new ManagedException("Errore nella ricerca in rubrica dell'entità o contatto  Data Layer E075 Dettagli Errore: " + ex.Message,
+                                "ERR_075", string.Empty, string.Empty, ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+
+                    _log.Error(err);
                     int tot = 0;
                     res.List = null;
+                    throw mEx;
+                   
                 }
 
 

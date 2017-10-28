@@ -53,7 +53,7 @@
                         <tr>
                             <td>
                                 <asp:HyperLink ID="imgMenu" ToolTip="Vai al menu delle applicazioni" ImageAlign="Middle"
-                                    NavigateUrl="http://uniapp.comune.roma/menu/" Visible="true" runat="server" ImageUrl="~/App_Themes/Delta/images/buttons/home.png"></asp:HyperLink>
+                                    NavigateUrl="http://deltasi.it" Visible="true" runat="server" ImageUrl="~/App_Themes/Delta/images/buttons/home.png"></asp:HyperLink>
                                 </td>
                         <asp:LoginView ID="LoginView1" runat="server">
                                 <LoggedInTemplate>

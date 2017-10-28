@@ -163,6 +163,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Send\ComunicazioneConverter.cs" />
+    <Compile Include="Send\SenderMail.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\ActiveUp.Net\ActiveUp.Net.Common\ActiveUp.Net.Common.csproj">
@@ -252,9 +254,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Send\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

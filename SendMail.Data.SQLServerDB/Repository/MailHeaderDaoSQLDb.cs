@@ -279,58 +279,82 @@ namespace SendMail.Data.SQLServerDB.Repository
                             throw ex;
                     }
 
-                    oCmd.CommandText = "WITH M_CON AS (SELECT REF_ID_COM,"
-                                                          + " ROW_NUMBER() OVER (ORDER BY REF_ID_COM DESC) AS RN"
-                                                   + " FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] MC"
-                                                   + " WHERE MAIL_SENDER = '" + account +
-                                     "' AND FOLDERTIPO='O' AND FOLDERID=" + folder + ")"
-                                    + " SELECT TO_CHAR(MC.ID_MAIL) AS \"MAIL_ID\""
-                                          + ", MC.MAIL_SENDER AS \"MAIL_FROM\""
-                                          + ", MC.MAIL_SUBJECT"
-                                          + ", SUBSTR(MC.MAIL_TEXT, 1 ,150) as \"MAIL_TEXT\""
-                                          + ", FOLDERID "
-                                          + ", FOLDERTIPO "
-                                          + ", R.\"MAIL_TO\""
-                                          + ", '' as \"MAIL_CC\""
-                                          + ", '' as \"MAIL_CCN\""
-                                          + ", FL.STATO_COMUNICAZIONE_NEW "
-                                          + " AS \"STATUS_MAIL\""
-                                          + ", FL1.DATA_OPERAZIONE "
-                                          + " AS \"DATA_INVIO\""
-                                          + ", (SELECT MAX(DATA_OPERAZIONE)"
-                                            + " FROM COMUNICAZIONI_FLUSSO"
-                                            + " WHERE REF_ID_COM = MC.REF_ID_COM"
-                                            + " AND STATO_COMUNICAZIONE_NEW IN ('" + (int)MailStatus.AVVENUTA_CONSEGNA + "', '" + (int)MailStatus.ERRORE_CONSEGNA + "')"
-                                            + ") AS \"DATA_RICEZIONE\""
-                                          + ", MC.FLG_ANNULLAMENTO AS \"STATUS_SERVER\""
-                                          + ", NULL as \"FLG_RATING\""
-                                          + ", DECODE((SELECT COUNT(*)"
-                                                   + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_ALLEGATI] al "
-                                                   + " WHERE al.REF_ID_COM = MC.REF_ID_COM), 0, '0', '1') AS \"FLG_ATTACHMENTS\""
-                                          + ", (SELECT UTE_OPE"
-                                            + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] fu "
-                                            + " WHERE fu.REF_ID_COM = MC.REF_ID_COM"
-                                            + " AND STATO_COMUNICAZIONE_NEW = '" + (int)MailStatus.INSERTED + "'"
-                                            + ") AS \"UTENTE\" ,0 AS MSG_LENGTH "
-                                    + " FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] MC"
-                                    + " LEFT OUTER JOIN [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FL ON  MC.REF_ID_FLUSSO_ATTUALE=FL.ID_FLUSSO "
-                                    + " LEFT OUTER JOIN [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FL1 ON MC.REF_ID_FLUSSO_INSERIMENTO=FL1.ID_FLUSSO "
-                                    + " LEFT OUTER JOIN (SELECT REF_ID_MAIL, \"MAIL_TO\""
-                                                     + " FROM (SELECT REF_ID_MAIL, TIPO_REF, MAIL_DESTINATARIO"
-                                                           + " FROM [FAXPEC].[FAXPEC].[MAIL_REFS_NEW])"
-                                                     + " PIVOT"
-                                                     + " (LISTAGG(MAIL_DESTINATARIO, ';') within group (order by TIPO_REF)"
-                                                     + " FOR TIPO_REF in"
-                                                     + " ('TO' as \"MAIL_TO\"))"
-                                                     + " ORDER BY REF_ID_MAIL) R"
-                                    + " ON MC.ID_MAIL = R.REF_ID_MAIL"
-                                    + " WHERE MAIL_SENDER = '" + account +
-                                     "' AND FOLDERTIPO='O' AND FOLDERID=" + folder
-                                    + " AND MC.REF_ID_COM  IN (SELECT REF_ID_COM"
-                                                            + " FROM M_CON"
-                                                            + " WHERE RN BETWEEN " + da + " AND " + (da + per - 1) + ")"
-                                    + " ORDER BY DATA_INVIO DESC";
-
+                    //oCmd.CommandText = "WITH M_CON AS (SELECT REF_ID_COM,"
+                    //                                      + " ROW_NUMBER() OVER (ORDER BY REF_ID_COM DESC) AS RN"
+                    //                               + " FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] MC"
+                    //                               + " WHERE MAIL_SENDER = '" + account +
+                    //                 "' AND FOLDERTIPO='O' AND FOLDERID=" + folder + ")"
+                    //                + " SELECT TO_CHAR(MC.ID_MAIL) AS \"MAIL_ID\""
+                    //                      + ", MC.MAIL_SENDER AS \"MAIL_FROM\""
+                    //                      + ", MC.MAIL_SUBJECT"
+                    //                      + ", SUBSTR(MC.MAIL_TEXT, 1 ,150) as \"MAIL_TEXT\""
+                    //                      + ", FOLDERID "
+                    //                      + ", FOLDERTIPO "
+                    //                      + ", R.\"MAIL_TO\""
+                    //                      + ", '' as \"MAIL_CC\""
+                    //                      + ", '' as \"MAIL_CCN\""
+                    //                      + ", FL.STATO_COMUNICAZIONE_NEW "
+                    //                      + " AS \"STATUS_MAIL\""
+                    //                      + ", FL1.DATA_OPERAZIONE "
+                    //                      + " AS \"DATA_INVIO\""
+                    //                      + ", (SELECT MAX(DATA_OPERAZIONE)"
+                    //                        + " FROM COMUNICAZIONI_FLUSSO"
+                    //                        + " WHERE REF_ID_COM = MC.REF_ID_COM"
+                    //                        + " AND STATO_COMUNICAZIONE_NEW IN ('" + (int)MailStatus.AVVENUTA_CONSEGNA + "', '" + (int)MailStatus.ERRORE_CONSEGNA + "')"
+                    //                        + ") AS \"DATA_RICEZIONE\""
+                    //                      + ", MC.FLG_ANNULLAMENTO AS \"STATUS_SERVER\""
+                    //                      + ", NULL as \"FLG_RATING\""
+                    //                      + ", DECODE((SELECT COUNT(*)"
+                    //                               + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_ALLEGATI] al "
+                    //                               + " WHERE al.REF_ID_COM = MC.REF_ID_COM), 0, '0', '1') AS \"FLG_ATTACHMENTS\""
+                    //                      + ", (SELECT UTE_OPE"
+                    //                        + " FROM [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] fu "
+                    //                        + " WHERE fu.REF_ID_COM = MC.REF_ID_COM"
+                    //                        + " AND STATO_COMUNICAZIONE_NEW = '" + (int)MailStatus.INSERTED + "'"
+                    //                        + ") AS \"UTENTE\" ,0 AS MSG_LENGTH "
+                    //                + " FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] MC"
+                    //                + " LEFT OUTER JOIN [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FL ON  MC.REF_ID_FLUSSO_ATTUALE=FL.ID_FLUSSO "
+                    //                + " LEFT OUTER JOIN [FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] FL1 ON MC.REF_ID_FLUSSO_INSERIMENTO=FL1.ID_FLUSSO "
+                    //                + " LEFT OUTER JOIN (SELECT REF_ID_MAIL, \"MAIL_TO\""
+                    //                                 + " FROM (SELECT REF_ID_MAIL, TIPO_REF, MAIL_DESTINATARIO"
+                    //                                       + " FROM [FAXPEC].[FAXPEC].[MAIL_REFS_NEW])"
+                    //                                 + " PIVOT"
+                    //                                 + " (LISTAGG(MAIL_DESTINATARIO, ';') within group (order by TIPO_REF)"
+                    //                                 + " FOR TIPO_REF in"
+                    //                                 + " ('TO' as \"MAIL_TO\"))"
+                    //                                 + " ORDER BY REF_ID_MAIL) R"
+                    //                + " ON MC.ID_MAIL = R.REF_ID_MAIL"
+                    //                + " WHERE MAIL_SENDER = '" + account +
+                    //                 "' AND FOLDERTIPO='O' AND FOLDERID=" + folder
+                    //                + " AND MC.REF_ID_COM  IN (SELECT REF_ID_COM"
+                    //                                        + " FROM M_CON"
+                    //                                        + " WHERE RN BETWEEN " + da + " AND " + (da + per - 1) + ")"
+                    //                + " ORDER BY DATA_INVIO DESC";
+                    oCmd.CommandText = " WITH M_CON AS (SELECT REF_ID_COM, ROW_NUMBER() OVER(ORDER BY REF_ID_COM DESC) AS RN " +
+ " FROM[FAXPEC].[FAXPEC].[MAIL_CONTENT] MC WHERE MAIL_SENDER = '" + account + "'" +
+    " AND FOLDERTIPO='O' AND FOLDERID=" + folder + ")" + 
+  " SELECT convert(varchar, MC.ID_MAIL) AS 'MAIL_ID', MC.MAIL_SENDER AS 'MAIL_FROM', " + 
+  " MC.MAIL_SUBJECT, SUBSTRING(MC.MAIL_TEXT, 1, 150) as 'MAIL_TEXT', FOLDERID, " +
+   " FOLDERTIPO, R.MAIL_TO, '' as 'MAIL_CC', '' as 'MAIL_CCN', FL.STATO_COMUNICAZIONE_NEW " +
+"  AS 'STATUS_MAIL', FL1.DATA_OPERAZIONE  AS 'DATA_INVIO', (SELECT MAX(DATA_OPERAZIONE) " +
+"    FROM FAXPEC.COMUNICAZIONI_FLUSSO " +
+ "   WHERE REF_ID_COM = MC.REF_ID_COM  "
+    + " AND STATO_COMUNICAZIONE_NEW IN ('" + (int)MailStatus.AVVENUTA_CONSEGNA + "', '" + (int)MailStatus.ERRORE_CONSEGNA + "'))"+
+ " AS 'DATA_RICEZIONE', MC.FLG_ANNULLAMENTO AS 'STATUS_SERVER', NULL as 'FLG_RATING', " +
+  "  IIF(((SELECT COUNT(*) FROM[FAXPEC].[FAXPEC].[COMUNICAZIONI_ALLEGATI] al " +
+"     WHERE  al.REF_ID_COM = MC.REF_ID_COM) = 0), '0', '1') AS 'FLG_ATTACHMENTS', " +
+	"   (SELECT UTE_OPE FROM[FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] " +
+   "     fU WHERE fu.REF_ID_COM = MC.REF_ID_COM AND " +
+   "  STATO_COMUNICAZIONE_NEW = '" + (int)MailStatus.INSERTED + "') AS 'UTENTE' ,0 AS MSG_LENGTH  FROM " +
+    "   [FAXPEC].[FAXPEC].[MAIL_CONTENT] " +
+       " MC LEFT OUTER JOIN[FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] " +
+      "   FL ON MC.REF_ID_FLUSSO_ATTUALE=FL.ID_FLUSSO LEFT OUTER JOIN[FAXPEC].[FAXPEC].[COMUNICAZIONI_FLUSSO] " +
+     "   FL1 ON MC.REF_ID_FLUSSO_INSERIMENTO=FL1.ID_FLUSSO LEFT OUTER JOIN " +
+" (SELECT REF_ID_MAIL, MAIL_DESTINATARIO AS 'MAIL_TO'  FROM[FAXPEC].MAIL_REFS_NEW " +
+" ) R ON MC.ID_MAIL = R.REF_ID_MAIL WHERE MAIL_SENDER = '"+ account + "' "+
+"	 AND FOLDERTIPO = 'O' AND FOLDERID = " + folder + " AND MC.REF_ID_COM  IN (SELECT REF_ID_COM FROM " +
+  "  M_CON WHERE RN BETWEEN " + da + " AND " + (da + per - 1) + ")" +
+" ORDER BY DATA_INVIO DESC ";
                     try
                     {
                         res.List = new List<MailHeaderExtended>();
@@ -747,37 +771,52 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
             IList<SimpleTreeItem> mailTree = null;
 
-            string query = "WITH T_MAIL(ID_MAIL, FOLLOWS, MAIL_SUBJECT, IND_MAIL, FOLDER) AS"
-                            + " (SELECT ID_MAIL, FOLLOWS, MAIL_SUBJECT, COALESCE(MAIL_TO, MAIL_CC, MAIL_CCN), 'I'"
-                             + " FROM MAIL_INBOX"
-                             + " WHERE MAIL_ACCOUNT = @p_MAIL_ACCOUNT"
-                             + " UNION"
-                             + " SELECT ID_MAIL, FOLLOWS, TO_CHAR(MAIL_SUBJECT), COALESCE(MAIL_TO, MAIL_CC, MAIL_CCN), 'O'"
-                             + " FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] MC INNER JOIN ("
-                                  + " SELECT *"
-                                  + " FROM MAIL_REFS_NEW"
-                                  + " PIVOT"
-                                  + " (LISTAGG(MAIL_DESTINATARIO, ';') WITHIN GROUP (ORDER BY ID_REF)"
-                                    + " FOR TIPO_REF IN"
-                                        + " ('TO' AS \"MAIL_TO\","
-                                         + " 'CC' AS \"MAIL_CC\","
-                                         + " 'CCN' AS \"MAIL_CCN\")"
-                                   + " )"
-                             + " ) MRN"
-                             + " ON MC.ID_MAIL = MRN.REF_ID_MAIL"
-                             + " WHERE MAIL_SENDER = '" + account + "' ),"
-                         + " T_MAIL_ROOT(ID_MAIL) AS"
-                            + " (SELECT DISTINCT LAST_VALUE(ID_MAIL) OVER ()"
-                             + " FROM T_MAIL"
-                             + " START WITH ID_MAIL =" + idMail
-                             + " CONNECT BY NOCYCLE PRIOR FOLLOWS = ID_MAIL)"
-                         + " SELECT *"
-                         + " FROM T_MAIL"
-                         + " START WITH ID_MAIL = (SELECT ID_MAIL"
-                                               + " FROM T_MAIL_ROOT"
-                                               + " WHERE ROWNUM = 1)"
-                         + " CONNECT BY NOCYCLE FOLLOWS = PRIOR ID_MAIL";
-
+            //string query = "WITH T_MAIL(ID_MAIL, FOLLOWS, MAIL_SUBJECT, IND_MAIL, FOLDER) AS"
+            //                + " (SELECT ID_MAIL, FOLLOWS, MAIL_SUBJECT, COALESCE(MAIL_TO, MAIL_CC, MAIL_CCN), 'I'"
+            //                 + " FROM MAIL_INBOX"
+            //                 + " WHERE MAIL_ACCOUNT = '" + account + "'"
+            //                 + " UNION"
+            //                 + " SELECT ID_MAIL, FOLLOWS, TO_CHAR(MAIL_SUBJECT), COALESCE(MAIL_TO, MAIL_CC, MAIL_CCN), 'O'"
+            //                 + " FROM [FAXPEC].[FAXPEC].[MAIL_CONTENT] MC INNER JOIN ("
+            //                      + " SELECT *"
+            //                      + " FROM MAIL_REFS_NEW"
+            //                      + " PIVOT"
+            //                      + " (LISTAGG(MAIL_DESTINATARIO, ';') WITHIN GROUP (ORDER BY ID_REF)"
+            //                        + " FOR TIPO_REF IN"
+            //                            + " ('TO' AS \"MAIL_TO\","
+            //                             + " 'CC' AS \"MAIL_CC\","
+            //                             + " 'CCN' AS \"MAIL_CCN\")"
+            //                       + " )"
+            //                 + " ) MRN"
+            //                 + " ON MC.ID_MAIL = MRN.REF_ID_MAIL"
+            //                 + " WHERE MAIL_SENDER = '" + account + "' ),"
+            //             + " T_MAIL_ROOT(ID_MAIL) AS"
+            //                + " (SELECT DISTINCT LAST_VALUE(ID_MAIL) OVER ()"
+            //                 + " FROM T_MAIL"
+            //                 + " START WITH ID_MAIL =" + idMail
+            //                 + " CONNECT BY NOCYCLE PRIOR FOLLOWS = ID_MAIL)"
+            //             + " SELECT *"
+            //             + " FROM T_MAIL"
+            //             + " START WITH ID_MAIL = (SELECT ID_MAIL"
+            //                                   + " FROM T_MAIL_ROOT"
+            //                                   + " WHERE ROWNUM = 1)"
+            //             + " CONNECT BY NOCYCLE FOLLOWS = PRIOR ID_MAIL";
+            string query = "wITH T_MAIL(ID_MAIL, FOLLOWS, MAIL_SUBJECT, IND_MAIL, FOLDER) " +
+ " AS (SELECT ID_MAIL, FOLLOWS, MAIL_SUBJECT, COALESCE(MAIL_TO, MAIL_CC, MAIL_CCN), 'I' " +
+ "  FROM FAXPEC.MAIL_INBOX WHERE MAIL_ACCOUNT = 'n.ruberto@deltamanagement.it' UNION SELECT ID_MAIL, FOLLOWS, " +
+  " MAIL_SUBJECT, MAIL_DESTINATARIO, 'O' FROM[FAXPEC].[FAXPEC].[MAIL_CONTENT] MC " +
+  "  INNER JOIN  FAXPEC.MAIL_REFS_NEW " +
+  "   MRN ON MC.ID_MAIL = MRN.REF_ID_MAIL WHERE MAIL_SENDER = '" + account + "'),  " +
+    " T_MAIL_ROOT(ID_MAIL) AS(SELECT DISTINCT LAST_VALUE(ID_MAIL) OVER(PARTITION BY ID_MAIL ORDER BY ID_MAIL) FROM T_MAIL " +
+ "     WHERE ID_MAIL =" + idMail + "  UNION ALL " +
+ "   SELECT child.ID_MAIL FROM[FAXPEC].[FAXPEC].MAIL_INBOX AS CHILD JOIN T_MAIL AS PARENT " +
+  "   ON PARENT.ID_MAIL = CHILD.FOLLOWS) " +
+"     SELECT* FROM T_MAIL WHERE " +
+ "     ID_MAIL = " +
+  "    (SELECT ID_MAIL FROM T_MAIL_ROOT " +
+   "    UNION ALL " +
+   "    SELECT CHILD1.ID_MAIL FROM[FAXPEC].[FAXPEC].MAIL_INBOX AS CHILD1 JOIN T_MAIL AS PARENT " +
+" ON PARENT.ID_MAIL=CHILD1.FOLLOWS) ";
             using (FAXPECContext dbcontext = new FAXPECContext())
             {
                 using (var oCmd = dbcontext.Database.Connection.CreateCommand())
@@ -789,7 +828,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         mailTree = new List<SimpleTreeItem>();
                         while (r.Read())
                         {
-                            mailTree.Add(DaoSQLServerDBHelper.MapToSimpleTreeItem(r));
+                            mailTree.Add(DaoSQLServerDBHelper.MapToSimpleTreeItemForMail(r));
                         }
                     }
                     oCmd.Connection.Close();
@@ -854,13 +893,14 @@ namespace SendMail.Data.SQLServerDB.Repository
                         //                + " WHERE MAIL_SERVER_ID IN ('" + String.Join("','", idMail.ToArray()) + "')"
                         //                + " AND MAIL_ACCOUNT = '" + account + "'";
                         try
-                        {                                                                                           
-                            resp = dbcontext.Database.ExecuteSqlCommand("INSERT INTO [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] (REF_ID_MAIL, STATUS_MAIL_OLD, STATUS_MAIL_NEW, UTE_OPE)"
-                                        + " SELECT ID_MAIL, STATUS_MAIL, '"
-                                        + createStatusMail(actionid) + "', '" + (utente ?? "SYSTEM") + "'"
-                                        + " FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] "
-                                        + " WHERE MAIL_SERVER_ID IN ('" + String.Join("','", idMail.ToArray()) + "')"
-                                        + " AND MAIL_ACCOUNT = '" + account + "'");
+                        {
+                        string sql = "INSERT INTO [FAXPEC].[FAXPEC].[MAIL_INBOX_FLUSSO] (REF_ID_MAIL, STATUS_MAIL_OLD, STATUS_MAIL_NEW, UTE_OPE)"
+                                       + " SELECT ID_MAIL, STATUS_MAIL, '"
+                                       + createStatusMail(actionid) + "', '" + (utente ?? "SYSTEM") + "'"
+                                       + " FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] "
+                                       + " WHERE MAIL_SERVER_ID IN ('" + String.Join("','", idMail.ToArray()) + "')"
+                                       + " AND MAIL_ACCOUNT = '" + account + "'";
+                            resp = dbcontext.Database.ExecuteSqlCommand(sql);
                             //ExecuteNonQuery();                         
                             if (resp != idMail.Count)
                             {
@@ -2963,7 +3003,7 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
 
             pars = new List<SqlParameter>();
-            StringBuilder sb = new StringBuilder("SELECT count(*) FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] WHERE");
+            StringBuilder sb = new StringBuilder("SELECT count(*) FROM [FAXPEC].[FAXPEC].[MAIL_INBOX] mi WHERE");
             if (!string.IsNullOrEmpty(account))
             {
                 sb.Append(" mail_account = @p_ACCOUNT ");

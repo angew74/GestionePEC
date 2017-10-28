@@ -42,9 +42,9 @@ namespace GestionePEC.api
                     if (listMailSender != null && listMailSender.Count > 0)
                     {
                         listMailSender = listMailSender.OrderBy(ms => ms.EmailAddress).ToList();
+                        model.Totale = listMailSender.Count.ToString();
+                        model.ListBackendUsers = listMailSender.Skip(starti).Take(recordPagina).ToList();
                     }
-                    model.Totale = listMailSender.Count.ToString();
-                    model.ListBackendUsers = listMailSender.Skip(starti).Take(recordPagina).ToList();
                 }
                 else
                 {

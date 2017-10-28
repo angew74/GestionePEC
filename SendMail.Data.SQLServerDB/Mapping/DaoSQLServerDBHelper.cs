@@ -180,10 +180,11 @@ namespace SendMail.Data.SQLServerDB.Mapping
             MAIL_USERS_BACKEND m = new MAIL_USERS_BACKEND()
             {
                 USER_NAME = u.UserName,
+                ID_USER = u.UserId,
                 COGNOME = u.Cognome,
                 DEPARTMENT = u.Department,
+                ROLE = u.RoleMail.ToString(),
                 NOME = u.Nome,
-                ROLE = "0",
                 CODICE_FISCALE = u.CodiceFiscale,
                 DOMAIN = u.Domain
             };
@@ -344,6 +345,16 @@ namespace SendMail.Data.SQLServerDB.Mapping
             return t;
         }
 
+        internal static SimpleTreeItem MapToSimpleTreeItemForMail(IDataRecord dr)
+        {
+            SimpleTreeItem t = new SimpleTreeItem();
+            t.Value = dr["ID_MAIL"].ToString();
+            t.Text = dr["FOLLOWS"].ToString();
+            t.SubType = dr["MAIL_SUBJECT"].ToString();
+            t.Source = dr["IND_MAIL"].ToString();
+            t.Padre = dr["FOLDER"].ToString();
+            return t;
+        }
 
         internal static MailHeaderExtended MapToMailHeaderExtended(IDataRecord dr)
         {
@@ -353,7 +364,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
             me.Date = dr.GetDateTime("DATA_INVIO");
             me.From = dr.GetString("MAIL_FROM");
             me.MailPartialText = dr.GetString("MAIL_TEXT");
-            me.MailStatus = (MailStatus)Enum.Parse(typeof(MailStatus), dr.GetString("STATUS_MAIL"));
+            me.MailStatus = (dr.GetString("STATUS_MAIL") == "") ? MailStatus.INSERTED : (MailStatus)Enum.Parse(typeof(MailStatus),dr.GetString("STATUS_MAIL"));
             me.ReceiveDate = dr.GetDateTime("DATA_RICEZIONE");
             if (me.Date.ToString("dd/MM/yyyy") == "01/01/0001")
             { me.Date = me.ReceiveDate; }
@@ -366,7 +377,9 @@ namespace SendMail.Data.SQLServerDB.Mapping
             me.Utente = dr.GetString("UTENTE");
             me.FolderId = dr.GetDecimal("FOLDERID");
             me.FolderTipo = dr.GetString("FOLDERTIPO");
-            me.Dimensione = (int)dr.GetDecimal("msg_length");
+            if (dr.GetValue("msg_length").ToString() == "0")
+            { me.Dimensione = 0; }
+            else { me.Dimensione = (int)dr.GetDecimal("msg_length"); }
             me.NomeFolder = dr.GetString("NOME");
             return me;
         }

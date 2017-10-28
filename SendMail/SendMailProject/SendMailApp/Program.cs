@@ -46,7 +46,6 @@ namespace SendMailApp
             {
                 if (!e.GetType().Equals(typeof(ManagedException)))
                 {
-                    //TASK: Allineamento log - Ciro
                     ManagedException mEx = new ManagedException("Errore nei parametri in ingresso. Mail: " + mail.ToString(),
                         LOG_ERR + "001",
                         "Main(string[] args)",
@@ -55,10 +54,6 @@ namespace SendMailApp
                     ErrorLogInfo err = new ErrorLogInfo(mEx);
                     _log.Error(err);
                 }
-                //ManagedException mEx = new ManagedException("Errore nei parametri in ingresso",
-                //    LOG_ERR + "001", "Main(string[] args)", null, e);
-                //ErrorLogInfo err = new ErrorLogInfo(APP_CODE, mEx);
-                //_log.Error(err);
             }
             if (maxNrMail == 0)
             {
@@ -88,7 +83,7 @@ namespace SendMailApp
                     {
                         if (!e.GetType().Equals(typeof(ManagedException)))
                         {
-                            //TASK: Allineamento log - Ciro
+                            
                             ManagedException mEx = new ManagedException("Oggetto mutex non rilasciato dall'applicazione precedente. Mail: " + mail.ToString(),
                                 "PRG_002",
                                 "Main(string[] args)",
@@ -97,24 +92,21 @@ namespace SendMailApp
                             ErrorLogInfo err = new ErrorLogInfo(mEx);
                             _log.Error(err);
                         }
-                        //ManagedException mEx = new ManagedException("Oggetto mutex non rilasciato dall'applicazione precedente",
-                        //    "PRG_001", "", "", e);
-                        //ErrorLog err = new ErrorLog(APP_CODE, mEx);
-                        //_log.Error(err);
+                       
                     }
 
                     string tipoOp = operazione ?? ConfigurationManager.AppSettings.Get("OperationType").ToUpper();
                     switch (tipoOp)
                     {
                         case "SEND":
-                           // SenderMail.Send(mail, maxNrMail);
+                            SenderMail.Send(mail, maxNrMail);
                             break;
                         case "RECEIVE":
                             ReceiverMail.Receive(mail);
                             break;
                         case "ALL":
                             ReceiverMail.Receive(mail);
-                          //  SenderMail.Send(mail, maxNrMail);
+                            SenderMail.Send(mail, maxNrMail);
                             break;
                         default:
                             throw new ArgumentException("Operazione non gestita");
@@ -125,7 +117,7 @@ namespace SendMailApp
                 {
                     if (!ex.GetType().Equals(typeof(ManagedException)))
                     {
-                        //TASK: Allineamento log - Ciro
+                      
                         ManagedException mEx = new ManagedException("Errore nell'applicazione di invio. Utente: " + mail.ToString(),
                             "PRG_003",
                             string.Empty,
@@ -136,10 +128,6 @@ namespace SendMailApp
                         ErrorLogInfo err = new ErrorLogInfo(mEx);
                         _log.Error(err);
                     }
-                    //ManagedException mEx = new ManagedException("Errore nell'applicazione di invio",
-                    //        "PRG_002", "", ex.StackTrace + " " + ex.InnerException, ex);
-                    //ErrorLog err = new ErrorLog(APP_CODE, mEx);
-                    //_log.Error(err);
                 }
                 finally
                 {

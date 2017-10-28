@@ -1751,47 +1751,15 @@ div#navigationRightContainer
 	vertical-align:middle;
 }
 
-#pnlElencoUtenti{
-    flex-direction: row;
-}
-
-#pnlGestioneFolders{
-    flex-direction: row;
-}
-
-
-#utentiNonAbilitati div {
-    overflow: auto;
-    flex:1;
-   /* height: 400px;*/
-  }
-
-#utentiAbilitati div{
-    overflow: auto; 
-    height: 400px; 
-   }
-
-#utentiMail div{
-    overflow: auto; 
-    height: 400px; 
-   
-}
-
-#utentiAdmin div{
-    overflow: auto; 
-    height: 400px; 
-    
-}
-
-#cartelleNonAbilitate div{
-    overflow: auto; 
-    height: 400px; 
-   
+.displaymail
+{
+    color:!important maroon;
+    font-style:!important italic;
+    font-weight:!important bold;
 }
 
 
-#cartelleAbilitate div{
-    overflow: auto; 
-    height: 400px; 
-    
-}
+
+
+
+

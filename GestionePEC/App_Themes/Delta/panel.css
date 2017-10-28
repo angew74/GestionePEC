@@ -216,7 +216,7 @@
 	padding-bottom:3px;
 	background-color: #F7FAFF;
 	border: solid 1px #99bbe8; 
-	border-top: solid 0px #99bbe8; 
+	/*border-top: solid 0px #99bbe8; */
 }
 
 .control-body

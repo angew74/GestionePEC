@@ -67,6 +67,7 @@
     <Folder Include="FAXPEC\Stored Procedures\" />
     <Folder Include="Security\" />
     <Folder Include="FAXPEC\Sequences\" />
+    <Folder Include="dati" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="FAXPEC\Tables\FOLDERS.sql" />
@@ -164,6 +165,21 @@
     <Build Include="FAXPEC\Sequences\TIPO_ABILITAZIONI_SEQ.sql" />
     <Build Include="FAXPEC\Sequences\USER_BACKEND_SEQ.sql" />
     <Build Include="FAXPEC\Sequences\USERS_SEQ.sql" />
+    <None Include="dati\comunicazioni_sottotitoli.sql" />
+    <None Include="dati\comunicazioni_titoli.sql" />
+    <None Include="dati\DisabilitazioneTrigger.sql" />
+    <None Include="dati\FAXPECDati.sql" />
+    <None Include="dati\mail_senders.sql" />
+    <None Include="dati\mail_senders_titoli.sql" />
+    <None Include="dati\mail_servers.sql" />
+    <None Include="dati\mail_users_admin_backend.sql" />
+    <None Include="dati\mail_users_backend.sql" />
+    <None Include="dati\mail_users_sender_backend.sql" />
+    <None Include="dati\rubr_address.sql" />
+    <None Include="dati\rubr_backend.sql" />
+    <None Include="dati\rubr_contatti.sql" />
+    <None Include="dati\rubr_contatti_backend.sql" />
+    <None Include="dati\rubr_entita.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeploymentFAXPEC.sql" />

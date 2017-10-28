@@ -1,35 +1,32 @@
 ﻿<%@ Page Title="Configurazione Caselle mail" Language="C#" Theme="Delta" MasterPageFile="~/Master/Mail.Master" AutoEventWireup="true" CodeBehind="MailConfiguration.aspx.cs" Inherits="GestionePEC.pages.Administration.MailConfiguration" %>
+
 <%@ Register Src="~/Controls/MailBoxNavigator.ascx" TagName="MailNav" TagPrefix="mail" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="WestContentPlaceHolder" runat="server">
-      <mail:MailNav ID="Navigator" runat="server" />
+    <mail:MailNav ID="Navigator" runat="server" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
-     <div class="content-panel-borderless">
+    <div class="content-panel-borderless">
         <div class="header-panel-blue">
             <div class="header-title">
                 <div class="header-text-left">
                     <label>
-                        Gestione Mail</label>
+                        Configurazione Caselle</label>
                 </div>
                 <div class="header-text-right">
                 </div>
             </div>
         </div>
-          <div id="container" class="control-main">
-            <div id="divparole" class="control-header-blue">
-                <div class="header-title">
-                    <div class="header-text-left">
-                        <label>Configurazione Caselle Posta</label>
-                    </div>                  
-                </div>
-            </div>          
+        <div id="container" class="control-main">
             <div class="control-body-gray">
-            <div id="GridUtentiMail"></div>
-              <div id="summary"></div>
+                <div id="GridUtentiMail"></div>
+                <div id="summary"></div>
             </div>
-                 <div id="EmailField"></div>
-              <div id="IdEmailField"></div>
+            <div class="control-body-gray">
+                <div id="EmailField"></div>
+                <div id="IdEmailField"></div>
+            </div>
+
             <div id="pnlElencoUtenti" runat="server" style="display: none">
                 <div class="body-panel">
                     <div id="UsersManagement"></div>
@@ -40,27 +37,26 @@
                     <div id="AdminsManagement"></div>
                 </div>
             </div>
-
             <div id="pnlGestioneFolders" runat="server" style="display: none">
                 <div class="body-panel">
                     <div id="FoldersManagement"></div>
                 </div>
             </div>
         </div>
-        </div>
-     <script type="text/javascript">       
-        function check(txt,id) {
+    </div>
+    <script type="text/javascript">
+        function check(txt, id) {
             Ext.getCmp('emailField').setValue(txt);
             Ext.getCmp('IdemailField').setValue(id);
             //   LoadFolders(txt);
             document.getElementById('MainContentPlaceHolder_pnlGestioneFolders').style.display = 'block';
             document.getElementById('MainContentPlaceHolder_pnlAdmin').style.display = 'none';
             document.getElementById('MainContentPlaceHolder_pnlElencoUtenti').style.display = 'none';
-          //  Ext.getCmp('folderselection-field').store.load();
+            //  Ext.getCmp('folderselection-field').store.load();
             Ext.getCmp('folderselection-field').hide();
             Ext.getCmp('folderselection-field').show();
         }
-        function checkUser(txt,id) {
+        function checkUser(txt, id) {
             Ext.getCmp('emailField').setValue(txt);
             Ext.getCmp('IdemailField').setValue(id);
             //   LoadFolders(txt);
@@ -72,7 +68,7 @@
             Ext.getCmp('userselection-field').show();
         }
 
-        function checkAdmin(txt,id) {
+        function checkAdmin(txt, id) {
             Ext.getCmp('emailField').setValue(txt);
             Ext.getCmp('IdemailField').setValue(id);
             //   LoadFolders(txt);
@@ -104,6 +100,11 @@
                 fieldLabel: 'Indirizzo email',
                 name: 'email',
                 id: 'emailField',
+                style: {
+                    color: 'maroon',
+                    fontstyle: 'italic',
+                    fontweight:'bold'
+                },
                 vtype: 'email', // applies email validation rules to this field
                 renderTo: 'EmailField'
             });
@@ -113,7 +114,7 @@
                 id: 'IdemailField',
                 vtype: 'email', // applies email validation rules to this field
                 renderTo: 'IdEmailField',
-                hidden:true
+                hidden: true
             });
 
             var data = [];
@@ -153,14 +154,14 @@
 
             var storeFolders = Ext.create('Ext.data.ArrayStore', {
                 autoLoad: true,
-                storeId: 'storeFolders',              
-               model: 'FoldersModel',
-               reader: readerFolders,
+                storeId: 'storeFolders',
+                model: 'FoldersModel',
+                reader: readerFolders,
                 proxy:
                    {
                        type: 'ajax',
-                       url: '/GestionePEC/api/FolderController/GetAllFolders', 
-                      reader: readerFolders
+                       url: '/GestionePEC/api/FolderController/GetAllFolders',
+                       reader: readerFolders
                    },
                 //  restful: true,
                 listeners: {
@@ -193,19 +194,19 @@
                     load: function (s, r, o) {
                         data = s.data;
                         var a = [];
-                        if (data != null & data.length > 0) {                            
-                            for (var key = 0; key < data.items.length;key++) {
+                        if (data != null & data.length > 0) {
+                            for (var key = 0; key < data.items.length; key++) {
                                 a.push(data.items[key].data["IdNome"]);
                             }
-                           // Ext.getCmp('folderselection-field').toField.fieldDefaults = a;
-                            Ext.getCmp('folderselection-field').toField.bindStore(a);                           
+                            // Ext.getCmp('folderselection-field').toField.fieldDefaults = a;
+                            Ext.getCmp('folderselection-field').toField.bindStore(a);
                         }
                         Ext.getCmp('folderselection-field').setValue(a);
                     },
                     exception: function () {
                     }
                 }
-            });           
+            });
 
             // tool bar e docked items
 
@@ -220,7 +221,7 @@
                         menu: [{
                             text: 'Cartelle di sistema',
                             handler: function () {
-                                Ext.getCmp(fieldId).setValue(['1','2', '3']);
+                                Ext.getCmp(fieldId).setValue(['1', '2', '3']);
                             }
                         }, {
                             text: 'Toggle enabled',
@@ -255,17 +256,17 @@
                         handler: function () {
                             var form = Ext.getCmp(fieldId).up('form').getForm();
                             form.getValues(true);
-                            if (form.isValid()) {                                
+                            if (form.isValid()) {
                                 var values = form.getValues(true);
                                 Ext.Ajax.request({
-                                    url: "/GestionePEC/api/FolderController/AbilitaFolders?idemail=" + Ext.getCmp('IdemailField').getValue()+"&" +values ,
+                                    url: "/GestionePEC/api/FolderController/AbilitaFolders?idemail=" + Ext.getCmp('IdemailField').getValue() + "&" + values,
                                     method: 'GET',
-                                    headers: { 'Content-Type': 'application/json' },  
+                                    headers: { 'Content-Type': 'application/json' },
                                     success: function (conn, response, options, eOpts) {
-                                        var result = Ext.JSON.decodeJSON(conn.responseText);
+                                        var result = Ext.decode(conn.responseText);
                                         if (result.success) {
-                                            Ext.msg('Complimenti!', 'Cartelle abilitate.');                                           
-                                        } else {                                            
+                                            Ext.Msg.alert('Complimenti!', 'Cartelle abilitate.');
+                                        } else {
                                             ManageError(result.msg);
                                         }
                                     },
@@ -284,19 +285,19 @@
 
             var isForm = Ext.widget('form', {
                 title: 'Gestione Cartelle',
-               // width:00,
+                // width:00,
                 bodyPadding: 10,
                 height: 400,
                 renderTo: 'FoldersManagement',
                 layout: 'fit',
-                id:'SelectorCartelle',
+                id: 'SelectorCartelle',
                 items: [{
                     xtype: 'itemselector',
                     name: 'itemselector',
                     id: 'folderselection-field',
                     anchor: '100%',
                     delimiter: ';',
-                    width:1000,
+                    width: 1000,
                     fieldLabel: 'Cartelle',
                     imagePath: '../../App_Themes/Delta/images/itemselector/',
                     store: storeFolders,
@@ -305,17 +306,16 @@
                     value: [],
                     allowBlank: false,
                     hidden: true,
-                    maxSelections:10,
+                    maxSelections: 10,
                     msgTarget: 'side',
                     fromTitle: 'Non abilitate',
                     toTitle: 'Abilitate',
-                    selectionModel:'single',
-                    listeners: {                      
-                        show: function()
-                        {
+                    selectionModel: 'single',
+                    listeners: {
+                        show: function () {
                             if (Ext.getCmp('emailField').rawValue != '') {
                                 storeSelectedFolders.getProxy().setExtraParam("email", Ext.getCmp('emailField').getValue());
-                                storeSelectedFolders.load();                               
+                                storeSelectedFolders.load();
                             }
                         },
                         itemclick: 'onItemsSelect'
@@ -455,9 +455,9 @@
                                     method: 'GET',
                                     headers: { 'Content-Type': 'application/json' },
                                     success: function (conn, response, options, eOpts) {
-                                        var result = Ext.JSON.decodeJSON(conn.responseText);
+                                        var result = Ext.decode(conn.responseText);
                                         if (result.success) {
-                                            Ext.msg('Complimenti!', 'Utenti abilitati.');
+                                            Ext.Msg.alert('Complimenti!', 'Utenti abilitati.');
                                         } else {
                                             ManageError(result.msg);
                                         }
@@ -598,7 +598,7 @@
                 return [
                 {
                     xtype: 'toolbar',
-                    id:'DockedItemsAdmin',
+                    id: 'DockedItemsAdmin',
                     dock: 'top',
                     items: {
                         text: 'Opzioni',
@@ -650,9 +650,9 @@
                                     //  data: form.getValues(true),
                                     //  params: Ext.JSON.encode(form.getValues(true)),
                                     success: function (conn, response, options, eOpts) {
-                                        var result = Ext.JSON.decodeJSON(conn.responseText);
+                                        var result = Ext.decode(conn.responseText);
                                         if (result.success) {
-                                            Ext.msg('Complimenti!', 'Amministratori abilitati.');
+                                            Ext.Msg.alert('Complimenti!', 'Amministratori abilitati.');
                                         } else {
                                             ManageError(result.msg);
                                         }
@@ -731,7 +731,7 @@
                 pageSize: 5,
                 id: 'StoreBackendUsers',
                 model: 'BackendUsersModel',
-                autoLoad:true,
+                autoLoad: true,
                 remoteSort: true,
                 beforeload: function () {
                     store.getProxy().extraParams = {}; // clear all previous                   
@@ -764,7 +764,7 @@
                         break;
                     case false:
                         descr = 'NO';
-                        break;                 
+                        break;
                 }
                 return descr;
             }
@@ -773,6 +773,7 @@
                 var descr = 'Non codificato';
                 switch (value) {
                     case 1:
+                    case 2:
                         descr = 'SI';
                         break;
                     case 0:
@@ -799,7 +800,7 @@
             }
 
             var grid = Ext.create('Ext.grid.Panel', {
-               
+
                 //height: 300,
                 store: store,
                 id: 'BackendUsersGrid',
@@ -825,7 +826,7 @@
                         hidden: true
                     }, {
                         id: "Pec",
-                        text: "IsPec",
+                        text: "PEC",
                         dataIndex: 'IsPec',
                         width: 150,
                         align: 'center',
@@ -839,7 +840,7 @@
                         sortable: true,
                         width: 135,
                         hidden: false,
-                        align:'center',
+                        align: 'center',
                         flex: 1
                     }, {
                         text: "Amministratore",
@@ -856,56 +857,56 @@
                         align: 'center',
                         sortable: true,
                         renderer: rendererManaged
-                    },{
-                xtype: 'actioncolumn',
-                width: 50,
-                items: [{                   
-                    tooltip: 'Gestisci Cartella',
-                    getClass: function(v, metadata, r, rowIndex, colIndex, store) {
-                        var isFilter = r.get('MailAccessLevel') == 0;
-                        if (isFilter) {
-                            return "x-hidden-display";
-                        } else {                            
-                            return "x-grid-center-icon";
-                        }
-                    },
-                    icon: '../../App_Themes/Delta/Images/buttons/folder.png',                   
-                    handler: function (grid, rowIndex, colIndex, item, e, record) {
-                        var rec = grid.getStore().getAt(rowIndex);
-                        check(rec.get('EmailAddress'),rec.get('UserId'));
-                    }
-                }, {
-                    tooltip: 'Gestisci Utenti',
-                    getClass: function (v, metadata, r, rowIndex, colIndex, store) {
-                        var isFilter = r.get('MailAccessLevel') == 0;
-                        if (isFilter) {
-                            return "x-hidden-display";
-                        } else {
-                            return "x-grid-center-icon";
-                        }
-                    },
-                    icon: '../../App_Themes/Delta/Images/buttons/user.png',
-                    handler: function (grid, rowIndex, colIndex, item, e, record) {
-                        var rec = grid.getStore().getAt(rowIndex);
-                        checkUser(rec.get('EmailAddress'), rec.get('UserId'));
-                    }
-                }, {
-                    tooltip: 'Gestisci Amministratori',
-                    getClass: function (v, metadata, r, rowIndex, colIndex, store) {
-                        var isFilter = r.get('MailAccessLevel') == 2;
-                        if (!isFilter) {
-                            return "x-hidden-display";
-                        } else {
-                            return "x-grid-center-icon";
-                        }
-                    },
-                    icon: '../../App_Themes/Delta/Images/buttons/administrator.png',
-                    handler: function (grid, rowIndex, colIndex, item, e, record) {
-                        var rec = grid.getStore().getAt(rowIndex);
-                        checkAdmin(rec.get('EmailAddress'), rec.get('UserId'));
-                    }
-                }]
-            }],
+                    }, {
+                        xtype: 'actioncolumn',
+                        width: 50,
+                        items: [{
+                            tooltip: 'Gestisci Cartella',
+                            getClass: function (v, metadata, r, rowIndex, colIndex, store) {
+                                var isFilter = r.get('MailAccessLevel') == 0;
+                                if (isFilter) {
+                                    return "x-hidden-display";
+                                } else {
+                                    return "x-grid-center-icon";
+                                }
+                            },
+                            icon: '../../App_Themes/Delta/Images/buttons/folder.png',
+                            handler: function (grid, rowIndex, colIndex, item, e, record) {
+                                var rec = grid.getStore().getAt(rowIndex);
+                                check(rec.get('EmailAddress'), rec.get('UserId'));
+                            }
+                        }, {
+                            tooltip: 'Gestisci Utenti',
+                            getClass: function (v, metadata, r, rowIndex, colIndex, store) {
+                                var isFilter = r.get('MailAccessLevel') == 0;
+                                if (isFilter) {
+                                    return "x-hidden-display";
+                                } else {
+                                    return "x-grid-center-icon";
+                                }
+                            },
+                            icon: '../../App_Themes/Delta/Images/buttons/user.png',
+                            handler: function (grid, rowIndex, colIndex, item, e, record) {
+                                var rec = grid.getStore().getAt(rowIndex);
+                                checkUser(rec.get('EmailAddress'), rec.get('UserId'));
+                            }
+                        }, {
+                            tooltip: 'Gestisci Amministratori',
+                            getClass: function (v, metadata, r, rowIndex, colIndex, store) {
+                                var isFilter = r.get('MailAccessLevel') == 2;
+                                if (!isFilter) {
+                                    return "x-hidden-display";
+                                } else {
+                                    return "x-grid-center-icon";
+                                }
+                            },
+                            icon: '../../App_Themes/Delta/Images/buttons/administrator.png',
+                            handler: function (grid, rowIndex, colIndex, item, e, record) {
+                                var rec = grid.getStore().getAt(rowIndex);
+                                checkAdmin(rec.get('EmailAddress'), rec.get('UserId'));
+                            }
+                        }]
+                    }],
                 listeners: {
                     selectionchange: function (model, records) {
                         HideError();
@@ -953,7 +954,7 @@
                 title: 'Elenco Emails',
                 //  width: 1205,
                 // minWidth: 1220,
-                maxWidth:1650,
+                maxWidth: 1650,
                 height: 340,
                 border: false,
                 layout: 'anchor',

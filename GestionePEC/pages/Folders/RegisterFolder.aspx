@@ -11,34 +11,119 @@
             </div>
         </div>
         <div id="container" class="control-main">
-            <div id="divparole" class="control-header-blue">
-                <div class="header-title">
-                    <div class="header-text-left">
-                        <label>Dati Cartella</label>
-                    </div>
-                </div>
+          <div class="control-body-gray">
+          <div id="divNuovoFolder"></div>
+            </div>     
             </div>
-            <div class="control-body-gray">
-                <div class="control-body-gray">
-                    <div class="tabella" style="margin-top: 5px; text-align: left;">
-                        <div class="grid-panel">
-                            <div style="display: table-row">
-                                <div style="display: table-cell;">
-                                    <label class="LabelBlack">
-                                        *  Nome:</label>
-                                </div>
-                                <div style="display: table-cell;">
-                                    <asp:TextBox runat="server" SkinID="tbLong" MaxLength="20" Text="" ID="NomeFolder"></asp:TextBox>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="buttons-panel" style="margin-top: 4px; margin-right: 8px">
-                <asp:Button ID="btnSalva" runat="server" Text="Salva" ToolTip="Effettua il Savataggio"
-                    CssClass="upd" CausesValidation="true" ValidationGroup="btnSalvaServer" OnClick="btnSalva_Click"></asp:Button>
-            </div>
-        </div>
     </div>
+      <script type="text/javascript">
+     Ext.require([
+           'Ext.grid.*',
+           'Ext.data.*',
+           'Ext.util.*',
+           'Ext.toolbar.Paging',          
+           'Ext.tip.QuickTipManager'
+        ]);
+     Ext.onReady(function () {
+         Ext.tip.QuickTipManager.init();
+         function submitOnEnter(field, event) {
+             if (event.getKey() == event.ENTER) {
+                 var form = field.up('form').getForm();
+                 form.submit();
+             }
+         }
+
+         var requiredMessage = '<div style="color:red;">Campo obbligatorio</div>';
+         var formNuovo = Ext.create('Ext.form.Panel',
+               {
+                   frame: true,
+                   title: 'Profilo Cartella',
+                   bodyPadding: 10,
+                   scrollable: true,
+                   width: '100%',
+                   id: 'formNuovaCartella',
+                   //   layout: 'column',
+                  // height: 250,
+                   // xtype: 'fieldset',
+                   autoWidth: false,
+                   renderTo: 'divNuovoFolder',
+                   items: [
+                       {
+                           fieldLabel: 'Nome Folder/Cartella',
+                           xtype: 'textfield',
+                           emptyText: 'Digitare il nome',
+                           id: 'FolderText',
+                           name: 'NomeFolder',
+                           width: 700,
+                           labelWidth: 130,
+                           allowBlank: false,
+                           blankText: requiredMessage,
+                           msgTarget: 'under',
+                           maxLength: 120,
+                           enforceMaxLength: true,
+                           maxLengthText: 'cartella campo massimo 120 caratteri',
+                           padding: '5 0 0 0',
+                           minLength: 3,
+                           minLengthText: 'minimo 3 caratteri'
+                       }],
+                   buttons: [
+                  {
+                      text: 'Conferma creazione Cartella',
+                      id: 'btnConferma',
+                      scope: this,
+                      formBind: true,
+                      xtype: 'button',
+                      listeners: {
+                          click: function () {
+                              // this == the button, as we are in the local scope
+                              submitHandlerNuovoConferma();
+                          }
+                      }
+                  }]
+               });
+
+         function submitHandlerNuovoConferma() {
+             var form = Ext.getCmp('formNuovaCartella');
+             form.getForm().submit({
+                 clientValidation: false,
+                 // standardSubmit:true,
+                 url: '/GestionePEC/api/FolderController/RegisterFolder',
+                 waitTitle: 'Attendere prego',
+                 method: 'POST',
+                 success: function (form, action) {                    
+                     if (action.result.message != null) {
+                         var message = ' ';
+                         message += action.result.message;
+                         Ext.Msg.alert('Cartella creata correttamente', message);
+                        // ManageError("Errore nell'aggiornameto dettagli: " + message);
+                     }
+                     else {
+                         Ext.Msg.alert('Cartella creata correttamente', 'Collegare cartella/folder ad email');
+                     }
+                 },
+                 failure: function (form, action) {
+                     var form = Ext.getCmp('formNuovaCartella');
+                     if (action.response.responseText != null) {
+                         var message = Ext.decode(action.response.responseText).message;
+                         if (message != null) {
+                             Ext.Msg.alert('Errore creazione cartella', message);
+                         }
+                         else {
+                             Ext.Msg.alert('Cartella creata', 'Collegare cartella/folder ad email');
+                         }
+                     }
+                     else {
+                         if (action.result != null) {
+                             var message;                             
+                                 message += action.result.errormessage[i];                            
+                                 Ext.Msg.alert('Errore creazione cartella', message);
+                         }
+                     }                    
+                 }
+             });
+             form.el.unmask();
+         };       
+     });
+            </script>
+
 </asp:Content>

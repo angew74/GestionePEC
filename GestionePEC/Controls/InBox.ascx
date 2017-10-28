@@ -679,6 +679,7 @@ Ext.onReady(function () {
             forceFit: true,            
             //split: true,
             selModel: selectionModel,
+            emptyText: 'Nessun dato presente',
             loadMask: {
                 msg: 'Caricamento...'
             },

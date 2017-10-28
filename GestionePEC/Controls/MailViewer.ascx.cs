@@ -624,8 +624,8 @@ namespace GestionePEC.Controls
             }
             string subjectMessage = currMsg.Subject;
             string data = System.DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            Font white = new Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.BOLD, BaseColor.BLACK);
-            Font white10 = new Font(Font.FontFamily.TIMES_ROMAN, 10f, Font.NORMAL, BaseColor.BLACK);
+            Font white = new Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.BOLD,iTextSharp.text.BaseColor.BLACK);
+            Font white10 = new Font(Font.FontFamily.TIMES_ROMAN, 10f, Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
             Chunk c2 = new Chunk(Environment.NewLine, white);
             Chunk c1 = new Chunk("Mittente: " + fromMessage, white);
             Chunk c3 = new Chunk("Destinatario: " + toMessage, white);
@@ -645,12 +645,8 @@ namespace GestionePEC.Controls
             p1.Add(c2);
             p1.Add(c5);
             p1.Add(c2);
-            byte[] i = CacheManager<Com.Delta.Web.Cache.Types.TpuBinaryResource>.get(CacheKeys.IMMAGINE_ROMA_CAPITALE, VincoloType.FILESYSTEM).File;
-            MemoryStream s = new MemoryStream();
-            s.Write(i, 0, i.Length);
-            s.Position = 0;
-            System.Drawing.Image img = System.Drawing.Image.FromStream(s);
-            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(img, BaseColor.WHITE);
+            System.Drawing.Image img = System.Drawing.Image.FromFile(ConfigurationManager.AppSettings["LOGO"]);
+            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(img, iTextSharp.text.BaseColor.WHITE);
             image.ScaleToFit(300f, 47f);
             string body = MailContent.InnerHtml;
             if (String.IsNullOrEmpty(body))
@@ -658,7 +654,7 @@ namespace GestionePEC.Controls
             iTextSharp.text.Document d = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4);
             MemoryStream ms = new MemoryStream();
             iTextSharp.text.pdf.PdfWriter writer = iTextSharp.text.pdf.PdfWriter.GetInstance(d, ms);
-            writer.InitialLeading = 12.5f;
+           // writer.I = 12.5f;
             d.Open();
             d.Add(image);
             d.Add(p1);

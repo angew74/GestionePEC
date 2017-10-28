@@ -80,7 +80,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         double? idnome = dbcontext.FOLDERS.Select(x => x.IDNOME).DefaultIfEmpty(0).Max();
                         decimal newidnome = default(decimal);
                         decimal.TryParse(idnome.ToString(), out newidnome);
-                        entity.IdNome = newidnome.ToString();
+                        entity.IdNome = (newidnome +1).ToString();
                     }
                     decimal idnew = (decimal)dbcontext.FOLDERS.Select(x => x.ID).DefaultIfEmpty(0).Max();
                     entity.Id = idnew;

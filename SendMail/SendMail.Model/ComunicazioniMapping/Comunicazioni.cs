@@ -536,6 +536,8 @@ namespace SendMail.Model.ComunicazioniMapping
             }
         }
 
+     
+
         #endregion
     }
 }

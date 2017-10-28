@@ -17,6 +17,8 @@ using Com.Delta.Mail.MailMessage;
 using SendMail.BusinessEF.MailFacedes;
 using System.Net.Http.Formatting;
 using Com.Delta.Security;
+using Com.Delta.Web.Cache;
+using GestionePEC.Extensions;
 
 namespace GestionePEC.api
 {
@@ -193,19 +195,18 @@ namespace GestionePEC.api
         {
             BackendUserService bus = new BackendUserService();
             UsersMailModel model = new UsersMailModel();
+            List<UserMail> list = new List<UserMail>();
             try
             {
-                List<BackendUser> listaUtenti = bus.GetAllUsers();
-                List<UserMail> list = new List<UserMail>();
-                foreach (BackendUser b in listaUtenti)
+                if(CacheManager<List<UserMail>>.exist(CacheKeys.ALL_USERS))
                 {
-                    UserMail u = new UserMail()
-                    {
-                        UserId = (int)b.UserId,
-                        UserName = b.UserName
-                    };
-                    list.Add(u);
+                    list = CacheManager<List<UserMail>>.get(CacheKeys.ALL_USERS,VincoloType.BACKEND);
                 }
+                else
+                {
+                    list = Helpers.GetAllUsers();
+                }
+                
                 model.success = "true";
                 model.UsersList = list.ToArray();
                 model.Totale = list.Count.ToString();
@@ -425,6 +426,7 @@ namespace GestionePEC.api
                     userBackend.UserName = userName.Trim().ToUpper();
                     userBackend.CodiceFiscale = codicefiscale.Trim().ToUpper();
                     userBackend.Domain = role.ToUpper();
+                    userBackend.UserId =long.Parse(user.Id);
                     bus.Save(userBackend);
                     model.success = "true";
                 }

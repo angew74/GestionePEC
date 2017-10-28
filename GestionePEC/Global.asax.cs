@@ -13,8 +13,9 @@ using Com.Delta.Security;
 using SendMail.BusinessEF.MailFacedes;
 using Com.Delta.Web.Session;
 using GestionePEC.Models;
+using GestionePEC.Extensions;
 
-namespace GestionePEC
+namespace GestionePEC 
 {
     public class Global : HttpApplication
     {
@@ -30,6 +31,9 @@ namespace GestionePEC
             RegisterRoutes(RouteTable.Routes);
             MailLocalService mailLocalService = new MailLocalService();
             CacheManager<List<ActiveUp.Net.Common.DeltaExt.Action>>.set(CacheKeys.FOLDERS_ACTIONS, mailLocalService.GetFolderDestinationForAction());
+            List<UserMail> l = Helpers.GetAllUsers();
+            CacheManager<List<UserMail>>.set(CacheKeys.ALL_USERS, l);
+
         }
 
         protected void Application_Error(object sender, EventArgs e)

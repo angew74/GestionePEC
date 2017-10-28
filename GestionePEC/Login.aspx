@@ -33,7 +33,7 @@
                   name: 'username',
                   id: 'username',
                   blankText: 'I CAMPI SONO TUTTI OBBLIGATORI',
-                  maxLength: 11,
+                  maxLength: 16,
                   minLength: 2,
                   msgTarget: 'under',
                   enforceMaxLength: true,

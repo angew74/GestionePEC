@@ -263,7 +263,7 @@ namespace GestionePEC.pages.MailClient
                         comun.FolderId = 2;
                         ComunicazioniService com = new ComunicazioniService();
                         com.InsertComunicazione(comun);
-                        // ((baseLayoutUnisys.BasePage)this.Page).info.ClearMessage();
+                        // ((baseLayoutDelta.BasePage)this.Page).info.ClearMessage();
                         ((BasePage)this.Page).info.AddMessage("Email correttamente inviata", LivelloMessaggio.INFO);
                         btnSend.Visible = false;
                         SessionManager<Dictionary<string, DTOFileUploadResult>>.del(SessionKeys.DTO_FILE);

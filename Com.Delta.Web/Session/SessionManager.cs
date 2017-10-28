@@ -66,8 +66,11 @@ namespace Com.Delta.Web.Session
         public static bool exist(SessionKeys key)
         {
             bool bRet = false;
-            if (HttpContext.Current.Session[Convert.ToString(key)] != null)
-                bRet = true;
+            if (HttpContext.Current.Session != null)
+            {
+                if (HttpContext.Current.Session[Convert.ToString(key)] != null)
+                    bRet = true;
+            }
             return bRet;
         }
 

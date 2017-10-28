@@ -142,23 +142,33 @@ namespace SendMail.Data.SQLServerDB.Repository
              switch (catalog)
                 {
                     case IndexedCatalogs.RUBR:
-                        query.Append("select ID_REFERRAL AS VALUE, ");
-                        query.Append("CASE WHEN REFERRAL_TYPE in ('PA','AZ_PRI','AZ_CP','GRP') then RAGIONE_SOCIALE else UFFICIO end as TEXT, ");
-                        query.Append("REFERRAL_TYPE AS SUBTYPE, ");
-
-                        query.Append("'RUBR' AS SOURCE, ");
-                        query.Append("ID_PADRE AS PADRE ");
-                        query.Append("from  [FAXPEC].[FAXPEC].[rubr_entita] ");
-                        query.Append("where REFERRAL_TYPE in ('PA','PA_SUB','PA_UFF','AZ_PRI','AZ_CP','AZ_UFF','GRP') ");
-                        if (levels.HasValue) query.Append("and level <=" + levels);
-                        if (startNode.HasValue) query.Append("start with ID_REFERRAL = :pID ");
-                        else query.Append("start with ID_REFERRAL = 0 ");
-                        query.Append("connect by NOCYCLE prior ID_REFERRAL = ID_PADRE ");
-                        break;
+                    query.Append(" with tree(value, text, subtype, source, padre, level) as ( ");
+                    query.Append(" select ID_REFERRAL AS VALUE, CASE ");
+                    query.Append(" WHEN REFERRAL_TYPE in ('PA', 'AZ_PRI', 'AZ_CP', 'GRP') then RAGIONE_SOCIALE else UFFICIO end as TEXT, ");
+                    query.Append(" REFERRAL_TYPE AS SUBTYPE, 'RUBR' AS SOURCE, ID_PADRE AS PADRE, 1 as level from ");
+                    query.Append(" [FAXPEC].[FAXPEC].[rubr_entita] where REFERRAL_TYPE in ");
+                    query.Append("  ('PA', 'PA_SUB', 'PA_UFF', 'AZ_PRI', 'AZ_CP', 'AZ_UFF', 'GRP') ");
+                    query.Append(" union all ");
+                    query.Append(" select ");
+                    query.Append(" child.ID_REFERRAL AS VALUE, CASE ");
+                    query.Append("  WHEN REFERRAL_TYPE in ('PA','AZ_PRI','AZ_CP','GRP') then child.RAGIONE_SOCIALE else child.UFFICIO end as TEXT, ");
+                    query.Append(" child.REFERRAL_TYPE AS SUBTYPE, 'RUBR' AS SOURCE, child.ID_PADRE AS PADRE, parent.level + 1 from ");
+                    query.Append(" [FAXPEC].[FAXPEC].[rubr_entita] as child join tree parent on parent.value = child.ID_PADRE where REFERRAL_TYPE in ");
+                    query.Append("  ('PA','PA_SUB','PA_UFF','AZ_PRI','AZ_CP','AZ_UFF','GRP')) ");
+                    query.Append("   select * from tree ");
+                    if(levels.HasValue || startNode.HasValue)
+                    { query.Append(" where "); }
+                    if (levels.HasValue) {
+                        query.Append(" level <=" + levels);
+                        query.Append(" and "); 
+                    }
+                   if (startNode.HasValue) query.Append(" tree.value >= :pID ");
+                        else query.Append(" tree.value >= 0 ");
+                    query.Append(" order by tree.level asc");
+                    break;
                     case IndexedCatalogs.IPA:
                         query.Append("select ID_RUB AS VALUE, ");
                         query.Append("'IPA' AS SOURCE, ");
-
                         query.Append("CASE WHEN ( substr(DN,1,2)= 'c=' or substr(DN,1,2) = 'o=') then RAGIONESOCIALE ");
                         query.Append("else UFFICIO end AS TEXT, ");
                         query.Append("CASE WHEN substr(DN,1,2)= 'c=' then 'GRP' ");

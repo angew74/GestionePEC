@@ -96,13 +96,12 @@ namespace SendMail.Data.SQLServerDB.Repository
                     dbcontext.MAILSERVERS.Add(m);
                     dbcontext.SaveChanges();
                     //param out
-                    decimal iNewID = default(decimal);
-                    decimal.TryParse(m.ID_SVR.ToString(), out iNewID);
-
+                    double iNewID = default(double);
+                    iNewID = dbcontext.MAILSERVERS.OrderByDescending(c => c.ID_SVR).FirstOrDefault().ID_SVR;
                     //todo.. MIGLIORARE
-                    if (iNewID != default(int))
+                    if (iNewID != default(double))
                     {
-                        entity.Id = iNewID;
+                        entity.Id = decimal.Parse(iNewID.ToString());
                     }
                     else
                         throw new Exception(DalExMessages.ID_NON_RESTITUITO);

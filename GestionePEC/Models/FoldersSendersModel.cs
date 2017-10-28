@@ -8,8 +8,8 @@ namespace GestionePEC.Models
 {
     public class FoldersSendersModel
     {
-        internal string message;
-        internal string success;
+        public string message;
+        public string success;
 
         public FolderType[] FoldersList { get; internal set; }
         public string Totale { get; internal set; }

@@ -16,41 +16,59 @@ namespace SendMail.Data.SQLServerDB.Repository
     public class RubrEntitaSQLDb : IRubricaEntitaDao
     {
         private static readonly ILog log = LogManager.GetLogger("RubrEntitaSQLDb");
-             
+
 
         #region Costanti
 
-        private const string selectRubricaEntitaTree = "WITH T_TREE_C(ID_REF, REF_ORG, LIV) AS"
-                                                        + " (SELECT ID_REFERRAL, REF_ORG, LEVEL"
-                                                         + " FROM RUBR_ENTITA"
-                                                         + " CONNECT BY NOCYCLE ID_REFERRAL = PRIOR ID_PADRE"
-                                                         + " START WITH ID_REFERRAL = :p_ID_ENT),"
-                                                         + " T_TREE(ID_REF, LIV) AS"
-                                                         + " (SELECT ID_REF, LIV"
-                                                         + " FROM T_TREE_C"
-                                                         + " WHERE REF_ORG IS NOT NULL"
-                                                         + " OR (REF_ORG IS NULL AND LIV = (SELECT MIN(LIV)"
-                                                                                        + " FROM T_TREE_C"
-                                                                                        + " WHERE REF_ORG IS NULL)))"
-                                                   + " SELECT DISTINCT"
-                                                   + " ID_REFERRAL as \"ID_REF\","
-                                                   + " ID_PADRE AS \"ID_PAD\","
-                                                   + " DECODE((SELECT COUNT(*) FROM RUBR_ENTITA WHERE ID_PADRE = RE.ID_REFERRAL), 0, 0, 1) AS \"IS_PADRE\","
-                                                   + " CASE"
-                                                       + " WHEN REFERRAL_TYPE IN ('AZ_PF', 'AZ_UFF_PF', 'PA_PF','PA_UFF_PF', 'PF', 'PG')"
-                                                           + " THEN COGNOME||' '||NOME"
-                                                       + " WHEN REFERRAL_TYPE IN ('AZ_UFF', 'PA_UFF') THEN UFFICIO"
-                                                       + " WHEN DISAMB_PRE IS NOT NULL THEN TRIM(DISAMB_PRE||' '||RAGIONE_SOCIALE||' '||DISAMB_POST)"
-                                                       + " ELSE TRIM(RAGIONE_SOCIALE||' '||DISAMB_POST)"
-                                                       + " END AS \"RAG_SOC\","
-                                                   + " 'RUBR' AS \"SRC\","
-                                                   + " REFERRAL_TYPE AS \"REF_TYP\""
-                                                   + " FROM RUBR_ENTITA RE"
-                                                   + " WHERE ID_REFERRAL IN (SELECT ID_REF"
-                                                                         + " FROM T_TREE)"
-                                                       + " OR ID_PADRE IN (SELECT ID_REF"
-                                                                       + " FROM T_TREE"
-                                                                       + " WHERE LIV > 1)";
+        //private const string selectRubricaEntitaTree = "WITH T_TREE_C(ID_REF, REF_ORG, LIV) AS"
+        //                                                + " (SELECT ID_REFERRAL, REF_ORG, LEVEL"
+        //                                                 + " FROM RUBR_ENTITA"
+        //                                                 + " CONNECT BY NOCYCLE ID_REFERRAL = PRIOR ID_PADRE"
+        //                                                 + " START WITH ID_REFERRAL = :p_ID_ENT),"
+        //                                                 + " T_TREE(ID_REF, LIV) AS"
+        //                                                 + " (SELECT ID_REF, LIV"
+        //                                                 + " FROM T_TREE_C"
+        //                                                 + " WHERE REF_ORG IS NOT NULL"
+        //                                                 + " OR (REF_ORG IS NULL AND LIV = (SELECT MIN(LIV)"
+        //                                                                                + " FROM T_TREE_C"
+        //                                                                                + " WHERE REF_ORG IS NULL)))"
+        //                                           + " SELECT DISTINCT"
+        //                                           + " ID_REFERRAL as \"ID_REF\","
+        //                                           + " ID_PADRE AS \"ID_PAD\","
+        //                                           + " DECODE((SELECT COUNT(*) FROM RUBR_ENTITA WHERE ID_PADRE = RE.ID_REFERRAL), 0, 0, 1) AS \"IS_PADRE\","
+        //                                           + " CASE"
+        //                                               + " WHEN REFERRAL_TYPE IN ('AZ_PF', 'AZ_UFF_PF', 'PA_PF','PA_UFF_PF', 'PF', 'PG')"
+        //                                                   + " THEN COGNOME||' '||NOME"
+        //                                               + " WHEN REFERRAL_TYPE IN ('AZ_UFF', 'PA_UFF') THEN UFFICIO"
+        //                                               + " WHEN DISAMB_PRE IS NOT NULL THEN TRIM(DISAMB_PRE||' '||RAGIONE_SOCIALE||' '||DISAMB_POST)"
+        //                                               + " ELSE TRIM(RAGIONE_SOCIALE||' '||DISAMB_POST)"
+        //                                               + " END AS \"RAG_SOC\","
+        //                                           + " 'RUBR' AS \"SRC\","
+        //                                           + " REFERRAL_TYPE AS \"REF_TYP\""
+        //                                           + " FROM RUBR_ENTITA RE"
+        //                                           + " WHERE ID_REFERRAL IN (SELECT ID_REF"
+        //                                                                 + " FROM T_TREE)"
+        //                                               + " OR ID_PADRE IN (SELECT ID_REF"
+        //                                                               + " FROM T_TREE"
+        //                                                               + " WHERE LIV > 1)";
+
+        private const string selectRubricaEntitaTree = "WITH T_TREE_C(ID_REF,REF_ORG,LIV) AS " +
+ " (SELECT ID_REFERRAL, REF_ORG, 1 AS LEVEL FROM[FAXPEC].[FAXPEC].[RUBR_ENTITA] " +
+"  UNION ALL SELECT CHILD.ID_REFERRAL, CHILD.REF_ORG, parent.LIV + 1 " +
+ " FROM[FAXPEC].[FAXPEC].[RUBR_ENTITA] as CHILD join T_TREE_C parent on parent.ID_REF = child.ID_PADRE), " +
+ " T_TREE(ID_REF, LIV) " +
+ " AS(SELECT ID_REF, LIV FROM T_TREE_C WHERE REF_ORG IS NOT NULL OR(REF_ORG IS NULL AND " + 
+ " LIV = (SELECT MIN(LIV) FROM T_TREE_C WHERE REF_ORG IS NULL))) " +
+ " SELECT DISTINCT ID_REFERRAL AS 'ID_REF', ID_PADRE AS 'ID_PAD', " +
+  " IIF(((SELECT COUNT(*) FROM[FAXPEC].[FAXPEC].[RUBR_ENTITA] " +
+   "  WHERE ID_PADRE = RE.ID_REFERRAL) = 0), 0, 1) AS 'IS_PADRE', " +
+"  CASE WHEN REFERRAL_TYPE IN('AZ_PF', 'AZ_UFF_PF', 'PA_PF','PA_UFF_PF', 'PF', 'PG') THEN COGNOME+' '+NOME " +
+" WHEN REFERRAL_TYPE IN('AZ_UFF', 'PA_UFF') THEN UFFICIO WHEN DISAMB_PRE IS NOT NULL THEN " +
+ " RTRIM(DISAMB_PRE+' '+RAGIONE_SOCIALE+' '+DISAMB_POST) ELSE RTRIM(RAGIONE_SOCIALE +' '+DISAMB_POST) END " +
+ " AS 'RAG_SOC', 'RUBR' AS 'SRC', REFERRAL_TYPE AS 'REF_TYP' FROM[FAXPEC].[FAXPEC].[RUBR_ENTITA] " +
+  "  RE WHERE ID_REFERRAL IN " +
+" (SELECT ID_REF FROM T_TREE) OR ID_PADRE IN(SELECT ID_REF FROM T_TREE WHERE LIV > 1) ";
+
 
         #endregion
 
@@ -307,37 +325,21 @@ namespace SendMail.Data.SQLServerDB.Repository
                     using (var oCmd = dbcontext.Database.Connection.CreateCommand())
                     {
                         oCmd.Connection.Open();
-                        string selectRubricaEntitaTree = "WITH T_TREE_C(ID_REF, REF_ORG, LIV) AS"
-                                                       + " (SELECT ID_REFERRAL, REF_ORG, LEVEL"
-                                                        + " FROM  [FAXPEC].[FAXPEC].[RUBR_ENTITA] "
-                                                        + " CONNECT BY NOCYCLE ID_REFERRAL = PRIOR ID_PADRE"
-                                                        + " START WITH ID_REFERRAL = " + idEntita + "),"
-                                                        + " T_TREE(ID_REF, LIV) AS"
-                                                        + " (SELECT ID_REF, LIV"
-                                                        + " FROM T_TREE_C"
-                                                        + " WHERE REF_ORG IS NOT NULL"
-                                                        + " OR (REF_ORG IS NULL AND LIV = (SELECT MIN(LIV)"
-                                                                                       + " FROM T_TREE_C"
-                                                                                       + " WHERE REF_ORG IS NULL)))"
-                                                  + " SELECT DISTINCT"
-                                                  + " ID_REFERRAL as \"ID_REF\","
-                                                  + " ID_PADRE AS \"ID_PAD\","
-                                                  + " DECODE((SELECT COUNT(*) FROM RUBR_ENTITA WHERE ID_PADRE = RE.ID_REFERRAL), 0, 0, 1) AS \"IS_PADRE\","
-                                                  + " CASE"
-                                                      + " WHEN REFERRAL_TYPE IN ('AZ_PF', 'AZ_UFF_PF', 'PA_PF','PA_UFF_PF', 'PF', 'PG')"
-                                                          + " THEN COGNOME||' '||NOME"
-                                                      + " WHEN REFERRAL_TYPE IN ('AZ_UFF', 'PA_UFF') THEN UFFICIO"
-                                                      + " WHEN DISAMB_PRE IS NOT NULL THEN TRIM(DISAMB_PRE||' '||RAGIONE_SOCIALE||' '||DISAMB_POST)"
-                                                      + " ELSE TRIM(RAGIONE_SOCIALE||' '||DISAMB_POST)"
-                                                      + " END AS \"RAG_SOC\","
-                                                  + " 'RUBR' AS \"SRC\","
-                                                  + " REFERRAL_TYPE AS \"REF_TYP\""
-                                                  + " FROM  [FAXPEC].[FAXPEC].[RUBR_ENTITA] RE"
-                                                  + " WHERE ID_REFERRAL IN (SELECT ID_REF"
-                                                                        + " FROM T_TREE)"
-                                                      + " OR ID_PADRE IN (SELECT ID_REF"
-                                                                      + " FROM T_TREE"
-                                                                      + " WHERE LIV > 1)";
+                        oCmd.CommandText = " WITH T_TREE_C(ID_REF, REF_ORG, LIV) AS " +
+   " (SELECT ID_REFERRAL, REF_ORG, 1 AS LEVEL FROM[FAXPEC].[FAXPEC].[RUBR_ENTITA] " +
+ "  WHERE ID_REFERRAL = " + idEntita +
+  " UNION ALL SELECT CHILD.ID_REFERRAL, CHILD.REF_ORG, parent.LIV + 1 " +
+ " FROM[FAXPEC].[FAXPEC].[RUBR_ENTITA] as CHILD join T_TREE_C parent on parent.ID_REF = child.ID_PADRE), " +
+ "  T_TREE(ID_REF, LIV) " +
+ " AS(SELECT ID_REF, LIV FROM T_TREE_C WHERE REF_ORG IS NOT NULL OR(REF_ORG IS NULL AND " +
+ " LIV = (SELECT MIN(LIV) FROM T_TREE_C WHERE REF_ORG IS NULL))) " +
+ " SELECT DISTINCT ID_REFERRAL AS 'ID_REF', ID_PADRE AS 'ID_PAD', " +
+  " IIF(((SELECT COUNT(*) FROM[FAXPEC].[FAXPEC].[RUBR_ENTITA] WHERE ID_PADRE = RE.ID_REFERRAL) = 0), 0, 1) AS 'IS_PADRE',  " +
+  " CASE WHEN REFERRAL_TYPE IN ('AZ_PF', 'AZ_UFF_PF', 'PA_PF', 'PA_UFF_PF', 'PF', 'PG') THEN COGNOME+' ' + NOME " +
+  " WHEN REFERRAL_TYPE IN('AZ_UFF', 'PA_UFF') THEN UFFICIO WHEN DISAMB_PRE IS NOT NULL THEN " +
+  " RTRIM(DISAMB_PRE + ' ' + RAGIONE_SOCIALE + ' ' + DISAMB_POST) ELSE RTRIM(RAGIONE_SOCIALE + ' ' + DISAMB_POST) END " +
+    "  AS 'RAG_SOC', 'RUBR' AS 'SRC', REFERRAL_TYPE AS 'REF_TYP' FROM[FAXPEC].[FAXPEC].[RUBR_ENTITA] RE WHERE ID_REFERRAL IN " +
+    "  (SELECT ID_REF FROM T_TREE) OR ID_PADRE IN(SELECT ID_REF FROM T_TREE WHERE LIV > 1) ";
                         using (var r = oCmd.ExecuteReader())
                         {
                             entitaTree = new List<SimpleTreeItem>();
@@ -352,8 +354,16 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                ManagedException mEx = new ManagedException(ex.Message,
+                               "RUB_ORA006",
+                               string.Empty,
+                               string.Empty,
+                               ex);
+                ErrorLogInfo er = new ErrorLogInfo(mEx);
+                log.Error(er);
+                throw mEx;
                 throw;
             }
             return entitaTree;
@@ -372,13 +382,13 @@ namespace SendMail.Data.SQLServerDB.Repository
                         string selectRubricaEntitaByPadre = "SELECT DISTINCT"
                                                                              + " ID_REFERRAL as \"ID_REF\","
                                                                              + " ID_PADRE AS \"ID_PAD\","
-                                                                             + " DECODE((SELECT COUNT(*) FROM  [FAXPEC].[FAXPEC].[RUBR_ENTITA] WHERE ID_PADRE = RE.ID_REFERRAL), 0, 0, 1) AS \"IS_PADRE\","
+                                                                             + " IIF((SELECT COUNT(*) FROM  [FAXPEC].[FAXPEC].[RUBR_ENTITA] WHERE ID_PADRE = RE.ID_REFERRAL)= 0, 0, 1) AS \"IS_PADRE\","
                                                                              + " CASE"
                                                                                  + " WHEN REFERRAL_TYPE IN ('AZ_PF', 'AZ_UFF_PF', 'PA_PF','PA_UFF_PF', 'PF', 'PG')"
-                                                                                     + " THEN COGNOME||' '||NOME"
+                                                                                     + " THEN COGNOME +' '+NOME"
                                                                                  + " WHEN REFERRAL_TYPE IN ('AZ_UFF', 'PA_UFF') THEN UFFICIO"
-                                                                                 + " WHEN DISAMB_PRE IS NOT NULL THEN TRIM(DISAMB_PRE||' '||RAGIONE_SOCIALE||' '||DISAMB_POST)"
-                                                                                 + " ELSE TRIM(RAGIONE_SOCIALE||' '||DISAMB_POST)"
+                                                                                 + " WHEN DISAMB_PRE IS NOT NULL THEN RTRIM(DISAMB_PRE+' '+RAGIONE_SOCIALE+' '+DISAMB_POST)"
+                                                                                 + " ELSE RTRIM(RAGIONE_SOCIALE+' '+DISAMB_POST)"
                                                                              + " END AS \"RAG_SOC\","
                                                                              + " 'RUBR' AS \"SRC\","
                                                                              + " REFERRAL_TYPE AS \"REF_TYP\""
@@ -386,6 +396,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                                                              + " WHERE ID_PADRE = " + idPadre
                                                                              + " ORDER BY RAG_SOC";
                         oCmd.Connection.Open();
+                        oCmd.CommandText = selectRubricaEntitaByPadre;
                         using (var r = oCmd.ExecuteReader())
                         {
                             entitaTree = new List<SimpleTreeItem>();
@@ -710,8 +721,8 @@ namespace SendMail.Data.SQLServerDB.Repository
         private SimpleTreeItem MapToSimpleTreeItem(DbDataReader dr)
         {
             SimpleTreeItem item = new SimpleTreeItem();
-            item.Value = dr.GetInt64("ID_REF").ToString();
-            item.Padre = dr.GetInt64("ID_PAD").ToString();
+            item.Value = dr.GetDecimal("ID_REF").ToString();
+            item.Padre = dr.GetDecimal("ID_PAD").ToString();
             item.Text = dr.GetString("RAG_SOC");
             item.SubType = dr.GetValue("IS_PADRE").ToString();
             item.Source = dr.GetString("SRC");

@@ -175,180 +175,7 @@ namespace GestionePEC.pages.MailClient
             }
         }
 
-        private void PopolaDDLDipartimenti()
-        {
-            List<BackendUser> deps = new List<BackendUser>();
-            BackendUserService bus = new BackendUserService();
-            try
-            {
-                deps = (List<BackendUser>)bus.GetDipartimentiByAdmin(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
-                if (deps == null || deps.Count == 0)
-                {
-                    deps = (List<BackendUser>)bus.GetAllDipartimentiByMailAdmin(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
-                }
-                ddlListaDipartimenti.DataSource = deps;
-                ddlListaDipartimenti.DataBind();
-            }
-            catch (Exception ex)
-            {
-                if (ex.GetType() != typeof(ManagedException))
-                {                 
-                    ManagedException mEx = new ManagedException("Errore nel caricamento dei dipatimenti", "CM002",
-                        string.Empty, string.Empty, ex.InnerException);
-                    ErrorLogInfo err = new ErrorLogInfo(mEx);
-                    err.loggingAppCode = "WEB_MAIL";
-                    err.objectID = this.Context.Session.SessionID;                 
-                    log.Error(err);
-                    throw mEx;
-                }
-                else
-                {
-                    throw ex;
-                }
-            }
-        }
-
-        private void popolaListaDipendentiNONAbilitati()
-        {
-            if (!String.IsNullOrEmpty(this.Dipartimento_ViewState) && this.IdSender_ViewState != Decimal.MinusOne)
-            {
-                try
-                {
-                    BackendUserService bus = new BackendUserService();
-                    List<BackendUser> listaDipendentiNONAbilitati = bus.GetDipendentiDipartimentoNONAbilitati(this.Dipartimento_ViewState, this.IdSender_ViewState);
-                    pnlElencoUtenti.Visible = true;
-
-                    if (listaDipendentiNONAbilitati != null)
-                    {
-                        lvDipendentiNONAbilitati.DataSource = listaDipendentiNONAbilitati.Distinct().OrderBy(k => k.UserName);
-                    }
-                    else
-                        lvDipendentiNONAbilitati.DataSource = null;
-                    lvDipendentiNONAbilitati.DataBind();
-                }
-                catch (Exception ex)
-                {
-                    if (ex.GetType() != typeof(ManagedException))
-                    {                       
-                        ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti non abilitati", "CM003",
-                            string.Empty, string.Empty, ex.InnerException);
-                        ErrorLogInfo err = new ErrorLogInfo(mEx);
-                        err.loggingAppCode = "WEB_MAIL";
-                        err.objectID = this.Context.Session.SessionID;                      
-                        log.Error(err);
-                        throw mEx;
-                    }
-                    else
-                    {
-                        throw ex;
-                    }
-                }
-            }
-        }
-
-        private void popolaListaDipendentiAbilitati()
-        {
-            if (this.IdSender_ViewState != Decimal.MinusOne)
-            {
-                try
-                {
-                    BackendUserService bus = new BackendUserService();
-                    List<BackendUser> listaDipendentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
-                    if (listaDipendentiAbilitati != null)
-                    {
-                        lvDipendentiAbilitati.DataSource = listaDipendentiAbilitati.OrderBy(x => x.UserName);
-                        lvDipendentiAbilitati.DataBind();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    if (ex.GetType() != typeof(ManagedException))
-                    {                     
-                        ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti abilitati", "CM0014",
-                            string.Empty, string.Empty, ex.InnerException);
-                        ErrorLogInfo err = new ErrorLogInfo(mEx);
-                        err.loggingAppCode = "WEB_MAIL";
-                        err.objectID = this.Context.Session.SessionID;                       
-                        log.Error(err);
-                       
-                        throw mEx;
-                    }
-                    else
-                    {
-                        throw ex;
-                    }
-                }
-            }
-        }
-
-        private void popolaListaAmministratori()
-        {
-            if (this.IdSender_ViewState != Decimal.MinusOne)
-            {
-                try
-                {
-                    BackendUserService bus = new BackendUserService();
-                    List<BackendUser> listaDipendentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
-                    if (listaDipendentiAbilitati != null)
-                    {
-                        lvUtentiAdmin.DataSource = listaDipendentiAbilitati.Where(x => x.RoleMail == 1);
-                        lvUtentiAdmin.DataBind();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    if (ex.GetType() != typeof(ManagedException))
-                    {                       
-                        ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti abilitati", "CM015",
-                            string.Empty, string.Empty, ex.InnerException);
-                        ErrorLogInfo err = new ErrorLogInfo(mEx);
-                        err.loggingAppCode = "WEB_MAIL";
-                        err.objectID = this.Context.Session.SessionID;                       
-                        log.Error(err);   
-                        throw mEx;
-                    }
-                    else
-                    {
-                        throw ex;
-                    }
-                }
-            }
-        }
-
-        private void popolaListaUtentiAbilitati()
-        {
-            if (this.IdSender_ViewState != Decimal.MinusOne)
-            {
-                try
-                {
-                    BackendUserService bus = new BackendUserService();
-                    List<BackendUser> listaDipendentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
-                    if (listaDipendentiAbilitati != null)
-                    {
-                        lvUtenti.DataSource = listaDipendentiAbilitati.Where(x => x.RoleMail == 0);
-                        lvUtenti.DataBind();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    if (ex.GetType() != typeof(ManagedException))
-                    {
-                        
-                        ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti abilitati", "CM004",
-                            string.Empty, string.Empty, ex.InnerException);
-                        ErrorLogInfo err = new ErrorLogInfo(mEx);
-                        err.loggingAppCode = "WEB_MAIL";
-                        err.objectID = this.Context.Session.SessionID;                       
-                        log.Error(err);     
-                        throw mEx;
-                    }
-                    else
-                    {
-                        throw ex;
-                    }
-                }
-            }
-        }
+        
 
         private void GetRoleBackEndUser()
         {
@@ -357,40 +184,7 @@ namespace GestionePEC.pages.MailClient
                                               select map.MailAccessLevel).SingleOrDefault();
         }
 
-        protected void ddlListaDipartimenti_itemSelected(object sender, EventArgs e)
-        {
-            if (!String.IsNullOrEmpty(ddlListaDipartimenti.SelectedValue))
-            {
-                this.Dipartimento_ViewState = ddlListaDipartimenti.SelectedValue;
-
-                if (this.IdSender_ViewState != Decimal.MinValue)
-                {
-                    try
-                    {
-                        popolaListaDipendentiNONAbilitati();
-                    }
-                    catch (Exception ex)
-                    {
-                        if (ex.GetType() != typeof(ManagedException))
-                        {
-                            
-                            ManagedException mEx = new ManagedException("Errore nel popolamento della lista dei dipendenti non abilitati", "CM005",
-                                string.Empty, string.Empty, ex.InnerException);
-                            ErrorLogInfo err = new ErrorLogInfo(mEx);
-                            err.loggingAppCode = "WEB_MAIL";
-                            err.objectID = this.Context.Session.SessionID;                         
-                            log.Error(err);                         
-
-                            info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                        }
-                        else
-                        {
-                            info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                        }
-                    }
-                }
-            }
-        }
+     
 
         protected void lvDipendentiAbilitati_ItemDataBound(object sender, ListViewItemEventArgs e)
         {
@@ -481,9 +275,9 @@ namespace GestionePEC.pages.MailClient
                 case "GestioneEmail":
                     pnlGestioneEmail.Visible = true;
                     pnlDettaglioEmailServer.Visible = false;
-                    pnlElencoUtenti.Visible = false;
-                    pnlAdmin.Visible = false;
-                    pnlGestioneFolders.Visible = false;
+                  //  pnlElencoUtenti.Visible = false;
+                  //  pnlAdmin.Visible = false;
+                  //  pnlGestioneFolders.Visible = false;
                     this.IdSender_ViewState = Decimal.Parse(e.CommandArgument.ToString());
                     if (bUser.UserRole == 0)
                         fvEmail.ChangeMode(FormViewMode.ReadOnly);
@@ -502,9 +296,9 @@ namespace GestionePEC.pages.MailClient
                     this.IdServer_ViewState = decimal.Parse(e.CommandArgument.ToString());
                     pnlDettaglioEmailServer.Visible = true;
                     pnlGestioneEmail.Visible = false;
-                    pnlAdmin.Visible = false;
-                    pnlElencoUtenti.Visible = false;
-                    pnlGestioneFolders.Visible = false;
+                    //pnlAdmin.Visible = false;
+                    // pnlElencoUtenti.Visible = false;
+                    // pnlGestioneFolders.Visible = false;
                     if (bUser.UserRole == 2)
                         fvServer.ChangeMode(FormViewMode.Edit);
                     else
@@ -512,58 +306,7 @@ namespace GestionePEC.pages.MailClient
                     fvServer.DataBind();
                     break;
 
-                case "GestioneAssociazione":
-                    pnlGestioneEmail.Visible = false;
-                    pnlDettaglioEmailServer.Visible = false;
-                    pnlAdmin.Visible = false;
-                    pnlElencoUtenti.Visible = true;
-                    pnlGestioneFolders.Visible = false;
-                    this.PopolaDDLDipartimenti();
-                    // string AdminDepartment = ConfigurationManager.AppSettings.Get("AdministrationDepartment");
-                    // if (AdminDepartment.Contains(this.Dipartimento_ViewState))
-                    //  {
-                    if (string.IsNullOrEmpty(MySecurityProvider.CurrentPrincipal.MyIdentity.dipartimento))
-                    {
-                        this.Dipartimento_ViewState = "152";
-                    }else { this.Dipartimento_ViewState = MySecurityProvider.CurrentPrincipal.MyIdentity.dipartimento; }
-                    
-                    ddlListaDipartimenti.Items.FindByValue(this.Dipartimento_ViewState).Selected = true;
-                    lblDepartment.Visible = false;
-                    // }
-                    // else
-                    // {
-                    //   ddlListaDipartimenti.Visible = false;
-                    //  lblDepartment.Visible = true;
-                    //  lblDepartment.Text = this.Dipartimento_ViewState;
-                    // }
-                    this.IdSender_ViewState = Decimal.Parse(e.CommandArgument.ToString());
-                    this.GetRoleBackEndUser();
-                    this.popolaListaDipendentiAbilitati();
-                    this.popolaListaDipendentiNONAbilitati();
-                    break;
-
-                case "GestioneFolders":
-                    pnlGestioneEmail.Visible = false;
-                    pnlDettaglioEmailServer.Visible = false;
-                    pnlElencoUtenti.Visible = false;
-                    pnlAdmin.Visible = false;
-                    pnlGestioneFolders.Visible = true;
-                    if (!e.CommandArgument.ToString().Equals(""))
-                        Session.Add("MailRichiedente", e.CommandArgument.ToString());
-                    popolaListaFoldersNonAbilitate(e.CommandArgument.ToString());
-                    popolaListaFoldersAbilitate(e.CommandArgument.ToString());
-                    break;
-                case "GestioneAssociazioneAdmin":
-                    pnlGestioneEmail.Visible = false;
-                    pnlDettaglioEmailServer.Visible = false;
-                    pnlElencoUtenti.Visible = false;
-                    pnlAdmin.Visible = true;
-                    pnlGestioneFolders.Visible = false;
-                    this.IdSender_ViewState = Decimal.Parse(e.CommandArgument.ToString());
-                    this.GetRoleBackEndUser();
-                    this.popolaListaUtentiAbilitati();
-                    this.popolaListaAmministratori();
-                    break;
+               
 
             }
         }
@@ -571,9 +314,9 @@ namespace GestionePEC.pages.MailClient
         protected void btnInserimentoServer_OnClick(object sender, EventArgs e)
         {
             pnlDettaglioEmailServer.Visible = true;
-            pnlElencoUtenti.Visible = false;
+          //  pnlElencoUtenti.Visible = false;
             pnlGestioneEmail.Visible = false;
-            pnlGestioneFolders.Visible = false;
+            //pnlGestioneFolders.Visible = false;
             this.IdServer_ViewState = decimal.MinusOne;
             fvServer.ChangeMode(FormViewMode.Insert);
         }
@@ -581,9 +324,9 @@ namespace GestionePEC.pages.MailClient
         protected void btnInserimentoEmail_OnClick(object sender, EventArgs e)
         {
             pnlGestioneEmail.Visible = true;
-            pnlElencoUtenti.Visible = false;
+          //  pnlElencoUtenti.Visible = false;
             pnlDettaglioEmailServer.Visible = false;
-            pnlGestioneFolders.Visible = false;
+            // pnlGestioneFolders.Visible = false;
             this.IdSender_ViewState = decimal.MinusOne;
             fvEmail.ChangeMode(FormViewMode.Insert);
         }
@@ -887,350 +630,8 @@ namespace GestionePEC.pages.MailClient
         }
         #endregion
 
-        #region "Utenti"
-        protected void btnAbilita_Click(object sender, EventArgs e)
-        {
-            bool isItemChecked = false;
 
-            try
-            {
-                foreach (ListViewItem lvi in lvDipendentiNONAbilitati.Items)
-                {
-                    if ((lvi.FindControl("checkBoxUtenteNONAbilitati") as CheckBox).Checked)
-                    {
-                        isItemChecked = true;
-                        decimal userId = Decimal.Parse((lvi.FindControl("lb_ID_UTENTE") as HiddenField).Value);
-                        BackendUserService buservice = new BackendUserService();
-                        buservice.InsertAbilitazioneEmail(userId, this.IdSender_ViewState, 0);
-                    }
-                }
 
-                if (isItemChecked)
-                {
-                    popolaListaDipendentiNONAbilitati();
-                    popolaListaDipendentiAbilitati();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex.GetType() != typeof(ManagedException))
-                {                   
-                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM023",
-                        string.Empty, string.Empty, ex.InnerException);
-                    ErrorLogInfo err = new ErrorLogInfo(mEx);
-                    err.loggingAppCode = "WEB_MAIL";
-                    err.objectID = this.Context.Session.SessionID;                 
-                    log.Error(err);                  
-
-                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-                else
-                {
-                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-            }
-        }
-
-        protected void btnDisabilita_Click(object sender, EventArgs e)
-        {
-            bool isItemChecked = false;
-
-            try
-            {
-                foreach (ListViewItem lvi in lvDipendentiAbilitati.Items)
-                {
-                    if ((lvi.FindControl("checkBoxUtenteAbilitati") as CheckBox).Checked)
-                    {
-                        isItemChecked = true;
-                        decimal userId = Decimal.Parse((lvi.FindControl("lb_ID_UTENTE") as HiddenField).Value);
-                        int role = Int16.Parse((lvi.FindControl("lb_ROLE") as HiddenField).Value);
-
-                        if (userId != this.UserIdBackendUser_ViewState && role <= this.RoleBackendUser_ViewState)
-                        {
-                            BackendUserService buservice = new BackendUserService();
-                            buservice.RemoveAbilitazioneEmail(userId, this.IdSender_ViewState);
-                        }
-                    }
-                }
-
-                if (isItemChecked)
-                {
-                    try
-                    {
-                        popolaListaDipendentiNONAbilitati();
-                    }
-                    catch (Exception) { }
-
-                    popolaListaDipendentiAbilitati();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex.GetType() != typeof(ManagedException))
-                {
-                  
-                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM024",
-                        string.Empty, string.Empty, ex.InnerException);
-                    ErrorLogInfo err = new ErrorLogInfo(mEx);
-                    err.loggingAppCode = "WEB_MAIL";
-                    err.objectID = this.Context.Session.SessionID;                    
-                    log.Error(err);  
-                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-                else
-                {
-                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-            }
-        }
-        #endregion
-
-        #region Amministratori
-
-        protected void btnAbilitaAdmin_Click(object sender, EventArgs e)
-        {
-            bool isItemChecked = false;
-
-            try
-            {
-                foreach (ListViewItem lvi in lvUtenti.Items)
-                {
-                    if ((lvi.FindControl("checkBoxUtenteAdminNONAbilitati") as CheckBox).Checked)
-                    {
-                        isItemChecked = true;
-                        decimal userId = Decimal.Parse((lvi.FindControl("lb_ID_UTENTE_ADMIN") as HiddenField).Value);
-                        BackendUserService buservice = new BackendUserService();
-                        buservice.UpdateAbilitazioneEmail(userId, this.IdSender_ViewState, 1);
-                    }
-                }
-
-                if (isItemChecked)
-                {
-                    popolaListaAmministratori();
-                    popolaListaUtentiAbilitati();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex.GetType() != typeof(ManagedException))
-                {
-                   
-                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM015",
-                        string.Empty, string.Empty, ex.InnerException);
-                    ErrorLogInfo err = new ErrorLogInfo(mEx);
-                    err.loggingAppCode = "WEB_MAIL";
-                    err.objectID = this.Context.Session.SessionID;                    
-                    log.Error(err);                   
-                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-                else
-                {
-                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-            }
-        }
-
-        protected void btnDisabilitaAdmin_Click(object sender, EventArgs e)
-        {
-            bool isItemChecked = false;
-
-            try
-            {
-                foreach (ListViewItem lvi in lvUtentiAdmin.Items)
-                {
-                    if ((lvi.FindControl("checkBoxUtentiAdmin") as CheckBox).Checked)
-                    {
-                        isItemChecked = true;
-                        decimal userId = Decimal.Parse((lvi.FindControl("lb_ID_UTENTE_ADMIN") as HiddenField).Value);
-                        int role = Int16.Parse((lvi.FindControl("lb_ROLE_ADMIN") as HiddenField).Value);
-
-                        if (userId != this.UserIdBackendUser_ViewState && role <= this.RoleBackendUser_ViewState)
-                        {
-                            BackendUserService buservice = new BackendUserService();
-                            buservice.UpdateAbilitazioneEmail(userId, this.IdSender_ViewState, 0);
-                        }
-                    }
-                }
-
-                if (isItemChecked)
-                {
-                    try
-                    {
-                        popolaListaAmministratori();
-                        popolaListaUtentiAbilitati();
-                    }
-                    catch (Exception) { }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex.GetType() != typeof(ManagedException))
-                {
-                  
-                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM016",
-                        string.Empty, string.Empty, ex.InnerException);
-                    ErrorLogInfo err = new ErrorLogInfo(mEx);
-                    err.loggingAppCode = "WEB_MAIL";
-                    err.objectID = this.Context.Session.SessionID;                   
-                    log.Error(err);                    
-
-                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-                else
-                {
-                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Cartelle
-
-        protected void btnAbilitaFolder_Click(object sender, EventArgs e)
-        {
-            bool isItemChecked = false;
-
-            try
-            {
-                foreach (ListViewItem lvi in lvCartelleNonAbilitate.Items) 
-                {
-                    if ((lvi.FindControl("checkBoxCartelleNonAbilitate") as CheckBox).Checked)
-                    {
-                        isItemChecked = true;
-                        string[] listaIdStr = (lvi.FindControl("lb_NOME_CARTELLA") as HiddenField).Value.Split(';');
-                        SendersFoldersService sfs = new SendersFoldersService();
-                        sfs.InsertAbilitazioneFolder(Convert.ToInt32(listaIdStr[0]), Convert.ToInt32(listaIdStr[1]), Convert.ToInt32(listaIdStr[2]));
-                        MailUser m = WebMailClientManager.getAccount();
-                        if (m != null)
-                        {
-                            WebMailClientManager.AccountRemove();
-                            MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
-                            MailUser account = facade.GetUserByUserId(m.UserId);
-                            MailServerFacade serverFacade = MailServerFacade.GetInstance(account); 
-                            account.Validated = true;
-                            WebMailClientManager.SetAccount(account);
-                        }
-                    }
-                }
-
-                if (isItemChecked)
-                {
-                    popolaListaFoldersNonAbilitate(Convert.ToString(Session["MailRichiedente"]));
-                    popolaListaFoldersAbilitate(Convert.ToString(Session["MailRichiedente"]));
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex.GetType() != typeof(ManagedException))
-                {                   
-                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM017",
-                        string.Empty, string.Empty, ex.InnerException);
-                    ErrorLogInfo err = new ErrorLogInfo(mEx);
-                    err.loggingAppCode = "WEB_MAIL";
-                    err.objectID = this.Context.Session.SessionID;                  
-                    log.Error(err);                   
-
-                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-                else
-                {
-                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-            }
-        }
-
-        protected void btnDisabilitaFolder_Click(object sender, EventArgs e)
-        {
-            bool isItemChecked = false;
-
-            try
-            {
-                foreach (ListViewItem lvi in lvCartelleAbilitate.Items)
-                {
-                    if ((lvi.FindControl("checkBoxCartelleAbilitate") as CheckBox).Checked)
-                    {
-                        isItemChecked = true;
-                        string[] listaIdStr = (lvi.FindControl("lb_NOME_CARTELLA_ABILITATA") as HiddenField).Value.Split(';');
-                        SendersFoldersService sfs = new SendersFoldersService();
-                        sfs.DeleteAbilitazioneFolder(Convert.ToInt32(listaIdStr[0]), Convert.ToInt32(listaIdStr[1]));
-                        MailUser m = WebMailClientManager.getAccount();
-                        if (m != null)
-                        {
-                            WebMailClientManager.AccountRemove();
-                            MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
-                            MailUser account = facade.GetUserByUserId(m.UserId);                            
-                            MailServerFacade serverFacade = MailServerFacade.GetInstance(account);
-                            account.Validated = true;
-                            WebMailClientManager.SetAccount(account);
-                        }
-                    }
-                }
-
-                if (isItemChecked)
-                {
-                    popolaListaFoldersNonAbilitate(Convert.ToString(Session["MailRichiedente"]));
-                    popolaListaFoldersAbilitate(Convert.ToString(Session["MailRichiedente"]));
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex.GetType() != typeof(ManagedException))
-                {                   
-                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM018",
-                        string.Empty, string.Empty, ex.InnerException);
-                    ErrorLogInfo err = new ErrorLogInfo(mEx);
-                    err.loggingAppCode = "WEB_MAIL";
-                    err.objectID = this.Context.Session.SessionID;                    
-                    log.Error(err);
-                    
-
-                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-                else
-                {
-                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-                }
-            }
-
-        }
-
-        public void popolaListaFoldersNonAbilitate(string eMail)
-        {
-            SendersFoldersService sfs = new SendersFoldersService();
-            List<SendersFolders> listaCartelleNonAbilitate = sfs.GetFoldersNONAbilitati(eMail);
-            lvCartelleNonAbilitate.DataSource = listaCartelleNonAbilitate;
-            lvCartelleNonAbilitate.DataBind();
-
-        }
-
-        public void popolaListaFoldersAbilitate(string eMail)
-        {
-            SendersFoldersService sfs = new SendersFoldersService();
-            List<SendersFolders> listaCartelleAbilitate = sfs.GetFoldersAbilitati(eMail);
-            lvCartelleAbilitate.DataSource = listaCartelleAbilitate;
-            lvCartelleAbilitate.DataBind();
-        }
-
-        protected void lvCartelleAbilitate_ItemDataBound(object sender, ListViewItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListViewItemType.DataItem)
-            {
-                ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-                SendersFolders sFolder = (SendersFolders)dataItem.DataItem;
-                if (sFolder.System == 1)
-                {
-                    (e.Item.FindControl("checkBoxCartelleAbilitate") as CheckBox).Enabled = false;
-                }
-                else
-                {
-                    (e.Item.FindControl("checkBoxCartelleAbilitate") as CheckBox).Enabled = true;
-                }
-            }
-        }
-
-        #endregion
     }
 }
 

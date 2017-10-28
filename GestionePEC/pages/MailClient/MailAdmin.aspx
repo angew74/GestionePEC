@@ -1,13 +1,14 @@
 ﻿<%@ Page Title="Amministrazione" Language="C#" MasterPageFile="~/Master/Mail.Master" Theme="Delta" AutoEventWireup="true" CodeBehind="MailAdmin.aspx.cs" Inherits="GestionePEC.pages.MailClient.MailAdmin" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <%@ Register Src="~/Controls/MailBoxNavigator.ascx" TagName="MailNav" TagPrefix="mail" %>
 <%@ Import Namespace="System.Linq" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="WestContentPlaceHolder" runat="server">
-      <mail:MailNav ID="Navigator" runat="server" />
+    <mail:MailNav ID="Navigator" runat="server" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
-   <div class="content-panel-borderless">
+    <div class="content-panel-borderless">
         <div class="header-panel-blue">
             <div class="header-title">
                 <div class="header-text-left">
@@ -65,7 +66,7 @@
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" />
                                 </asp:TemplateField>
-                                 <asp:TemplateField ItemStyle-Width="80px" HeaderText="Amministratori">
+                                <asp:TemplateField ItemStyle-Width="80px" HeaderText="Amministratori">
                                     <ItemTemplate>
                                         <asp:ImageButton ID="ibGestioneAssociazioneAdmin" runat="server" CommandName="GestioneAssociazioneAdmin"
                                             CommandArgument='<%# Eval("UserId") %>' CssClass="iVisualizza" ToolTip="Gestione Amministratori"
@@ -77,7 +78,7 @@
                                 <asp:TemplateField ItemStyle-Width="80px" HeaderText="Folders">
                                     <ItemTemplate>
                                         <asp:ImageButton ID="ibElencoFolders" runat="server" CommandName="GestioneFolders"
-                                            CommandArgument='<%# Eval("EMailAddress") %>'  ToolTip="Gestione Folders"
+                                            CommandArgument='<%# Eval("EMailAddress") %>' ToolTip="Gestione Folders"
                                             CausesValidation="false" ImageUrl="~/App_Themes/Delta/images/buttons/folder.png"
                                             Visible="true" />
                                     </ItemTemplate>
@@ -449,7 +450,8 @@
                                                 </div>
                                                 <div style="display: table-cell;">
                                                     <label class="LabelBlackBold">
-                                                        <%# Eval("IncomingProtocol") %> </label>
+                                                        <%# Eval("IncomingProtocol") %>
+                                                    </label>
                                                 </div>
                                                 <div style="display: table-cell;">
                                                     <label class="LabelBlack">
@@ -610,8 +612,7 @@
                                             </div>
                                             <div class="buttons-panel" style="margin-top: 4px; margin-right: 8px">
                                                 <asp:Button ID="btnSalvaServer" runat="server" Text="Salva" ToolTip="Effettua il Savataggio"
-                                                    CssClass="upd" CausesValidation="true" ValidationGroup="btnSalvaServer" CommandName="update">
-                                                </asp:Button>
+                                                    CssClass="upd" CausesValidation="true" ValidationGroup="btnSalvaServer" CommandName="update"></asp:Button>
                                                 <asp:Button ID="butAnnullaEmail" runat="server" Text="Annulla" ToolTip="Annulla"
                                                     CssClass="upd" CausesValidation="false" CommandName="annulla"></asp:Button>
                                             </div>
@@ -764,8 +765,7 @@
                                             </div>
                                             <div class="buttons-panel" style="margin-top: 4px; margin-right: 8px">
                                                 <asp:Button ID="btnSalvaServer" runat="server" Text="Salva" ToolTip="Effettua il Savataggio"
-                                                    CssClass="upd" CausesValidation="true" ValidationGroup="btnSalvaServer" CommandName="insert">
-                                                </asp:Button>
+                                                    CssClass="upd" CausesValidation="true" ValidationGroup="btnSalvaServer" CommandName="insert"></asp:Button>
                                                 <asp:Button ID="butAnnullaEmail" runat="server" Text="Annulla" ToolTip="Annulla"
                                                     CssClass="upd" CausesValidation="false" CommandName="annulla"></asp:Button>
                                             </div>
@@ -775,295 +775,7 @@
                             </div>
                         </div>
                     </asp:Panel>
-                    <asp:Panel ID="pnlElencoUtenti" runat="server" Visible="false">
-                        <div class="body-panel">
-                            <div style="display: table; width: 100%;">
-                                <div style="display: table-row;">
-                                    <div style="float: left; display: table-cell;" class="content-panel-gray">
-                                        <div class="header-panel-gray">
-                                            <div class="header-title">
-                                                <div class="header-text-left">
-                                                    <label>
-                                                        Elenco Utenti - Dipartimento:
-                                                    </label>
-                                                    <asp:Label runat="server" ID="lblDepartment" />
-                                                    <asp:DropDownList ID="ddlListaDipartimenti" runat="server" DataTextField="DEPARTMENT"
-                                                        Height="20px" Width="50px" AutoPostBack="true" DataValueField="DEPARTMENT" OnSelectedIndexChanged="ddlListaDipartimenti_itemSelected">
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="body-panel" style="height: 400px; min-width: 400px; max-width: 900px">
-                                            <asp:ListView ID="lvDipendentiNONAbilitati" runat="server">
-                                                <LayoutTemplate>
-                                                    <div id="itemContainer" style="display: inline-table;">
-                                                        <div class="container">
-                                                            <div id="itemPlaceholder" runat="server">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </LayoutTemplate>
-                                                <ItemTemplate>
-                                                    <div style="display: table-row;">
-                                                        <div class="left-content" style="display: table-cell;">
-                                                            <asp:CheckBox ID="checkBoxUtenteNONAbilitati" runat="server" />
-                                                        </div>
-                                                        <div class="right-content" style="display: table-cell;">
-                                                            <asp:HiddenField ID="lb_ID_UTENTE" Value='<%#Eval("UserId")%>' runat="server" />
-                                                            <asp:Label ID="lb_LDAPID" Text='<%# Eval("UserName")+" ("+Eval("Cognome")+" "+Eval("Nome")+") "%>'
-                                                                runat="server"></asp:Label>
-                                                        </div>
-                                                    </div>
-                                                </ItemTemplate>
-                                            </asp:ListView>
-                                        </div>
-                                    </div>
-                                    <div style="display: table-cell; vertical-align: middle; text-align: center;">
-                                        <div style="display: inline-table; min-width: 35px; max-width: 50px;">
-                                            <div style="display: table-row;">
-                                                <div style="display: table-cell;">
-                                                    <asp:ImageButton runat="server" ID="btnAbilita" OnClick="btnAbilita_Click" ImageUrl="~/App_Themes/Delta/images/buttons/navigate_right_256.png"
-                                                        Width="80%" BorderColor="#99bbe8" BorderWidth="1" ToolTip="Abilita Utente" />
-                                                </div>
-                                            </div>
-                                            <div style="display: table-row;">
-                                                <div style="display: table-cell;">
-                                                    <asp:ImageButton runat="server" ID="btnDisabilita" OnClick="btnDisabilita_Click"
-                                                        ImageUrl="~/App_Themes/Delta/images/buttons/navigate_left_256.png" Width="80%"
-                                                        BorderColor="#99bbe8" BorderWidth="1" ToolTip="Disabilita Utente" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="display: table-cell; float: right;" class="content-panel-gray">
-                                        <div class="header-panel-gray">
-                                            <div class="header-title">
-                                                <div class="header-text-left">
-                                                    <label>
-                                                        Utenti Abilitati</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="body-panel" style="overflow: auto; height: 400px; min-width: 450px;max-width:1200px">
-                                            <asp:ListView ID="lvDipendentiAbilitati" runat="server" OnItemDataBound="lvDipendentiAbilitati_ItemDataBound">
-                                                <LayoutTemplate>
-                                                    <div id="itemContainer" style="display: inline-table;">
-                                                        <div class="container">
-                                                            <div id="itemPlaceholder" runat="server">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </LayoutTemplate>
-                                                <ItemTemplate>
-                                                    <div style="display: table-row;">
-                                                        <div class="left-content" style="display: table-cell;">
-                                                            <asp:CheckBox ID="checkBoxUtenteAbilitati" runat="server" />
-                                                        </div>
-                                                        <div class="right-content" style="display: table-cell;">
-                                                            <asp:HiddenField ID="lb_ID_UTENTE" Value='<%#Eval("UserId")%>' runat="server" />
-                                                            <asp:HiddenField ID="lb_ROLE"  runat="server" />
-                                                            <asp:Label ID="lb_LDAPID" Text='<%# Eval("UserName")+" ("+Eval("Cognome")+" "+Eval("Nome")+") - Dip.: "+Eval("Department")%>'
-                                                                runat="server"></asp:Label>
-                                                        </div>
-                                                    </div>
-                                                </ItemTemplate>
-                                            </asp:ListView>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </asp:Panel>
-                     <asp:Panel ID="pnlAdmin" runat="server" Visible="false">
-                        <div class="body-panel">
-                            <div style="display: table; width: 100%;">
-                                <div style="display: table-row;">
-                                    <div style="float: left; display: table-cell;" class="content-panel-gray">
-                                        <div class="header-panel-gray">
-                                            <div class="header-title">
-                                                <div class="header-text-left">
-                                                    <label>
-                                                        Elenco Utenti Email:
-                                                    </label>
-                                                    <asp:Label runat="server" ID="Label1" />                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="body-panel">
-                                            <asp:ListView ID="lvUtenti" runat="server">
-                                                <LayoutTemplate>
-                                                    <div id="itemContainer" style="display: inline-table;">
-                                                        <div class="container">
-                                                            <div id="itemPlaceholder" runat="server">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </LayoutTemplate>
-                                                <ItemTemplate>
-                                                    <div style="display: table-row;">
-                                                        <div class="left-content" style="display: table-cell;">
-                                                            <asp:CheckBox ID="checkBoxUtenteAdminNONAbilitati" runat="server" />
-                                                        </div>
-                                                        <div class="right-content" style="display: table-cell;">
-                                                            <asp:HiddenField ID="lb_ID_UTENTE_ADMIN" Value='<%#Eval("UserId")%>' runat="server" />
-                                                            <asp:Label ID="lb_LDAPID_ADMIN" Text='<%# Eval("UserName")+" ("+Eval("Cognome")+" "+Eval("Nome")+") "%>'
-                                                                runat="server"></asp:Label>
-                                                        </div>
-                                                    </div>
-                                                </ItemTemplate>
-                                            </asp:ListView>
-                                        </div>
-                                    </div>
-                                    <div style="display: table-cell; vertical-align: middle; text-align: center;">
-                                        <div style="display: inline-table; min-width: 35px; max-width: 50px;">
-                                            <div style="display: table-row;">
-                                                <div style="display: table-cell;">
-                                                    <asp:ImageButton runat="server" ID="btnAdminAbil" OnClick="btnAbilitaAdmin_Click" ImageUrl="~/App_Themes/Delta/images/buttons/navigate_right_256.png"
-                                                        Width="80%" BorderColor="#99bbe8" BorderWidth="1" ToolTip="Abilita Utente all'Amministrazione" />
-                                                </div>
-                                            </div>
-                                            <div style="display: table-row;">
-                                                <div style="display: table-cell;">
-                                                    <asp:ImageButton runat="server" ID="btnAdminDis" OnClick="btnDisabilitaAdmin_Click"
-                                                        ImageUrl="~/App_Themes/Delta/images/buttons/navigate_left_256.png" Width="80%"
-                                                        BorderColor="#99bbe8" BorderWidth="1" ToolTip="Disabilita Utente dall'Amministrazione" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="display: table-cell; float: right;" class="content-panel-gray">
-                                        <div class="header-panel-gray">
-                                            <div class="header-title">
-                                                <div class="header-text-left">
-                                                    <label>
-                                                        Utenti Amministratori</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="body-panel" id="utentiAdmin">
-                                            <asp:ListView ID="lvUtentiAdmin" runat="server" OnItemDataBound="lvUtentiAdmin_ItemDataBound">
-                                                <LayoutTemplate>
-                                                    <div id="itemContainer" style="display: inline-table;">
-                                                        <div class="container">
-                                                            <div id="itemPlaceholder" runat="server">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </LayoutTemplate>
-                                                <ItemTemplate>
-                                                    <div style="display: table-row;">
-                                                        <div class="left-content" style="display: table-cell;">
-                                                            <asp:CheckBox ID="checkBoxUtentiAdmin" runat="server" />
-                                                        </div>
-                                                        <div class="right-content" style="display: table-cell;">
-                                                            <asp:HiddenField ID="lb_ID_UTENTE_ADMIN" Value='<%#Eval("UserId")%>' runat="server" />
-                                                            <asp:HiddenField ID="lb_ROLE_ADMIN"  runat="server" />
-                                                            <asp:Label ID="lb_LDAPID_ADMIN" Text='<%# Eval("UserName")+" ("+Eval("Cognome")+" "+Eval("Nome")+") - Dip.: "+Eval("Department")%>'
-                                                                runat="server"></asp:Label>
-                                                        </div>
-                                                    </div>
-                                                </ItemTemplate>
-                                            </asp:ListView>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </asp:Panel>
-                    
-                      <asp:Panel ID="pnlGestioneFolders" runat="server" Visible="false">
-                        <div class="body-panel">
-                            <div style="display: table; width: 100%;">
-                                <div style="display: table-row;">
-                                    <div style="float: left; display: table-cell;" class="content-panel-gray">
-                                        <div class="header-panel-gray">
-                                            <div class="header-title">
-                                                <div class="header-text-left">
-                                                    <label>
-                                                        Cartelle Non Abilitate
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="body-panel" id="cartelleNonAbilitate">
-                                            <asp:ListView ID="lvCartelleNonAbilitate" runat="server">
-                                                <LayoutTemplate>
-                                                    <div id="itemContainer" style="display: inline-table;">
-                                                        <div class="container">
-                                                            <div id="itemPlaceholder" runat="server">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </LayoutTemplate>
-                                                <ItemTemplate>
-                                                    <div style="display: table-row;">
-                                                        <div class="left-content" style="display: table-cell;">
-                                                            <asp:CheckBox ID="checkBoxCartelleNonAbilitate" runat="server" />
-                                                        </div>
-                                                        <div class="right-content" style="display: table-cell;">
-                                                            <asp:HiddenField ID="lb_NOME_CARTELLA" Value='<%#Eval("IdNome")+";"+Eval("IdSender")+";"+Eval("System")%>' runat="server" />
-                                                            <asp:Label ID="lb_LDAPID" Text='<%# Eval("Nome")+" ("+Eval("System")+") "%>'
-                                                                runat="server"></asp:Label>
-                                                        </div>
-                                                    </div>
-                                                </ItemTemplate>
-                                            </asp:ListView>
-                                        </div>
-                                    </div>
-                                    <div style="display: table-cell; vertical-align: middle; text-align: center;">
-                                        <div style="display: inline-table; min-width: 35px; max-width: 50px;">
-                                            <div style="display: table-row;">
-                                                <div style="display: table-cell;">
-                                                    <asp:ImageButton runat="server" ID="ImageButton3" OnClick="btnAbilitaFolder_Click" ImageUrl="~/App_Themes/Delta/images/buttons/navigate_right_256.png"
-                                                        Width="80%" BorderColor="#99bbe8" BorderWidth="1" ToolTip="Abilita Cartella" />
-                                                </div>
-                                            </div>
-                                            <div style="display: table-row;">
-                                                <div style="display: table-cell;">
-                                                    <asp:ImageButton runat="server" ID="ImageButton4" OnClick="btnDisabilitaFolder_Click" ImageUrl="~/App_Themes/Delta/images/buttons/navigate_left_256.png"
-                                                        Width="80%" BorderColor="#99bbe8" BorderWidth="1" ToolTip="Disabilita Cartella" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="display: table-cell; float: right;" class="content-panel-gray">
-                                        <div class="header-panel-gray">
-                                            <div class="header-title">
-                                                <div class="header-text-left">
-                                                    <label>
-                                                        Cartelle Abilitate</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="body-panel" id="cartelleAbilitate">
-                                            <asp:ListView ID="lvCartelleAbilitate" runat="server" OnItemDataBound="lvCartelleAbilitate_ItemDataBound">
-                                                <LayoutTemplate>
-                                                    <div id="itemContainer" style="display: inline-table;">
-                                                        <div class="container">
-                                                            <div id="itemPlaceholder" runat="server">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </LayoutTemplate>
-                                                <ItemTemplate>
-                                                    <div style="display: table-row;">
-                                                        <div class="left-content" style="display: table-cell;">
-                                                            <asp:CheckBox ID="checkBoxCartelleAbilitate" runat="server" Enabled = "true"  />
-                                                        </div>
-                                                        <div class="right-content" style="display: table-cell;">
-                                                            <asp:HiddenField ID="lb_NOME_CARTELLA_ABILITATA" Value='<%#Eval("IdNome")+";"+Eval("IdSender")+";"+Eval("System")%>' runat="server" />
-                                                            <asp:Label ID="lb_FOLDVALUE" Text='<%# Eval("Nome")+" ("+Eval("System")+") "%>'
-                                                                runat="server"></asp:Label>
-                                                        </div>
-                                                    </div>
-                                                </ItemTemplate>
-                                            </asp:ListView>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </asp:Panel>
+                    </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>

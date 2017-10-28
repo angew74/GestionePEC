@@ -282,10 +282,16 @@ namespace SendMail.Data.SQLServerDB.Repository
                     List<Folder> list = GetMailFolders(idmailuser);
                     user = DaoSQLServerDBHelper.MapToMailUser(mailsender, s, list);
                 }
-                catch
+                catch(Exception ex)
                 {
+                    if (!ex.GetType().Equals(typeof(ManagedException)))
+                    {
+                        ManagedException mEx = new ManagedException(ex.Message, "ERR_ACC_006", string.Empty, string.Empty, ex.InnerException);
+                        ErrorLogInfo err = new ErrorLogInfo(mEx);
+                        err.objectID = id.ToString();
+                        log.Error(err);
+                    }
                     user = null;
-                    throw;
                 }
             }
             return user;
@@ -298,16 +304,17 @@ namespace SendMail.Data.SQLServerDB.Repository
                 using (FAXPECContext dbcontext = new FAXPECContext())
                 {
                     MAIL_SENDERS s = new MAIL_SENDERS();
-                    s.USERNAME = entity.EmailAddress;
+                    s.USERNAME = entity.LoginId;
                     s.ID_MAILSERVER = entity.Id;
                     s.PASSWORD = entity.Password;
                     s.ID_RESPONSABILE = 1;
                     s.FLG_MANAGED = "0";
+                    s.MAIL = entity.EmailAddress;
                     dbcontext.MAIL_SENDERS.Add(s);
                     int resp = dbcontext.SaveChanges();
                     if (resp == 1)
                     {
-                        entity.UserId = s.ID_SENDER;
+                        entity.UserId = dbcontext.MAIL_SENDERS.OrderByDescending(c=>c.ID_SENDER).FirstOrDefault().ID_SENDER;
                     }
                 }
             }

@@ -105,12 +105,22 @@ namespace SendMail.Data.SQLServerDB.Repository
         {
 
             List<Comunicazioni> lComunicazioni = new List<Comunicazioni>();
-            int skip = (int)(minRec - 1);
+            int skip = 0;
+            if (minRec > 0)
+            { skip = (int)(minRec - 1); }
             int take = (int)(maxRec - minRec);
-            string[] stati = Enum.GetValues(typeof(MailStatus))
-                    .Cast<string>()
-                    .Select(x => x.ToString())
-                    .ToArray();
+            string[] stati = null;
+            if (status.Count == 0)
+            {
+                 stati = Enum.GetValues(typeof(MailStatus))
+                      .Cast<int>()
+                      .Select(x => x.ToString())
+                      .ToArray();
+            }
+            else
+            {
+                stati = status.ToArray().Cast<int>().Select(x => x.ToString()).ToArray();
+            }
             using (FAXPECContext dbcontext = new FAXPECContext())
             {
                 List<MAIL_CONTENT> l = new List<MAIL_CONTENT>();
@@ -121,8 +131,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                              on c.REF_ID_COM equals m.REF_ID_COM
                          join cm in dbcontext.COMUNICAZIONI
                          on c.REF_ID_COM equals cm.ID_COM
-                         where m.MAIL_SENDER == utente.ToUpper()
-                         && c.CANALE == tipoCanale.ToString()
+                         where m.MAIL_SENDER.ToUpper() == utente.ToUpper()
+                         && c.CANALE.ToUpper() == tipoCanale.ToString().ToUpper()
                          && !(stati.Contains(c.STATO_COMUNICAZIONE_NEW))
                          orderby c.REF_ID_COM
                          select m).Skip(skip).Take(take).ToList();
@@ -585,11 +595,15 @@ namespace SendMail.Data.SQLServerDB.Repository
                     try
                     {
                         AutoMapperConfiguration.Configure();
-                        COMUNICAZIONI comunicazione = AutoMapperConfiguration.fromComunicazioniToDto(entity,false,false);
+                        //   COMUNICAZIONI comunicazione = AutoMapperConfiguration.fromComunicazioniToDto(entity,false,false);
+                        COMUNICAZIONI comunicazione = AutoMapperConfiguration.fromComunicazioniToSimpleDto(entity);
                         decimal idComOld = 0;
                         string v_cod_app = string.Empty;
                         if (entity.MailComunicazione.Follows != null)
-                        { idComOld = dbcontext.MAIL_CONTENT.Where(x => x.ID_MAIL == entity.MailComunicazione.Follows).First().REF_ID_COM; }
+                        {
+                            MAIL_CONTENT oldcontent = dbcontext.MAIL_CONTENT.Where(x => x.ID_MAIL == entity.MailComunicazione.Follows).FirstOrDefault();
+                            idComOld = (oldcontent == null) ? 0 : oldcontent.REF_ID_COM;
+                        }
                         if (idComOld == 0)
                         {
                             v_cod_app = dbcontext.COMUNICAZIONI_SOTTOTITOLI.Where(x => x.ID_SOTTOTITOLO == entity.RefIdSottotitolo).First().COMUNICAZIONI_TITOLI.APP_CODE;
@@ -600,15 +614,51 @@ namespace SendMail.Data.SQLServerDB.Repository
                             COMUNICAZIONI old_comunicazione = dbcontext.COMUNICAZIONI.Where(x => x.ID_COM == idComOld).First();
                             entity.CodAppInserimento = old_comunicazione.COD_APP_INS;
                             entity.RefIdSottotitolo =long.Parse(old_comunicazione.REF_ID_SOTTOTITOLO.ToString());
-                        }                      
+                        }        
                         dbcontext.COMUNICAZIONI.Add(comunicazione);
-                        dbcontext.SaveChanges();                      
-                        decimal newid = dbcontext.COMUNICAZIONI.Select(c => c.ID_COM).DefaultIfEmpty(0).Max();
-                        entity.IdComunicazione =(long) newid;
+                        dbcontext.SaveChanges();
+                        decimal idcomnew = dbcontext.COMUNICAZIONI.Max(x => x.ID_COM);
+                        entity.IdComunicazione = (long)idcomnew;
                         MAIL_CONTENT content = AutoMapperConfiguration.FromComunicazioniToMailContent(entity);
                         dbcontext.MAIL_CONTENT.Add(content);
                         dbcontext.SaveChanges();
                         decimal newidmail = dbcontext.MAIL_CONTENT.Select(c => c.ID_MAIL).DefaultIfEmpty(0).Max();
+                        var list = entity.ComFlussi.Where(x => x.Key == TipoCanale.MAIL).SelectMany(z => z.Value);
+                        foreach (ComFlusso comFlusso in list)
+                        {
+                            COMUNICAZIONI_FLUSSO flusso = new COMUNICAZIONI_FLUSSO
+                            {
+                                CANALE = comFlusso.Canale.ToString(),
+                                DATA_OPERAZIONE = (comFlusso.DataOperazione == null ? DateTime.Now : Convert.ToDateTime(comFlusso.DataOperazione)),
+                                STATO_COMUNICAZIONE_NEW = ((int)comFlusso.StatoComunicazioneNew).ToString(),
+                                STATO_COMUNICAZIONE_OLD = ((int)comFlusso.StatoComunicazioneOld).ToString(),
+                                UTE_OPE = comFlusso.UtenteOperazione
+                            };
+                            if (entity.IdComunicazione.HasValue)
+                            { flusso.REF_ID_COM = LinqExtensions.TryParseInt(entity.IdComunicazione); }
+                            else { flusso.REF_ID_COM = idcomnew; }
+                            if (comFlusso.IdFlusso.HasValue)
+                            { flusso.ID_FLUSSO = LinqExtensions.TryParseDouble(comFlusso.IdFlusso); }
+                            dbcontext.COMUNICAZIONI_FLUSSO.Add(flusso);
+                            dbcontext.SaveChanges();
+                        }
+                        if (entity.ComFlussiProtocollo != null && entity.ComFlussiProtocollo.Count > 0)
+                        {
+                            foreach (ComFlussoProtocollo comFlussoProtocollo in entity.ComFlussiProtocollo)
+                            {
+                                COMUNICAZIONI_FLUSSO_PROT flussoprotocollo = new COMUNICAZIONI_FLUSSO_PROT
+                                {
+                                    DATA_OPERAZIONE = (DateTime)comFlussoProtocollo.DataOperazione,
+                                    STATO_NEW = LinqExtensions.TryParseByte(comFlussoProtocollo.StatoNew.ToString()),
+                                    STATO_OLD = LinqExtensions.TryParseByte(comFlussoProtocollo.StatoOld.ToString()),
+                                    UTE_OPE = comFlussoProtocollo.UtenteOperazione
+                                };
+                                if (entity.IdComunicazione.HasValue)
+                                { flussoprotocollo.REF_ID_COM = LinqExtensions.TryParseInt(entity.IdComunicazione); }
+                                else { flussoprotocollo.REF_ID_COM = idcomnew; }
+                                dbcontext.COMUNICAZIONI_FLUSSO_PROT.Add(flussoprotocollo);
+                            }
+                        }
                         // gestione rubrica
                         if (entity.RubricaEntitaUsed != null && entity.RubricaEntitaUsed.Count > 0)
                         {
@@ -666,14 +716,16 @@ namespace SendMail.Data.SQLServerDB.Repository
                         }
                         // fine rubrica                       
                         //inizio allegati
-                        foreach (ComAllegato a in entity.ComAllegati)
+                        if (entity.ComAllegati != null && entity.ComAllegati.Count > 0)
                         {
-                            COMUNICAZIONI_ALLEGATI all = AutoMapperConfiguration.FromComAllegatoToDto(a);
-                            all.REF_ID_COM = newid;
-                            dbcontext.COMUNICAZIONI_ALLEGATI.Add(all);
+                            foreach (ComAllegato a in entity.ComAllegati)
+                            {
+                                COMUNICAZIONI_ALLEGATI all = AutoMapperConfiguration.FromComAllegatoToDto(a);
+                                all.REF_ID_COM = idcomnew;
+                                dbcontext.COMUNICAZIONI_ALLEGATI.Add(all);
+                            }
+                            dbcontext.SaveChanges();
                         }
-                        //
-                        dbcontext.SaveChanges();
                         dbContextTransaction.Commit();
                     }
                     // fine try            

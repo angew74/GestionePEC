@@ -1,6 +1,9 @@
-﻿using Com.Delta.Security;
+﻿using Com.Delta.Logging;
+using Com.Delta.Logging.Errors;
+using Com.Delta.Security;
 using FaxPec.Model;
 using GestionePEC.Extensions;
+using log4net;
 using SendMail.BusinessEF;
 using SendMail.Model.RubricaMapping;
 using SendMail.Model.WebserviceMappings;
@@ -13,6 +16,8 @@ namespace GestionePEC.pages.Rubrica
 {
     public partial class EntiResearch : BasePage
     {
+
+        private static readonly ILog log = LogManager.GetLogger("EntiResearch");
         [Newtonsoft.Json.JsonObject]
         internal class UserRoles
         {
@@ -118,8 +123,19 @@ namespace GestionePEC.pages.Rubrica
                     RubricaEntita r = rus.GetRubricaEntitaCompleteById(id);                  
                     UCEntiViewer.EntFormViewDataSource = r;
                 }
-                catch
-                {                   
+                catch(Exception ex)
+                {
+
+                    if (ex.GetType() != typeof(ManagedException))
+                    {
+                        ManagedException mEx = new ManagedException(ex.Message,
+                            "ERR_125",
+                            string.Empty,
+                            string.Empty,
+                            ex);
+                        ErrorLogInfo er = new ErrorLogInfo(mEx);
+                        log.Error(er);
+                    }
                     pnlDettagli.Visible = false;//* ATT.947493
                     (this.Page as BasePage).info.AddMessage("Errore nel caricamento dell'entità. Riprovare", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                 }

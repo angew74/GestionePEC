@@ -565,7 +565,7 @@
                                                 </div>
                                                 <div style="display: table-cell;">
                                                     <asp:TextBox ID="txtPROTOCOLLO_IN" runat="server" Width="150px" Text='<%# Bind("IncomingProtocol") %>'
-                                                        onkeyup="onlyDigitsInteger(this);" />
+                                                        />
                                                     <asp:RequiredFieldValidator ID="rfvPROTOCOLLO_IN" runat="server" ErrorMessage="Campo Obbligatorio"
                                                         ControlToValidate="txtPROTOCOLLO_IN" Display="None" ValidationGroup="btnSalvaServer"
                                                         SetFocusOnError="true">
@@ -718,7 +718,7 @@
                                                 </div>
                                                 <div style="display: table-cell;">
                                                     <asp:TextBox ID="txtPROTOCOLLO_IN" runat="server" Width="150px" Text='<%# Bind("IncomingProtocol") %>'
-                                                        onkeyup="onlyDigitsInteger(this);" />
+                                                         />
                                                     <asp:RequiredFieldValidator ID="rfvPROTOCOLLO_IN" runat="server" ErrorMessage="Campo Obbligatorio"
                                                         ControlToValidate="txtPROTOCOLLO_IN" Display="None" ValidationGroup="btnSalvaServer"
                                                         SetFocusOnError="true">

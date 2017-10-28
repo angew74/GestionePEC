@@ -7,12 +7,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="WestContentPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
-     <div id="mainDivNascita" class="content-panel-borderless">
+     <div class="content-panel-borderless">
         <div class="header-panel-blue">
             <div class="header-title">
                 <div class="header-text-left">
                     <label>
-                        Mail Box</label>
+                       Ricerca Avanzata Mail</label>
                 </div>
             </div>
         </div>

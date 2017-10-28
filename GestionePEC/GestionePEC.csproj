@@ -61,8 +61,9 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\..\APP\FAXPec\CertiWebAppAnag\Bin\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp">
-      <HintPath>..\..\..\APP\FAXPec\CertiWebAppAnag\Bin\itextsharp.dll</HintPath>
+    <Reference Include="itextsharp, Version=4.1.6.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SendMail\SendMailProject\SendMailApp\libs\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -899,6 +900,7 @@
     <Content Include="ExtJS6\ux\upload\uploader\LegacyExtJsUploader.js" />
     <Content Include="pages\Administration\MailAdmin.aspx" />
     <Content Include="pages\Administration\MailConfiguration.aspx" />
+    <Content Include="pages\Administration\OldPanels.txt" />
     <Content Include="pages\common\Default.aspx" />
     <Content Include="ExtJS6\ext-all-debug.js" />
     <Content Include="ExtJS6\ext-all.js" />
@@ -944,6 +946,7 @@
     <Compile Include="api\RolesServiceController.cs" />
     <Compile Include="Models\AppCodesModel.cs" />
     <Compile Include="Models\BackendUserModel.cs" />
+    <Compile Include="Models\FolderModel.cs" />
     <Compile Include="Models\FoldersSendersModel.cs" />
     <Compile Include="Models\FolderType.cs" />
     <Compile Include="Models\GenericResponseModel.cs" />

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Mail.Master" Theme="Delta" AutoEventWireup="true" CodeBehind="MailBoxInBox.aspx.cs" Inherits="GestionePEC.pages.MailClient.MailBoxInBox" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Mail.Master" Theme="Delta" AutoEventWireup="true" ValidateRequest="false"  CodeBehind="MailBoxInBox.aspx.cs" Inherits="GestionePEC.pages.MailClient.MailBoxInBox" %>
 <%@ Register Src="~/Controls/MailBoxLogin.ascx" TagName="MailBoxLogin" TagPrefix="mail" %>
 <%@ Register Src="~/Controls/Inbox.ascx" TagName="Inbox" TagPrefix="mail" %>
 <%@ Register Src="~/Controls/MailViewer.ascx" TagName="MailViewer" TagPrefix="uc1" %>

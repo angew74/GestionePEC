@@ -374,7 +374,7 @@ namespace SendMail.BusinessEF.MailFacedes
                     {
                         if (MailHeaderLoad() < 0)
                         { 
-                            //TASK: Allineamento log - Ciro
+                           
                             ManagedException mEx = new ManagedException("Non posso leggere la casella postale",
                                 "ERR_MAIL_0105", string.Empty,
                                 string.Empty, null);
@@ -382,9 +382,6 @@ namespace SendMail.BusinessEF.MailFacedes
                             _log.Error(mEx);
                             throw mEx;
                          }
-                            //throw new ManagedException("Non posso leggere la casella postale"
-                            //                          , "ERR_MAIL_0005", "MailServerFacade.cs", "IncomingConnect", "MailHeaderLoad", "", "", null
-                            //                          );
                     }
                 }
             }
@@ -400,7 +397,7 @@ namespace SendMail.BusinessEF.MailFacedes
                 {
                     if (MailHeaderLoad() < 0)
                     {
-                        //TASK: Allineamento log - Ciro
+                        
                         ManagedException mEx = new ManagedException("Non posso leggere la casella postale",
                             "ERR_MAIL_0106", 
                             string.Empty,
@@ -409,9 +406,7 @@ namespace SendMail.BusinessEF.MailFacedes
                         _log.Error(mEx);
                         throw mEx;
                     }
-                        //throw new ManagedException("Non posso leggere la casella postale"
-                        //                          , "ERR_MAIL_0006", "MailServerFacade.cs", "IncomingConnect", "MailHeaderLoad", "", "", null
-                        //                          );
+                        
                 }
             }
         }
@@ -752,7 +747,6 @@ namespace SendMail.BusinessEF.MailFacedes
             }
             catch (Exception ex)
             {
-                //TASK: Allineamento log - Ciro
                 if (ex.GetType() != typeof(ManagedException))
                 {
                     ManagedException mEx = new ManagedException("Non posso leggere la casella postale. Dettaglio: " + ex.Message,
@@ -763,9 +757,6 @@ namespace SendMail.BusinessEF.MailFacedes
                     throw mEx;
                 }
                 else throw;
-                //throw new ManagedException("Non posso leggere la casella postale"
-                //                          , "ERR_MAIL_0008", "MailServerFacade.cs", "sendMail", "smtpController.sendMail", "", "", ex
-                //                          );
             }
         }
 

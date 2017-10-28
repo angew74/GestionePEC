@@ -41,9 +41,20 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                 }
             }
-            catch
+            catch (Exception excp)
             {
-                throw;
+                if (excp.GetType() != typeof(ManagedException))
+                {
+                    ManagedException mEx = new ManagedException(excp.Message,
+                        "CON_ORA003",
+                        string.Empty,
+                        string.Empty,
+                        excp);
+                    ErrorLogInfo er = new ErrorLogInfo(mEx);
+                    _log.Error(er);
+                    throw mEx;
+                }
+                else throw excp;
             }
             return m;
         }
@@ -71,9 +82,20 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                 }
             }
-            catch
+            catch (Exception excp)
             {
-                throw;
+                if (excp.GetType() != typeof(ManagedException))
+                {
+                    ManagedException mEx = new ManagedException(excp.Message,
+                        "CON_ORA002",
+                        string.Empty,
+                        string.Empty,
+                        excp);
+                    ErrorLogInfo er = new ErrorLogInfo(mEx);
+                    _log.Error(er);
+                    throw mEx;
+                }
+                else throw excp;
             }
             return m;
         }
@@ -102,9 +124,20 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                 }
             }
-            catch
+            catch(Exception excp)
             {
-                throw;
+                if (excp.GetType() != typeof(ManagedException))
+                {
+                    ManagedException mEx = new ManagedException(excp.Message,
+                        "CON_ORA001",
+                        string.Empty,
+                        string.Empty,
+                        excp);
+                    ErrorLogInfo er = new ErrorLogInfo(mEx);
+                    _log.Error(er);
+                    throw mEx;
+                }
+                else throw excp;
             }
             return m;
         }

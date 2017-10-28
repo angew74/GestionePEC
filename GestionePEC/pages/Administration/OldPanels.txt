@@ -1,0 +1,897 @@
+﻿       <asp:Panel ID="pnlElencoUtenti" runat="server" Visible="false">
+                        <div class="body-panel">
+                            <div style="display: table; width: 100%;">
+                                <div style="display: table-row;">
+                                    <div style="float: left; display: table-cell;" class="content-panel-gray">
+                                        <div class="header-panel-gray">
+                                            <div class="header-title">
+                                                <div class="header-text-left">
+                                                    <label>
+                                                        Elenco Utenti - Dipartimento:
+                                                    </label>
+                                                    <asp:Label runat="server" ID="lblDepartment" />
+                                                    <asp:DropDownList ID="ddlListaDipartimenti" runat="server" DataTextField="DEPARTMENT"
+                                                        Height="20px" Width="50px" AutoPostBack="true" DataValueField="DEPARTMENT" OnSelectedIndexChanged="ddlListaDipartimenti_itemSelected">
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="body-panel" style="height: 400px; min-width: 400px; max-width: 900px">
+                                            <asp:ListView ID="lvDipendentiNONAbilitati" runat="server">
+                                                <LayoutTemplate>
+                                                    <div id="itemContainer" style="display: inline-table;">
+                                                        <div class="container">
+                                                            <div id="itemPlaceholder" runat="server">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </LayoutTemplate>
+                                                <ItemTemplate>
+                                                    <div style="display: table-row;">
+                                                        <div class="left-content" style="display: table-cell;">
+                                                            <asp:CheckBox ID="checkBoxUtenteNONAbilitati" runat="server" />
+                                                        </div>
+                                                        <div class="right-content" style="display: table-cell;">
+                                                            <asp:HiddenField ID="lb_ID_UTENTE" Value='<%#Eval("UserId")%>' runat="server" />
+                                                            <asp:Label ID="lb_LDAPID" Text='<%# Eval("UserName")+" ("+Eval("Cognome")+" "+Eval("Nome")+") "%>'
+                                                                runat="server"></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:ListView>
+                                        </div>
+                                    </div>
+                                    <div style="display: table-cell; vertical-align: middle; text-align: center;">
+                                        <div style="display: inline-table; min-width: 35px; max-width: 50px;">
+                                            <div style="display: table-row;">
+                                                <div style="display: table-cell;">
+                                                    <asp:ImageButton runat="server" ID="btnAbilita" OnClick="btnAbilita_Click" ImageUrl="~/App_Themes/Delta/images/buttons/navigate_right_256.png"
+                                                        Width="80%" BorderColor="#99bbe8" BorderWidth="1" ToolTip="Abilita Utente" />
+                                                </div>
+                                            </div>
+                                            <div style="display: table-row;">
+                                                <div style="display: table-cell;">
+                                                    <asp:ImageButton runat="server" ID="btnDisabilita" OnClick="btnDisabilita_Click"
+                                                        ImageUrl="~/App_Themes/Delta/images/buttons/navigate_left_256.png" Width="80%"
+                                                        BorderColor="#99bbe8" BorderWidth="1" ToolTip="Disabilita Utente" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="display: table-cell; float: right;" class="content-panel-gray">
+                                        <div class="header-panel-gray">
+                                            <div class="header-title">
+                                                <div class="header-text-left">
+                                                    <label>
+                                                        Utenti Abilitati</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="body-panel" style="overflow: auto; height: 400px; min-width: 450px;max-width:1200px">
+                                            <asp:ListView ID="lvDipendentiAbilitati" runat="server" OnItemDataBound="lvDipendentiAbilitati_ItemDataBound">
+                                                <LayoutTemplate>
+                                                    <div id="itemContainer" style="display: inline-table;">
+                                                        <div class="container">
+                                                            <div id="itemPlaceholder" runat="server">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </LayoutTemplate>
+                                                <ItemTemplate>
+                                                    <div style="display: table-row;">
+                                                        <div class="left-content" style="display: table-cell;">
+                                                            <asp:CheckBox ID="checkBoxUtenteAbilitati" runat="server" />
+                                                        </div>
+                                                        <div class="right-content" style="display: table-cell;">
+                                                            <asp:HiddenField ID="lb_ID_UTENTE" Value='<%#Eval("UserId")%>' runat="server" />
+                                                            <asp:HiddenField ID="lb_ROLE"  runat="server" />
+                                                            <asp:Label ID="lb_LDAPID" Text='<%# Eval("UserName")+" ("+Eval("Cognome")+" "+Eval("Nome")+") - Dip.: "+Eval("Department")%>'
+                                                                runat="server"></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:ListView>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </asp:Panel>
+                     <asp:Panel ID="pnlAdmin" runat="server" Visible="false">
+                        <div class="body-panel">
+                            <div style="display: table; width: 100%;">
+                                <div style="display: table-row;">
+                                    <div style="float: left; display: table-cell;" class="content-panel-gray">
+                                        <div class="header-panel-gray">
+                                            <div class="header-title">
+                                                <div class="header-text-left">
+                                                    <label>
+                                                        Elenco Utenti Email:
+                                                    </label>
+                                                    <asp:Label runat="server" ID="Label1" />                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="body-panel">
+                                            <asp:ListView ID="lvUtenti" runat="server">
+                                                <LayoutTemplate>
+                                                    <div id="itemContainer" style="display: inline-table;">
+                                                        <div class="container">
+                                                            <div id="itemPlaceholder" runat="server">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </LayoutTemplate>
+                                                <ItemTemplate>
+                                                    <div style="display: table-row;">
+                                                        <div class="left-content" style="display: table-cell;">
+                                                            <asp:CheckBox ID="checkBoxUtenteAdminNONAbilitati" runat="server" />
+                                                        </div>
+                                                        <div class="right-content" style="display: table-cell;">
+                                                            <asp:HiddenField ID="lb_ID_UTENTE_ADMIN" Value='<%#Eval("UserId")%>' runat="server" />
+                                                            <asp:Label ID="lb_LDAPID_ADMIN" Text='<%# Eval("UserName")+" ("+Eval("Cognome")+" "+Eval("Nome")+") "%>'
+                                                                runat="server"></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:ListView>
+                                        </div>
+                                    </div>
+                                    <div style="display: table-cell; vertical-align: middle; text-align: center;">
+                                        <div style="display: inline-table; min-width: 35px; max-width: 50px;">
+                                            <div style="display: table-row;">
+                                                <div style="display: table-cell;">
+                                                    <asp:ImageButton runat="server" ID="btnAdminAbil" OnClick="btnAbilitaAdmin_Click" ImageUrl="~/App_Themes/Delta/images/buttons/navigate_right_256.png"
+                                                        Width="80%" BorderColor="#99bbe8" BorderWidth="1" ToolTip="Abilita Utente all'Amministrazione" />
+                                                </div>
+                                            </div>
+                                            <div style="display: table-row;">
+                                                <div style="display: table-cell;">
+                                                    <asp:ImageButton runat="server" ID="btnAdminDis" OnClick="btnDisabilitaAdmin_Click"
+                                                        ImageUrl="~/App_Themes/Delta/images/buttons/navigate_left_256.png" Width="80%"
+                                                        BorderColor="#99bbe8" BorderWidth="1" ToolTip="Disabilita Utente dall'Amministrazione" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="display: table-cell; float: right;" class="content-panel-gray">
+                                        <div class="header-panel-gray">
+                                            <div class="header-title">
+                                                <div class="header-text-left">
+                                                    <label>
+                                                        Utenti Amministratori</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="body-panel" id="utentiAdmin">
+                                            <asp:ListView ID="lvUtentiAdmin" runat="server" OnItemDataBound="lvUtentiAdmin_ItemDataBound">
+                                                <LayoutTemplate>
+                                                    <div id="itemContainer" style="display: inline-table;">
+                                                        <div class="container">
+                                                            <div id="itemPlaceholder" runat="server">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </LayoutTemplate>
+                                                <ItemTemplate>
+                                                    <div style="display: table-row;">
+                                                        <div class="left-content" style="display: table-cell;">
+                                                            <asp:CheckBox ID="checkBoxUtentiAdmin" runat="server" />
+                                                        </div>
+                                                        <div class="right-content" style="display: table-cell;">
+                                                            <asp:HiddenField ID="lb_ID_UTENTE_ADMIN" Value='<%#Eval("UserId")%>' runat="server" />
+                                                            <asp:HiddenField ID="lb_ROLE_ADMIN"  runat="server" />
+                                                            <asp:Label ID="lb_LDAPID_ADMIN" Text='<%# Eval("UserName")+" ("+Eval("Cognome")+" "+Eval("Nome")+") - Dip.: "+Eval("Department")%>'
+                                                                runat="server"></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:ListView>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </asp:Panel>
+                    
+                      <asp:Panel ID="pnlGestioneFolders" runat="server" Visible="false">
+                        <div class="body-panel">
+                            <div style="display: table; width: 100%;">
+                                <div style="display: table-row;">
+                                    <div style="float: left; display: table-cell;" class="content-panel-gray">
+                                        <div class="header-panel-gray">
+                                            <div class="header-title">
+                                                <div class="header-text-left">
+                                                    <label>
+                                                        Cartelle Non Abilitate
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="body-panel" id="cartelleNonAbilitate">
+                                            <asp:ListView ID="lvCartelleNonAbilitate" runat="server">
+                                                <LayoutTemplate>
+                                                    <div id="itemContainer" style="display: inline-table;">
+                                                        <div class="container">
+                                                            <div id="itemPlaceholder" runat="server">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </LayoutTemplate>
+                                                <ItemTemplate>
+                                                    <div style="display: table-row;">
+                                                        <div class="left-content" style="display: table-cell;">
+                                                            <asp:CheckBox ID="checkBoxCartelleNonAbilitate" runat="server" />
+                                                        </div>
+                                                        <div class="right-content" style="display: table-cell;">
+                                                            <asp:HiddenField ID="lb_NOME_CARTELLA" Value='<%#Eval("IdNome")+";"+Eval("IdSender")+";"+Eval("System")%>' runat="server" />
+                                                            <asp:Label ID="lb_LDAPID" Text='<%# Eval("Nome")+" ("+Eval("System")+") "%>'
+                                                                runat="server"></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:ListView>
+                                        </div>
+                                    </div>
+                                    <div style="display: table-cell; vertical-align: middle; text-align: center;">
+                                        <div style="display: inline-table; min-width: 35px; max-width: 50px;">
+                                            <div style="display: table-row;">
+                                                <div style="display: table-cell;">
+                                                    <asp:ImageButton runat="server" ID="ImageButton3" OnClick="btnAbilitaFolder_Click" ImageUrl="~/App_Themes/Delta/images/buttons/navigate_right_256.png"
+                                                        Width="80%" BorderColor="#99bbe8" BorderWidth="1" ToolTip="Abilita Cartella" />
+                                                </div>
+                                            </div>
+                                            <div style="display: table-row;">
+                                                <div style="display: table-cell;">
+                                                    <asp:ImageButton runat="server" ID="ImageButton4" OnClick="btnDisabilitaFolder_Click" ImageUrl="~/App_Themes/Delta/images/buttons/navigate_left_256.png"
+                                                        Width="80%" BorderColor="#99bbe8" BorderWidth="1" ToolTip="Disabilita Cartella" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="display: table-cell; float: right;" class="content-panel-gray">
+                                        <div class="header-panel-gray">
+                                            <div class="header-title">
+                                                <div class="header-text-left">
+                                                    <label>
+                                                        Cartelle Abilitate</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="body-panel" id="cartelleAbilitate">
+                                            <asp:ListView ID="lvCartelleAbilitate" runat="server" OnItemDataBound="lvCartelleAbilitate_ItemDataBound">
+                                                <LayoutTemplate>
+                                                    <div id="itemContainer" style="display: inline-table;">
+                                                        <div class="container">
+                                                            <div id="itemPlaceholder" runat="server">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </LayoutTemplate>
+                                                <ItemTemplate>
+                                                    <div style="display: table-row;">
+                                                        <div class="left-content" style="display: table-cell;">
+                                                            <asp:CheckBox ID="checkBoxCartelleAbilitate" runat="server" Enabled = "true"  />
+                                                        </div>
+                                                        <div class="right-content" style="display: table-cell;">
+                                                            <asp:HiddenField ID="lb_NOME_CARTELLA_ABILITATA" Value='<%#Eval("IdNome")+";"+Eval("IdSender")+";"+Eval("System")%>' runat="server" />
+                                                            <asp:Label ID="lb_FOLDVALUE" Text='<%# Eval("Nome")+" ("+Eval("System")+") "%>'
+                                                                runat="server"></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:ListView>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+							backend
+
+							private void PopolaDDLDipartimenti()
+        {
+            List<BackendUser> deps = new List<BackendUser>();
+            BackendUserService bus = new BackendUserService();
+            try
+            {
+                deps = (List<BackendUser>)bus.GetDipartimentiByAdmin(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
+                if (deps == null || deps.Count == 0)
+                {
+                    deps = (List<BackendUser>)bus.GetAllDipartimentiByMailAdmin(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
+                }
+                ddlListaDipartimenti.DataSource = deps;
+                ddlListaDipartimenti.DataBind();
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                {                 
+                    ManagedException mEx = new ManagedException("Errore nel caricamento dei dipatimenti", "CM002",
+                        string.Empty, string.Empty, ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    err.loggingAppCode = "WEB_MAIL";
+                    err.objectID = this.Context.Session.SessionID;                 
+                    log.Error(err);
+                    throw mEx;
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        private void popolaListaDipendentiNONAbilitati()
+        {
+            if (!String.IsNullOrEmpty(this.Dipartimento_ViewState) && this.IdSender_ViewState != Decimal.MinusOne)
+            {
+                try
+                {
+                    BackendUserService bus = new BackendUserService();
+                    List<BackendUser> listaDipendentiNONAbilitati = bus.GetDipendentiDipartimentoNONAbilitati(this.Dipartimento_ViewState, this.IdSender_ViewState);
+                    pnlElencoUtenti.Visible = true;
+
+                    if (listaDipendentiNONAbilitati != null)
+                    {
+                        lvDipendentiNONAbilitati.DataSource = listaDipendentiNONAbilitati.Distinct().OrderBy(k => k.UserName);
+                    }
+                    else
+                        lvDipendentiNONAbilitati.DataSource = null;
+                    lvDipendentiNONAbilitati.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    if (ex.GetType() != typeof(ManagedException))
+                    {                       
+                        ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti non abilitati", "CM003",
+                            string.Empty, string.Empty, ex.InnerException);
+                        ErrorLogInfo err = new ErrorLogInfo(mEx);
+                        err.loggingAppCode = "WEB_MAIL";
+                        err.objectID = this.Context.Session.SessionID;                      
+                        log.Error(err);
+                        throw mEx;
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        private void popolaListaDipendentiAbilitati()
+        {
+            if (this.IdSender_ViewState != Decimal.MinusOne)
+            {
+                try
+                {
+                    BackendUserService bus = new BackendUserService();
+                    List<BackendUser> listaDipendentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
+                    if (listaDipendentiAbilitati != null)
+                    {
+                        lvDipendentiAbilitati.DataSource = listaDipendentiAbilitati.OrderBy(x => x.UserName);
+                        lvDipendentiAbilitati.DataBind();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex.GetType() != typeof(ManagedException))
+                    {                     
+                        ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti abilitati", "CM0014",
+                            string.Empty, string.Empty, ex.InnerException);
+                        ErrorLogInfo err = new ErrorLogInfo(mEx);
+                        err.loggingAppCode = "WEB_MAIL";
+                        err.objectID = this.Context.Session.SessionID;                       
+                        log.Error(err);
+                       
+                        throw mEx;
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        private void popolaListaAmministratori()
+        {
+            if (this.IdSender_ViewState != Decimal.MinusOne)
+            {
+                try
+                {
+                    BackendUserService bus = new BackendUserService();
+                    List<BackendUser> listaDipendentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
+                    if (listaDipendentiAbilitati != null)
+                    {
+                        lvUtentiAdmin.DataSource = listaDipendentiAbilitati.Where(x => x.RoleMail == 1);
+                        lvUtentiAdmin.DataBind();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex.GetType() != typeof(ManagedException))
+                    {                       
+                        ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti abilitati", "CM015",
+                            string.Empty, string.Empty, ex.InnerException);
+                        ErrorLogInfo err = new ErrorLogInfo(mEx);
+                        err.loggingAppCode = "WEB_MAIL";
+                        err.objectID = this.Context.Session.SessionID;                       
+                        log.Error(err);   
+                        throw mEx;
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        private void popolaListaUtentiAbilitati()
+        {
+            if (this.IdSender_ViewState != Decimal.MinusOne)
+            {
+                try
+                {
+                    BackendUserService bus = new BackendUserService();
+                    List<BackendUser> listaDipendentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(this.IdSender_ViewState);
+                    if (listaDipendentiAbilitati != null)
+                    {
+                        lvUtenti.DataSource = listaDipendentiAbilitati.Where(x => x.RoleMail == 0);
+                        lvUtenti.DataBind();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex.GetType() != typeof(ManagedException))
+                    {
+                        
+                        ManagedException mEx = new ManagedException("Errore nel caricamento degli utenti abilitati", "CM004",
+                            string.Empty, string.Empty, ex.InnerException);
+                        ErrorLogInfo err = new ErrorLogInfo(mEx);
+                        err.loggingAppCode = "WEB_MAIL";
+                        err.objectID = this.Context.Session.SessionID;                       
+                        log.Error(err);     
+                        throw mEx;
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+		   protected void ddlListaDipartimenti_itemSelected(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(ddlListaDipartimenti.SelectedValue))
+            {
+                this.Dipartimento_ViewState = ddlListaDipartimenti.SelectedValue;
+
+                if (this.IdSender_ViewState != Decimal.MinValue)
+                {
+                    try
+                    {
+                        popolaListaDipendentiNONAbilitati();
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.GetType() != typeof(ManagedException))
+                        {
+                            
+                            ManagedException mEx = new ManagedException("Errore nel popolamento della lista dei dipendenti non abilitati", "CM005",
+                                string.Empty, string.Empty, ex.InnerException);
+                            ErrorLogInfo err = new ErrorLogInfo(mEx);
+                            err.loggingAppCode = "WEB_MAIL";
+                            err.objectID = this.Context.Session.SessionID;                         
+                            log.Error(err);                         
+
+                            info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                        }
+                        else
+                        {
+                            info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                        }
+                    }
+                }
+            }
+        }
+        #region Cartelle
+
+        protected void btnAbilitaFolder_Click(object sender, EventArgs e)
+        {
+            bool isItemChecked = false;
+
+            try
+            {
+                foreach (ListViewItem lvi in lvCartelleNonAbilitate.Items) 
+                {
+                    if ((lvi.FindControl("checkBoxCartelleNonAbilitate") as CheckBox).Checked)
+                    {
+                        isItemChecked = true;
+                        string[] listaIdStr = (lvi.FindControl("lb_NOME_CARTELLA") as HiddenField).Value.Split(';');
+                        SendersFoldersService sfs = new SendersFoldersService();
+                        sfs.InsertAbilitazioneFolder(Convert.ToInt32(listaIdStr[0]), Convert.ToInt32(listaIdStr[1]), Convert.ToInt32(listaIdStr[2]));
+                        MailUser m = WebMailClientManager.getAccount();
+                        if (m != null)
+                        {
+                            WebMailClientManager.AccountRemove();
+                            MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
+                            MailUser account = facade.GetUserByUserId(m.UserId);
+                            MailServerFacade serverFacade = MailServerFacade.GetInstance(account); 
+                            account.Validated = true;
+                            WebMailClientManager.SetAccount(account);
+                        }
+                    }
+                }
+
+                if (isItemChecked)
+                {
+                    popolaListaFoldersNonAbilitate(Convert.ToString(Session["MailRichiedente"]));
+                    popolaListaFoldersAbilitate(Convert.ToString(Session["MailRichiedente"]));
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                {                   
+                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM017",
+                        string.Empty, string.Empty, ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    err.loggingAppCode = "WEB_MAIL";
+                    err.objectID = this.Context.Session.SessionID;                  
+                    log.Error(err);                   
+
+                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+                else
+                {
+                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+            }
+        }
+
+        protected void btnDisabilitaFolder_Click(object sender, EventArgs e)
+        {
+            bool isItemChecked = false;
+
+            try
+            {
+                foreach (ListViewItem lvi in lvCartelleAbilitate.Items)
+                {
+                    if ((lvi.FindControl("checkBoxCartelleAbilitate") as CheckBox).Checked)
+                    {
+                        isItemChecked = true;
+                        string[] listaIdStr = (lvi.FindControl("lb_NOME_CARTELLA_ABILITATA") as HiddenField).Value.Split(';');
+                        SendersFoldersService sfs = new SendersFoldersService();
+                        sfs.DeleteAbilitazioneFolder(Convert.ToInt32(listaIdStr[0]), Convert.ToInt32(listaIdStr[1]));
+                        MailUser m = WebMailClientManager.getAccount();
+                        if (m != null)
+                        {
+                            WebMailClientManager.AccountRemove();
+                            MailServerConfigFacade facade = MailServerConfigFacade.GetInstance();
+                            MailUser account = facade.GetUserByUserId(m.UserId);                            
+                            MailServerFacade serverFacade = MailServerFacade.GetInstance(account);
+                            account.Validated = true;
+                            WebMailClientManager.SetAccount(account);
+                        }
+                    }
+                }
+
+                if (isItemChecked)
+                {
+                    popolaListaFoldersNonAbilitate(Convert.ToString(Session["MailRichiedente"]));
+                    popolaListaFoldersAbilitate(Convert.ToString(Session["MailRichiedente"]));
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                {                   
+                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM018",
+                        string.Empty, string.Empty, ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    err.loggingAppCode = "WEB_MAIL";
+                    err.objectID = this.Context.Session.SessionID;                    
+                    log.Error(err);
+                    
+
+                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+                else
+                {
+                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+            }
+
+        }
+
+        public void popolaListaFoldersNonAbilitate(string eMail)
+        {
+            SendersFoldersService sfs = new SendersFoldersService();
+            List<SendersFolders> listaCartelleNonAbilitate = sfs.GetFoldersNONAbilitati(eMail);
+            lvCartelleNonAbilitate.DataSource = listaCartelleNonAbilitate;
+            lvCartelleNonAbilitate.DataBind();
+
+        }
+
+        public void popolaListaFoldersAbilitate(string eMail)
+        {
+            SendersFoldersService sfs = new SendersFoldersService();
+            List<SendersFolders> listaCartelleAbilitate = sfs.GetFoldersAbilitati(eMail);
+            lvCartelleAbilitate.DataSource = listaCartelleAbilitate;
+            lvCartelleAbilitate.DataBind();
+        }
+
+        protected void lvCartelleAbilitate_ItemDataBound(object sender, ListViewItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+                ListViewDataItem dataItem = (ListViewDataItem)e.Item;
+                SendersFolders sFolder = (SendersFolders)dataItem.DataItem;
+                if (sFolder.System == 1)
+                {
+                    (e.Item.FindControl("checkBoxCartelleAbilitate") as CheckBox).Enabled = false;
+                }
+                else
+                {
+                    (e.Item.FindControl("checkBoxCartelleAbilitate") as CheckBox).Enabled = true;
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region Amministratori
+
+        protected void btnAbilitaAdmin_Click(object sender, EventArgs e)
+        {
+            bool isItemChecked = false;
+
+            try
+            {
+                foreach (ListViewItem lvi in lvUtenti.Items)
+                {
+                    if ((lvi.FindControl("checkBoxUtenteAdminNONAbilitati") as CheckBox).Checked)
+                    {
+                        isItemChecked = true;
+                        decimal userId = Decimal.Parse((lvi.FindControl("lb_ID_UTENTE_ADMIN") as HiddenField).Value);
+                        BackendUserService buservice = new BackendUserService();
+                        buservice.UpdateAbilitazioneEmail(userId, this.IdSender_ViewState, 1);
+                    }
+                }
+
+                if (isItemChecked)
+                {
+                    popolaListaAmministratori();
+                    popolaListaUtentiAbilitati();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                {
+                   
+                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM015",
+                        string.Empty, string.Empty, ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    err.loggingAppCode = "WEB_MAIL";
+                    err.objectID = this.Context.Session.SessionID;                    
+                    log.Error(err);                   
+                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+                else
+                {
+                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+            }
+        }
+
+        protected void btnDisabilitaAdmin_Click(object sender, EventArgs e)
+        {
+            bool isItemChecked = false;
+
+            try
+            {
+                foreach (ListViewItem lvi in lvUtentiAdmin.Items)
+                {
+                    if ((lvi.FindControl("checkBoxUtentiAdmin") as CheckBox).Checked)
+                    {
+                        isItemChecked = true;
+                        decimal userId = Decimal.Parse((lvi.FindControl("lb_ID_UTENTE_ADMIN") as HiddenField).Value);
+                        int role = Int16.Parse((lvi.FindControl("lb_ROLE_ADMIN") as HiddenField).Value);
+
+                        if (userId != this.UserIdBackendUser_ViewState && role <= this.RoleBackendUser_ViewState)
+                        {
+                            BackendUserService buservice = new BackendUserService();
+                            buservice.UpdateAbilitazioneEmail(userId, this.IdSender_ViewState, 0);
+                        }
+                    }
+                }
+
+                if (isItemChecked)
+                {
+                    try
+                    {
+                        popolaListaAmministratori();
+                        popolaListaUtentiAbilitati();
+                    }
+                    catch (Exception) { }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                {
+                  
+                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM016",
+                        string.Empty, string.Empty, ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    err.loggingAppCode = "WEB_MAIL";
+                    err.objectID = this.Context.Session.SessionID;                   
+                    log.Error(err);                    
+
+                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+                else
+                {
+                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+            }
+        }
+
+        #endregion
+
+        #region "Utenti"
+        protected void btnAbilita_Click(object sender, EventArgs e)
+        {
+            bool isItemChecked = false;
+
+            try
+            {
+                foreach (ListViewItem lvi in lvDipendentiNONAbilitati.Items)
+                {
+                    if ((lvi.FindControl("checkBoxUtenteNONAbilitati") as CheckBox).Checked)
+                    {
+                        isItemChecked = true;
+                        decimal userId = Decimal.Parse((lvi.FindControl("lb_ID_UTENTE") as HiddenField).Value);
+                        BackendUserService buservice = new BackendUserService();
+                        buservice.InsertAbilitazioneEmail(userId, this.IdSender_ViewState, 0);
+                    }
+                }
+
+                if (isItemChecked)
+                {
+                    popolaListaDipendentiNONAbilitati();
+                    popolaListaDipendentiAbilitati();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                {                   
+                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM023",
+                        string.Empty, string.Empty, ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    err.loggingAppCode = "WEB_MAIL";
+                    err.objectID = this.Context.Session.SessionID;                 
+                    log.Error(err);                  
+
+                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+                else
+                {
+                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+            }
+        }
+
+        protected void btnDisabilita_Click(object sender, EventArgs e)
+        {
+            bool isItemChecked = false;
+
+            try
+            {
+                foreach (ListViewItem lvi in lvDipendentiAbilitati.Items)
+                {
+                    if ((lvi.FindControl("checkBoxUtenteAbilitati") as CheckBox).Checked)
+                    {
+                        isItemChecked = true;
+                        decimal userId = Decimal.Parse((lvi.FindControl("lb_ID_UTENTE") as HiddenField).Value);
+                        int role = Int16.Parse((lvi.FindControl("lb_ROLE") as HiddenField).Value);
+
+                        if (userId != this.UserIdBackendUser_ViewState && role <= this.RoleBackendUser_ViewState)
+                        {
+                            BackendUserService buservice = new BackendUserService();
+                            buservice.RemoveAbilitazioneEmail(userId, this.IdSender_ViewState);
+                        }
+                    }
+                }
+
+                if (isItemChecked)
+                {
+                    try
+                    {
+                        popolaListaDipendentiNONAbilitati();
+                    }
+                    catch (Exception) { }
+
+                    popolaListaDipendentiAbilitati();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                {
+                  
+                    ManagedException mEx = new ManagedException(" Errore " + ex.Message, "CM024",
+                        string.Empty, string.Empty, ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    err.loggingAppCode = "WEB_MAIL";
+                    err.objectID = this.Context.Session.SessionID;                    
+                    log.Error(err);  
+                    info.AddMessage(ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+                else
+                {
+                    info.AddMessage(((ManagedException)ex).Azione, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                }
+            }
+        }
+        #endregion
+
+		 case "GestioneAssociazione":
+                    pnlGestioneEmail.Visible = false;
+                    pnlDettaglioEmailServer.Visible = false;
+                    pnlAdmin.Visible = false;
+                    pnlElencoUtenti.Visible = true;
+                    pnlGestioneFolders.Visible = false;
+                    this.PopolaDDLDipartimenti();
+                    // string AdminDepartment = ConfigurationManager.AppSettings.Get("AdministrationDepartment");
+                    // if (AdminDepartment.Contains(this.Dipartimento_ViewState))
+                    //  {
+                    if (string.IsNullOrEmpty(MySecurityProvider.CurrentPrincipal.MyIdentity.dipartimento))
+                    {
+                        this.Dipartimento_ViewState = "152";
+                    }else { this.Dipartimento_ViewState = MySecurityProvider.CurrentPrincipal.MyIdentity.dipartimento; }
+                    
+                    ddlListaDipartimenti.Items.FindByValue(this.Dipartimento_ViewState).Selected = true;
+                    lblDepartment.Visible = false;
+                    // }
+                    // else
+                    // {
+                    //   ddlListaDipartimenti.Visible = false;
+                    //  lblDepartment.Visible = true;
+                    //  lblDepartment.Text = this.Dipartimento_ViewState;
+                    // }
+                    this.IdSender_ViewState = Decimal.Parse(e.CommandArgument.ToString());
+                    this.GetRoleBackEndUser();
+                    this.popolaListaDipendentiAbilitati();
+                    this.popolaListaDipendentiNONAbilitati();
+                    break;
+
+                case "GestioneFolders":
+                    pnlGestioneEmail.Visible = false;
+                    pnlDettaglioEmailServer.Visible = false;
+                    pnlElencoUtenti.Visible = false;
+                    pnlAdmin.Visible = false;
+                    pnlGestioneFolders.Visible = true;
+                    if (!e.CommandArgument.ToString().Equals(""))
+                        Session.Add("MailRichiedente", e.CommandArgument.ToString());
+                    popolaListaFoldersNonAbilitate(e.CommandArgument.ToString());
+                    popolaListaFoldersAbilitate(e.CommandArgument.ToString());
+                    break;
+                case "GestioneAssociazioneAdmin":
+                    pnlGestioneEmail.Visible = false;
+                    pnlDettaglioEmailServer.Visible = false;
+                    pnlElencoUtenti.Visible = false;
+                    pnlAdmin.Visible = true;
+                    pnlGestioneFolders.Visible = false;
+                    this.IdSender_ViewState = Decimal.Parse(e.CommandArgument.ToString());
+                    this.GetRoleBackEndUser();
+                    this.popolaListaUtentiAbilitati();
+                    this.popolaListaAmministratori();
+                    break;

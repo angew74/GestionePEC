@@ -233,14 +233,16 @@ namespace SendMail.Data.SQLServerDB.Mapping
         {
             RubricaContatti c = new RubricaContatti();
             c.Entita = AutoMapperConfiguration.MapToRubrEntita(r.RUBR_ENTITA);
-            c.AffIPA =(short) r.AFF_IPA;
-            c.ContactRef = r.CONTACT_REF;
+            if (r.AFF_IPA != null)
+            { c.AffIPA = (short)r.AFF_IPA; }
+            if (r.CONTACT_REF != null)
+            { c.ContactRef = r.CONTACT_REF; }
             c.Fax = r.FAX;
             c.IdContact =(long) r.ID_CONTACT;
             c.IPAdn = r.IPA_DN;
             c.IPAId = r.IPA_ID;
-            c.IsIPA = Convert.ToBoolean(r.FLG_IPA);
-            c.IsPec = Convert.ToBoolean(r.FLG_PEC);
+            c.IsIPA = (r.FLG_IPA == "0") ? false : true;
+            c.IsPec = (r.FLG_PEC == 0) ? false : true;
             c.Mail = r.MAIL;
             c.Note = r.NOTE;
             c.RefIdReferral =(long) r.REF_ID_REFERRAL;
@@ -332,7 +334,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
     }
 
 
-    public static COMUNICAZIONI_DESTINATARI fromRubrContattiToComunicazioniDestinatari(V_RUBR_CONTATTI v_rubr_contatti)
+         public static COMUNICAZIONI_DESTINATARI fromRubrContattiToComunicazioniDestinatari(V_RUBR_CONTATTI v_rubr_contatti)
         {
             COMUNICAZIONI_DESTINATARI destinatari = new COMUNICAZIONI_DESTINATARI
             {
@@ -409,9 +411,9 @@ namespace SendMail.Data.SQLServerDB.Mapping
                     COMUNICAZIONI_FLUSSO flusso = new COMUNICAZIONI_FLUSSO
                     {
                         CANALE = comFlusso.Canale.ToString(),
-                        DATA_OPERAZIONE = (DateTime)comFlusso.DataOperazione,
-                        STATO_COMUNICAZIONE_NEW = comFlusso.StatoComunicazioneNew.ToString(),
-                        STATO_COMUNICAZIONE_OLD = comFlusso.StatoComunicazioneOld.ToString(),
+                        DATA_OPERAZIONE = (comFlusso.DataOperazione == null ? DateTime.Now : Convert.ToDateTime(comFlusso.DataOperazione)),                               
+                        STATO_COMUNICAZIONE_NEW =((int) comFlusso.StatoComunicazioneNew).ToString(),
+                        STATO_COMUNICAZIONE_OLD =((int) comFlusso.StatoComunicazioneOld).ToString(),
                         UTE_OPE = comFlusso.UtenteOperazione
                     };
                     if (entity.IdComunicazione.HasValue)
@@ -456,6 +458,26 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 { content.REF_ID_COM = LinqExtensions.TryParseInt(entity.IdComunicazione); }
                 comunicazioni.MAIL_CONTENT.Add(content);
             }
+            return comunicazioni;
+        }
+
+        public static COMUNICAZIONI fromComunicazioniToSimpleDto(Comunicazioni entity)
+        {
+            COMUNICAZIONI comunicazioni = new COMUNICAZIONI();
+            // creo oggetto principale
+            comunicazioni = new COMUNICAZIONI
+            {
+                COD_APP_INS = entity.AppCode,
+                ORIG_UID = entity.OrigUID,
+                IN_OUT = LinqExtensions.TryParseDecimalString(((int)entity.TipoCom).ToString()),
+                FLG_NOTIFICA = LinqExtensions.TryParseNotityBool(entity.IsToNotify),
+                MAIL_NOTIFICA = entity.MailNotifica,
+                REF_ID_SOTTOTITOLO = LinqExtensions.TryParseInt(entity.RefIdSottotitolo),
+                UNIQUE_ID_MAPPER = entity.UniqueId,
+                UTE_INS = entity.UtenteInserimento
+            };
+            if (entity.IdComunicazione.HasValue)
+            { comunicazioni.ID_COM = LinqExtensions.TryParseInt(entity.IdComunicazione); }
             return comunicazioni;
         }
 
@@ -506,8 +528,8 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 ALLEGATO_FILE = comAllegati.AllegatoFile,
                 ALLEGATO_NAME = comAllegati.AllegatoName,
                 ALLEGATO_TPU = comAllegati.AllegatoTpu,
-                FLG_INS_PROT = ((int)comAllegati.FlgInsProt).ToString(),
-                FLG_PROT_TO_UPL = ((int)comAllegati.FlgProtToUpl).ToString()
+                FLG_INS_PROT =(comAllegati.FlgInsProt == AllegatoProtocolloStatus.UNKNOWN) ? "0" : ((int)comAllegati.FlgInsProt).ToString(),
+                FLG_PROT_TO_UPL = (comAllegati.FlgProtToUpl == AllegatoProtocolloStatus.UNKNOWN) ? "0" : ((int)comAllegati.FlgProtToUpl).ToString(),
             };
             if (comAllegati.RefIdCom.HasValue)
             { allegato.REF_ID_COM = LinqExtensions.TryParseInt(comAllegati.RefIdCom); }
@@ -551,6 +573,26 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 UniqueId = content.COMUNICAZIONI.UNIQUE_ID_MAPPER,
                 UtenteInserimento = content.COMUNICAZIONI.UTE_INS
             };
+            MailContent ccon = new MailContent()
+            {
+                Follows = (long)content.FOLLOWS,
+                HasCustomRefs = (content.FLG_CUSTOM_REFS == "0") ? false : true,
+                IdMail =(long) content.ID_MAIL,
+                MailSender = content.MAIL_SENDER,
+                MailSubject = content.MAIL_SUBJECT,
+                MailText = content.MAIL_TEXT,
+                RefIdComunicazione =(long) content.REF_ID_COM
+
+            };
+            if (content.MAIL_REFS_NEW != null && content.MAIL_REFS_NEW.Count > 0)
+            {
+                ccon.MailRefs = new List<Model.ComunicazioniMapping.MailRefs>();
+                foreach (var r in content.MAIL_REFS_NEW)
+                {
+                    ccon.MailRefs.Add(FromMailRefsNewToObject(r));
+                }
+            }
+            comunicazione.MailComunicazione = ccon;
             List<ComAllegato> listAllegati = new List<ComAllegato>();
             foreach (COMUNICAZIONI_ALLEGATI allegato in content.COMUNICAZIONI.COMUNICAZIONI_ALLEGATI)
             {
@@ -611,6 +653,32 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 comunicazione.RubricaEntitaUsed = listRubr;
             }
             return comunicazione;
+        }
+
+        internal static List<COMUNICAZIONI_ALLEGATI> fromComunicazioniToAllegati(Comunicazioni entity, decimal idcomnew)
+        {
+            List<COMUNICAZIONI_ALLEGATI> allegati = new List<COMUNICAZIONI_ALLEGATI>();
+            if (entity.ComAllegati != null && entity.ComAllegati.Count > 0)
+            {
+                foreach (ComAllegato comAllegati in entity.ComAllegati)
+                {
+                    COMUNICAZIONI_ALLEGATI allegato = new COMUNICAZIONI_ALLEGATI
+                    {
+                        ALLEGATO_EXT = comAllegati.AllegatoExt,
+                        ALLEGATO_FILE = comAllegati.AllegatoFile,
+                        ALLEGATO_NAME = comAllegati.AllegatoName,
+                        ALLEGATO_TPU = comAllegati.AllegatoTpu,
+                        FLG_INS_PROT = ((int)comAllegati.FlgInsProt).ToString(),
+                        FLG_PROT_TO_UPL = ((int)comAllegati.FlgProtToUpl).ToString()
+                    };
+                    if (entity.IdComunicazione.HasValue)
+                    { allegato.REF_ID_COM = LinqExtensions.TryParseInt(entity.IdComunicazione); }
+                    if (comAllegati.IdAllegato.HasValue)
+                    { allegato.ID_ALLEGATO = LinqExtensions.TryParseInt(comAllegati.IdAllegato); }
+                    allegati.Add(allegato);
+                }
+            }
+            return allegati;
         }
 
         internal static MAIL_INBOX_FLUSSO MapToMailInboxFlussoDto(decimal id, string oldStatus, string newStatus, DateTime? data, string ute)
@@ -781,14 +849,16 @@ namespace SendMail.Data.SQLServerDB.Mapping
         internal static RubricaContatti MapToRubrContatti(RUBR_CONTATTI r, RUBR_ENTITA e, COMUNICAZIONI_TITOLI t, List<decimal> lt)
         {
             RubricaContatti c = new RubricaContatti();
-            c.AffIPA =(short) r.AFF_IPA;
-            c.ContactRef = r.CONTACT_REF;
+            if (r.AFF_IPA != null)
+            { c.AffIPA = (short)r.AFF_IPA; }
+            if (r.CONTACT_REF != null)
+            { c.ContactRef = r.CONTACT_REF; }
             c.Fax = r.FAX;
             c.IdContact = (Nullable<long>) r.ID_CONTACT;
             c.IPAdn = r.IPA_DN;
             c.IPAId = r.IPA_ID;
-            c.IsIPA = Convert.ToBoolean(r.FLG_IPA);
-            c.IsPec = Convert.ToBoolean(r.FLG_PEC);
+            c.IsIPA = (r.FLG_IPA == "0") ? false : true;
+            c.IsPec = (r.FLG_PEC == 0) ? false : true;
             c.Mail = r.MAIL;
             c.Note = r.NOTE;
             c.RefIdReferral =(long) r.REF_ID_REFERRAL;
@@ -799,6 +869,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
             c.T_RagioneSociale =e.RAGIONE_SOCIALE;
             c.T_MappedAppName = t.TITOLO;
             c.T_MappedAppID =(long) t.ID_TITOLO;
+            c.MappedAppsId = new List<long>();
             foreach (int i in lt)
             {
                 if (!(c.MappedAppsId.Contains(i)))
@@ -959,6 +1030,17 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 RefIdMail = LinqExtensions.TryParseLong(r.REF_ID_MAIL),
                 AddresseeMail = r.MAIL_DESTINATARIO,
                 AddresseeClass = LinqExtensions.TryParsEnumAddressee(r.TIPO_REF)
+            };
+            return refs;
+        }
+
+
+        internal static Model.ComunicazioniMapping.MailRefs FromMailRefsNewToObject(MAIL_REFS_NEW r)
+        {
+            Model.ComunicazioniMapping.MailRefs refs = new Model.ComunicazioniMapping.MailRefs()
+            {
+                MailDestinatario = r.MAIL_DESTINATARIO,
+                TipoRef = LinqExtensions.TryParsEnumAddressee(r.TIPO_REF)
             };
             return refs;
         }

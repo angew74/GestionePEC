@@ -10,8 +10,6 @@
             </div>
         </div>
         <div id="container" class="control-main">
-            <div id="divparole" class="control-header-blue">                
-            </div>          
             <div class="control-body-gray">
           <div id="divNuovoUtente"></div>
             </div>     
@@ -277,9 +275,12 @@
                      if (action.result.message != null) {
                          var message = ' ';
                          message += action.result.message;
-                         Ext.Msg.alert('Errore creazione utente', message);
+                         Ext.Msg.alert('Utente creato correttamente', message);
                         // ManageError("Errore nell'aggiornameto dettagli: " + message);
-                     }                     
+                     }
+                     else {
+                         Ext.Msg.alert('Utente creato correttamente', 'Abilitare utente ad email');
+                     }
                  },
                  failure: function (form, action) {
                      var form = Ext.getCmp('formNuovoUtente');

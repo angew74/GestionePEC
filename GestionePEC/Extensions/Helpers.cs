@@ -10,11 +10,37 @@ using iTextSharp.text.pdf;
 using System.Configuration;
 using SendMail.Model.Wrappers;
 using SendMail.BusinessEF.MailFacedes;
+using SendMail.Model;
+using GestionePEC.Models;
+using SendMail.BusinessEF;
+using SendMail.BusinessEF.Operations;
+using System;
+using Com.Delta.Logging;
+using Com.Delta.Logging.Errors;
+using log4net;
 
 namespace GestionePEC.Extensions
 {
     public class Helpers
     {
+        private static readonly ILog log = LogManager.GetLogger("Helpers");
+        public static List<UserMail> GetAllUsers()
+        {
+            BackendUserService bus = new BackendUserService();
+            List<BackendUser> listaUtenti = bus.GetAllUsers();
+            List<UserMail> list = new List<UserMail>();
+            foreach (BackendUser b in listaUtenti)
+            {
+                UserMail u = new UserMail()
+                {
+                    UserId = (int)b.UserId,
+                    UserName = b.UserName
+                };
+                list.Add(u);
+            }
+
+            return list;
+        }
         public static DataTable StampaStatisticaExcel(List<UserResultItem> list, string account,
             string dati, string dataf)
         {
@@ -66,7 +92,7 @@ namespace GestionePEC.Extensions
             MemoryStream ms = new MemoryStream();
             // step 2: we create a writer that listens to the document
             PdfWriter writer = PdfWriter.GetInstance(document, ms);
-            iTextSharp.text.Image imageHeader = iTextSharp.text.Image.GetInstance(ConfigurationManager.AppSettings["Image"]);
+            iTextSharp.text.Image imageHeader = iTextSharp.text.Image.GetInstance(ConfigurationManager.AppSettings["Logo"]);
             imageHeader.ScaleToFit(400, 80);
             MyPageEventHandler e = new MyPageEventHandler()
             {
@@ -92,7 +118,118 @@ namespace GestionePEC.Extensions
 
         }
 
+        internal  static List<decimal> CreateFolders(string NomeFolder)
+        {
+            List<decimal> ids = new List<decimal>();
+            FoldersService foldersservice = new FoldersService();
+            Folder folder = new Folder();
+            folder.Nome = NomeFolder;
+            folder.TipoFolder = "I";
+            foldersservice.Insert(folder);
+            ids.Add(folder.Id);
+            Folder folderOut = new Folder();
+            folderOut.Nome = folder.Nome;
+            folderOut.IdNome = folder.IdNome;
+            folderOut.TipoFolder = "O";
+            foldersservice.Insert(folderOut);
+            ids.Add(folderOut.Id);
+            Folder folderOutArch = new Folder();
+            folderOutArch.Nome = folder.Nome;
+            folderOutArch.IdNome = folder.IdNome;
+            folderOutArch.TipoFolder = "D";
+            foldersservice.Insert(folderOutArch);
+            ids.Add(folderOutArch.Id);
+            Folder folderInArch = new Folder();
+            folderInArch.Nome = folder.Nome;
+            folderInArch.IdNome = folder.IdNome;
+            folderInArch.TipoFolder = "E";
+            foldersservice.Insert(folderInArch);
+            ids.Add(folderOutArch.Id);
+            ids.Add(decimal.Parse(folder.IdNome));
+            return ids;
+        }
 
+        internal static void CreateActionsForFolders(decimal idIn, decimal idOut, decimal idInArch, decimal idOutArch, string nome, string idNome)
+        {
+            List<ActiveUp.Net.Common.DeltaExt.Action> actions = new List<ActiveUp.Net.Common.DeltaExt.Action>();
+            ActiveUp.Net.Common.DeltaExt.Action actionin = new ActiveUp.Net.Common.DeltaExt.Action();
+            actionin.IdDestinazione = decimal.Parse(idNome);
+            actionin.IdFolderDestinazione = (int)idIn;
+            actionin.NomeAzione = "SPOSTA IN " + nome;
+            actionin.TipoAzione = "SP";
+            actions.Add(actionin);
+            ActiveUp.Net.Common.DeltaExt.Action actionout = new ActiveUp.Net.Common.DeltaExt.Action();
+            actionout.IdDestinazione = decimal.Parse(idNome);
+            actionout.IdFolderDestinazione = (int)idOut;
+            actionout.NomeAzione = "SPOSTA IN " + nome;
+            actionout.TipoAzione = "SP";
+            actions.Add(actionout);
+            // archivio 
+            ActiveUp.Net.Common.DeltaExt.Action actioninArch = new ActiveUp.Net.Common.DeltaExt.Action();
+            actioninArch.IdDestinazione = decimal.Parse(idNome);
+            actioninArch.IdFolderDestinazione = (int)idInArch;
+            actioninArch.NomeAzione = "SPOSTA IN " + nome;
+            actioninArch.TipoAzione = "SP";
+            actions.Add(actioninArch);
+            ActiveUp.Net.Common.DeltaExt.Action actionoutArch = new ActiveUp.Net.Common.DeltaExt.Action();
+            actionoutArch.IdDestinazione = decimal.Parse(idNome);
+            actionoutArch.IdFolderDestinazione = (int)idOutArch;
+            actionoutArch.NomeAzione = "SPOSTA IN " + nome;
+            actionoutArch.TipoAzione = "SP";
+            actions.Add(actionoutArch);
+            ActionsService actService = new ActionsService();
+            try
+            {
+                actService.Insert(actions);
+                List<ActionFolder> actionsFolders = new List<ActionFolder>();
+                // inserimento azioni e collegamento con folders
+                ActionFolder afInbox = new ActionFolder();
+                afInbox.idAction = actionin.Id;
+                afInbox.idFolder = 1;
+                actionsFolders.Add(afInbox);
+                ActionFolder afNewFolder = new ActionFolder();
+                afNewFolder.idAction = 4;
+                afNewFolder.idFolder = idIn;
+                actionsFolders.Add(afNewFolder);
+                ActionFolder afOutBox = new ActionFolder();
+                afOutBox.idAction = actionout.Id;
+                afOutBox.idFolder = 2;
+                actionsFolders.Add(afOutBox);
+                ActionFolder afNewFolderOut = new ActionFolder();
+                afNewFolderOut.idAction = 6;
+                afNewFolderOut.idFolder = idOut;
+                actionsFolders.Add(afNewFolderOut);
+                // ARCHIVI 
+                ActionFolder afInboxArch = new ActionFolder();
+                afInboxArch.idAction = actioninArch.Id;
+                afInboxArch.idFolder = 5;
+                actionsFolders.Add(afInboxArch);
+                ActionFolder afNewFolderArch = new ActionFolder();
+                afNewFolderArch.idAction = 4;
+                afNewFolderArch.idFolder = idInArch;
+                actionsFolders.Add(afNewFolderArch);
+                ActionFolder afOutBoxArch = new ActionFolder();
+                afOutBoxArch.idAction = actionoutArch.Id;
+                afOutBoxArch.idFolder = 7;
+                actionsFolders.Add(afOutBoxArch);
+                ActionFolder afNewFolderOutArch = new ActionFolder();
+                afNewFolderOutArch.idAction = 6;
+                afNewFolderOutArch.idFolder = idOutArch;
+                actionsFolders.Add(afNewFolderOutArch);
+                ActionsFoldersService service = new ActionsFoldersService();
+                service.Insert(actionsFolders);
+
+            }
+            catch (Exception ex)
+            {
+                ManagedException mEx = new ManagedException(ex.Message, "FOL_APP001", string.Empty, string.Empty, ex);
+                ErrorLogInfo er = new ErrorLogInfo(mEx);
+                log.Error(er);
+                throw mEx;
+               
+            }
+
+        }
         private static void CollectionToPDFStat(ref Document document, List<UserResultItem> list)
         {
             int cols = 3;
@@ -142,7 +279,7 @@ namespace GestionePEC.Extensions
             {
 
                 string mail = string.Concat(ConfigurationManager.AppSettings["HOST"], "/", row.UniqueId, "/", row.Dimensione, "/", row.FolderId, "/", row.MailRating, "/", parentFolder, "/", accountid);
-                Font link = FontFactory.GetFont(FontFactory.TIMES, 8, Font.UNDERLINE, BaseColor.RED);
+                Font link = FontFactory.GetFont(FontFactory.TIMES, 8, Font.UNDERLINE, iTextSharp.text.BaseColor.BLACK);
                 Anchor anchor = new Anchor("VISUALIZZA MAIL", link);
                 anchor.Reference = mail;
                 PdfPCell cell = new PdfPCell(anchor);
@@ -165,7 +302,7 @@ namespace GestionePEC.Extensions
 
         private static Phrase FormatHeaderPhrase(string value)
         {
-            return new Phrase(value, FontFactory.GetFont(FontFactory.TIMES_BOLDITALIC, 8, iTextSharp.text.Font.ITALIC, BaseColor.BLUE));
+            return new Phrase(value, FontFactory.GetFont(FontFactory.TIMES_BOLDITALIC, 8, iTextSharp.text.Font.ITALIC, iTextSharp.text.BaseColor.BLACK));
         }
 
         private static Phrase FormatPhrase(string value)
@@ -179,17 +316,17 @@ namespace GestionePEC.Extensions
 
         private static Phrase FormatPhraseBold(string value)
         {
-            return new Phrase(value, FontFactory.GetFont(FontFactory.TIMES_BOLD, 5, iTextSharp.text.Font.BOLD, BaseColor.BLACK));
+            return new Phrase(value, FontFactory.GetFont(FontFactory.TIMES_BOLD, 5, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK));
         }
 
         private static Phrase FormatPhraseBoldEvento(string value)
         {
-            return new Phrase(value, FontFactory.GetFont(FontFactory.TIMES_BOLD, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK));
+            return new Phrase(value, FontFactory.GetFont(FontFactory.TIMES_BOLD, 8, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK));
         }
 
         private static Phrase FormatPageHeaderPhrase(string value)
         {
-            return new Phrase(value, FontFactory.GetFont(FontFactory.TIMES, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK));
+            return new Phrase(value, FontFactory.GetFont(FontFactory.TIMES, 10, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK));
         }
 
         private class MyPageEventHandler : PdfPageEventHelper

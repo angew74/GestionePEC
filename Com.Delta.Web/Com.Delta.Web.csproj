@@ -33,7 +33,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Delta.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Delta.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -121,6 +121,7 @@
     </None>
     <None Include="Com.Delta.Web.cd" />
     <None Include="Delta.pfx" />
+    <None Include="Delta.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6C64346F-DB78-4AF0-8F64-43A62A846F70}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FaxPec.Model</RootNamespace>
+    <AssemblyName>FaxPec.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'x|AnyCPU'">
+    <OutputPath>bin\x\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Oracle.DataAccess, Version=2.112.1.2, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\WINDOWS\Microsoft.NET\Framework\v2.0.50727\System.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Allegato.cs" />
+    <Compile Include="Body.cs" />
+    <Compile Include="Comuni.cs" />
+    <Compile Include="DTOProtocollo.cs" />
+    <Compile Include="ManagedModules\BaseRichiesta.cs" />
+    <Compile Include="ManagedModules\ModuleParts\Certificato.cs" />
+    <Compile Include="ManagedModules\ModuleParts\NullaOsta.cs" />
+    <Compile Include="ManagedModules\ModuleParts\Richiedente.cs" />
+    <Compile Include="ManagedModules\ModuleParts\VerificaAnagrafica.cs" />
+    <Compile Include="ManagedModules\RichiestaCertificati.cs" />
+    <Compile Include="ManagedModules\RichiestaNullaOsta.cs" />
+    <Compile Include="ManagedModules\RichiestaVerificaAnagrafica.cs" />
+    <Compile Include="Nazioni.cs" />
+    <Compile Include="Pratica.cs" />
+    <Compile Include="Destinatario.cs" />
+    <Compile Include="Documento.cs" />
+    <Compile Include="DomainObject.cs" />
+    <Compile Include="EndPoint.cs" />
+    <Compile Include="Indirizzo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Richiesta.cs" />
+    <Compile Include="Risposta.cs" />
+    <Compile Include="SottoTitolo.cs" />
+    <Compile Include="StatoRichiesta.cs" />
+    <Compile Include="StatoPagamentoRisposta.cs" />
+    <Compile Include="TipoCanale.cs" />
+    <Compile Include="TipoDestinatario.cs" />
+    <Compile Include="TipoDocumento.cs" />
+    <Compile Include="Titolo.cs" />
+    <Compile Include="UtenteFAXPEC.cs" />
+    <Compile Include="Utility\IEnumerableExtension.cs" />
+    <Compile Include="Utility\IListExtension.cs" />
+    <Compile Include="Utility\ModelHelper.cs" />
+    <Compile Include="Utility\SearchableAttribute.cs" />
+    <Compile Include="WorkFlows\IstruzioneRichiestaMessage.cs" />
+    <Compile Include="WorkFlows\IstruzioneRichiestaWorkflow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SendMail\SendMail.Model\SendMail.Model.csproj">
+      <Project>{647C1188-A0DA-412B-9640-218CF6C3E99A}</Project>
+      <Name>SendMail.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ManagedModules\Modules\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

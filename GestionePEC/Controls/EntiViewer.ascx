@@ -206,7 +206,7 @@
                     Width="24px" CommandName="Insert_u" OnClick="ContactsFormView_InsertCommand" />
                 <asp:ImageButton runat="server" ID="ImageButton2" ToolTip="Crea nuovo gruppo" ImageAlign="Top" ImageUrl="~/App_Themes/Delta/images/buttons/company_star.png"
                     Width="24px" CommandName="Insert_g" OnClick="ContactsFormView_InsertCommand" />
-            </div>
+            </div>nessun contatto presente
         </div>
     </div>
     <div class="control-body-gray">
