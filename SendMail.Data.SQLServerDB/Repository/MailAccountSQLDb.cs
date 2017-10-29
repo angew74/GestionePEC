@@ -74,7 +74,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             {
                 try
                 {
-                    var mailsender = dbcontext.MAIL_SENDERS.Where(x => x.FLG_MANAGED == "2" && x.MAIL.ToUpper() == userName.ToUpper()).FirstOrDefault();
+                    var mailsender = dbcontext.MAIL_SENDERS.Where(x => (x.FLG_MANAGED == "2" || x.FLG_MANAGED == "1") && x.MAIL.ToUpper() == userName.ToUpper()).FirstOrDefault();
                     int idmailserver = (int)mailsender.ID_MAILSERVER;
                     int idmailuser = (int)mailsender.ID_SENDER;
                     if (idmailserver != 0)
@@ -306,9 +306,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                     MAIL_SENDERS s = new MAIL_SENDERS();
                     s.USERNAME = entity.LoginId;
                     s.ID_MAILSERVER = entity.Id;
+                    s.ID_RESPONSABILE = entity.IdResponsabile;
                     s.PASSWORD = entity.Password;
                     s.ID_RESPONSABILE = 1;
-                    s.FLG_MANAGED = "0";
+                    s.FLG_MANAGED = (entity.FlgManaged == 0) ? "0" : "1";
                     s.MAIL = entity.EmailAddress;
                     dbcontext.MAIL_SENDERS.Add(s);
                     int resp = dbcontext.SaveChanges();
@@ -342,8 +343,10 @@ namespace SendMail.Data.SQLServerDB.Repository
                     {
                         m.PASSWORD = entity.Password;
                         m.MAIL = entity.EmailAddress;
+                        m.ID_RESPONSABILE = entity.IdResponsabile;
                         m.ID_MAILSERVER = entity.Id;
                         m.USERNAME = entity.LoginId;
+                        m.FLG_MANAGED = (entity.FlgManaged == 0) ? "0" : "1";
                         dbcontext.SaveChanges();
                     }
 

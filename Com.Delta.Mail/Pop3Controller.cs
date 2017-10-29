@@ -228,11 +228,10 @@ public class Pop3Controller
                 }
                 catch (Exception ex)
                 {
-                    //Allienamento log - Ciro
                     if (ex.GetType() != typeof(ManagedException))
                     {
                         ManagedException mEx = new ManagedException(
-                        "Errore nel metodo 'Connect'",
+                        "Errore nel metodo 'Connect: '" + ex.Message,
                         "POP3_ERR_001",
                         string.Empty,
                         "Casella mail: " + ((AccountInfo.LoginId != null) ? AccountInfo.LoginId : " vuoto. ") +
@@ -241,18 +240,6 @@ public class Pop3Controller
                         ErrorLogInfo err = new ErrorLogInfo(mEx);
                         log.Error(err);
                     }
-                    //ManagedException mEx = new ManagedException(
-                    //    "Errore nel metodo 'Connect'",
-                    //    "POP3_ERR_001",
-                    //    "Pop3Controller",
-                    //    "Connect(MailUser accountInfo)",
-                    //    "Connessione al server POP3",
-                    //    user,
-                    //    "serverName: " + serverName,
-                    //    ex);
-
-                    //ErrorLogInfo err = new ErrorLogInfo(APP_CODE, mEx);
-                    //log.Error(err);
                     ErrorMessage = ex.Message;
                     StatusConnected = false;
                     bRetVal = false;

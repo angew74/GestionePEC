@@ -5,12 +5,14 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">   
     <asp:HiddenField runat="server" ID="hfIdTitolo" />
     <asp:HiddenField runat="server" ID="hfIdReferral" />
-    <div id="mainDivNascita" class="content-panel-borderless">
+    <div class="content-panel-borderless">
         <div class="header-panel-blue">
             <div class="header-title">
                 <div class="header-text-left">
                     <label>
-                        Invio Nuova Comunicazione</label>
+                        Creazione nuova Comunicazione</label>
+                </div>
+                <div class="header-text-right">
                 </div>
             </div>
         </div>

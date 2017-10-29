@@ -1,4 +1,5 @@
 ﻿using GestionePEC.Api;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,8 @@ namespace GestionePEC
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );            
+            );
+           // config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings();
         }
     }
 }

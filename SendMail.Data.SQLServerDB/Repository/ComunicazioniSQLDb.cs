@@ -623,22 +623,40 @@ namespace SendMail.Data.SQLServerDB.Repository
                         dbcontext.MAIL_CONTENT.Add(content);
                         dbcontext.SaveChanges();
                         decimal newidmail = dbcontext.MAIL_CONTENT.Select(c => c.ID_MAIL).DefaultIfEmpty(0).Max();
-                        var list = entity.ComFlussi.Where(x => x.Key == TipoCanale.MAIL).SelectMany(z => z.Value);
-                        foreach (ComFlusso comFlusso in list)
+                        if (entity.ComFlussi != null && entity.ComFlussi.Count > 0)
+                        {
+                            var list = entity.ComFlussi.Where(x => x.Key == TipoCanale.MAIL).SelectMany(z => z.Value);
+                            foreach (ComFlusso comFlusso in list)
+                            {
+                                COMUNICAZIONI_FLUSSO flusso = new COMUNICAZIONI_FLUSSO
+                                {
+                                    CANALE = comFlusso.Canale.ToString(),
+                                    DATA_OPERAZIONE = (comFlusso.DataOperazione == null ? DateTime.Now : Convert.ToDateTime(comFlusso.DataOperazione)),
+                                    STATO_COMUNICAZIONE_NEW = ((int)comFlusso.StatoComunicazioneNew).ToString(),
+                                    STATO_COMUNICAZIONE_OLD = ((int)comFlusso.StatoComunicazioneOld).ToString(),
+                                    UTE_OPE = comFlusso.UtenteOperazione
+                                };
+
+                                if (entity.IdComunicazione.HasValue)
+                                { flusso.REF_ID_COM = LinqExtensions.TryParseInt(entity.IdComunicazione); }
+                                else { flusso.REF_ID_COM = idcomnew; }
+                                if (comFlusso.IdFlusso.HasValue)
+                                { flusso.ID_FLUSSO = LinqExtensions.TryParseDouble(comFlusso.IdFlusso); }
+                                dbcontext.COMUNICAZIONI_FLUSSO.Add(flusso);
+                                dbcontext.SaveChanges();
+                            }
+                        }
+                        else
                         {
                             COMUNICAZIONI_FLUSSO flusso = new COMUNICAZIONI_FLUSSO
                             {
-                                CANALE = comFlusso.Canale.ToString(),
-                                DATA_OPERAZIONE = (comFlusso.DataOperazione == null ? DateTime.Now : Convert.ToDateTime(comFlusso.DataOperazione)),
-                                STATO_COMUNICAZIONE_NEW = ((int)comFlusso.StatoComunicazioneNew).ToString(),
-                                STATO_COMUNICAZIONE_OLD = ((int)comFlusso.StatoComunicazioneOld).ToString(),
-                                UTE_OPE = comFlusso.UtenteOperazione
+                                CANALE = TipoCanale.MAIL.ToString(),
+                                DATA_OPERAZIONE = System.DateTime.Now,
+                                STATO_COMUNICAZIONE_NEW = ((int)(MailStatus.INSERTED)).ToString(),
+                                STATO_COMUNICAZIONE_OLD = null,
+                                UTE_OPE = entity.UtenteInserimento
                             };
-                            if (entity.IdComunicazione.HasValue)
-                            { flusso.REF_ID_COM = LinqExtensions.TryParseInt(entity.IdComunicazione); }
-                            else { flusso.REF_ID_COM = idcomnew; }
-                            if (comFlusso.IdFlusso.HasValue)
-                            { flusso.ID_FLUSSO = LinqExtensions.TryParseDouble(comFlusso.IdFlusso); }
+                            flusso.REF_ID_COM = idcomnew;
                             dbcontext.COMUNICAZIONI_FLUSSO.Add(flusso);
                             dbcontext.SaveChanges();
                         }

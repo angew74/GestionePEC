@@ -2,9 +2,7 @@
 using ActiveUp.Net.Mail;
 using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
-using Com.Delta.Mail.Facades;
 using Com.Delta.Mail.MailMessage;
-using FaxPec.Model;
 using GestionePEC.Extensions;
 using HtmlAgilityPack;
 using log4net;
@@ -645,7 +643,7 @@ namespace GestionePEC.Controls
                 msg.Date = System.DateTime.Now;
                 //mantengo il vecchio testo perché in caso di ErrorEventArgs lo devo ripristinare
                 bodyBag = msg.BodyHtml.Text;
-                BodyChunk bb = new BodyChunk();
+                SendMail.Model.BodyChunk bb = new SendMail.Model.BodyChunk();
                 string txt = BodyTextBox.Text;
                 string[] lst = txt.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                 foreach (string l in lst)

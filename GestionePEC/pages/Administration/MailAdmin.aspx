@@ -104,6 +104,15 @@
                                             </div>
                                             <div style="display: table-row">
                                                 <div style="width: 180px; display: table-cell">
+                                                    <label class="LabelBlackMiddle">
+                                                        Mail gestita dall'applicazione:</label>
+                                                </div>
+                                                <div style="display: table-cell;">
+                                                    <asp:CheckBox ID="checkManaged" Enabled="false" runat="server" Checked='<%# Bind("FlgManagedInsert") %>' />
+                                                    </div>
+                                                   </div>
+                                            <div style="display: table-row">
+                                                <div style="width: 180px; display: table-cell">
                                                     <label class="LabelBlackMiddle" style="min-width: 200px;">
                                                         Server Associato all'Email:</label>
                                                 </div>
@@ -191,6 +200,15 @@
                                                         TargetControlID="cvNuovaPassword" />
                                                 </div>
                                             </div>
+                                              <div style="display: table-row">
+                                                <div style="width: 180px; display: table-cell">
+                                                    <label class="LabelBlackMiddle">
+                                                        Mail gestita dall'applicazione:</label>
+                                                </div>
+                                                <div style="display: table-cell;">
+                                                    <asp:CheckBox ID="checkManaged"  runat="server" Checked='<%# Bind("FlgManagedInsert") %>' />
+                                                    </div>
+                                                   </div>
                                             <div style="display: table-row">
                                                 <div style="width: 180px; display: table-cell">
                                                     <label class="LabelBlackMiddle">
@@ -297,6 +315,15 @@
                                                         DataValueField="Id" Width="300px" DataSource='<%# MailServers %>' SelectedValue='<%# Bind("Id") %>' />
                                                 </div>
                                             </div>
+                                               <div style="display: table-row">
+                                                <div style="width: 180px; display: table-cell">
+                                                    <label class="LabelBlackMiddle">
+                                                        Mail gestita dall'applicazione:</label>
+                                                </div>
+                                                <div style="display: table-cell;">
+                                                    <asp:CheckBox ID="checkManaged" runat="server" Checked='<%# Bind("FlgManagedInsert") %>' />
+                                                    </div>
+                                                   </div>
                                             <div style="clear: both; min-height: 10px;">
                                             </div>
                                             <div class="buttons-panel" style="margin-top: 4px; margin-right: 8px">

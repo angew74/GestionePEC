@@ -67,6 +67,7 @@ namespace SendMail.Model
             this.IncomingServer = mailAccount.IncomingServer;
             this.IsIncomeSecureConnection = mailAccount.IsIncomeSecureConnection;
             this.FlgManaged = mailAccount.FlgManaged;
+            this.FlgManagedInsert = (mailAccount.FlgManaged > 0) ? true : false; 
             this.IsOutgoingSecureConnection = mailAccount.IsOutgoingSecureConnection;
             this.IsOutgoingWithAuthentication = mailAccount.IsOutgoingWithAuthentication;
             this.IsPec = mailAccount.IsPec;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace SendMail.Model
@@ -7,6 +8,7 @@ namespace SendMail.Model
     /// <summary>
     /// 
     /// </summary>
+    [DataContract]
     public class SottoTitolo : Titolo
     {
         public SottoTitolo()
@@ -58,6 +60,7 @@ namespace SendMail.Model
             set { _Deleted = value; }
         }
 
+        [DataMember]
         public new decimal Id
         {
             get { return _Id; }
@@ -87,7 +90,7 @@ namespace SendMail.Model
             get { return _Note; }
             set { _Note = value; }
         }
-
+        [DataMember]
         public new string Nome
         {
             get { return _SottoTitolo; }

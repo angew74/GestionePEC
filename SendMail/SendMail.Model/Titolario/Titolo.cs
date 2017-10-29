@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace SendMail.Model
 {
     [Serializable]
+    [DataContract]
     public class Titolo : IDomainObject
     {
         public Titolo select()
@@ -30,6 +32,7 @@ namespace SendMail.Model
             set { if (value == true) _Deleted = 1; else _Deleted = 0;}
         }
 
+        [DataMember]
         public virtual decimal Id
         {
             get { return _Id; }
@@ -54,6 +57,7 @@ namespace SendMail.Model
             set { _Note = value; }
         }
 
+        [DataMember]
         public virtual string Nome
         {
             get { return _Titolo; }

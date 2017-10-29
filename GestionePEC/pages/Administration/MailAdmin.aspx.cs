@@ -278,6 +278,7 @@ namespace GestionePEC.pages.Administration
                     info.AddMessage("Errore nel formato della mail", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                     return;
                 }
+                mu.FlgManaged = (mu.FlgManagedInsert == true) ? 1 : 0;
                 mailAccountService.Update(mu);
                 info.AddMessage("Operazione effettauata", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.OK);
             }
@@ -314,11 +315,14 @@ namespace GestionePEC.pages.Administration
             }
             try
             {
+                mu.FlgManaged = (mu.FlgManagedInsert == true) ? 1 : 0;
+             
                 mailAccountService.Insert(mu);
                 this.IdSender_ViewState = mu.UserId;
                 BackendUserService buservice = new BackendUserService();
                 _bUser = (BackendUser)buservice.GetByUserName(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
                 popolaGridElencoEmailsShared();
+                SessionManager<BackendUser>.set(SessionKeys.BACKEND_USER, _bUser);
                 info.AddMessage("Operazione effettuata", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.OK);
             }
             catch (Exception ex)

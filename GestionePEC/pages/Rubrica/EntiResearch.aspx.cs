@@ -1,10 +1,10 @@
 ﻿using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
 using Com.Delta.Security;
-using FaxPec.Model;
 using GestionePEC.Extensions;
 using log4net;
 using SendMail.BusinessEF;
+using SendMail.Model;
 using SendMail.Model.RubricaMapping;
 using SendMail.Model.WebserviceMappings;
 using System;

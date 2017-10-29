@@ -6,63 +6,87 @@ using Com.Delta.Logging.Errors;
 using Com.Delta.Mail.Facades;
 using Com.Delta.Mail.MailMessage;
 using Com.Delta.Security;
+using Com.Delta.Web;
+using Com.Delta.Web.Cache;
+using Com.Delta.Web.Session;
 using Delta.Utilities.LinqExtensions;
 using GestionePEC.Extensions;
+using GestionePEC.Models;
 using log4net;
+using Newtonsoft.Json;
+using SendMail.BusinessEF;
 using SendMail.BusinessEF.MailFacedes;
 using SendMail.Model;
+using SendMail.Model.ComunicazioniMapping;
 using SendMail.Model.Wrappers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Http;
-
+using System.Xml;
 
 namespace GestionePEC.Api
 {
     public class PECController : ApiController
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(PECController));
-       
-        [Serializable]
-        internal class JSONTreeNode
+
+        //     [Serializable]
+        [DataContract]
+        public class JSONTreeNode
         {
-          
-            internal string id { get; set; }
-           
-            internal string text { get; set; }
-           
-            internal bool leaf { get; set; }
-          
-            internal bool expanded { get; set; }
-            
-            internal JSONTreeNode[] data { get; set; }
-           
-            internal string icon { get; set; }
-            
-            internal string source { get; set; }
+
+            [DataMember]
+            public string id { get; set; }
+
+            [DataMember]
+            public string text { get; set; }
+
+            [DataMember]
+            public bool leaf { get; set; }
+
+            [DataMember]
+            public bool expanded { get; set; }
+
+            [DataMember]
+            public JSONTreeNode[] data { get; set; }
+
+            [DataMember]
+            public string icon { get; set; }
+
+            [DataMember]
+            public string source { get; set; }
         }
 
-       
-        [Serializable]
-        internal class JSONTreeNodeModel
+
+        //[Serializable]
+        //[JsonObject]
+        [DataContract]
+        public class JSONTreeNodeModel
         {
-            
-            internal List<JSONTreeNode> data;
-            
-            internal string Message;
-           
-            internal string TotalCount;
-           
-            internal string success;
-        }   
-    
+
+            [DataMember]
+            public List<JSONTreeNode> data;
+
+            [DataMember]
+            public string Message;
+
+            [DataMember]
+            public string TotalCount;
+
+            [DataMember]
+            public string success;
+        }
+
 
 
         [DataContract]
@@ -173,7 +197,6 @@ namespace GestionePEC.Api
             JSONTreeNodeModel model = new JSONTreeNodeModel();
             if (string.IsNullOrEmpty(idM))
             {
-                //Allineamento log - Ciro
 
                 ManagedException mEx = new ManagedException("Il parametro idNode è nullo", "ERR_G005", string.Empty, string.Empty, null);
                 ErrorLogInfo er = new ErrorLogInfo(mEx);
@@ -187,7 +210,6 @@ namespace GestionePEC.Api
             long idMail = -1;
             if (!long.TryParse(idM, out idMail))
             {
-                //Allineamento log - Ciro
 
                 ManagedException mEx = new ManagedException("Il parametro idNode non è numerico", "ERR_G006", string.Empty, string.Empty, null);
                 ErrorLogInfo er = new ErrorLogInfo(mEx);
@@ -196,14 +218,12 @@ namespace GestionePEC.Api
                 model.success = "false";
                 model.Message = mEx.Message;
                 return this.Request.CreateResponse<JSONTreeNodeModel>(HttpStatusCode.OK, model);
-                //throw new InvalidOperationException("Il parametro idNode non è numerico");
+
             }
 
             MailUser us = WebMailClientManager.getAccount();
             if (us == null)
             {
-                //Allineamento log - Ciro
-
                 ManagedException mEx = new ManagedException("Non esiste un account loggato", "ERR_G007", string.Empty, string.Empty, null);
                 ErrorLogInfo er = new ErrorLogInfo(mEx);
                 er.objectID = idM;
@@ -212,17 +232,19 @@ namespace GestionePEC.Api
                 model.Message = mEx.Message;
                 return this.Request.CreateResponse<JSONTreeNodeModel>(HttpStatusCode.OK, model);
             }
-            //throw new InvalidOperationException("Non esiste un account loggato");
 
             MailLocalService mailService = new MailLocalService();
+            IEnumerable<HierarchyNode<SimpleTreeItem>> hl = null;
             List<SimpleTreeItem> result = mailService.LoadMailTree(us.EmailAddress, idMail) as List<SimpleTreeItem>;
-            Func<List<SimpleTreeItem>, SimpleTreeItem> getRoot = l => l.FirstOrDefault(x => !l.Select(y => y.Value).Contains(x.Padre));
-            IEnumerable<HierarchyNode<SimpleTreeItem>> hl = result.AsHierarchy(
-                e => e.Value,
-                e => e.Padre,
-                e => e.Value,
-                getRoot(result).Value);
-
+            if (result.Count > 0)
+            {
+                Func<List<SimpleTreeItem>, SimpleTreeItem> getRoot = l => l.FirstOrDefault(x => !l.Select(y => y.Value).Contains(x.Padre));
+                hl = result.AsHierarchy(
+                     e => e.Value,
+                     e => e.Padre,
+                     e => e.Value,
+                     getRoot(result).Value);
+            }
             JSONTreeNode[] nodes = ConvertToJSON(hl);
             model.success = "true";
             model.data = nodes.ToList();
@@ -246,17 +268,17 @@ namespace GestionePEC.Api
         {
             IEnumerable<Carrier> listCarrier = new List<Carrier>();
             CarrierModel model = new CarrierModel();
-            int mailAct = 0;          
-            start++;   
+            int mailAct = 0;
+            start++;
             if (mailAction.ToString() != "NaN")
-            { mailAct = int.Parse(mailAction); }           
+            { mailAct = int.Parse(mailAction); }
             string message = null;
             MailUser acc = WebMailClientManager.getAccount();
-            if(string.IsNullOrEmpty(mailIds))
+            if (string.IsNullOrEmpty(mailIds))
             { mailIds = string.Empty; }
             message = DoAction(folder, parFolder, mailAct, mailIds, message, acc);
             ResultList<MailHeader> m = new ResultList<MailHeader>(start, limit, new List<MailHeader>(), 0);
-           // IEnumerable<string> items = null;
+            // IEnumerable<string> items = null;
             if (acc != null && acc.IsManaged && !String.IsNullOrEmpty(filter))
             {
                 DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(Filter));
@@ -279,7 +301,7 @@ namespace GestionePEC.Api
                     sValues.Add(filtro.status.tipo, filtro.status.values.Select(e => ((int)e).ToString()).ToList());
                 }
                 MailLocalService mailService = new MailLocalService();
-                ResultList<MailHeaderExtended> rl =  mailService.GetMailsByParams(acc.EmailAddress, folder, parFolder, sValues, start, limit);
+                ResultList<MailHeaderExtended> rl = mailService.GetMailsByParams(acc.EmailAddress, folder, parFolder, sValues, start, limit);
 
                 m.Per = rl.Per;
                 m.List = (rl.List == null) ? null : rl.List.Cast<MailHeader>().ToList() as ICollection<MailHeader>;
@@ -288,7 +310,7 @@ namespace GestionePEC.Api
             else
             {
                 MailServerFacade mailServerFacade = MailServerFacade.GetInstance(acc);
-                m = mailServerFacade.MailHeader_ResultList_Fetch(folder, parFolder, start, limit);                
+                m = mailServerFacade.MailHeader_ResultList_Fetch(folder, parFolder, start, limit);
             }
 
             if (m != null && m.List != null)
@@ -414,9 +436,9 @@ namespace GestionePEC.Api
                 }
             }
             else
-            {        
+            {
                 model.Message = "Nessun ritrovamento";
-                  return this.Request.CreateResponse<CarrierModel>(HttpStatusCode.OK,model);
+                return this.Request.CreateResponse<CarrierModel>(HttpStatusCode.OK, model);
                 //message = "Nessun ritrovamento";
             }
 
@@ -432,10 +454,10 @@ namespace GestionePEC.Api
             //    sb.Append(",\"Data\": []");
             //}
             //sb.Append("}");
-           model.TotalCount = m.Totale.ToString();
-           model.data = listCarrier.ToList();
-           model.success = "true";
-           return this.Request.CreateResponse<CarrierModel>(HttpStatusCode.OK,model);
+            model.TotalCount = m.Totale.ToString();
+            model.data = listCarrier.ToList();
+            model.success = "true";
+            return this.Request.CreateResponse<CarrierModel>(HttpStatusCode.OK, model);
             //context.Response.ContentType = "application/json";
             //context.Response.AppendHeader("Content-type", "text/json");
             //context.Response.Write(sb.ToString());
@@ -461,7 +483,7 @@ namespace GestionePEC.Api
             { folderMezzo = 1; }
             if (Helpers.CanDo(parentFolder, mailAction.ToString(), idMail))
             {
-                MailServerFacade fac = MailServerFacade.GetInstance(acc);               
+                MailServerFacade fac = MailServerFacade.GetInstance(acc);
                 int resp = 0;
                 string azione = Helpers.GetAzione(mailAction.ToString());
                 try
@@ -524,7 +546,169 @@ namespace GestionePEC.Api
         }
 
 
-       
+        [HttpPost]
+        [Authorize]
+        [Route("api/PECController/Comunicazione")]
+        public HttpResponseMessage Comunicazione(FormDataCollection formsValues)
+        {
+            string regexMail = RegexUtils.EMAIL_REGEX.ToString();
+            TitoliModel model = new TitoliModel();
+            try
+            {
+                List<ComAllegato> allegati = new List<ComAllegato>();
+                SendMail.Model.ComunicazioniMapping.Comunicazioni comun = new SendMail.Model.ComunicazioniMapping.Comunicazioni();
+                string destinatario = formsValues["Destinatario"];
+                string conoscenza = formsValues["Conoscenza"];
+                string bcc = formsValues["BCC"];
+                string oggetto = formsValues["Oggetto"];
+                string testoMail = formsValues["TestoMail"];
+                string titolo = formsValues["Titolo"];
+                string sottotitolo = formsValues["SottoTitolo"];
+                string userid = formsValues["SenderMail"];
+                if (SessionManager<Dictionary<string, DTOFileUploadResult>>.exist(SessionKeys.DTO_FILE))
+                {
+                    Dictionary<string, DTOFileUploadResult> dictDto = SessionManager<Dictionary<string, DTOFileUploadResult>>.get(SessionKeys.DTO_FILE);
+                    List<DTOFileUploadResult> dto = (List<DTOFileUploadResult>)dictDto.Values.ToList();
+                    foreach (DTOFileUploadResult d in dto)
+                    {
+                        SendMail.Model.ComunicazioniMapping.ComAllegato allegato = new SendMail.Model.ComunicazioniMapping.ComAllegato();
+                        allegato.AllegatoExt = d.Extension;
+                        allegato.AllegatoFile = d.CustomData;
+                        allegato.AllegatoName = d.FileName;
+                        allegato.AllegatoTpu = "";
+                        allegato.FlgInsProt = AllegatoProtocolloStatus.FALSE;
+                        allegato.FlgProtToUpl = AllegatoProtocolloStatus.FALSE;
+                        allegati.Add(allegato);
+                    }
+
+                }
+                comun.ComAllegati = allegati;
+                string[] destinatari = destinatario.Split(';');
+                for (int i = 0; i < destinatari.Length; i++)
+                {
+                    var match = Regex.Match(destinatari[i], regexMail, RegexOptions.IgnoreCase);
+                    if (!match.Success)
+                    {
+                        model.success = "false";
+                        model.message = "Attenzione mail destinatario non valida";
+                        return this.Request.CreateResponse<TitoliModel>(HttpStatusCode.OK, model);
+                    }
+                }
+                // gestione destinatari
+                ContactsApplicationMapping c = new ContactsApplicationMapping
+                {
+                    Mail = destinatario,
+                    IdSottotitolo = long.Parse(sottotitolo),
+                    IdTitolo = long.Parse(titolo)
+                };
+                Collection<ContactsApplicationMapping> en = new Collection<ContactsApplicationMapping>();
+                en.Add(c);
+                if (conoscenza != string.Empty)
+                {
+                    string[] conoscenze = conoscenza.Split(';');
+                    for (int i = 0; i < conoscenze.Length; i++)
+                    {
+                        var match = Regex.Match(conoscenze[i], regexMail, RegexOptions.IgnoreCase);
+                        if (!match.Success)
+                        {
+
+                            model.success = "false";
+                            model.message = "Attenzione mail conoscenza non valida";
+                            return this.Request.CreateResponse<TitoliModel>(HttpStatusCode.OK, model);
+                        }
+                    }
+                    ContactsApplicationMapping c1 = new ContactsApplicationMapping
+                    {
+                        Mail = conoscenza,
+                        IdSottotitolo = long.Parse(sottotitolo),
+                        IdTitolo = long.Parse(titolo)
+                    };
+                    Collection<ContactsApplicationMapping> en1 = new Collection<ContactsApplicationMapping>();
+                    en1.Add(c1);
+                    comun.SetMailDestinatari(en1, AddresseeType.CC);
+                }
+                if (bcc != string.Empty)
+                {
+                    string[] bccs = bcc.Split(';');
+                    for (int i = 0; i < bcc.Length; i++)
+                    {
+                        var match = Regex.Match(bccs[i], regexMail, RegexOptions.IgnoreCase);
+                        if (!match.Success)
+                        {
+                            model.success = "false";
+                            model.message = "Attenzione mail destinatario nascosto non valido";
+                            return this.Request.CreateResponse<TitoliModel>(HttpStatusCode.OK, model);
+                        }
+                    }
+
+                    ContactsApplicationMapping c2 = new ContactsApplicationMapping
+                    {
+                        Mail = bcc,
+                        IdSottotitolo = long.Parse(sottotitolo),
+                        IdTitolo = long.Parse(titolo)
+                    };
+                    Collection<ContactsApplicationMapping> en2 = new Collection<ContactsApplicationMapping>();
+                    en2.Add(c2);
+                    comun.SetMailDestinatari(en2, AddresseeType.CCN);
+                }
+                comun.SetMailDestinatari(en, AddresseeType.TO);
+                // gestione body email
+                MailContent content = new MailContent();
+                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                string html = testoMail;
+                HtmlAgilityPack.HtmlNode body = null;
+                if (string.IsNullOrEmpty(html) == false)
+                {
+                    doc.LoadHtml(html);
+                    doc.OptionAutoCloseOnEnd = true;
+                    doc.OptionFixNestedTags = true;
+                    body = doc.DocumentNode.Descendants()
+                                               .Where(n => n.Name.Equals("body", StringComparison.InvariantCultureIgnoreCase))
+                                               .FirstOrDefault();
+                }
+                var ele = new HtmlAgilityPack.HtmlNode(HtmlAgilityPack.HtmlNodeType.Element, doc, 0);
+                ele.Name = "div";
+                ele.InnerHtml = testoMail;
+                content.MailSubject = oggetto;
+                content.MailText = ele.OuterHtml;
+                // gestione sender 
+                MailServerConfigFacade mailSCF = MailServerConfigFacade.GetInstance();
+                MailUser mailuser = mailSCF.GetUserByUserId(decimal.Parse(userid));
+                content.MailSender = mailuser.EmailAddress;
+                c.IdTitolo = long.Parse(titolo);
+                c.IdSottotitolo = long.Parse(sottotitolo);
+                comun.UtenteInserimento = MySecurityProvider.CurrentPrincipal.Identity.Name;
+                comun.MailComunicazione = content;
+                // da scommentare
+                comun.FolderTipo = "O";
+                comun.FolderId = 2;
+                ComunicazioniService com = new ComunicazioniService();
+                com.InsertComunicazione(comun);
+                model.success = "true";
+                SessionManager<Dictionary<string, DTOFileUploadResult>>.del(SessionKeys.DTO_FILE);
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                {
+                    ManagedException mEx = new ManagedException("Errore invio nuova mail. Dettaglio: " + ex.Message +
+                        "StackTrace: " + ((ex.StackTrace != null) ? ex.StackTrace.ToString() : " vuoto "),
+                        "ERR317",
+                        string.Empty,
+                        string.Empty,
+                        ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    log.Error(err);
+                    model.success = "false";
+                    model.message = ex.Message;
+                    return this.Request.CreateResponse<TitoliModel>(HttpStatusCode.OK, model);
+                }
+               
+            }
+            return this.Request.CreateResponse<TitoliModel>(HttpStatusCode.OK, model);
+        }
+
+
 
         #region "Private methods"
 
@@ -541,7 +725,8 @@ namespace GestionePEC.Api
                 };
                 if (item.ChildNodes == null || item.ChildNodes.Count() == 0)
                 { node.leaf = true; }
-                else { 
+                else
+                {
                     node.leaf = false;
                     node.expanded = true;
                 }

@@ -14,6 +14,8 @@ namespace Com.Delta.Web.Cache
         DATI_MEMO,
         FOLDERS,
         LOGO,
-        ALL_USERS
+        ALL_USERS,
+        ALL_TITLES,
+        ALL_SUBTITLES
     }
 }

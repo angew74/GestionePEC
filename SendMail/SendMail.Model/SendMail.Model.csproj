@@ -116,6 +116,7 @@
     <Compile Include="ComunicazioniMapping\RubrEntitaUsed.cs" />
     <Compile Include="ContactApplicationMapping\ContactsApplicationMapping.cs" />
     <Compile Include="ContactApplicationMapping\ContactsBackendMap.cs" />
+    <Compile Include="Mail\Body.cs" />
     <Compile Include="QueryModel\CriteriaOperator.cs" />
     <Compile Include="QueryModel\Criterion.cs" />
     <Compile Include="QueryModel\ICollectionCriterionExtension.cs" />

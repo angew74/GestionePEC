@@ -1,9 +1,12 @@
-﻿using Com.Delta.Logging.Errors;
+﻿using ActiveUp.Net.Mail.DeltaExt;
+using Com.Delta.Logging;
+using Com.Delta.Logging.Errors;
 using Com.Delta.Security;
 using Com.Delta.Web.Session;
 using GestionePEC.Models;
 using log4net;
 using SendMail.BusinessEF;
+using SendMail.BusinessEF.MailFacedes;
 using SendMail.Model;
 using System;
 using System.Collections.Generic;
@@ -57,7 +60,7 @@ namespace GestionePEC.api
             {
                 ErrorLogInfo error = new ErrorLogInfo();
                 error.freeTextDetails = ex.Message;
-                error.logCode = "ERR611";
+                error.logCode = "ERR_E001";
                 error.loggingAppCode = "PEC";
                 error.loggingTime = System.DateTime.Now;
                 error.uniqueLogID = System.DateTime.Now.Ticks.ToString();
@@ -69,5 +72,46 @@ namespace GestionePEC.api
             return this.Request.CreateResponse<BackendUserModel>(HttpStatusCode.OK, model);
 
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("api/EmailsController/GetMailSendersByUserMails")]
+        public HttpResponseMessage GetMailSendersByUserMails(int? page, int? start, int? limit)
+        {
+            MailServerConfigFacade mailServerConfigFacade = MailServerConfigFacade.GetInstance();
+            List<MailUser> users = new List<MailUser>();
+            UsersMailModel model = new UsersMailModel();
+            try
+            {
+
+                string username = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
+                MailServerConfigFacade mailSCF = null;
+                mailSCF = MailServerConfigFacade.GetInstance();
+                users = SessionManager<List<MailUser>>.get(SessionKeys.ACCOUNTS_LIST);
+                if (!(users != null && users.Count != 0))
+                {
+                    users = mailSCF.GetManagedAccountByUser(username).ToList();
+                    if (users == null) users = new List<MailUser>();
+                    if (users.Where(x => x.UserId.Equals(-1)).Count() == 0)
+                        users.Insert(0, new MailUser() { UserId = -1, EmailAddress = "" });
+                    SessionManager<List<MailUser>>.set(SessionKeys.ACCOUNTS_LIST, users);
+                }
+                model.MailUsers = users;
+            }
+            catch (ManagedException bex)
+            {
+                if (bex.GetType() != typeof(ManagedException))
+                {
+                    ManagedException mEx = new ManagedException(bex.Message, "ERR_E002", string.Empty, string.Empty, bex);
+                    ErrorLogInfo er = new ErrorLogInfo(mEx);
+                    log.Error(er);
+                    model.success = "false";
+                    model.message = bex.Message;
+                    return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
+                }
+            }
+            return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
+        }
+
     }
 }

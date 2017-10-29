@@ -575,12 +575,13 @@ namespace SendMail.Data.SQLServerDB.Mapping
             };
             MailContent ccon = new MailContent()
             {
-                Follows = (long)content.FOLLOWS,
+                Follows =(content.FOLLOWS == null) ? null : (long?) (content.FOLLOWS),
                 HasCustomRefs = (content.FLG_CUSTOM_REFS == "0") ? false : true,
                 IdMail =(long) content.ID_MAIL,
                 MailSender = content.MAIL_SENDER,
                 MailSubject = content.MAIL_SUBJECT,
                 MailText = content.MAIL_TEXT,
+
                 RefIdComunicazione =(long) content.REF_ID_COM
 
             };

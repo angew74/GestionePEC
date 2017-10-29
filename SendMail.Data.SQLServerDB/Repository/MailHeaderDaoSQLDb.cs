@@ -803,7 +803,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             //             + " CONNECT BY NOCYCLE FOLLOWS = PRIOR ID_MAIL";
             string query = "wITH T_MAIL(ID_MAIL, FOLLOWS, MAIL_SUBJECT, IND_MAIL, FOLDER) " +
  " AS (SELECT ID_MAIL, FOLLOWS, MAIL_SUBJECT, COALESCE(MAIL_TO, MAIL_CC, MAIL_CCN), 'I' " +
- "  FROM FAXPEC.MAIL_INBOX WHERE MAIL_ACCOUNT = 'n.ruberto@deltamanagement.it' UNION SELECT ID_MAIL, FOLLOWS, " +
+ "  FROM FAXPEC.MAIL_INBOX WHERE MAIL_ACCOUNT = '" + account + "' UNION SELECT ID_MAIL, FOLLOWS, " +
   " MAIL_SUBJECT, MAIL_DESTINATARIO, 'O' FROM[FAXPEC].[FAXPEC].[MAIL_CONTENT] MC " +
   "  INNER JOIN  FAXPEC.MAIL_REFS_NEW " +
   "   MRN ON MC.ID_MAIL = MRN.REF_ID_MAIL WHERE MAIL_SENDER = '" + account + "'),  " +
@@ -2308,7 +2308,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             parsIn = new List<SqlParameter>();
             string utente = string.Empty;
             StringBuilder sb = new StringBuilder("WITH T AS")
-                .Append("(SELECT id_mail, row_number() OVER (ORDER BY LOG_DATE DESC) AS rn")
+                .Append("(SELECT id_mail,log_date, row_number() OVER (ORDER BY LOG_DATE DESC) AS rn")
                 .Append(" from [FAXPEC].[FAXPEC].[MAIL_INBOX] INNER JOIN [FAXPEC].[FAXPEC].[LOG_ACTIONS]  ")
                 .Append(" ON MAIL_INBOX.MAIL_SERVER_ID=LOG_ACTIONS.OBJECT_ID where ");
             if (!string.IsNullOrEmpty(account))
@@ -2363,27 +2363,6 @@ namespace SendMail.Data.SQLServerDB.Repository
                             });
                         }
                         break;
-                    case MailTypeSearch.DataFine:
-                        parsIn.Add(new SqlParameter
-                        {
-                            Direction = ParameterDirection.Input,
-                            SqlDbType = SqlDbType.NVarChar,
-                            ParameterName = "p_DATAFINE",
-                            Value = val
-
-                        });
-                        break;
-                    case MailTypeSearch.DataInzio:
-                        sb.Append(" and max(cast(log_date as Date)) between  @p_DATAINIZIO and @p_DATAFINE ");
-                        parsIn.Add(new SqlParameter
-                        {
-                            Direction = ParameterDirection.Input,
-                            SqlDbType = SqlDbType.NVarChar,
-                            ParameterName = "p_DATAINIZIO",
-                            Value = val
-
-                        });
-                        break;
                     case MailTypeSearch.Utente:
                         if (val != string.Empty && !(val.ToUpper().Contains("SELEZIONARE")) && chkUfficio != true)
                         {
@@ -2398,9 +2377,30 @@ namespace SendMail.Data.SQLServerDB.Repository
                             });
                         }
                         break;
+                    case MailTypeSearch.DataFine:
+                        parsIn.Add(new SqlParameter
+                        {
+                            Direction = ParameterDirection.Input,
+                            SqlDbType = SqlDbType.NVarChar,
+                            ParameterName = "p_DATAFINE",
+                            Value = val
+
+                        });
+                        break;
+                    case MailTypeSearch.DataInzio:
+                        sb.Append(" group by id_mail,LOG_DATE having max(CONVERT(varchar, log_date,112)) between @p_DATAINIZIO and @p_DATAFINE ");
+                        parsIn.Add(new SqlParameter
+                        {
+                            Direction = ParameterDirection.Input,
+                            SqlDbType = SqlDbType.NVarChar,
+                            ParameterName = "p_DATAINIZIO",
+                            Value = val
+
+                        });
+                        break;
                 }
             }
-            sb.Append(" order by log_actions.log_date desc ) SELECT mail_server_id AS \"MAIL_ID\",")
+            sb.Append(" ) SELECT mail_server_id AS \"MAIL_ID\",")
                 .Append(" mail_account, mail_from, mail_to, mail_cc, mail_ccn,")
                 .Append(" mail_subject, mail_text, data_invio, lg.log_date as data_ricezione,")
                 .Append(" status_server, status_mail, flg_rating, flg_attachments,")
@@ -2413,7 +2413,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" inner join [FAXPEC].[FAXPEC].[folders] f on mi.folderid=f.id ")
                 .Append(" WHERE id_mail IN ")
                 .Append(" (SELECT id_mail FROM T WHERE rn BETWEEN @p_DA AND @p_A) ")
-                .Append(" and cast(log_date as Date) between  @p_DATAINIZIO and @p_DATAFINE "); 
+                .Append(" and CONVERT(varchar, log_date,106) between  @p_DATAINIZIO and @p_DATAFINE "); 
             if (folder != "0")
             {
                 sb.Append(" and LOG_DETAILS LIKE @p_FOLDER  ");

@@ -20,7 +20,10 @@ namespace ActiveUp.Net.Mail.DeltaExt
         bool validated;
         string dominus;
         string casella;
+        decimal idResponsabile;
+
         Nullable<int> flgManaged;
+        Boolean flgManagedInsert;
         List<Folder> folders;
 
         public MailUser()
@@ -43,6 +46,11 @@ namespace ActiveUp.Net.Mail.DeltaExt
         {
             get { return userId; }
             set { userId = value; }
+        }
+        public decimal IdResponsabile
+        {
+            get { return idResponsabile; }
+            set { idResponsabile = value; }
         }
 
         public new string Dominus
@@ -86,6 +94,11 @@ namespace ActiveUp.Net.Mail.DeltaExt
             get { return flgManaged.HasValue; }
         }
 
+        public bool FlgManagedInsert
+        {
+            get { return flgManagedInsert; }
+            set { flgManagedInsert = value; }
+        }
         public Nullable<int> FlgManaged
         {
             get { return flgManaged; }

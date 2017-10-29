@@ -97,7 +97,7 @@ namespace SendMail.BusinessEF.MailFacedes
             this.IncomingConnect();
 
             Connect conn = null;
-            switch (acs.IncomingProtocol)
+            switch (acs.IncomingProtocol.ToUpper())
             {
                 case "POP3":
                     if (!String.IsNullOrEmpty(acs.IncomingServer))
@@ -210,7 +210,7 @@ namespace SendMail.BusinessEF.MailFacedes
             if (_AccSettings == null)
                 return (uatRetVal);
 
-            if (_AccSettings.IncomingProtocol == IncomingProtocols.POP3.ToString())
+            if (_AccSettings.IncomingProtocol.ToUpper() == IncomingProtocols.POP3.ToString())
                 return (IncomingProtocols.POP3);
             if (_AccSettings.IncomingProtocol == IncomingProtocols.IMAP.ToString())
                 return (IncomingProtocols.IMAP);

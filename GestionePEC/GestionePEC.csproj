@@ -55,9 +55,6 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FaxPec.Model">
-      <HintPath>..\..\..\APP\FAXPec\CertiWebAppAnag\Bin\FaxPec.Model.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\..\APP\FAXPec\CertiWebAppAnag\Bin\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -845,6 +842,7 @@
     <Content Include="App_Themes\Delta\Rating.css" />
     <Content Include="App_Themes\Delta\tab.css" />
     <Content Include="App_Themes\Delta\delta.css" />
+    <Content Include="config\stampe\img\LOGO_DELTA.jpg" />
     <Content Include="Controls\DateTime.ascx" />
     <Content Include="Controls\EntitaSearch.ascx" />
     <Content Include="Controls\EntiViewer.ascx" />
@@ -914,6 +912,7 @@
     <Content Include="pages\Folders\RegisterFolder.aspx" />
     <Content Include="pages\Logs\ManageLogs.aspx" />
     <Content Include="pages\MailClient\NewMail.aspx" />
+    <Content Include="pages\MailClient\NewMailExt.aspx" />
     <Content Include="pages\pubblica\ErrorPage.aspx" />
     <Content Include="pages\MailClient\MailAdmin.aspx" />
     <Content Include="pages\MailClient\MailBoxInBox.aspx" />
@@ -944,6 +943,7 @@
     <Compile Include="api\GeneralSearchController.cs" />
     <Compile Include="api\LogsServiceController.cs" />
     <Compile Include="api\RolesServiceController.cs" />
+    <Compile Include="api\TitolarioController.cs" />
     <Compile Include="Models\AppCodesModel.cs" />
     <Compile Include="Models\BackendUserModel.cs" />
     <Compile Include="Models\FolderModel.cs" />
@@ -1110,6 +1110,7 @@
     <Compile Include="Models\LogErrorsModel.cs" />
     <Compile Include="Models\MailModel.cs" />
     <Compile Include="Models\RolesModel.cs" />
+    <Compile Include="Models\TitoliModel.cs" />
     <Compile Include="Models\TreeModel.cs" />
     <Compile Include="Models\UsersMailModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
@@ -1191,6 +1192,13 @@
     </Compile>
     <Compile Include="pages\MailClient\NewMail.aspx.designer.cs">
       <DependentUpon>NewMail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\MailClient\NewMailExt.aspx.cs">
+      <DependentUpon>NewMailExt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\MailClient\NewMailExt.aspx.designer.cs">
+      <DependentUpon>NewMailExt.aspx</DependentUpon>
     </Compile>
     <Compile Include="pages\pubblica\ErrorPage.aspx.cs">
       <DependentUpon>ErrorPage.aspx</DependentUpon>

@@ -275,6 +275,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 u = new MailUser(s);
             else u = new MailUser();
             u.UserId = dr.ID_SENDER;
+            u.IdResponsabile =(decimal) dr.ID_RESPONSABILE;
             u.Casella = dr.MAIL;
             u.Dominus = (s == null) ? "" : s.Dominus;
             u.EmailAddress = dr.MAIL;
@@ -282,7 +283,11 @@ namespace SendMail.Data.SQLServerDB.Mapping
             u.Password = dr.PASSWORD;                
             u.Folders = l;
             if (dr.FLG_MANAGED != null)
-            {u.FlgManaged = int.Parse(dr.FLG_MANAGED);}
+            {
+                u.FlgManaged = int.Parse(dr.FLG_MANAGED);
+                u.FlgManagedInsert = (dr.FLG_MANAGED == "0") ? false : true;
+            }
+            else { u.FlgManagedInsert = false; }
             return u;
         }
 
@@ -349,10 +354,11 @@ namespace SendMail.Data.SQLServerDB.Mapping
         {
             SimpleTreeItem t = new SimpleTreeItem();
             t.Value = dr["ID_MAIL"].ToString();
-            t.Text = dr["FOLLOWS"].ToString();
-            t.SubType = dr["MAIL_SUBJECT"].ToString();
+            t.Text = dr["MAIL_SUBJECT"].ToString();
+            t.SubType = dr["FOLDER"].ToString();
             t.Source = dr["IND_MAIL"].ToString();
-            t.Padre = dr["FOLDER"].ToString();
+            t.Padre = dr["FOLLOWS"].ToString();
+
             return t;
         }
 
