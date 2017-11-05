@@ -368,7 +368,7 @@ namespace GestionePEC.Controls
                     contact.ContactRef = ((TextBox)ContactsFormView.FindControl("TextRef")).Text;
                     contact.Note = ((TextBox)ContactsFormView.FindControl("TextNote")).Text;
                     contact.IsPec = ((CheckBox)ContactsFormView.FindControl("chkPec")).Checked;
-
+                    contact.AffIPA = 0;
                     if (contact.IsPec == false)
                     {
                         foreach (MailPecForCheck val in Enum.GetValues(typeof(MailPecForCheck)))
@@ -431,9 +431,9 @@ namespace GestionePEC.Controls
                         ContattoService contattoService = new ContattoService();
                         contattoService.InsertRubrContatti(contact, false);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        ((BasePage)this.Page).info.AddMessage("Inserimento non riuscito: Errore in banca dati", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                        ((BasePage)this.Page).info.AddMessage("Inserimento non riuscito: Errore in banca dati dettagli: " + ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                         return;
                     }
                     ((BasePage)this.Page).info.AddMessage("Contatto inserito", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);

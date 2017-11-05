@@ -25,28 +25,34 @@ namespace SendMail.Data.SQLServerDB.Repository
             try
             {
                 List<RUBR_CONTATTI> list = null;
+                List<RUBR_CONTATTI> listDescendant = null;
+                List<RUBR_CONTATTI> mergedList = null;
                 using (var dbcontext = new FAXPECContext())
                 {
-                    var matches = dbcontext.RUBR_CONTATTI.Select(f => f);
+                   
                     if (startFromOrg)
                     {
-                        matches = dbcontext.RUBR_CONTATTI.Where(x => x.RUBR_ENTITA.ID_REFERRAL == (int)identita);
+                       list = dbcontext.RUBR_CONTATTI.Where(x => x.RUBR_ENTITA.ID_REFERRAL == (int)identita).ToList();
                         //var a = (from r in dbcontext.RUBR_CONTATTI 
                         //     where r.RUBR_ENTITA.ID_REFERRAL == (int)identita); 
                     }
                     else
                     {
-                        matches = dbcontext.RUBR_CONTATTI.Where(x => x.REF_ID_REFERRAL == (int)identita);
+                        list = dbcontext.RUBR_CONTATTI.Where(x => x.REF_ID_REFERRAL == (int)identita).ToList();
                         //var a = (from r in dbcontext.RUBR_CONTATTI
                         //        where r.REF_ID_REFERRAL ==(int) identita);
                     }
                     if (includeDescendant)
-                    { matches = dbcontext.RUBR_CONTATTI.Where(x => x.RUBR_ENTITA.ID_PADRE == (int)identita); }
-                    list = matches.ToList();
-                    if (list.Count > 0)
+                    {
+                        listDescendant = dbcontext.RUBR_CONTATTI.Where(x => x.RUBR_ENTITA.ID_PADRE == (int)identita).ToList();
+                        mergedList = list.Union(listDescendant).ToList();
+                    }
+                    else { mergedList = list; }
+
+                    if (mergedList.Count > 0)
                     {
                         lContatti = new List<RubricaContatti>();
-                        foreach (RUBR_CONTATTI r in list)
+                        foreach (RUBR_CONTATTI r in mergedList)
                         {
                             if (includeAppMappings)
                             {
@@ -57,7 +63,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                             }
                             else
                             {
-
+                                lContatti.Add(AutoMapperConfiguration.MapToRubrContatti(r));
                             }
                         }
                     }
@@ -474,35 +480,51 @@ namespace SendMail.Data.SQLServerDB.Repository
             {
                 using (var dbContextTransaction = dbcontext.Database.BeginTransaction())
                 {
-                    if (entity.Entita != null)
+                    try
                     {
-                        try
+                        if (entity.Entita != null)
                         {
+
                             RUBR_ENTITA e = DaoSQLServerDBHelper.MapToRubrEntita(entity.Entita, true);
                             dbcontext.RUBR_ENTITA.Add(e);
                             entity.Entita.IdReferral = (long)e.ID_REFERRAL;
                             entity.RefIdReferral = (long)e.ID_REFERRAL;
-                            RUBR_CONTATTI c = DaoSQLServerDBHelper.MapToRubrContatti(entity,true);
+                            RUBR_CONTATTI c = DaoSQLServerDBHelper.MapToRubrContatti(entity, true);
                             entity.IdContact = (long)c.ID_CONTACT;
                             dbcontext.RUBR_CONTATTI.Add(c);
                             dbcontext.SaveChanges();
+                            dbContextTransaction.Commit();
                         }
-                        catch (Exception ex)
+                        else if (entity.Entita == null && entity.RefIdReferral != null)
+                        {
+                            RUBR_CONTATTI c = DaoSQLServerDBHelper.MapToRubrContatti(entity, true);
+                            entity.IdContact = (long)c.ID_CONTACT;
+                            dbcontext.RUBR_CONTATTI.Add(c);
+                            int righe = dbcontext.SaveChanges();
+                            dbContextTransaction.Commit();
+                        }
+                        else if (entity.Entita == null && entity.RefIdReferral == null)
                         {
                             dbContextTransaction.Rollback();
-                            if (!ex.GetType().Equals(typeof(ManagedException)))
-                            {
-                                ManagedException mEx = new ManagedException(ex.Message,
-                                    "ORA_ERR012", string.Empty, string.Empty, ex);
-                                ErrorLogInfo err = new ErrorLogInfo(mEx);
-                                _log.Error(err);
-                                throw mEx;
-                            }
-                            else throw ex;
+                            ManagedException mEx = new ManagedException("Errore nell'inserimento del contatto per il contatto " + entity.Mail + " >> ERR_C014 >> Dettagli Errore:  Mancano riferimenti entità",
+                                   "SQL_ERR_C014", string.Empty, string.Empty, null);
+                            ErrorLogInfo err = new ErrorLogInfo(mEx);
+                            _log.Error(err);
+                            throw mEx;
                         }
-
-
-                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        dbContextTransaction.Rollback();
+                        if (!ex.GetType().Equals(typeof(ManagedException)))
+                        {
+                            ManagedException mEx = new ManagedException(ex.Message,
+                                "SQL_ERR_C013", string.Empty, string.Empty, ex);
+                            ErrorLogInfo err = new ErrorLogInfo(mEx);
+                            _log.Error(err);
+                            throw mEx;
+                        }
+                        else throw ex;
                     }
                 }
             }
@@ -521,12 +543,20 @@ namespace SendMail.Data.SQLServerDB.Repository
                     dbcontext.RUBR_CONTATTI.Add(rubrNew);
                     int res = dbcontext.SaveChanges();
                 }
-                catch
+                catch(Exception ex)
                 {
                         transaction.Rollback();
-                    //todo
-                    throw;
-                }
+                        if (!ex.GetType().Equals(typeof(ManagedException)))
+                        {
+                            ManagedException mEx = new ManagedException("Errore nell'inserimento del contatto per il contatto " + entity.Mail + " >> ERR_C012 >> Dettagli Errore: " + ex.Message,
+                                "SQL_ERR_C012", string.Empty, string.Empty, ex.InnerException);
+                            ErrorLogInfo err = new ErrorLogInfo(mEx);
+                            _log.Error(err);
+                            throw mEx;
+                        }
+                        else
+                            throw ex;
+                    }
             }           
         }
 

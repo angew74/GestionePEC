@@ -54,6 +54,7 @@ namespace Com.Delta.Web.Session
         FOLDERS,
         UTENTIBACKEND,
         TITOLI,
-        TITOLARIO
+        TITOLARIO,
+        ATTACHEMENTS_LIST
     }
 }

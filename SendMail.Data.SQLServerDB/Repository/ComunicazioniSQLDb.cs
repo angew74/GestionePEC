@@ -126,21 +126,24 @@ namespace SendMail.Data.SQLServerDB.Repository
                 List<MAIL_CONTENT> l = new List<MAIL_CONTENT>();
                 try
                 {
-                    l = (from c in dbcontext.COMUNICAZIONI_FLUSSO
-                         join m in dbcontext.MAIL_CONTENT
-                             on c.REF_ID_COM equals m.REF_ID_COM
-                         join cm in dbcontext.COMUNICAZIONI
-                         on c.REF_ID_COM equals cm.ID_COM
-                         where m.MAIL_SENDER.ToUpper() == utente.ToUpper()
-                         && c.CANALE.ToUpper() == tipoCanale.ToString().ToUpper()
-                         && !(stati.Contains(c.STATO_COMUNICAZIONE_NEW))
-                         orderby c.REF_ID_COM
-                         select m).Skip(skip).Take(take).ToList();
+                    
+                       l = (from c in dbcontext.COMUNICAZIONI_FLUSSO
+                             join m in dbcontext.MAIL_CONTENT
+                                 on c.ID_FLUSSO equals m.REF_ID_FLUSSO_ATTUALE
+                             join cm in dbcontext.COMUNICAZIONI
+                             on m.REF_ID_COM equals cm.ID_COM
+                             where m.MAIL_SENDER.ToUpper() == utente.ToUpper()
+                             && c.CANALE.ToUpper() == tipoCanale.ToString().ToUpper()
+                             && !(stati.Contains(c.STATO_COMUNICAZIONE_NEW))
+                                orderby c.REF_ID_COM
+                            select m
+                             ).Skip(skip).Take(take).ToList();
                     foreach (MAIL_CONTENT com in l)
                     {
                         Comunicazioni coMp = AutoMapperConfiguration.fromComunicazioniCompleteToDto(com);
                         lComunicazioni.Add(coMp);
                     }
+                   
 
                 }
                 catch (Exception ex)
@@ -333,7 +336,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                     catch (Exception ex)
                     {
-                        //TASK: Allineamento log - Ciro
+                        
                         if (!ex.GetType().Equals(typeof(ManagedException)))
                         {
                             ManagedException mEx = new ManagedException("Errore nell\'aggiornamento del flusso della comunicazione." +
@@ -366,8 +369,14 @@ namespace SendMail.Data.SQLServerDB.Repository
                     }
                     finally
                     {
-                        dbcontext.SaveChanges();
-                        dbContextTransaction.Commit();
+                       int tot =  dbcontext.SaveChanges();
+                        if (tot > 0)
+                        { dbContextTransaction.Commit(); }
+                        else
+                        {
+                            dbContextTransaction.Rollback();
+                            throw new Exception("Comunicazione non inserita fermi tutti");
+                        }
                     }
                 }
             }

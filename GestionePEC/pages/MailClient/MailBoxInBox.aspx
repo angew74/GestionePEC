@@ -42,8 +42,8 @@
                     <%--<asp:AsyncPostBackTrigger ControlID="mailTreeViewer" />--%>
                 </Triggers>
                 <ContentTemplate>
-                    <uc1:MailViewer ID="MailViewer1" runat="server" EnableAcquire="true" EnableForward="true"
-                     OnMailSelected="mailTreeViewer_MailSelected"   EnableRating="true" EnableReplyAll="false" EnableReplyTo="true" EnableMailTree="true"
+                    <uc1:MailViewer ID="MailViewer1" runat="server" EnableAcquire="false" EnableForward="true"
+                     OnMailSelected="mailTreeViewer_MailSelected"   EnableRating="true" EnableReplyAll="true" EnableReplyTo="true" EnableMailTree="true"
                         OnRequireAction="MailViewer1_OnRequireAction" OnAccountInvalid="MailViewer1_AccountInvalid" />
                     <mail:SendMail ID="ucSendMail" runat="server" Visible="false" SottoTitolo="0" OnMessageInvalid="ucSendMail_MessageInvalid" />
                 </ContentTemplate>

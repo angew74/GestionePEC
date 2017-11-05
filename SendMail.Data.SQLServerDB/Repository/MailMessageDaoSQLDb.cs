@@ -152,7 +152,7 @@ namespace SendMail.Data.SQLServerDB.Repository
         public ActiveUp.Net.Mail.Message GetById(string mailID, string mailAccount, string mailFolder)
         {
             Message msg = null;
-
+            decimal mailid = default(decimal);
             using (var dbcontext = new FAXPECContext())
             {
                 try
@@ -167,7 +167,8 @@ namespace SendMail.Data.SQLServerDB.Repository
                             break;
                         case "2":
                             //msg = GetOutBoxMessage(mailID, mailAccount);
-                            MAIL_CONTENT content = dbcontext.MAIL_CONTENT.Where(x => x.ID_MAIL == int.Parse(mailID)).FirstOrDefault();
+                            mailid = decimal.Parse(mailID);
+                            MAIL_CONTENT content = dbcontext.MAIL_CONTENT.Where(x => x.ID_MAIL == mailid).FirstOrDefault();
                             List<COMUNICAZIONI_ALLEGATI> allegati = dbcontext.COMUNICAZIONI_ALLEGATI.Where(x => x.REF_ID_COM == content.REF_ID_COM).ToList();
                             msg = AutoMapperConfiguration.MapToMessageModelOut(content, allegati);
                             break;
@@ -181,7 +182,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                                     break;
                                 case "O":
                                     // msg = GetOutBoxMessage(mailID, mailAccount);
-                                    MAIL_CONTENT content1 = dbcontext.MAIL_CONTENT.Where(x => x.ID_MAIL == int.Parse(mailID)).FirstOrDefault();
+                                    MAIL_CONTENT content1 = dbcontext.MAIL_CONTENT.Where(x => x.ID_MAIL == mailid).FirstOrDefault();
                                     List<COMUNICAZIONI_ALLEGATI> allegati1 = dbcontext.COMUNICAZIONI_ALLEGATI.Where(x => x.REF_ID_COM == content1.REF_ID_COM).ToList();
                                     msg = AutoMapperConfiguration.MapToMessageModelOut(content1, allegati1);
                                     break;

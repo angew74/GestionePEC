@@ -401,7 +401,9 @@ namespace SendMail.Data.SQLServerDB.Mapping
                 SOURCE = entity.Source,
                 NOTE = entity.Note,
                 CONTACT_REF = entity.ContactRef,
-                REF_ID_REFERRAL = (decimal) entity.RefIdReferral
+                REF_ID_REFERRAL = (decimal) entity.RefIdReferral,
+                FLG_IPA =(entity.AffIPA == null) ? "0" : entity.AffIPA.ToString()
+               
             };
             if (!isInsert)
             {
@@ -421,7 +423,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
             r.DISAMB_PRE = e.DisambPre;
             r.FLG_IPA = e.IsIPA.ToString();
             r.NOTE = e.Note;
-            r.NOME = e.Nome;
+            r.NOME = (string.IsNullOrEmpty(e.Nome)) ? e.Ufficio : e.Nome;
             r.P_IVA = e.PartitaIVA;
             r.SITO_WEB = e.SitoWeb;        
             if (!isInsert)
@@ -433,6 +435,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
               r.RAGIONE_SOCIALE = e.RagioneSociale;
               r.REF_ID_ADDRESS = e.RefIdAddress;
               r.FLG_IPA = Convert.ToInt16(e.IsIPA).ToString();
+                r.UFFICIO = e.Ufficio;
               r.IPA_DN = e.IPAdn;
               r.IPA_ID = e.IPAId;
                 r.DISAMB_PRE = e.DisambPre;

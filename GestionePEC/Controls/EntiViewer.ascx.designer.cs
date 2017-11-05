@@ -76,13 +76,13 @@ namespace GestionePEC.Controls {
         protected global::System.Web.UI.ScriptManagerProxy ScriptManagerProxy;
         
         /// <summary>
-        /// FormView2 control.
+        /// FormRiepilogoEnti control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl FormView2;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl FormRiepilogoEnti;
         
         /// <summary>
         /// btnContactInsert control.

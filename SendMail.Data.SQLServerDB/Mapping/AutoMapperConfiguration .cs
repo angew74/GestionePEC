@@ -143,6 +143,31 @@ namespace SendMail.Data.SQLServerDB.Mapping
 
         }
 
+        internal static RubricaContatti MapToRubrContatti(RUBR_CONTATTI r)
+        {
+            RubricaContatti c = new RubricaContatti();
+            c.Entita = AutoMapperConfiguration.MapToRubrEntita(r.RUBR_ENTITA);
+            if (r.AFF_IPA != null)
+            { c.AffIPA = (short)r.AFF_IPA; }
+            if (r.CONTACT_REF != null)
+            { c.ContactRef = r.CONTACT_REF; }
+            c.Fax = r.FAX;
+            c.IdContact = (long)r.ID_CONTACT;
+            c.IPAdn = r.IPA_DN;
+            c.IPAId = r.IPA_ID;
+            c.IsIPA = (r.FLG_IPA == "0") ? false : true;
+            c.IsPec = (r.FLG_PEC == 0) ? false : true;
+            c.Mail = r.MAIL;
+            c.Note = r.NOTE;
+            c.RefIdReferral = (long)r.REF_ID_REFERRAL;
+            c.Src = "R";
+            c.Source = null;
+            c.Telefono = r.TELEFONO;
+            c.T_Ufficio = r.RUBR_ENTITA.UFFICIO;
+            c.T_RagioneSociale = r.RUBR_ENTITA.RAGIONE_SOCIALE;
+            return c;
+        }
+
         internal static Folder MapToFolder(FOLDERS a)
         {
             Folder folder = new Folder()
@@ -251,6 +276,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
             c.Telefono = r.TELEFONO;
             c.T_Ufficio = r.RUBR_ENTITA.UFFICIO;
             c.T_RagioneSociale = r.RUBR_ENTITA.RAGIONE_SOCIALE;
+            c.MappedAppsId = new List<long>();
             foreach (int i in ListTitoli)
             {
                 if (!(c.MappedAppsId.Contains(i)))
@@ -506,9 +532,10 @@ namespace SendMail.Data.SQLServerDB.Mapping
             {
 
                 CANALE = comFlusso.Canale.ToString(),
-                DATA_OPERAZIONE = (DateTime)comFlusso.DataOperazione,
-                STATO_COMUNICAZIONE_NEW = comFlusso.StatoComunicazioneNew.ToString(),
-                STATO_COMUNICAZIONE_OLD = comFlusso.StatoComunicazioneOld.ToString(),
+                DATA_OPERAZIONE = (comFlusso.DataOperazione == null) ? System.DateTime.Now : (DateTime)comFlusso.DataOperazione,
+                STATO_COMUNICAZIONE_NEW = ((int)comFlusso.StatoComunicazioneNew).ToString(),
+                STATO_COMUNICAZIONE_OLD = ((int)comFlusso.StatoComunicazioneOld).ToString(),
+                REF_ID_COM = (comFlusso.RefIdComunicazione == null) ? 0 : decimal.Parse(comFlusso.RefIdComunicazione.ToString()),
                 UTE_OPE = comFlusso.UtenteOperazione
             };
             if (comFlusso.IdFlusso.HasValue)
@@ -989,8 +1016,8 @@ namespace SendMail.Data.SQLServerDB.Mapping
             {
                 BACKEND_CODE = entity.Codice,
                 BACKEND_DESCR = entity.Descrizione,
-                CATEGORY = entity.Categoria,
-                DESCR_PLUS = entity.DescrizionePlus
+                CATEGORY = entity.Categoria.ToString(),
+                DESCR_PLUS = entity.DescrizionePlus,
             };
             return r;
         }

@@ -278,7 +278,6 @@ namespace GestionePEC.pages.Rubrica
                     entity.Categoria = ((TextBox)AccessoView.FindControl("TextCategoria")).Text;
                     entity.DescrizionePlus = ((TextBox)AccessoView.FindControl("TextDescrizionePlus")).Text;
 
-
                 }
 
                 catch
@@ -321,9 +320,9 @@ namespace GestionePEC.pages.Rubrica
                         pnlGrid.Visible = false;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    this.info.AddMessage("Inserimento non riuscito: Errore in banca dati", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                    this.info.AddMessage("Inserimento non riuscito: Errore in banca dati dettagli " + ex.Message, Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
                     return;
                 }
                 this.info.AddMessage("Accesso inserito", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.INFO);
@@ -331,7 +330,6 @@ namespace GestionePEC.pages.Rubrica
                 //  AccessoView.Visible = false;
                 this.AccessoView.DataSource = null;
                 this.AccessoView.DataBind();
-
             }
             else
             {

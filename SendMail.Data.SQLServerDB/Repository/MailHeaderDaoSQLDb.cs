@@ -2128,7 +2128,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             sb.Append("WITH t_mc(id_m, id_c, rn) AS")
                 .Append(" (SELECT id_mail, mc.ref_id_com, row_number() OVER (ORDER BY mc.ref_id_com DESC)")
                 .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
-                .Append("  inner join [FAXPEC].[FAXPEC].[LOG_ACTIONS] ON to_char(mc.ID_MAIL)=LOG_ACTIONS.OBJECT_ID ")
+                .Append("  inner join [FAXPEC].[FAXPEC].[LOG_ACTIONS] ON mc.ID_MAIL=LOG_ACTIONS.OBJECT_ID ")
                 .Append(" WHERE");
             if (!string.IsNullOrEmpty(account))
             {
@@ -2413,7 +2413,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 .Append(" inner join [FAXPEC].[FAXPEC].[folders] f on mi.folderid=f.id ")
                 .Append(" WHERE id_mail IN ")
                 .Append(" (SELECT id_mail FROM T WHERE rn BETWEEN @p_DA AND @p_A) ")
-                .Append(" and CONVERT(varchar, log_date,106) between  @p_DATAINIZIO and @p_DATAFINE "); 
+                .Append(" and CONVERT(varchar, log_date,112) between  @p_DATAINIZIO and @p_DATAFINE "); 
             if (folder != "0")
             {
                 sb.Append(" and LOG_DETAILS LIKE @p_FOLDER  ");
@@ -2826,7 +2826,7 @@ namespace SendMail.Data.SQLServerDB.Repository
             StringBuilder sb = new StringBuilder("SELECT COUNT(*)")
                 .Append(" FROM [FAXPEC].[FAXPEC].[mail_content] mc")
                 .Append(" JOIN [FAXPEC].[FAXPEC].[LOG_ACTIONS] ")
-                .Append(" ON to_char(mc.ID_MAIL)=LOG_ACTIONS.OBJECT_ID ")
+                .Append(" ON mc.ID_MAIL=LOG_ACTIONS.OBJECT_ID ")
                 .Append(" WHERE ");
             if (!string.IsNullOrEmpty(account))
             {
@@ -2874,7 +2874,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                         });
                         break;
                     case MailTypeSearch.DataInzio:
-                        sb.Append(" and cast(log_date as Date) between  @p_DATAINIZIO and @p_DATAFINE ");
+                        sb.Append(" and convert(varchar, log_date,112) between  @p_DATAINIZIO and @p_DATAFINE ");
                         parsOut.Add(new SqlParameter
                         {
                             Direction = ParameterDirection.Input,

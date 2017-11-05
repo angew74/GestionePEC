@@ -190,7 +190,7 @@
     </div>
 </div>
 <div style="clear: both;" />
-<div id="FormView2" class="body-panel" style="padding: 5px 5px 5px 5px;" runat="server">
+<div id="FormRiepilogoEnti" class="body-panel" style="padding: 5px 5px 5px 5px;" runat="server">
     <div class="control-header-blue">
         <div class="control-header-title">
             <div class="control-header-text-left">
@@ -206,7 +206,7 @@
                     Width="24px" CommandName="Insert_u" OnClick="ContactsFormView_InsertCommand" />
                 <asp:ImageButton runat="server" ID="ImageButton2" ToolTip="Crea nuovo gruppo" ImageAlign="Top" ImageUrl="~/App_Themes/Delta/images/buttons/company_star.png"
                     Width="24px" CommandName="Insert_g" OnClick="ContactsFormView_InsertCommand" />
-            </div>nessun contatto presente
+            </div>
         </div>
     </div>
     <div class="control-body-gray">

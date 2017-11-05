@@ -10,13 +10,6 @@
             </div>
         </div>
         <div id="container" class="control-main">
-            <div id="divparole" class="control-header-blue">
-                <div class="header-title">
-                    <div class="header-text-left">
-                        <label>Visualizza Logs Attività</label>
-                    </div>                  
-                </div>
-            </div>          
             <div class="control-body-gray">
                    <div id="toolBarDiv"></div>
                         <div id="logs-grid"></div>

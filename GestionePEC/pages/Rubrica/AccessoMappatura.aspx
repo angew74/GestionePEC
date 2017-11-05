@@ -175,7 +175,7 @@
                             <div>
                                 <span class="LabelBlack Fixed120">DescrizionePlus:</span>
                                 <asp:TextBox runat="server" Text='<%#Bind("DescrizionePlus") %>' ID="TextDescrizionePlus"
-                                    CssClass="FixedBorder300" Font-Bold="true" Columns="60" />
+                                    CssClass="FixedBorder300" Font-Bold="true" Columns="60" MaxLength="10" />
                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator9" ControlToValidate="TextDescrizionePlus"
                                     runat="server" ValidationExpression="^[A-Za-zÀÃÄÇÈÉËÌÏÒÖÙÜàãäçèéëìïòöùü'(\) ]*$"
                                     ErrorMessage="DESCRIZIONEPLUS non corretta" Display="Dynamic" ValidationGroup="vgUpdAccesso" />
@@ -221,7 +221,7 @@
                             <div>
                                 <span class="LabelBlack Fixed120">DescrizionePlus:</span>
                                 <asp:TextBox runat="server" Text='<%#Bind("DescrizionePlus") %>' ID="TextDescrizionePlus"
-                                    CssClass="FixedBorder300" Font-Bold="true" Columns="60" />
+                                  MaxLength="10"  CssClass="FixedBorder300" Font-Bold="true" Columns="60" />
                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator9" ControlToValidate="TextDescrizionePlus"
                                     runat="server" ValidationExpression="^[A-Za-zÀÃÄÇÈÉËÌÏÒÖÙÜàãäçèéëìïòöùü'(\) ]*$"
                                     ErrorMessage="DESCRIZIONEPLUS non corretta" Display="Dynamic" ValidationGroup="vgInsAccesso" />

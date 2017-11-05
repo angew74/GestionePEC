@@ -274,6 +274,7 @@ namespace SendMailApp
                     System.Net.Mail.SmtpClient smtpMail = new System.Net.Mail.SmtpClient();
                     smtpMail = new System.Net.Mail.SmtpClient(user.OutgoingServer, user.PortOutgoingServer);
                     smtpMail.EnableSsl = user.IsOutgoingSecureConnection;
+                    smtpMail.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtpMail.UseDefaultCredentials = false;
                     if (user.LoginId != null && user.Password != null && user.LoginId.Length > 0)
                     {
