@@ -123,7 +123,7 @@ namespace GestionePEC.api
         [Authorize]
         [HttpGet]
         [Route("api/EmailsController/GetMail")]
-        public HttpResponseMessage GetMail(int idmail)
+        public HttpResponseMessage GetMail(int idmail,string tipo)
         {
             ActiveUp.Net.Mail.DeltaExt.MailUser mailUser = WebMailClientManager.getAccount();
             SessionManager<Dictionary<string, DTOFileUploadResult>>.del(SessionKeys.DTO_FILE);
@@ -146,16 +146,19 @@ namespace GestionePEC.api
                     return this.Request.CreateResponse<MailModel>(HttpStatusCode.OK, model);
                 }
                 v.Mail = mailUser.EmailAddress;
-                if (selectEmail(msg.To).Contains(mailUser.EmailAddress))
+                if (tipo != "f")
                 {
-                    List<Address> l = msg.To.Where(x => !x.Email.Equals(mailUser.EmailAddress)).ToList();
-                    v.DestinatarioA = string.Join(";", (from e in l
-                                                        select e.Email).ToArray());
-                    v.DestinatarioA +=";" + msg.From.Email;
-                }
-                else
-                {
-                    v.DestinatarioA = msg.From.Email;
+                    if (selectEmail(msg.To).Contains(mailUser.EmailAddress))
+                    {
+                        List<Address> l = msg.To.Where(x => !x.Email.Equals(mailUser.EmailAddress)).ToList();
+                        v.DestinatarioA = string.Join(";", (from e in l
+                                                            select e.Email).ToArray());
+                        v.DestinatarioA += msg.From.Email;
+                    }
+                    else
+                    {
+                        v.DestinatarioA = msg.From.Email;
+                    }
                 }
                 v.DestinatarioABlank = false;
                 if (selectEmail(msg.Cc).Contains(mailUser.EmailAddress))
@@ -165,7 +168,7 @@ namespace GestionePEC.api
                                                          select e.Email).ToArray());
                 }
                 v.Oggetto = String.Concat("Re:", msg.Subject);
-                v.TestoMail = msg.BodyText.TextStripped;
+                v.TestoMailOriginale = msg.BodyText.TextStripped;
                 v.Allegati = new List<ViewAttachement>();
                 if (msg.Attachments.Count > 0)
                 {

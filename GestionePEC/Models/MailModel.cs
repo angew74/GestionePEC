@@ -31,6 +31,7 @@ namespace GestionePEC.Models
         public string Oggetto { get; set; }
         public List<ViewAttachement> Allegati { get; set; }
         public string TestoMail { get; set; }
+        public string TestoMailOriginale { get; set; }
         public bool DestinatarioABlank { get; set; }
         public bool IncludiAllegati { get; set; }
     }

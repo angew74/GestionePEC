@@ -20,13 +20,13 @@
                 <% } %>
                 <% if (EnableReplyTo)
                     { %>
-                <asp:LinkButton ID="ReplyButton" runat="server" OnCommand="Action_WorkOn" CommandName="Reply_To"
+                <asp:LinkButton ID="ReplyButton" runat="server" CommandName="Reply_To"
                     CssClass="mailReplyTo" Style="margin-right: 5px" ToolTip="Rispondi" Visible="<%# ButtonVisible[HeaderButtons.ReplyTo] %>">
                 </asp:LinkButton>
                 <% } %>
                 <% if (EnableForward)
                     { %>
-                <asp:LinkButton ID="ForwardButton" runat="server" OnCommand="Action_WorkOn" CommandName="Forward"
+                <asp:LinkButton ID="ForwardButton" runat="server"  CommandName="Forward"
                     CssClass="mailForward" Style="margin-right: 5px" ToolTip="Inoltra" Visible="<%# ButtonVisible[HeaderButtons.Forward]%>">
                 </asp:LinkButton>
                 <% } %>
@@ -206,6 +206,7 @@
             });
         }
         var UrlSendMailExt = '/GestionePEC/api/EmailsController/SendMailExt';
+        var UrlStoreAttach = '/GestionePEC/api/EmailsController/GetAttachements';
         var appPanel = new Ext.panel.Panel({
             height: 140,
             title: 'Caricamento nuovi Allegati',
@@ -265,29 +266,6 @@
             ]
         });
 
-
-
-
-
-        //var summaryPanel = Ext.create('Ext.panel.Panel', {
-        //    bodyPadding: 5,  // Don't want content to crunch against the borders              
-        //    collapsible: false,
-        //    hidden: true,
-        //    id: 'panelSummaryWin',
-        //    header: false,
-        //    title: 'Messaggi',
-        //    items: [{
-        //        xtype: 'displayfield',
-        //        fieldLabel: '',
-        //        style: {
-        //            color: 'red'
-        //        },
-        //        id: 'labelSummaryWinMail'
-        //    }]
-        //});
-
-
-
         var AlberoStore = Ext.create('Ext.data.TreeStore', {
             storeId: 'TreeStore',
             clearOnLoad: true,
@@ -314,180 +292,218 @@
             }
         });
 
+        // oggetti per creazione finestra invio mail 
+
+        if (Ext.ClassManager.isCreated('AttachementsModel')) {
+        }
+        else {
+            var AttachModel = Ext.define('AttachementsModel', {
+                extend: 'Ext.data.Model',
+                fields: [
+                   { name: 'NomeFile' },
+                   { name: 'ContentiId' },
+                   { name: 'Dimensione', type: 'float' }
+                ]
+            });
+        }
+
+        var storeAttach = Ext.create('Ext.data.Store', {
+            model: 'AttachementsModel',
+            storeId: 'AttachementsStore',
+            proxy: {
+                url: UrlStoreAttach,
+                type: 'ajax',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'AttachementsList',
+                    totalProperty: 'Totale'
+                }
+            }
+        });
+
+        var attachementsMail = {
+            store: storeAttach,
+            xtype: 'dataview',
+            id: 'AttachementsList',
+            itemTpl: '<div>{NomeFile} {Dimensione} KB</div>',
+            title: 'Allegati email originale',
+            frame: true,
+            collapsible: true,
+            emptyText: 'Nessuna allegato da mostrare'
+        };
+
+        var formMail = {
+            xtype: 'form',
+            height: 250,
+            width: 790,
+            autoScroll: true,
+            id: 'formmail',
+            border: false,
+            bodyBorder: false,
+            header: false,
+            defaultType: 'field',
+            frame: false,
+            hidden: false,
+            // bodyStyle: 'background-color:#dfe8f5;',
+            title: 'Nuovo Messaggio',
+            items: [
+                {
+                    fieldLabel: 'Mail',
+                    name: 'Mail',
+                    //   id: 'MailMittente',
+                    labelWidth: 170,
+                    width: 750,
+                    padding: '5 0 0 5',
+                    readOnly: true,
+                    allowBlank: false,
+                    msgTarget: 'under',
+                    blankText: 'Mittente obbligatorio',
+                    xtype: 'textfield'
+                }, {
+                    fieldLabel: 'A (destinatario)',
+                    name: 'DestinatarioA',
+                    // id: 'DestinatarioA',
+                    labelWidth: 170,
+                    width: 750,
+                    padding: '5 0 0 5',
+                    allowBlank: false,
+                    msgTarget: 'under',
+                    minLength: 5,
+                    minLengthText: 'minimo 5 caratteri',
+                    maxLengthText: 'campo massimo 200 caratteri',
+                    maxLength: 200,
+                    blankText: 'Destinatario obbligatorio',
+                    regex: /^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;,.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/,
+                    regexText: 'Il campo deve contenere uno o più indirizzi email separati da punto e virgola (;)',
+                    xtype: 'textfield'
+                }, {
+                    fieldLabel: 'CC (destinatario conoscenza)',
+                    name: 'DestinatarioCC',
+                    // id: 'DestinatarioCC',
+                    labelWidth: 170,
+                    width: 750,
+                    padding: '5 0 0 5',
+                    allowBlank: true,
+                    msgTarget: 'under',
+                    minLength: 5,
+                    minLengthText: 'minimo 5 caratteri',
+                    maxLengthText: 'campo massimo 200 caratteri',
+                    maxLength: 200,
+                    blankText: 'Inserire destinatario in conoscenza',
+                    regex: /^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;,.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/,
+                    regexText: 'Il campo deve contenere uno o più indirizzi email separati da punto e virgola (;)',
+                    xtype: 'textfield'
+                }, {
+                    fieldLabel: 'Oggetto *',
+                    name: 'Oggetto',
+                    // id: 'Oggetto',
+                    labelWidth: 170,
+                    width: 750,
+                    padding: '5 0 0 5',
+                    xtype: 'textfield',
+                    maxLengthText: 'campo massimo 200 caratteri',
+                    maxLength: 200,
+                    enforceMaxLength: true
+                }, {
+                    fieldLabel: 'Testo Mail',
+                    name: 'TestoMail',
+                    //  id: 'TestoMail',
+                    xtype: 'textareafield',
+                    height: 100,
+                    labelWidth: 170,
+                    width: 750,
+                    padding: '5 0 0 5',
+                    maxlength: 500,
+                    maxLengthText: 'Massimo 500 caratteri',
+                    enforceMaxLength: true
+                },{
+                    fieldLabel: 'Testo Mail Originale',
+                    name: 'TestoMailOriginale',
+                    //  id: 'TestoMail',
+                    xtype: 'textareafield',
+                    height: 100,
+                    labelWidth: 170,
+                    width: 750,
+                    padding: '5 0 0 5',
+                    readOnly:'true',
+                    maxlength: 500,
+                    maxLengthText: 'Massimo 500 caratteri',
+                    enforceMaxLength: true
+                },{
+                    name: 'innerPanel',
+                    xtype: 'panel',
+                    title: 'allegati originali',
+                    border: false,
+                    // width:750,
+                    padding: '5 0 0 0',
+                    items: [{
+                        xtype: 'fieldcontainer',
+                        fieldLabel: 'Includi allegati mail originali',
+                        defaultType: 'checkboxfield',
+                        border: false,
+                        padding: '5 0 0 5',
+                        labelWidth: 172,
+                        items: [
+                            {
+                                boxLabel: 'SI',
+                                name: 'IncludiAllegati',
+                                xtype: 'checkboxfield',
+                                //  inputValue: 'True',
+                                checked: false,
+                                //   id: 'radioIncludiAllegati'
+                            }]
+                    },
+                    attachementsMail]
+                }, appPanel]
+                , buttons: [
+                      {
+                          text: 'Conferma Invio',
+                          id: 'btnConferma',
+                          scope: this,
+                          formBind: true,
+                          xtype: 'button',
+                          padding: '0 0 0 0',
+                          listeners: {
+                              click: function () {
+                                  // this == the button, as we are in the local scope
+                                  sendMail();
+                              }
+                          }
+                      }
+                ]
+        };
+        // oggetto 
+
+        function ShowForward(hfIdMail) {
+            if (typeof hfIdMail == 'undefined' || hfIdMail == null) return false;
+            currentMailHF = hfIdMail;
+            currentMailId = hfIdMail.getValue(true);
+            UrlMailExt = '/GestionePEC/api/EmailsController/GetMail?idmail=' + currentMailId+'&tipo=f';
+            var requiredMessage = '<div style="color:red;">Campo obbligatorio</div>';
+            if (currentMailId < 0) return false;
+
+            var mailWin = Ext.createByAlias('widget.window', {
+                id: 'WinEmail',
+                modal: true,
+                height: 700,
+                border: false,
+                layout: 'fit',
+                title: 'Invio Email',
+                renderTo: Ext.getBody(),
+                width: 850,
+                items: [formMail]
+            });
+            callLoader();
+            Ext.getCmp('WinEmail').show();
+        }
+
         function ShowReplyAll(hfIdMail) {
             if (typeof hfIdMail == 'undefined' || hfIdMail == null) return false;
             currentMailHF = hfIdMail;
             currentMailId = hfIdMail.getValue(true);
-            UrlMailExt = '/GestionePEC/api/EmailsController/GetMail?idmail=' + currentMailId;
-            var UrlStoreAttach = '/GestionePEC/api/EmailsController/GetAttachements';
+            UrlMailExt = '/GestionePEC/api/EmailsController/GetMail?idmail=' + currentMailId + '&tipo=a';
             var requiredMessage = '<div style="color:red;">Campo obbligatorio</div>';
             if (currentMailId < 0) return false;
-            if (Ext.ClassManager.isCreated('AttachementsModel')) {
-            }
-            else {
-                var AttachModel = Ext.define('AttachementsModel', {
-                    extend: 'Ext.data.Model',
-                    fields: [
-                       { name: 'NomeFile' },
-                       { name: 'ContentiId' },
-                       { name: 'Dimensione', type: 'float' }
-                    ]
-                });
-            }
-
-            var storeAttach = Ext.create('Ext.data.Store', {
-                model: 'AttachementsModel',
-                storeId: 'AttachementsStore',
-                proxy: {
-                    url: UrlStoreAttach,
-                    type: 'ajax',
-                    reader: {
-                        type: 'json',
-                        rootProperty: 'AttachementsList',
-                        totalProperty: 'Totale'
-                    }
-                }
-            });
-
-
-            var attachementsMail = {
-                store: storeAttach,
-                xtype: 'dataview',
-                id: 'AttachementsList',
-                itemTpl: '<div>{NomeFile} {Dimensione} KB</div>',
-                title: 'Allegati email originale',
-                frame: true,
-                collapsible: true,
-                emptyText: 'Nessuna allegato da mostrare'
-            };
-
-            var formMail = {
-                xtype: 'form',
-                height: 250,
-                width: 790,
-                autoScroll: true,
-                id: 'formmail',
-                border: false,
-                bodyBorder: false,
-                header: false,
-                defaultType: 'field',
-                frame: false,
-                hidden: false,
-                // bodyStyle: 'background-color:#dfe8f5;',
-                title: 'Nuovo Messaggio',
-                items: [
-                    {
-                        fieldLabel: 'Mail',
-                        name: 'Mail',
-                        //   id: 'MailMittente',
-                        labelWidth: 170,
-                        width: 750,
-                        padding: '5 0 0 5',
-                        readOnly: true,
-                        allowBlank: false,
-                        msgTarget: 'under',
-                        blankText: 'Mittente obbligatorio',
-                        xtype: 'textfield'
-                    }, {
-                        fieldLabel: 'A (destinatario)',
-                        name: 'DestinatarioA',
-                        // id: 'DestinatarioA',
-                        labelWidth: 170,
-                        width: 750,
-                        padding: '5 0 0 5',
-                        allowBlank: false,
-                        msgTarget: 'under',
-                        minLength: 5,
-                        minLengthText: 'minimo 5 caratteri',
-                        maxLengthText: 'campo massimo 200 caratteri',
-                        maxLength: 200,
-                        blankText: 'Destinatario obbligatorio',
-                        regex: /^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;,.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/,
-                        regexText: 'Il campo deve contenere uno o più indirizzi email separati da punto e virgola (;)',
-                        xtype: 'textfield'
-                    }, {
-                        fieldLabel: 'CC (destinatario conoscenza)',
-                        name: 'DestinatarioCC',
-                        // id: 'DestinatarioCC',
-                        labelWidth: 170,
-                        width: 750,
-                        padding: '5 0 0 5',
-                        allowBlank: true,
-                        msgTarget: 'under',
-                        minLength: 5,
-                        minLengthText: 'minimo 5 caratteri',
-                        maxLengthText: 'campo massimo 200 caratteri',
-                        maxLength: 200,
-                        blankText: 'Inserire destinatario in conoscenza',
-                        regex: /^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;,.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/,
-                        regexText: 'Il campo deve contenere uno o più indirizzi email separati da punto e virgola (;)',
-                        xtype: 'textfield'
-                    }, {
-                        fieldLabel: 'Oggetto *',
-                        name: 'Oggetto',
-                        // id: 'Oggetto',
-                        labelWidth: 170,
-                        width: 750,
-                        padding: '5 0 0 5',
-                        xtype: 'textfield',
-                        maxLengthText: 'campo massimo 200 caratteri',
-                        maxLength: 200,
-                        enforceMaxLength: true
-                    }, {
-                        fieldLabel: 'Testo Mail',
-                        name: 'TestoMail',
-                        //  id: 'TestoMail',
-                        xtype: 'textareafield',
-                        height: 100,
-                        labelWidth: 170,
-                        width: 750,
-                        padding: '5 0 0 5',
-                        maxlength: 500,
-                        maxLengthText: 'Massimo 500 caratteri',
-                        enforceMaxLength: true
-                    }, {
-                        name: 'innerPanel',
-                        xtype: 'panel',
-                        title: 'allegati originali',
-                        border:false,
-                       // width:750,
-                        padding: '5 0 0 0',
-                        items: [{
-                            xtype: 'fieldcontainer',
-                            fieldLabel: 'Includi allegati mail originali',
-                            defaultType: 'checkboxfield',
-                            border:false,
-                            padding: '5 0 0 5',
-                            labelWidth: 172,
-                            items: [
-                                {
-                                    boxLabel: 'SI',
-                                    name: 'IncludiAllegati',
-                                    xtype: 'checkboxfield',
-                                    //  inputValue: 'True',
-                                    checked: false,
-                                    //   id: 'radioIncludiAllegati'
-                                }]
-                        },
-                        attachementsMail]
-                    }, appPanel]
-                    , buttons: [
-                          {
-                              text: 'Conferma Invio',
-                              id: 'btnConferma',
-                              scope: this,
-                              formBind: true,
-                              xtype: 'button',
-                              padding: '0 0 0 0',
-                              listeners: {
-                                  click: function () {
-                                      // this == the button, as we are in the local scope
-                                      sendMail();
-                                  }
-                              }
-                          }
-                    ]
-            };
 
             var mailWin = Ext.createByAlias('widget.window', {
                 id: 'WinEmail',
@@ -500,8 +516,32 @@
                 width: 850,
                 items: [formMail]
             });
+            callLoader();
             Ext.getCmp('WinEmail').show();
-            // callLoader();
+        }
+
+        function ShowReply(hfIdMail)
+        {
+            if (typeof hfIdMail == 'undefined' || hfIdMail == null) return false;
+            currentMailHF = hfIdMail;
+            currentMailId = hfIdMail.getValue(true);
+            UrlMailExt = '/GestionePEC/api/EmailsController/GetMail?idmail=' + currentMailId+'&tipo=r';
+            var requiredMessage = '<div style="color:red;">Campo obbligatorio</div>';
+            if (currentMailId < 0) return false;
+
+            var mailWin = Ext.createByAlias('widget.window', {
+                id: 'WinEmail',
+                modal: true,
+                height: 550,
+                border: false,
+                layout: 'fit',
+                title: 'Invio Email',
+                renderTo: Ext.getBody(),
+                width: 850,
+                items: [formMail]
+            });
+            callLoader();
+            Ext.getCmp('WinEmail').show();
         }
 
         function sendMail() {
@@ -541,26 +581,11 @@
             });
         }
 
-        function ManageError(msg) {
-            var summary = Ext.getCmp("labelSummaryWinMail");
-            summary.setValue(msg);
-            var panelsummary = Ext.getCmp("panelSummaryWin");
-            panelsummary.show();
-        };
-
-        function HideError() {
-            var summary = Ext.getCmp("labelSummaryWinMail");
-            summary.setValue("");
-            var panelsummary = Ext.getCmp("panelSummaryWin");
-            panelsummary.hide();
-        }
-
         function callLoader() {
             Ext.Ajax.request({
                 url: UrlMailExt,
                 success: function (response, opts) {
                     var objMail = Ext.decode(response.responseText);
-                    debugger;
                     Ext.getCmp('formmail').getForm().setValues(objMail.Mail[0]);
                     //   Ext.getCmp('AttachementsList').store.data.items = objMail.Mail[0].Allegati;
                     Ext.getCmp('AttachementsList').store.load();
@@ -668,6 +693,8 @@
         Ext.onReady(function () {
             var btnShowMailTree = Ext.get('<%= ibShowMailTree.ClientID %>');
             var btnShowMailReplyAll = Ext.get('<%= ReplyAllButton.ClientID %>');
+            var btnShowMailReply = Ext.get('<%= ReplyButton.ClientID %>');
+            var btnForward = Ext.get('<%= ForwardButton.ClientID %>');
             var hfIdMail = Ext.get('<%= hfIdMail.ClientID %>');
             if (typeof btnShowMailTree != 'undefined' && btnShowMailTree != null) {
                 btnShowMailTree.addListener('click', function (e) {
@@ -680,7 +707,21 @@
                 btnShowMailReplyAll.addListener('click', function (e) {
                     if (typeof ShowReplyAll != 'undefined' && ShowReplyAll != null) {
                         ShowReplyAll(hfIdMail);
-                        callLoader();
+                    }
+                }, this, { stopPropagation: true });
+            };
+            if (typeof btnShowMailReply != 'undefined' && btnShowMailReply != null) {
+                btnShowMailReply.addListener('click', function (e) {
+                    if (typeof ShowReply != 'undefined' && ShowReply != null) {
+                        ShowReply(hfIdMail);
+                    }
+                }, this, { stopPropagation: true });
+            };
+
+            if (typeof btnForward != 'undefined' && btnForward != null) {
+                btnForward.addListener('click', function (e) {
+                    if (typeof ShowForward != 'undefined' && btnForward != null) {
+                        ShowForward(hfIdMail);
                     }
                 }, this, { stopPropagation: true });
             };
