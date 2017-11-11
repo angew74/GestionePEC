@@ -3,6 +3,7 @@ using ActiveUp.Net.Mail;
 using Com.Delta.Logging;
 using Com.Delta.Logging.Errors;
 using Com.Delta.Mail.MailMessage;
+using Com.Delta.Security;
 using GestionePEC.Extensions;
 using HtmlAgilityPack;
 using log4net;
@@ -739,7 +740,7 @@ namespace GestionePEC.Controls
                                      SendMail.Model.TipoCanale.MAIL,
                                      this.SottoTitolo,
                                      msg,
-                                     HttpContext.Current.User.Identity.Name, 2, "O");
+                                     MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, 2, "O");
                             if (c.MailComunicazione.MailRefs != null && c.MailComunicazione.MailRefs.Count != 0)
                             {
                                 c.RubricaEntitaUsed = (from cont in c.MailComunicazione.MailRefs

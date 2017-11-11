@@ -130,7 +130,9 @@
                 var summary = Ext.getCmp("labelSummary");
                 summary.setValue("");
                 var panelsummary = Ext.getCmp("panelSummary");
-                panelsummary.hide();
+                var labelsummary = Ext.getCmp("labelSummary");
+                // panelsummary.hide();
+                labelsummary.setValue('');
             }
 
 
@@ -223,13 +225,8 @@
                             handler: function () {
                                 Ext.getCmp(fieldId).setValue(['1', '2', '3']);
                             }
-                        }, {
-                            text: 'Toggle enabled',
-                            checked: true,
-                            checkHandler: function (item, checked) {
-                                Ext.getCmp(fieldId).setDisabled(!checked);
-                            }
-                        }]
+                        }
+                        ]
                     }
                 }, {
                     xtype: 'toolbar',
@@ -415,13 +412,8 @@
                             handler: function () {
                                 Ext.getCmp(fieldId).setValue(['1', '2', '3']);
                             }
-                        }, {
-                            text: 'Toggle enabled',
-                            checked: true,
-                            checkHandler: function (item, checked) {
-                                Ext.getCmp(fieldId).setDisabled(!checked);
-                            }
-                        }]
+                        }
+                        ]
                     }
                 }, {
                     xtype: 'toolbar',

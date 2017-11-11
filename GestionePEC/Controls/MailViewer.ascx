@@ -352,7 +352,7 @@
                     name: 'Mail',
                     //   id: 'MailMittente',
                     labelWidth: 170,
-                    width: 750,
+                    width: 800,
                     padding: '5 0 0 5',
                     readOnly: true,
                     allowBlank: false,
@@ -364,7 +364,7 @@
                     name: 'DestinatarioA',
                     // id: 'DestinatarioA',
                     labelWidth: 170,
-                    width: 750,
+                    width: 800,
                     padding: '5 0 0 5',
                     allowBlank: false,
                     msgTarget: 'under',
@@ -381,7 +381,7 @@
                     name: 'DestinatarioCC',
                     // id: 'DestinatarioCC',
                     labelWidth: 170,
-                    width: 750,
+                    width: 800,
                     padding: '5 0 0 5',
                     allowBlank: true,
                     msgTarget: 'under',
@@ -398,7 +398,7 @@
                     name: 'Oggetto',
                     // id: 'Oggetto',
                     labelWidth: 170,
-                    width: 750,
+                    width: 800,
                     padding: '5 0 0 5',
                     xtype: 'textfield',
                     maxLengthText: 'campo massimo 200 caratteri',
@@ -409,9 +409,9 @@
                     name: 'TestoMail',
                     //  id: 'TestoMail',
                     xtype: 'textareafield',
-                    height: 100,
+                    height:250,
                     labelWidth: 170,
-                    width: 750,
+                    width: 800,
                     padding: '5 0 0 5',
                     maxlength: 500,
                     maxLengthText: 'Massimo 500 caratteri',
@@ -421,9 +421,9 @@
                     name: 'TestoMailOriginale',
                     //  id: 'TestoMail',
                     xtype: 'textareafield',
-                    height: 100,
+                    height: 200,
                     labelWidth: 170,
-                    width: 750,
+                    width: 800,
                     padding: '5 0 0 5',
                     readOnly:'true',
                     maxlength: 500,
@@ -485,12 +485,12 @@
             var mailWin = Ext.createByAlias('widget.window', {
                 id: 'WinEmail',
                 modal: true,
-                height: 700,
+                height: 950,
                 border: false,
                 layout: 'fit',
                 title: 'Invio Email',
                 renderTo: Ext.getBody(),
-                width: 850,
+                width: 950,
                 items: [formMail]
             });
             callLoader();
@@ -508,12 +508,12 @@
             var mailWin = Ext.createByAlias('widget.window', {
                 id: 'WinEmail',
                 modal: true,
-                height: 550,
+                height: 950,
                 border: false,
                 layout: 'fit',
                 title: 'Invio Email',
                 renderTo: Ext.getBody(),
-                width: 850,
+                width: 950,
                 items: [formMail]
             });
             callLoader();
@@ -532,12 +532,12 @@
             var mailWin = Ext.createByAlias('widget.window', {
                 id: 'WinEmail',
                 modal: true,
-                height: 550,
+                height: 950,
                 border: false,
                 layout: 'fit',
                 title: 'Invio Email',
                 renderTo: Ext.getBody(),
-                width: 850,
+                width: 950,
                 items: [formMail]
             });
             callLoader();

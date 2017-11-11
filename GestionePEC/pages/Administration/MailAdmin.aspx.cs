@@ -307,6 +307,7 @@ namespace GestionePEC.pages.Administration
         {
             MailUser mu = e.InputParameters[0] as MailUser;
             MailAccountService mailAccountService = new MailAccountService();
+            mu.IdResponsabile =decimal.Parse(MySecurityProvider.CurrentPrincipal.MyIdentity.Id);
             if (!IsValidEmailDesc(mu.EmailAddress))
             {
                 e.Cancel = true;
@@ -316,14 +317,25 @@ namespace GestionePEC.pages.Administration
             try
             {
                 mu.FlgManaged = (mu.FlgManagedInsert == true) ? 1 : 0;
-             
-                mailAccountService.Insert(mu);
-                this.IdSender_ViewState = mu.UserId;
-                BackendUserService buservice = new BackendUserService();
-                _bUser = (BackendUser)buservice.GetByUserName(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
-                popolaGridElencoEmailsShared();
-                SessionManager<BackendUser>.set(SessionKeys.BACKEND_USER, _bUser);
-                info.AddMessage("Operazione effettuata", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.OK);
+                string serverId = (fvEmail.FindControl("ddlListaServers") as DropDownList).SelectedValue;
+                int serverid = 0;
+                int.TryParse(serverId,out serverid);
+                if (mailAccountService.GetUserByServerAndUsername(serverid, mu.EmailAddress.ToLower()).FirstOrDefault().Id > 0)
+                {
+                    info.AddMessage("Attenzione email già esistente", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+                    e.Cancel = true;
+                    return;
+                }
+                else
+                {
+                    mailAccountService.Insert(mu);
+                    this.IdSender_ViewState = mu.UserId;
+                    BackendUserService buservice = new BackendUserService();
+                    _bUser = (BackendUser)buservice.GetByUserName(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
+                    popolaGridElencoEmailsShared();
+                    SessionManager<BackendUser>.set(SessionKeys.BACKEND_USER, _bUser);
+                    info.AddMessage("Operazione effettuata", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.OK);
+                }
             }
             catch (Exception ex)
             {

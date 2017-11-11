@@ -256,7 +256,7 @@ namespace GestionePEC.pages.MailClient
                         content.MailSender = mailuser.EmailAddress;
                         c.IdTitolo = long.Parse(HeaderNew.TitoloSelected);
                         c.IdSottotitolo = long.Parse(HeaderNew.SottoTitoloSelected);
-                        comun.UtenteInserimento = MySecurityProvider.CurrentPrincipal.Identity.Name;
+                        comun.UtenteInserimento = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
                         comun.MailComunicazione = content;
                         // da scommentare
                         comun.FolderTipo = "O";

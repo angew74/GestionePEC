@@ -14,6 +14,7 @@ using SendMail.Model;
 using SendMail.Model.ComunicazioniMapping;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -304,23 +305,6 @@ namespace GestionePEC.api
                             msg.Attachments.RemoveAt(i);
                     }
                 }
-                foreach (MimePart mm in msg.Attachments)
-                {
-                    if (mm.BinaryContent == null || mm.BinaryContent.Length < 10)
-                    {
-                        if (!String.IsNullOrEmpty(mm.ContentId))
-                        {
-                            string idAttach = mm.ContentId.Trim(new char[] { '<', '>' });
-                            long idAtt = -1;
-                            if (long.TryParse(idAttach, out idAtt))
-                            {
-                                ComAllegato all = comunicazioniService
-                                            .LoadAllegatoComunicazioneById(long.Parse(idAttach));
-                                mm.BinaryContent = all.AllegatoFile;
-                            }
-                        }
-                    }
-                }
                 msg.InReplyTo = msg.Id.ToString();
                 ActiveUp.Net.Mail.DeltaExt.MailUser mailUser = null;
                 if (WebMailClientManager.AccountExist())
@@ -341,7 +325,7 @@ namespace GestionePEC.api
                                      SendMail.Model.TipoCanale.MAIL,
                                      "0",
                                      msg,
-                                     HttpContext.Current.User.Identity.Name, 2, "O");
+                                     MySecurityProvider.CurrentPrincipal.MyIdentity.UserName, 2, "O");
                             if (c.MailComunicazione.MailRefs != null && c.MailComunicazione.MailRefs.Count != 0)
                             {
                                 c.RubricaEntitaUsed = (from cont in c.MailComunicazione.MailRefs
@@ -368,6 +352,24 @@ namespace GestionePEC.api
                                     c.ComAllegati.Add(allegato);
                                 }
 
+                            }
+                            foreach (MimePart mm in msg.Attachments)
+                            {
+                                if (mm.BinaryContent != null || mm.BinaryContent.Length > 10)
+                                {
+                                    if (c.ComAllegati == null) { c.ComAllegati = new List<ComAllegato>(); }
+
+                                    ComAllegato allegato = new SendMail.Model.ComunicazioniMapping.ComAllegato();
+                                    FileInfo info = new FileInfo(mm.Filename);
+                                    allegato.AllegatoExt = info.Extension;
+                                    allegato.AllegatoFile = mm.BinaryContent;
+                                    allegato.AllegatoName = mm.Filename;
+                                    allegato.AllegatoTpu = "";
+                                    allegato.FlgInsProt = AllegatoProtocolloStatus.FALSE;
+                                    allegato.FlgProtToUpl = AllegatoProtocolloStatus.FALSE;
+                                    c.ComAllegati.Add(allegato);
+
+                                }
                             }
                             comunicazioniService.InsertComunicazione(c);
                         }

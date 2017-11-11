@@ -103,25 +103,29 @@ namespace SendMail.Data.SQLServerDB.Repository
             using (FAXPECContext dbcontext = new FAXPECContext())
             {
                 var mailsender = dbcontext.MAIL_SENDERS.Where(x => x.ID_MAILSERVER == idServer && x.USERNAME.ToUpper() == userName.ToUpper()).FirstOrDefault();
-                try
+                if (mailsender != null)
                 {
-                    lUser = new List<MailUser>();
-                    MAIL_SENDERS m = dbcontext.MAIL_SENDERS.Where(x => x.ID_MAILSERVER == idServer).FirstOrDefault();
-                    int idmailserver = (int)m.ID_MAILSERVER;
-                    MAILSERVERS ms = dbcontext.MAILSERVERS.Where(x => x.ID_SVR == idmailserver).FirstOrDefault();
-                    int idmailuser = (int)mailsender.ID_SENDER;
-                    MailServer s = AutoMapperConfiguration.FromMailServersToModel(ms);
-                    if (idmailuser != 0)
+                    try
                     {
-                        List<Folder> l = GetMailFolders(idmailuser);
-                        lUser.Add(DaoSQLServerDBHelper.MapToMailUser(mailsender, s, l));
+                        lUser = new List<MailUser>();
+                        MAIL_SENDERS m = dbcontext.MAIL_SENDERS.Where(x => x.ID_MAILSERVER == idServer).FirstOrDefault();
+                        int idmailserver = (int)m.ID_MAILSERVER;
+                        MAILSERVERS ms = dbcontext.MAILSERVERS.Where(x => x.ID_SVR == idmailserver).FirstOrDefault();
+                        int idmailuser = (int)mailsender.ID_SENDER;
+                        MailServer s = AutoMapperConfiguration.FromMailServersToModel(ms);
+                        if (idmailuser != 0)
+                        {
+                            List<Folder> l = GetMailFolders(idmailuser);
+                            lUser.Add(DaoSQLServerDBHelper.MapToMailUser(mailsender, s, l));
+                        }
+                    }
+                    catch
+                    {
+                        lUser = null;
+                        throw;
                     }
                 }
-                catch
-                {
-                    lUser = null;
-                    throw;
-                }
+                else { return lUser; }
             }
             return lUser;
         }
@@ -308,9 +312,9 @@ namespace SendMail.Data.SQLServerDB.Repository
                     s.ID_MAILSERVER = entity.Id;
                     s.ID_RESPONSABILE = entity.IdResponsabile;
                     s.PASSWORD = entity.Password;
-                    s.ID_RESPONSABILE = 1;
+                  //  s.ID_RESPONSABILE = 1;
                     s.FLG_MANAGED = (entity.FlgManaged == 0) ? "0" : "1";
-                    s.MAIL = entity.EmailAddress;
+                    s.MAIL = entity.EmailAddress.ToLower().Trim();
                     dbcontext.MAIL_SENDERS.Add(s);
                     int resp = dbcontext.SaveChanges();
                     if (resp == 1)
