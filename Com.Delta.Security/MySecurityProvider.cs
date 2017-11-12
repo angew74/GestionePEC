@@ -3,6 +3,7 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace Com.Delta.Security
             //LoginResp r = store.Authenticate(username, dipartimento, password);
             int iduser = 0;
             string passwordHash= await store.GetPasswordHashAsync(username,ref iduser);
-             string digitPasswordSHA = MySecurityProvider.PlainToSHA256(password);           
+            string digitPasswordSHA = MySecurityProvider.PlainToSHA256(password);           
             if (digitPasswordSHA == passwordHash)
             {
                 MyIdentity id = new MyIdentity(username, dipartimento, password, type);
@@ -69,6 +70,8 @@ namespace Com.Delta.Security
                 return System.Convert.ToBase64String(pwHashed);
             }
         }
+
+       
         /// <summary>
         /// 
         /// </summary>

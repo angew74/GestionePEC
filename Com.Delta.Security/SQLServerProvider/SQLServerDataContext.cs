@@ -163,7 +163,14 @@
         {
             if (Connection.State == ConnectionState.Closed)
             {
-                Connection.Open();
+                try
+                {
+                    Connection.Open();
+                }
+                catch(Exception ex)
+                {
+                    Connection.Dispose();
+                }
             }
         }
     }

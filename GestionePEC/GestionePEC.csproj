@@ -914,6 +914,7 @@
     <Content Include="pages\Rubrica\AccessoMappatura.aspx" />
     <Content Include="pages\Rubrica\EntiResearch.aspx" />
     <Content Include="pages\Titoli\GestioneTitoli.aspx" />
+    <Content Include="pages\Users\ChangeSettings.aspx" />
     <Content Include="pages\Users\ManagerUserToRole.aspx" />
     <Content Include="pages\Users\RegisterUser.aspx" />
     <Content Include="scripts\CheckCodiceFiscale.js" />
@@ -1275,6 +1276,13 @@
     </Compile>
     <Compile Include="pages\Titoli\GestioneTitoli.aspx.designer.cs">
       <DependentUpon>GestioneTitoli.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\Users\ChangeSettings.aspx.cs">
+      <DependentUpon>ChangeSettings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\Users\ChangeSettings.aspx.designer.cs">
+      <DependentUpon>ChangeSettings.aspx</DependentUpon>
     </Compile>
     <Compile Include="pages\Users\ManagerUserToRole.aspx.cs">
       <DependentUpon>ManagerUserToRole.aspx</DependentUpon>

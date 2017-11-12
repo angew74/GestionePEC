@@ -677,7 +677,7 @@ namespace GestionePEC.Api
                 content.MailSender = mailuser.EmailAddress;
                 c.IdTitolo = long.Parse(titolo);
                 c.IdSottotitolo = long.Parse(sottotitolo);
-                comun.UtenteInserimento = MySecurityProvider.CurrentPrincipal.MyIdentity.Name;
+                comun.UtenteInserimento = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
                 comun.MailComunicazione = content;
                 // da scommentare
                 comun.FolderTipo = "O";

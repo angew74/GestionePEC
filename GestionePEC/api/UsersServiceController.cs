@@ -19,6 +19,10 @@ using System.Net.Http.Formatting;
 using Com.Delta.Security;
 using Com.Delta.Web.Cache;
 using GestionePEC.Extensions;
+using System.Web.Security;
+using static GestionePEC.Models.MailModel;
+using static Com.Delta.Mail.MailMessage.WebMailClientManager;
+using Com.Delta.Web.Session;
 
 namespace GestionePEC.api
 {
@@ -37,11 +41,11 @@ namespace GestionePEC.api
             {
                 List<BackendUser> listaUtentiAbilitati = bus.GetDipendentiDipartimentoAbilitati(idSender);
                 List<UserMail> list = new List<UserMail>();
-                foreach(BackendUser b in listaUtentiAbilitati)
+                foreach (BackendUser b in listaUtentiAbilitati)
                 {
                     UserMail u = new UserMail()
                     {
-                        UserId =(int) b.UserId,
+                        UserId = (int)b.UserId,
                         UserName = b.UserName
                     };
                     list.Add(u);
@@ -99,10 +103,10 @@ namespace GestionePEC.api
                 var usersa = ff.Except(users);
                 foreach (string s in usersda)
                 {
-                   bus.InsertAbilitazioneEmail(Convert.ToInt32(s), Convert.ToInt32(idemail), 0);
+                    bus.InsertAbilitazioneEmail(Convert.ToInt32(s), Convert.ToInt32(idemail), 0);
                 }
                 foreach (string s in usersa)
-                {                  
+                {
                     { bus.RemoveAbilitazioneEmail(Convert.ToInt32(s), Convert.ToInt32(idemail)); }
                 }
                 MailUser m = WebMailClientManager.getAccount();
@@ -187,6 +191,97 @@ namespace GestionePEC.api
             return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("api/UsersServiceController/GetOwnProfile")]
+        public HttpResponseMessage GetOwnProfile()
+        {
+
+            BackendUserService buservice = new BackendUserService();
+            UsersMailModel model = new UsersMailModel();
+            string UserName = MySecurityProvider.CurrentPrincipal.MyIdentity.UserName;
+            BackendUser _bUser = null;
+            try
+            {
+                if (!(SessionManager<BackendUser>.exist(Com.Delta.Web.Session.SessionKeys.BACKEND_USER)))
+                {
+                    _bUser = (BackendUser)buservice.GetByUserName(MySecurityProvider.CurrentPrincipal.MyIdentity.UserName);
+                    SessionManager<BackendUser>.set(Com.Delta.Web.Session.SessionKeys.BACKEND_USER, _bUser);
+                }
+                else { _bUser = SessionManager<BackendUser>.get(Com.Delta.Web.Session.SessionKeys.BACKEND_USER); }
+                if (_bUser != null)
+                {
+                    OwnProfile p = new OwnProfile();
+                    p.Cognome = _bUser.Cognome;
+                    p.Department = _bUser.Department;
+                    p.Domain = _bUser.Domain;
+                    if (_bUser.MappedMails != null && _bUser.MappedMails.Count > 0)
+                    {
+                        p.MappedMails = new List<CasellaMail>();
+                        List<CasellaMail> l = new List<CasellaMail>();
+                        foreach(BackEndUserMailUserMapping b in _bUser.MappedMails)
+                        {
+                            CasellaMail m = new CasellaMail
+                            {
+                                idMail = b.Id.ToString(),
+                                emailAddress = b.Casella
+                            };
+                            l.Add(m);
+                        }
+                        p.MappedMails = l;
+                    }
+                    p.Nome = _bUser.Nome;
+                    p.RoleMail = _bUser.RoleMail;
+                    p.RoleMailDesription = (_bUser.RoleMail == 0) ? "Utente" : "Amministratore";
+                    p.UserId = (int)_bUser.UserId;
+                    p.UserName = _bUser.UserName;
+                    p.UserRole = _bUser.UserRole;
+                    p.Password = string.Empty;
+                    var roleStore = new RoleStore();
+                    var roles = roleStore.GetRolesByUserId((int)_bUser.UserId).Result;
+                    p.Roles = roles;
+                    model.OwnProfiles = new List<OwnProfile>();
+                    model.OwnProfiles.Add(p);
+                    model.success = "true";
+                    model.Totale = "1";
+                }
+                else
+                {
+                    model.success = "false";
+                    model.message = "Utente non collegato a caselle di posta";
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!ex.GetType().Equals(typeof(ManagedException)))
+                {
+                    ErrorLogInfo error = new ErrorLogInfo();
+                    error.freeTextDetails = ex.Message;
+                    error.logCode = "ERR_U002";
+                    error.loggingAppCode = "PEC";
+                    error.loggingTime = System.DateTime.Now;
+                    error.uniqueLogID = System.DateTime.Now.Ticks.ToString();
+                    log.Error(error);
+                    model.message = ex.Message;
+                    model.success = "false";
+                }
+                else
+                {
+                    model.message = ex.Message;
+                    model.success = "false";
+                }
+            }
+            return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("api/UsersServiceController/UpdateOwnProfile")]
+        public HttpResponseMessage UpdateOwnProfile(FormDataCollection user)
+        {
+            UsersMailModel model = new UsersMailModel();
+            return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
+        }
 
         [HttpGet]
         [Authorize]
@@ -198,15 +293,15 @@ namespace GestionePEC.api
             List<UserMail> list = new List<UserMail>();
             try
             {
-                if(CacheManager<List<UserMail>>.exist(CacheKeys.ALL_USERS))
+                if (CacheManager<List<UserMail>>.exist(Com.Delta.Web.Cache.CacheKeys.ALL_USERS))
                 {
-                    list = CacheManager<List<UserMail>>.get(CacheKeys.ALL_USERS,VincoloType.BACKEND);
+                    list = CacheManager<List<UserMail>>.get(Com.Delta.Web.Cache.CacheKeys.ALL_USERS, VincoloType.BACKEND);
                 }
                 else
                 {
                     list = Helpers.GetAllUsers();
                 }
-                
+
                 model.success = "true";
                 model.UsersList = list.ToArray();
                 model.Totale = list.Count.ToString();
@@ -328,8 +423,8 @@ namespace GestionePEC.api
                 if (!string.IsNullOrEmpty(userid) && !string.IsNullOrEmpty(role))
                 {
                     UserStore userStore = new UserStore();
-                    var useri = userStore.FindByIdAsync(userid).Result;                  
-                    userStore.RemoveFromRoleAsync(useri, role);                   
+                    var useri = userStore.FindByIdAsync(userid).Result;
+                    userStore.RemoveFromRoleAsync(useri, role);
                     m.success = "true";
                 }
                 else
@@ -426,7 +521,7 @@ namespace GestionePEC.api
                     userBackend.UserName = userName.Trim().ToUpper();
                     userBackend.CodiceFiscale = codicefiscale.Trim().ToUpper();
                     userBackend.Domain = role.ToUpper();
-                    userBackend.UserId =long.Parse(user.Id);
+                    userBackend.UserId = long.Parse(user.Id);
                     bus.Save(userBackend);
                     model.success = "true";
                 }
@@ -455,13 +550,13 @@ namespace GestionePEC.api
                     ErrorLogInfo err = new ErrorLogInfo(mEx);
                     log.Error(err);
                     model.success = "false";
-                    model.message = string.Format("Utente {0} non correttamente creato", user.UserName);                   
+                    model.message = string.Format("Utente {0} non correttamente creato", user.UserName);
 
                 }
                 else
                 {
                     model.success = "false";
-                    model.message = "Utene non creato";                   
+                    model.message = "Utene non creato";
                 }
                 return this.Request.CreateResponse<UsersModel>(HttpStatusCode.OK, model);
             }
