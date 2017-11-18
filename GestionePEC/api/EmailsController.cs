@@ -96,7 +96,7 @@ namespace GestionePEC.api
                 MailServerConfigFacade mailSCF = null;
                 mailSCF = MailServerConfigFacade.GetInstance();
                 users = SessionManager<List<MailUser>>.get(SessionKeys.ACCOUNTS_LIST);
-                if (!(users != null && users.Count != 0))
+                if (!(users == null || users.Count == 0))
                 {
                     users = mailSCF.GetManagedAccountByUser(username).ToList();
                     if (users == null) users = new List<MailUser>();
@@ -214,7 +214,7 @@ namespace GestionePEC.api
             model.AttachementsList = new List<ViewAttachement>();
             model.success = "true";
             model.Totale = "0";
-            if (SessionManager<List<ViewAttachement>>.exist(SessionKeys.ACCOUNTS_LIST))
+            if (SessionManager<List<ViewAttachement>>.exist(SessionKeys.ATTACHEMENTS_LIST))
             {
                 List<ViewAttachement> list = SessionManager<List<ViewAttachement>>.get(SessionKeys.ATTACHEMENTS_LIST);
                 model.AttachementsList = list;

@@ -215,11 +215,12 @@ namespace GestionePEC.api
                     p.Cognome = _bUser.Cognome;
                     p.Department = _bUser.Department;
                     p.Domain = _bUser.Domain;
+                    p.CodiceFiscale = _bUser.CodiceFiscale;
                     if (_bUser.MappedMails != null && _bUser.MappedMails.Count > 0)
                     {
                         p.MappedMails = new List<CasellaMail>();
                         List<CasellaMail> l = new List<CasellaMail>();
-                        foreach(BackEndUserMailUserMapping b in _bUser.MappedMails)
+                        foreach (BackEndUserMailUserMapping b in _bUser.MappedMails)
                         {
                             CasellaMail m = new CasellaMail
                             {
@@ -277,9 +278,64 @@ namespace GestionePEC.api
         [HttpPost]
         [Authorize]
         [Route("api/UsersServiceController/UpdateOwnProfile")]
-        public HttpResponseMessage UpdateOwnProfile(FormDataCollection user)
+        public HttpResponseMessage UpdateOwnProfile(FormDataCollection formsValues)
         {
             UsersMailModel model = new UsersMailModel();
+            var userName = formsValues["UserName"];
+            var password = formsValues["Password"];
+            var cognome = formsValues["Cognome"];
+            var nome = formsValues["Nome"];
+            var domain = formsValues["Domain"];
+            var codicefiscale = formsValues["CodiceFiscale"];
+            var userStore = new UserStore();
+            string result = "OK";
+            try
+            {
+                var user = userStore.FindByNameAsync(userName).Result;
+                if (!(string.IsNullOrEmpty(password)))
+                {
+                    user.PasswordHash = MySecurityProvider.PlainToSHA256(password);
+                    user.SecurityStamp = System.DateTime.Now.Ticks.ToString();
+                    result = userStore.UpdateAsync(user).Result;
+                }
+                if (result == "OK")
+                {
+                    BackendUserService bus = new BackendUserService();
+                    BackendUser userBackend = new BackendUser();
+                    userBackend.Cognome = cognome.Trim().ToUpper();
+                    userBackend.Nome = nome.Trim().ToUpper();
+                    userBackend.UserName = userName.Trim().ToUpper();
+                    userBackend.Domain = domain;
+                    userBackend.CodiceFiscale = codicefiscale.Trim().ToUpper();
+                    userBackend.UserId = long.Parse(user.Id);
+                    bus.Update(userBackend);
+                    model.success = "true";
+                }
+                else
+                {
+                    model.success = "false";
+                    model.message = "Utente non aggiornato";
+                    return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() != typeof(ManagedException))
+                {
+                    ManagedException mEx = new ManagedException("Errore aggiornamento utente. Dettaglio: " + ex.Message +
+                        "StackTrace: " + ((ex.StackTrace != null) ? ex.StackTrace.ToString() : " vuoto "),
+                        "ERR322",
+                        string.Empty,
+                        string.Empty,
+                        ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+                    log.Error(err);
+                    model.success = "false";
+                    model.message = string.Format("Utente {0} non correttamente aggiornato", userName);
+                    return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
+
+                }
+            }
             return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
         }
 

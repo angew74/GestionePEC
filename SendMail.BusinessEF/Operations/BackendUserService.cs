@@ -108,11 +108,11 @@ namespace SendMail.BusinessEF
             }
         }
 
-        public List<UserResultItem> GetStatsInBox(string account, string utente, string datainizio, string datafine)
+        public List<UserResultItem> GetStatsInBox(string account, string utente, DateTime datainizio, DateTime datafine, int tot,int record,ref int totTotale)
         {
             using (BackEndUserSQLDb dao = new BackEndUserSQLDb())
             {
-                return dao.GetStatsInBox(account, utente, datainizio, datafine);
+                return dao.GetStatsInBox(account, utente, datainizio, datafine,tot,record,ref totTotale);
             }
         }
 
@@ -124,5 +124,12 @@ namespace SendMail.BusinessEF
             }
         }
 
+        public void Update(BackendUser userBackend)
+        {
+            using (BackEndUserSQLDb dao = new BackEndUserSQLDb())
+            {
+                dao.Update(userBackend);
+            }
+        }
     }
 }

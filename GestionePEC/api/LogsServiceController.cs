@@ -164,9 +164,17 @@ namespace GestionePEC.api
                 mailSCF = MailServerConfigFacade.GetInstance();
                 List<CasellaMail> c = new List<CasellaMail>();
                 List<MailUser> l = SessionManager<List<MailUser>>.get(SessionKeys.ACCOUNTS_LIST);
+                if (l == null || l.Count == 0)
+                {
+                    l = mailSCF.GetManagedAccountByUser(username).ToList();
+                    if (l == null) l = new List<MailUser>();
+                    if (l.Where(x => x.UserId.Equals(-1)).Count() == 0)
+                        l.Insert(0, new MailUser() { UserId = -1, EmailAddress = "" });
+                    SessionManager<List<MailUser>>.set(SessionKeys.ACCOUNTS_LIST, l);
+                }
                 if (l != null && l.Count != 0)
                 {
-                    l = mailSCF.GetManagedAccountByUser(username).Distinct().ToList();                  
+                    // l = mailSCF.GetManagedAccountByUser(username).Distinct().ToList();                  
                    foreach (MailUser m in l)
                     {
                         CasellaMail casella = new CasellaMail()

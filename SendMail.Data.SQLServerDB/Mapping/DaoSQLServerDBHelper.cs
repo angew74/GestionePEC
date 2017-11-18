@@ -190,7 +190,15 @@ namespace SendMail.Data.SQLServerDB.Mapping
             };
             return m;
         }
-
+        internal static MAIL_USERS_BACKEND MapToMailUsersBackend(BackendUser u, MAIL_USERS_BACKEND b)
+        {
+            b.CODICE_FISCALE = u.CodiceFiscale;
+            b.COGNOME = u.Cognome;
+            b.DEPARTMENT = u.Department;
+            b.DOMAIN = u.Domain;
+            b.NOME = u.Nome;
+            return b;
+        }
         internal static MAIL_INBOX MapToMailInBox(MailUser u, ActiveUp.Net.Mail.Message m)
         {
 

@@ -967,6 +967,7 @@ namespace SendMail.Data.SQLServerDB.Mapping
             bUser.Department =(long) d.DEPARTMENT;
             bUser.Municipio = string.IsNullOrEmpty(d.MUNICIPIO) ? string.Empty : d.MUNICIPIO;
             bUser.Domain = d.DOMAIN;
+            bUser.CodiceFiscale = d.CODICE_FISCALE;
             bUser.Cognome = d.COGNOME;
             bUser.Nome = d.NOME;
             bUser.UserRole = string.IsNullOrEmpty(d.ROLE) ? 0 : int.Parse(d.ROLE);

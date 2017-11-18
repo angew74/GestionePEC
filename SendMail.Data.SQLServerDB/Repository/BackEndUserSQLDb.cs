@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using ActiveUp.Net.Mail.DeltaExt;
+using System.Data.Entity;
+using Com.Delta.Logging.Context;
 
 namespace SendMail.Data.SQLServerDB.Repository
 {
@@ -111,37 +113,78 @@ namespace SendMail.Data.SQLServerDB.Repository
             return tot;
         }
 
-        public List<UserResultItem> GetStatsInBox(string account, string utente, string datainizio, string datafine)
+        public List<UserResultItem> GetStatsInBox(string account, string utente, DateTime datainizio, DateTime datafine,int tot,int record, ref  int totTotale)
         {
             List<UserResultItem> list = new List<UserResultItem>();
             try
             {
-                using (var dbcontext = new FAXPECContext())
+                using (var dbcontext = new MailLogEntities())
                 {
-                    
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT USER_MAIL AS ACCOUNT, UPPER(USER_ID) AS UTE,")
-                    .Append(" COUNT(*) AS TOT  FROM ")
-                    .Append(" LOG_ACTIONS WHERE ")
-                    .Append(" and cast(log_date as Date) ")                   
-                    .Append("  BETWEEN '" + datainizio + "' ")
-                    .Append("  AND '" + datainizio + "'  ")
-                    .Append("  AND (UPPER(USER_MAIL)= '" + account.ToUpper() + "') ")
-                    .Append(" AND LOG_CODE IN ('CRB_MOV','CRB_DEL','CRB_ARK','CRB_RIPK','CRB_RIPC')");
-                    if (utente.ToUpper().Trim() != "TUTTI")
-                    { sb.Append(" AND UPPER(USER_ID)='" + utente.ToUpper() + "' "); }
-                    sb.Append("  GROUP BY UPPER(USER_ID),USER_MAIL ");
-                    using (var oCmd = dbcontext.Database.Connection.CreateCommand())
+
+                    var Querable = from e in dbcontext.LOG_ACTIONS where
+                                   e.LOG_CODE == "CRB_MOV" || e.LOG_CODE == "CRB_DEL" || e.LOG_CODE == "CRB_ARK"
+                                   || e.LOG_CODE == "CRB_RIPK" || e.LOG_CODE == "CRB_RIPC"
+                                   select e;
+                    var QuerableCount = from e in dbcontext.LOG_ACTIONS
+                                        where
+                                  e.LOG_CODE == "CRB_MOV" || e.LOG_CODE == "CRB_DEL" || e.LOG_CODE == "CRB_ARK"
+                                  || e.LOG_CODE == "CRB_RIPK" || e.LOG_CODE == "CRB_RIPC"
+                                        select e;
+                    if (!string.IsNullOrEmpty(utente))
                     {
-                        oCmd.CommandText = sb.ToString();
-                        using (var r = oCmd.ExecuteReader())
-                        {
-                            while (r.Read())
-                            {
-                                list.Add(AutoMapperConfiguration.MapToUserResult(r));
-                            }
-                        }
+                        Querable = Querable.Where(x => x.USER_ID.ToUpper() == utente.ToUpper());
+                        QuerableCount = QuerableCount.Where(x => x.USER_ID.ToUpper() == utente.ToUpper());
                     }
+                    if (!string.IsNullOrEmpty(account))
+                    {
+                        Querable = Querable.Where(x => x.USER_MAIL.ToUpper() == account.ToUpper());
+                        QuerableCount = QuerableCount.Where(x => x.USER_MAIL.ToUpper() == account.ToUpper());
+                    }
+                    list = Querable.Where(p => p.LOG_DATE >= datainizio && p.LOG_DATE <= datafine).ToList().GroupBy(a => new { ACCOUNT = a.USER_ID, UTE = a.USER_MAIL })
+                      .Select(s => new UserResultItem
+                      {
+                        Account = s.Key.ACCOUNT,
+                        User = s.Key.UTE,
+                        Operazioni = s.Count().ToString()
+                     }).OrderBy(m=>m.Account).Take(tot).Skip(record).ToList();
+
+                    totTotale = QuerableCount.Where(p => p.LOG_DATE >= datainizio && p.LOG_DATE <= datafine).ToList().GroupBy(a => new { ACCOUNT = a.USER_ID, UTE = a.USER_MAIL })
+                          .Select(s => new UserResultItem
+                          {
+                              Account = s.Key.ACCOUNT,
+                              User = s.Key.UTE,
+                              Operazioni = s.Count().ToString()
+                          }).ToList().Count();
+                    //var l = Querable.Where(p => p.LOG_DATE >= datainizio && p.LOG_DATE <= datafine && p.LOG_CODE in ('CRB_MOV,CRB_DEL,CRB_ARK,CRB_RIPK,CRB_RIPC').
+                    //    Group
+                    //    OrderByDescending(u => u.LOG_DATE).Skip(record).Take(tot).ToList();
+                    //totTotale = QuerableCount.Where(p => p.LOG_DATE >= datainizio && p.LOG_DATE <= datafine).OrderByDescending(f => f.LOG_DATE).Count();
+                    //foreach(LOG_ACTIONS)
+                    //list.Add(AutoMapperConfiguration.MapToUserResult(r));
+                    //StringBuilder sb = new StringBuilder();
+                    //sb.Append("SELECT ACCOUNT, UTE, TOT FROM ");
+                    // sb.Append(" (SELECT USER_MAIL AS ACCOUNT, UPPER(USER_ID) AS UTE,")
+                    //.Append(" COUNT(*) AS TOT,  ROW_NUMBER() OVER (ORDER BY Id) AS RowNumber FROM ")
+                    //.Append(" LOG_ACTIONS WHERE ")
+                    //.Append(" and cast(log_date as Date) ")                   
+                    //.Append("  BETWEEN '" + datainizio + "' ")
+                    //.Append(" U AND '" + datainizio + "'  ")
+                    //.Append("  AND (UPPER(USER_MAIL)= '" + account.ToUpper() + "') ")
+                    //.Append(" AND LOG_CODE IN ('CRB_MOV','CRB_DEL','CRB_ARK','CRB_RIPK','CRB_RIPC')");
+                    //if (utente.ToUpper().Trim() != "TUTTI" && (!string.IsNullOrEmpty(utente)))
+                    //{ sb.Append(" AND UPPER(USER_ID)='" + utente.ToUpper() + "' "); }
+                    //sb.Append("  GROUP BY UPPER(USER_ID),USER_MAIL) ");
+                    //using (var oCmd = dbcontext.Database.Connection.CreateCommand())
+                    //{
+                    //    oCmd.CommandText = sb.ToString();
+                    //    using (var r = oCmd.ExecuteReader())
+                    //    {
+                    //        while (r.Read())
+                    //        {
+
+                    //        }
+                    //    }
+                    //}
                 }
             }
             catch (Exception e)
@@ -574,7 +617,37 @@ namespace SendMail.Data.SQLServerDB.Repository
 
         public void Update(BackendUser entity)
         {
-            throw new NotImplementedException();
+            int tot = 0;
+            try
+            {
+                using (var dbcontext = new FAXPECContext())
+                {
+                    MAIL_USERS_BACKEND m = dbcontext.MAIL_USERS_BACKEND.FirstOrDefault(c => c.ID_USER == entity.UserId);
+                    m = DaoSQLServerDBHelper.MapToMailUsersBackend(entity,m);
+                    dbcontext.MAIL_USERS_BACKEND.Attach(m);
+                    dbcontext.Entry(m).State = EntityState.Modified;
+                    tot = dbcontext.SaveChanges();
+                }
+                if (tot != 1)
+                {
+                    throw new ManagedException("Utente non aggiornato", "ERR_BU02", string.Empty, string.Empty, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!ex.GetType().Equals(typeof(ManagedException)))
+                {
+                    ManagedException mEx = new ManagedException("Errore nell'aggiornamento dell'utente in Users Backend Err_bu02 Dettagli Errore: " + entity.UserName + " " + ex.Message,
+                        "ERR_BU02", string.Empty, string.Empty, ex.InnerException);
+                    ErrorLogInfo err = new ErrorLogInfo(mEx);
+
+                    log.Error(err);
+
+                    throw mEx;
+                }
+                else throw;
+
+            }
         }
 
         public void Delete(long id)
@@ -596,7 +669,7 @@ namespace SendMail.Data.SQLServerDB.Repository
                 }
                 if(tot != 1)
                 {
-                    throw new ManagedException("Utente non inserito","ERR_BU02",string.Empty,string.Empty,null);
+                    throw new ManagedException("Utente non inserito","ERR_BU01",string.Empty,string.Empty,null);
                 }
             }
             catch (Exception ex)

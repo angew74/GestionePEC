@@ -34,6 +34,7 @@ namespace GestionePEC.Models
         public string UserName { get; set; }
         public virtual string Cognome { get; set; }
         public virtual string Nome { get; set; }
+        public virtual string CodiceFiscale { get; set; }
         public virtual Int64 Department { get; set; }
         public virtual string Domain { get; set; }
         public virtual Int32 UserRole { get; set; }

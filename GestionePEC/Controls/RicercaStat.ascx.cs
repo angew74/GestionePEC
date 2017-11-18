@@ -48,33 +48,33 @@ namespace GestionePEC.Controls
 
         protected void btnStampa_Statistica(object sender, EventArgs e)
         {
-            string account = ddlManagedAccounts.SelectedItem.Text;
-            string utente = ddlUtente.SelectedItem.Text;
-            BackendUserService bus = new BackendUserService();
-            List<UserResultItem> list = bus.GetStatsInBox(account, utente, dtInizio.ToIsoFormat(), dtFine.ToIsoFormat());
-            DataTable xlWorkSheet = Helpers.StampaStatisticaExcel(list, account, dtInizio.DateString(), dtFine.DateString());
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", string.Format("attachment; filename={0}", "Statistica" + account + ".xls"));
-            Response.ContentType = "application/ms-excel";
-            string str = string.Empty;
-            foreach (DataColumn dtcol in xlWorkSheet.Columns)
-            {
-                Response.Write(str + dtcol.ColumnName);
-                str = "\t";
-            }
-            Response.Write("\n");
-            foreach (DataRow dr in xlWorkSheet.Rows)
-            {
-                str = "";
-                for (int j = 0; j < xlWorkSheet.Columns.Count; j++)
-                {
-                    Response.Write(str + Convert.ToString(dr[j]));
-                    str = "\t";
-                }
-                Response.Write("\n");
-            }
-            Response.End();
+            //string account = ddlManagedAccounts.SelectedItem.Text;
+            //string utente = ddlUtente.SelectedItem.Text;
+            //BackendUserService bus = new BackendUserService();
+            //List<UserResultItem> list = bus.GetStatsInBox(account, utente, dtInizio.ToIsoFormat(), dtFine.ToIsoFormat());
+            //DataTable xlWorkSheet = Helpers.StampaStatisticaExcel(list, account, dtInizio.DateString(), dtFine.DateString());
+            //Response.ClearContent();
+            //Response.Buffer = true;
+            //Response.AddHeader("content-disposition", string.Format("attachment; filename={0}", "Statistica" + account + ".xls"));
+            //Response.ContentType = "application/ms-excel";
+            //string str = string.Empty;
+            //foreach (DataColumn dtcol in xlWorkSheet.Columns)
+            //{
+            //    Response.Write(str + dtcol.ColumnName);
+            //    str = "\t";
+            //}
+            //Response.Write("\n");
+            //foreach (DataRow dr in xlWorkSheet.Rows)
+            //{
+            //    str = "";
+            //    for (int j = 0; j < xlWorkSheet.Columns.Count; j++)
+            //    {
+            //        Response.Write(str + Convert.ToString(dr[j]));
+            //        str = "\t";
+            //    }
+            //    Response.Write("\n");
+            //}
+            //Response.End();
 
         }
 
@@ -84,25 +84,25 @@ namespace GestionePEC.Controls
 
         protected void OnClickRicerca(object sender, EventArgs e)
         {
-            try
-            {
-                string account = ddlManagedAccounts.SelectedItem.Text;
-                BackendUserService bus = new BackendUserService();
-                string utente = ddlUtente.SelectedItem.Text;
-                List<UserResultItem> list = bus.GetStatsInBox(account, utente, dtInizio.ToIsoFormat(), dtFine.ToIsoFormat());
-                gridStat.DataSource = list;
-                gridStat.DataBind();
-                btnStampaStatistica.Visible = true;
-                PanelTotale.Visible = true;
-                string tot = bus.GetTotalePeriodoAccount(account, dtInizio.DateString(), dtFine.DateString());
-                totPeriodo.Text = "Totale email ricevute nel periodo per casella : " + tot;
+            //try
+            //{
+            //    string account = ddlManagedAccounts.SelectedItem.Text;
+            //    BackendUserService bus = new BackendUserService();
+            //    string utente = ddlUtente.SelectedItem.Text;
+            //    List<UserResultItem> list = bus.GetStatsInBox(account, utente, dtInizio.ToIsoFormat(), dtFine.ToIsoFormat());
+            //    gridStat.DataSource = list;
+            //    gridStat.DataBind();
+            //    btnStampaStatistica.Visible = true;
+            //    PanelTotale.Visible = true;
+            //    string tot = bus.GetTotalePeriodoAccount(account, dtInizio.DateString(), dtFine.DateString());
+            //    totPeriodo.Text = "Totale email ricevute nel periodo per casella : " + tot;
 
-            }
-            catch (Exception ex)
-            {
+            //}
+            //catch (Exception ex)
+            //{
 
-                (this.Page as BasePage).info.AddMessage("Attenzione errore nella generazione della statistica", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
-            }
+            //    (this.Page as BasePage).info.AddMessage("Attenzione errore nella generazione della statistica", Com.Delta.Messaging.MapperMessages.LivelloMessaggio.ERROR);
+            //}
 
         }
 

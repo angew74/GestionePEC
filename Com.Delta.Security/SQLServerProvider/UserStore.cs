@@ -55,6 +55,42 @@ namespace AspNet.Identity.SQLServerProvider
 
         public SQLServerDataContext Database { get; private set; }
 
+        Task IUserStore<IdentityUser, string>.UpdateAsync(IdentityUser user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> UpdateAsync(IdentityUser user)
+        {
+            int val = 0;
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+            try
+            {
+                val = _userRepository.Update(user);
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType() == typeof(ManagedException))
+                {
+                    throw;
+                }
+                else
+                {
+                    ManagedException m = new ManagedException("Errore nell'aggiornamento per username - " + user.UserName + " dettagli: " + ex.Message, "STO05", "UpdateAsync", string.Empty, null);
+                    ErrorLogInfo error = new ErrorLogInfo(m);
+                    error.loggingTime = System.DateTime.Now;
+                    _log.Error(error);
+                    throw (m);
+                }
+            }
+            if (val > 0)
+            { return Task.FromResult<string>("OK"); }
+            else
+            { return Task.FromResult<string>("KO"); }
+        }
         public Task<string> CreateAsync(IdentityUser user)
         {
             int val = 0;
@@ -128,17 +164,6 @@ namespace AspNet.Identity.SQLServerProvider
             return Task.FromResult(result);
         }
 
-        public Task UpdateAsync(IdentityUser user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException("user");
-            }
-
-            _userRepository.Update(user);
-
-            return Task.FromResult<object>(null);
-        }
 
         public Task AddClaimAsync(IdentityUser user, Claim claim)
         {
@@ -417,5 +442,6 @@ namespace AspNet.Identity.SQLServerProvider
         {
             throw new NotImplementedException();
         }
+      
     }
 }

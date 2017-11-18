@@ -20,7 +20,7 @@ namespace SendMail.BusinessEF.Contracts
 
         List<BackendUser> GetAllDipartimentiByMailAdmin(string UserName);
 
-        List<UserResultItem> GetStatsInBox(string account, string utente, string datainizio, string datafine);
+        List<UserResultItem> GetStatsInBox(string account, string utente, DateTime datainizio, DateTime datafine, int tot, int record, ref int totTotale);
         string GetTotalePeriodoAccount(string account, string datainizio, string datafine);
         void UpdateAbilitazioneEmail(decimal userId, decimal idsender, int level);
     }
