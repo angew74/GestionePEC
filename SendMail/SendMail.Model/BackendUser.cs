@@ -58,27 +58,30 @@ namespace SendMail.Model
     {
         public BackEndUserMailUserMapping(ActiveUp.Net.Mail.DeltaExt.MailUser mailAccount, int accessLevel)
         {
-            this.Casella = mailAccount.Casella;
-            this.DisplayName = mailAccount.DisplayName;
-            this.Dominus = mailAccount.Dominus;
-            this.EmailAddress = mailAccount.EmailAddress;
-            this.Id = this.MailSenderId = mailAccount.Id;
-            this.IncomingProtocol = mailAccount.IncomingProtocol;
-            this.IncomingServer = mailAccount.IncomingServer;
-            this.IsIncomeSecureConnection = mailAccount.IsIncomeSecureConnection;
-            this.FlgManaged = mailAccount.FlgManaged;
-            this.FlgManagedInsert = (mailAccount.FlgManaged > 0) ? true : false; 
-            this.IsOutgoingSecureConnection = mailAccount.IsOutgoingSecureConnection;
-            this.IsOutgoingWithAuthentication = mailAccount.IsOutgoingWithAuthentication;
-            this.IsPec = mailAccount.IsPec;
-            this.OutgoingServer = mailAccount.OutgoingServer;
-            this.Password = mailAccount.Password;
-            this.PortIncomingChecked = mailAccount.PortIncomingChecked;
-            this.PortIncomingServer = mailAccount.PortIncomingServer;
-            this.PortOutgoingChecked = mailAccount.PortOutgoingChecked;
-            this.PortOutgoingServer = mailAccount.PortOutgoingServer;
-            this.UserId = mailAccount.UserId;
-            this.MailAccessLevel = accessLevel;
+            if (mailAccount != null)
+            {
+                this.Casella = mailAccount.Casella;
+                this.DisplayName = mailAccount.DisplayName;
+                this.Dominus = mailAccount.Dominus;
+                this.EmailAddress = mailAccount.EmailAddress;
+                this.Id = this.MailSenderId = mailAccount.Id;
+                this.IncomingProtocol = mailAccount.IncomingProtocol;
+                this.IncomingServer = mailAccount.IncomingServer;
+                this.IsIncomeSecureConnection = mailAccount.IsIncomeSecureConnection;
+                this.FlgManaged = mailAccount.FlgManaged;
+                this.FlgManagedInsert = (mailAccount.FlgManaged > 0) ? true : false;
+                this.IsOutgoingSecureConnection = mailAccount.IsOutgoingSecureConnection;
+                this.IsOutgoingWithAuthentication = mailAccount.IsOutgoingWithAuthentication;
+                this.IsPec = mailAccount.IsPec;
+                this.OutgoingServer = mailAccount.OutgoingServer;
+                this.Password = mailAccount.Password;
+                this.PortIncomingChecked = mailAccount.PortIncomingChecked;
+                this.PortIncomingServer = mailAccount.PortIncomingServer;
+                this.PortOutgoingChecked = mailAccount.PortOutgoingChecked;
+                this.PortOutgoingServer = mailAccount.PortOutgoingServer;
+                this.UserId = mailAccount.UserId;
+                this.MailAccessLevel = accessLevel;
+            }
         }
 
         public BackEndUserMailUserMapping(decimal mailSenderId, int accessLevel)

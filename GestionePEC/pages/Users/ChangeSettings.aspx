@@ -279,18 +279,18 @@
                       method: 'POST',
                       success: function (form, action) {
                           var button = Ext.getCmp('btnConferma');
-                          button.disabled = true;
+                         // button.disabled = true;
                           var form = Ext.getCmp('formUtente');
                           if (Ext.decode(action.response.responseText).ErrorMessage != null) {
                               Ext.Msg.alert('Errore Elaborazione', Ext.decode(action.response.responseText).ErrorMessage);
                           }
-                          else if (Ext.decode(action.response.responseText).Message != null) {
-                              Ext.Msg.alert('Errore Elaborazione', (Ext.decode(action.response.responseText).Message));
+                          else if (Ext.decode(action.response.responseText).message != null) {
+                              Ext.Msg.alert('Errore Elaborazione', (Ext.decode(action.response.responseText).message));
                           }
                           else {
-                              form.el.unmask();
-                              Ext.Msg.alert('Profilo modificata', 'Le variazioni sono state registrate sulla banca dati');
+                             
                           }
+                          form.el.unmask();
                       },
                       failure: function (form, action) {
                           var form = Ext.getCmp('formUtente');

@@ -101,7 +101,7 @@
                 }
             });
 
-            Ext.Ajax.setTimeout(120000); // 120 seconds
+            Ext.Ajax.setTimeout(150000); // 150 seconds
 
             var msgBox = Ext.MessageBox.show({
                 msg: 'Caricamento accounts in corso, attendere prego...',
@@ -122,7 +122,7 @@
                 autoLoad: true,
                 storeId: 'storeMails',
                 model: 'MailsModel',
-                reader: readerUsers,
+                reader: readerMails,
                 proxy:
                    {
                        type: 'ajax',
@@ -134,6 +134,10 @@
                     load: function (store, records, successfull, eOpts) {
                         if (successfull) {
                             msgBox.hide();
+                        }
+                        else {
+                            msgBox.hide();
+                            Ext.MessageBox.alert('Errore elaborazine', 'Problema caricamento accounts posta elettronica.');
                         }
                     },
                     exception: function () {

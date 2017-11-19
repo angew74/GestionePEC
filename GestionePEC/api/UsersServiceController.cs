@@ -335,6 +335,9 @@ namespace GestionePEC.api
                     return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
 
                 }
+                model.success = "false";
+                model.message = ex.Message;
+                return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
             }
             return this.Request.CreateResponse<UsersMailModel>(HttpStatusCode.OK, model);
         }
