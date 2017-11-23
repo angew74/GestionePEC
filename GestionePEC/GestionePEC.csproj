@@ -990,6 +990,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Extensions\PrintWrapperITEXT.cs" />
     <Compile Include="Models\AppCodesModel.cs" />
     <Compile Include="Models\AttachementsModel.cs" />
     <Compile Include="Models\BackendUserModel.cs" />

@@ -125,36 +125,48 @@ namespace SendMail.Data.SQLServerDB.Repository
                                    e.LOG_CODE == "CRB_MOV" || e.LOG_CODE == "CRB_DEL" || e.LOG_CODE == "CRB_ARK"
                                    || e.LOG_CODE == "CRB_RIPK" || e.LOG_CODE == "CRB_RIPC"
                                    select e;
-                    var QuerableCount = from e in dbcontext.LOG_ACTIONS
-                                        where
-                                  e.LOG_CODE == "CRB_MOV" || e.LOG_CODE == "CRB_DEL" || e.LOG_CODE == "CRB_ARK"
-                                  || e.LOG_CODE == "CRB_RIPK" || e.LOG_CODE == "CRB_RIPC"
-                                        select e;
+                    //var QuerableCount = from e in dbcontext.LOG_ACTIONS
+                    //                    where
+                    //              e.LOG_CODE == "CRB_MOV" || e.LOG_CODE == "CRB_DEL" || e.LOG_CODE == "CRB_ARK"
+                    //              || e.LOG_CODE == "CRB_RIPK" || e.LOG_CODE == "CRB_RIPC"
+                    //                    select e;
                     if (!string.IsNullOrEmpty(utente))
                     {
                         Querable = Querable.Where(x => x.USER_ID.ToUpper() == utente.ToUpper());
-                        QuerableCount = QuerableCount.Where(x => x.USER_ID.ToUpper() == utente.ToUpper());
+                       // QuerableCount = QuerableCount.Where(x => x.USER_ID.ToUpper() == utente.ToUpper());
                     }
                     if (!string.IsNullOrEmpty(account))
                     {
                         Querable = Querable.Where(x => x.USER_MAIL.ToUpper() == account.ToUpper());
-                        QuerableCount = QuerableCount.Where(x => x.USER_MAIL.ToUpper() == account.ToUpper());
+                      //  QuerableCount = QuerableCount.Where(x => x.USER_MAIL.ToUpper() == account.ToUpper());
                     }
-                    list = Querable.Where(p => p.LOG_DATE >= datainizio && p.LOG_DATE <= datafine).ToList().GroupBy(a => new { ACCOUNT = a.USER_ID, UTE = a.USER_MAIL })
-                      .Select(s => new UserResultItem
-                      {
-                        Account = s.Key.ACCOUNT,
-                        User = s.Key.UTE,
-                        Operazioni = s.Count().ToString()
-                     }).OrderBy(m=>m.Account).Take(tot).Skip(record).ToList();
+                    var g = Querable.Where(p => p.LOG_DATE >= datainizio && p.LOG_DATE <= datafine).ToList().GroupBy(a => new { ACCOUNT = a.USER_ID, UTE = a.USER_MAIL }).ToList();
+                    foreach(var s in g)
+                    {
+                      var i= new UserResultItem
+                        {
+                            Account = s.Key.ACCOUNT,
+                            User = s.Key.UTE,
+                            Operazioni = s.Count().ToString()
+                        };
+                        list.Add(i);
+                        totTotale += 1;
+                    }
 
-                    totTotale = QuerableCount.Where(p => p.LOG_DATE >= datainizio && p.LOG_DATE <= datafine).ToList().GroupBy(a => new { ACCOUNT = a.USER_ID, UTE = a.USER_MAIL })
-                          .Select(s => new UserResultItem
-                          {
-                              Account = s.Key.ACCOUNT,
-                              User = s.Key.UTE,
-                              Operazioni = s.Count().ToString()
-                          }).ToList().Count();
+                    //list = g.Select(s => new UserResultItem
+                    //  {
+                    //    Account = s.Key.ACCOUNT,
+                    //    User = s.Key.UTE,
+                    //    Operazioni = s.Count().ToString()
+                    // }).OrderBy(m=>m.Account).Take(tot).Skip(record).ToList();
+
+                    //totTotale = QuerableCount.Where(p => p.LOG_DATE >= datainizio && p.LOG_DATE <= datafine).ToList().GroupBy(a => new { ACCOUNT = a.USER_ID, UTE = a.USER_MAIL })
+                          //.Select(s => new UserResultItem
+                          //{
+                          //    Account = s.Key.ACCOUNT,
+                          //    User = s.Key.UTE,
+                          //    Operazioni = s.Count().ToString()
+                          //}).ToList().Count();
                     //var l = Querable.Where(p => p.LOG_DATE >= datainizio && p.LOG_DATE <= datafine && p.LOG_CODE in ('CRB_MOV,CRB_DEL,CRB_ARK,CRB_RIPK,CRB_RIPC').
                     //    Group
                     //    OrderByDescending(u => u.LOG_DATE).Skip(record).Take(tot).ToList();

@@ -8,8 +8,8 @@ namespace GestionePEC.Models
 {
     public class StatModel
     {
-        internal string message;
-        internal string success;
+        public string message;
+        public string success;
 
         public List<UserResultItem> ElencoStat { get; set; }
         public string Totale { get; set; }

@@ -252,6 +252,17 @@
                                      ajaxHandlerStatLavorazioni();
                                  }
                              }
+               }, {
+                   text: 'Stampa',
+                   id: 'btnStampatatLavorazioni',
+                   formBind: true,
+                   xtype: 'button',
+                   listeners:
+                             {
+                                 click: function () {
+                                     ajaxHandlerStampaLavorazioni();
+                                 }
+                             }
                }]
            });
 
@@ -284,14 +295,11 @@
                                 ManageError("Nessun ritrovamento");
                             }
                             else if (jsonDataTotale != "0") {
-                                grid.store.loadData(action.result.RichiesteList);
+                                grid.store.loadData(action.result.ElencoStat);
                                 grid.store.pageSize = 5;
                                 grid.store.totalCount = jsonDataTotale;
-                                grid.store.loadData(action.result.RichiesteList);
                                 Ext.ComponentQuery.query('pagingtoolbar')[0].onLoad();
-                                grid.hidden = false;
-                                grid.setStyle("display", "block");
-                                grid.updateLayout();
+                                grid.show();
                                 HideError();
                             }
                             // form.el.unmask();
@@ -304,6 +312,28 @@
                     }
                 });
             }
+
+            var urlGetStampaLavorazioni = '/GestionePEC/api/StatServiceController/getStampaByUserMail';
+            function ajaxHandlerStampaLavorazioni() {
+                var form = Ext.getCmp('formStatLavorazioni');
+                var formData = form.getForm().getFieldValues();
+                form.standardSubmit = true;
+                form.getForm().submit({
+                    clientValidation: true,
+                    url: urlGetStampaLavorazioni,
+                    target: '_blank',
+                    params: {
+                        utente: Ext.getCmp('formStatLavorazioni').items.get(0).value, mail: Ext.getCmp('formStatLavorazioni').items.get(1).value,
+                        dt: Ext.getCmp('formStatLavorazioni').items.get(2).value, df: Ext.getCmp('formStatLavorazioni').items.get(3).value
+                    },
+                    waitTitle: 'Attendere prego',
+                    failure: function (form, action) {
+                        var form = Ext.getCmp('formStatLavorazioni');
+                        //  form.el.unmask();
+                        Ext.Msg.alert('Errore', Ext.decode(action.response.responseText).Message);
+                    }
+                })
+            };
 
 
             var tabContainer = Ext.create('Ext.tab.Panel', {
@@ -385,26 +415,25 @@
                 //  region: 'north',
                 // grid columns
                 columns: [{
+                    id: 'UtenteText',
+                    text: 'Casella Posta',
+                    dataIndex: 'User',
+                    align: 'center',
+                    width: 490,
+                    sortable: true
+                },{
                     id: 'AccountText',
                     text: "Account",
                     dataIndex: 'Account',
                     sortable: true,
-                    width: 95,
+                    width: 550,
                     align: 'center'
                 }, {
                     id: 'OperazioniText',
                     text: 'Operazioni',
                     dataIndex: 'Operazioni',
                     align: 'center',
-                    width: 50
-                }, {
-                    id: 'UtenteText',
-                    text: 'Utente',
-                    dataIndex: 'User',
-                    align: 'center',
-                    width: 120,
-                    flex: 1,
-                    sortable: true
+                    width: 260
                 }
                 ],
                 listeners: {
