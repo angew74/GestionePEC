@@ -55,6 +55,7 @@ namespace Com.Delta.Web.Session
         UTENTIBACKEND,
         TITOLI,
         TITOLARIO,
-        ATTACHEMENTS_LIST
+        ATTACHEMENTS_LIST,
+        STAMPA_STATISTICA
     }
 }

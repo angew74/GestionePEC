@@ -23,7 +23,8 @@
            'Ext.grid.*',
            'Ext.data.*',
            'Ext.util.*',
-           'Ext.toolbar.Paging'        
+           'Ext.toolbar.Paging',
+           'Ext.form.action.StandardSubmit'
          
         ]);
         Ext.onReady(function () {
@@ -155,6 +156,7 @@
                 valueField: 'emailAddress',
                 ctCls: 'LabelBlackBold',
                 editable: false,
+                name:'mail',
                 tpl: Ext.create('Ext.XTemplate',
               '<ul class="x-list-plain"><tpl for=".">',
                   '<li role="option" class="x-boundlist-item">{emailAddress}</li>',
@@ -181,6 +183,8 @@
                 displayField: 'UserName',
                 valueField: 'UserName',
                 ctCls: 'LabelBlackBold',
+                name: 'utente',
+                submitEmptyText: false,
                 editable: false,
                 allowBlank: true,
                 tpl: Ext.create('Ext.XTemplate',
@@ -207,6 +211,7 @@
                 value: '01/10/2010',
                 labelWidth: 120,
                 margin: '5 0 0 4px',
+                name:'dt',
                 width: 240,
                 // renderTo: 'DataInizioDiv',
                 listeners: {
@@ -223,6 +228,7 @@
                 width: 240,
                 margin: '5 0 0 4px',
                 value: new Date(),
+                name:'df',
                 maxDate: new Date(),
                 // renderTo: 'DataFineDiv',
                 change: function (dateField, value) {
@@ -322,18 +328,51 @@
                     clientValidation: true,
                     url: urlGetStampaLavorazioni,
                     target: '_blank',
-                    params: {
-                        utente: Ext.getCmp('formStatLavorazioni').items.get(0).value, mail: Ext.getCmp('formStatLavorazioni').items.get(1).value,
-                        dt: Ext.getCmp('formStatLavorazioni').items.get(2).value, df: Ext.getCmp('formStatLavorazioni').items.get(3).value
-                    },
+                    data: formData,
                     waitTitle: 'Attendere prego',
+                    success: function(data,response) {
+                        var win = window.open('', '_blank');
+                        win.location = Ext.decode(response.response.responseText).Url;
+                        win.focus();
+                    },
                     failure: function (form, action) {
                         var form = Ext.getCmp('formStatLavorazioni');
                         //  form.el.unmask();
                         Ext.Msg.alert('Errore', Ext.decode(action.response.responseText).Message);
                     }
                 })
+                
             };
+
+            //function onExportSuccess(response) {
+            ////    this.getView().unmask("Caricamento...");
+            // //   var disposition = response.getResponseHeader('Content-Disposition');
+            //    var file = Ext.decode(response.response.responseText).File;
+            //    var filename = Ext.decode(response.response.responseText).FileName;
+            //    var type = Ext.decode(response.response.responseText).Type;
+            //    //var packet = Ext.create('Ext.data.amf.Packet')
+            //    //var r = packet.decode(file);
+            //    //var blob = new Blob(r, { type: type });
+              
+            //    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+            //        // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created These URLs will no longer resolve as the data backing the URL has been freed."
+            //        window.navigator.msSaveBlob(blob, filename);
+            //    }
+            //    else {
+            //        var URL = window.URL || window.webkitURL;
+            //        var downloadUrl = URL.createObjectURL();
+            //        if (filename) {
+            //            // use HTML5 a[download] attribute to specify filename
+            //            var a = document.createElement("a");
+            //            // safari doesn't support this yet
+            //            a.href = downloadUrl;
+            //            a.download = filename;
+            //            document.body.appendChild(a);
+            //            a.click();
+            //        }
+            //        setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+            //    }
+            //};
 
 
             var tabContainer = Ext.create('Ext.tab.Panel', {
